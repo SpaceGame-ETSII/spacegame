@@ -3,13 +3,14 @@ package com.tfg.spacegame.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObjects.Enemy;
+import com.tfg.spacegame.GameObjects.Inventary;
 import com.tfg.spacegame.GameObjects.Ship;
 import com.tfg.spacegame.GameObjects.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.Utils.GameState;
+import com.tfg.spacegame.Utils.SimpleDirectionGestureDetector;
 
 public class GameScreen implements Screen {
     final SpaceGame game;
@@ -17,13 +18,13 @@ public class GameScreen implements Screen {
     Ship ship;
     Enemy enemy;
     Shoot shoot;
+    Inventary inventary;
 
     GameState state;
 
     int scrollingPosition;
 
     int scrollingSpeed;
-
     
     public GameScreen(final SpaceGame gam) {
         this.game = gam;
@@ -37,6 +38,27 @@ public class GameScreen implements Screen {
         ship = new Ship();
         enemy = new Enemy(SpaceGame.width, SpaceGame.height/2 - 40/2);
         shoot = new Shoot(ship);
+        inventary = new Inventary();
+
+        //Preparamos un listener que si se desliza el dedo a la derecha se abre el inventario
+        Gdx.input.setInputProcessor(new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
+
+            public void onRight() {
+                if (state.equals(GameState.START)) {
+                    inventary.restart();
+                    state = GameState.PAUSE;
+                }
+            }
+
+            public void onLeft() {
+                if (state.equals(GameState.PAUSE))
+                    state = GameState.START;
+            }
+
+            public void onDown() {}
+            public void onUp() {}
+
+        }));
     }
 
     @Override
@@ -47,7 +69,6 @@ public class GameScreen implements Screen {
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
 
-        //Pintamos nave, disparo y enemigo en pantalla
         game.batch.begin();
 
         game.batch.draw(game.background, scrollingPosition,0);
@@ -58,6 +79,7 @@ public class GameScreen implements Screen {
                 this.renderLose(delta);
                 break;
             case PAUSE:
+                this.renderPause(delta);
                 break;
             case READY:
                 this.renderReady(delta);
@@ -101,6 +123,11 @@ public class GameScreen implements Screen {
             state = GameState.LOSE;
 
         updateLogic(delta);
+    }
+
+    private void renderPause(float delta) {
+        inventary.render(game.batch);
+        inventary.update(delta);
     }
 
     public void updateLogic(float delta) {

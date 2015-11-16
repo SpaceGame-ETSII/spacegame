@@ -1,7 +1,6 @@
 package com.tfg.spacegame.GameObjects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 
@@ -9,7 +8,11 @@ public class Ship extends GameObject {
 
     public static final float SPEED = 200;
     private int vitality;
+
+    //Variable usada para hacer la nave invulnerable cuando es golpeada
     private boolean undamagable;
+
+    //Se usará como contador para volver la nave vulnerable
     private float timeToUndamagable;
 
     public Ship() {
@@ -32,7 +35,7 @@ public class Ship extends GameObject {
         if (this.getY() > SpaceGame.height - getHeight())
             this.setY(SpaceGame.height - getHeight());
 
-        //Si la nave está en estado no dañable, el contador se reduce
+        //Si la nave está en estado invulnerable, el contador se reduce
         if (undamagable)
             timeToUndamagable -= delta;
             if (timeToUndamagable <= 0)

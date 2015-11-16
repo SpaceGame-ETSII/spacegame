@@ -14,6 +14,10 @@ public class AssetsManager {
         assetsReferences.put("ship", "nave.png");
         assetsReferences.put("shoot", "disparo.png");
         assetsReferences.put("enemy", "enemigo.png");
+        assetsReferences.put("inventary", "inventario.png");
+        assetsReferences.put("red", "rojo.png");
+        assetsReferences.put("yellow", "amarillo.png");
+        assetsReferences.put("blue", "azul.png");
     }
 
     public static Texture loadTexture(String textureName) {
