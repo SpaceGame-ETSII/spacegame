@@ -51,8 +51,8 @@ public class GameScreen implements Screen {
             }
 
             public void onLeft() {
-                if (state.equals(GameState.PAUSE))
-                    state = GameState.START;
+                if (state.equals(GameState.PAUSE) && !inventary.isClosing())
+                    inventary.setIsClosing(true);
             }
 
             public void onDown() {}
@@ -99,8 +99,11 @@ public class GameScreen implements Screen {
     private void renderLose(float delta) {
         game.font.draw(game.batch, "Game Over", 370, 240);
 
-        if (Gdx.input.justTouched())
+        if (Gdx.input.justTouched()) {
             state = GameState.READY;
+            ship = new Ship();
+        }
+
     }
 
     private void renderReady(float delta) {
@@ -127,7 +130,17 @@ public class GameScreen implements Screen {
 
     private void renderPause(float delta) {
         inventary.render(game.batch);
-        inventary.update(delta);
+
+        //Se hará una cosa u otra si el inventario está cerrándose o no
+        if (inventary.isClosing()) {
+            inventary.updateClosing(delta);
+
+            //Si el inventario ya no está cerrándose, volvemos a la partida
+            if (!inventary.isClosing())
+                state = GameState.START;
+        } else {
+            inventary.update(delta);
+        }
     }
 
     public void updateLogic(float delta) {

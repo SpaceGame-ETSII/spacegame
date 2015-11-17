@@ -1,17 +1,19 @@
 package com.tfg.spacegame.GameObjects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.GameObject;
 
 public class Inventary extends GameObject {
 
     private Element red;
     private Element yellow;
-    private Element blue;
+    public Element blue;
 
     private final static int TRANSITION_SPEED = 900;
     private float relativePos;
+
+    //Indica si el inventario se está cerrando
+    private boolean isClosing;
 
     public Inventary() {
         super("inventary", 0, 0);
@@ -24,6 +26,8 @@ public class Inventary extends GameObject {
     }
 
     public void restart() {
+        isClosing = false;
+
         red.setX(32);
         red.setY(350);
         yellow.setX(31);
@@ -31,7 +35,7 @@ public class Inventary extends GameObject {
         blue.setX(29);
         blue.setY(39);
 
-        this.setX(this.getX() - this.getWidth());
+        this.setX(-this.getWidth());
         red.setX(red.getX() - this.getWidth());
         yellow.setX(yellow.getX() - this.getWidth());
         blue.setX(blue.getX() - this.getWidth());
@@ -54,6 +58,27 @@ public class Inventary extends GameObject {
             yellow.setX(yellow.getX() + relativePos);
             blue.setX(blue.getX() + relativePos);
         }
+    }
+
+    public void updateClosing(float delta) {
+        if (this.getX() > -this.getWidth()) {
+            relativePos = TRANSITION_SPEED * delta;
+
+            this.setX(this.getX() - relativePos);
+            red.setX(red.getX() - relativePos);
+            yellow.setX(yellow.getX() - relativePos);
+            blue.setX(blue.getX() - relativePos);
+        } else {
+            isClosing = false;
+        }
+    }
+
+    public boolean isClosing() {
+        return isClosing;
+    }
+
+    public void setIsClosing(boolean isClosing) {
+        this.isClosing = isClosing;
     }
 
 }
