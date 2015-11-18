@@ -10,7 +10,7 @@ public class GameObject {
     private Texture texture;
     private Rectangle logicShape;
 
-    public GameObject(String textureName, int x, int y) {
+    public GameObject(String textureName, float x, float y) {
         texture = AssetsManager.loadTexture(textureName);
 
         logicShape = new Rectangle();

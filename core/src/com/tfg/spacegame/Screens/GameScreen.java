@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObjects.Enemy;
 import com.tfg.spacegame.GameObjects.Inventary;
 import com.tfg.spacegame.GameObjects.Ship;
@@ -17,7 +18,8 @@ public class GameScreen implements Screen {
     
     Ship ship;
     Enemy enemy;
-    Shoot shoot;
+    Array<Shoot> shoots;
+
     Inventary inventary;
 
     GameState state;
@@ -37,7 +39,8 @@ public class GameScreen implements Screen {
         //Creamos los objetos de juego
         ship = new Ship();
         enemy = new Enemy(SpaceGame.width, SpaceGame.height/2 - 40/2);
-        shoot = new Shoot(ship);
+        shoots = new Array<Shoot>();
+
         inventary = new Inventary();
 
         //Preparamos un listener que si se desliza el dedo a la derecha se abre el inventario
@@ -119,8 +122,10 @@ public class GameScreen implements Screen {
         ship.render(game.batch);
         if (!enemy.isDefeated)
             enemy.render(game.batch);
-        if (shoot.isShooted)
+        for(Shoot shoot: shoots){
             shoot.render(game.batch);
+        }
+
 
         if (ship.getVitality() <= 0)
             state = GameState.LOSE;
@@ -155,14 +160,31 @@ public class GameScreen implements Screen {
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-        shoot.update(delta, v.x, v.y);
-        enemy.update(delta);
+        for(Shoot shoot: shoots){
+            shoot.update(delta);
 
-        //Se realizará cuando el disparo dé en el enemigo
-        if (!enemy.isDefeated && shoot.isOverlapingWith(enemy)) {
-            shoot.restart();
-            enemy.defeat();
+            //Se realizará cuando el disparo dé en el enemigo
+            if (!enemy.isDefeated && shoot.isOverlapingWith(enemy)) {
+                shoots.removeValue(shoot,false);
+                enemy.defeat();
+            }
+
+            //Si algún disparo sobresale los limites de la pantalla
+            //Se eleminará
+            if(shoot.getX() > SpaceGame.width){
+                shoots.removeValue(shoot,false);
+            }
         }
+
+        // Si tocamos la pantalla disparamos
+        // Solo disparamos si la lista de disparos está vacía
+        // TODO: No es al tocar la pantalla, cambiar esto
+        if(Gdx.input.justTouched() && shoots.size == 0 ){
+            shoots.add(new Shoot(ship));
+        }
+
+
+        enemy.update(delta);
 
         //Se realizará cuando el enemigo golpée al jugador
         if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
@@ -193,7 +215,8 @@ public class GameScreen implements Screen {
     public void dispose() {
         ship.dispose();
         enemy.dispose();
-        shoot.dispose();
+        for(Shoot shoot: shoots)
+            shoot.dispose();
     }
 
 }
