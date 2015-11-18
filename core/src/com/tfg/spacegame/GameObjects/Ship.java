@@ -6,7 +6,7 @@ import com.tfg.spacegame.SpaceGame;
 
 public class Ship extends GameObject {
 
-    public static final float SPEED = 200;
+    public static final float SPEED = 800;
     private int vitality;
 
     //Variable usada para hacer la nave invulnerable cuando es golpeada

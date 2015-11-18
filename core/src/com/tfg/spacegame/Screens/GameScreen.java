@@ -155,7 +155,7 @@ public class GameScreen implements Screen {
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-        shoot.update(delta);
+        shoot.update(delta, v.x, v.y);
         enemy.update(delta);
 
         //Se realizará cuando el disparo dé en el enemigo

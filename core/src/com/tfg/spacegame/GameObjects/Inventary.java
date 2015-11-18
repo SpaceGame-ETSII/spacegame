@@ -28,17 +28,23 @@ public class Inventary extends GameObject {
     public void restart() {
         isClosing = false;
 
+        this.setToInitialState();
+
+        this.setX(-this.getWidth());
+        red.setX(red.getX() - this.getWidth());
+        yellow.setX(yellow.getX() - this.getWidth());
+        blue.setX(blue.getX() - this.getWidth());
+    }
+
+    private void setToInitialState() {
+        this.setX(0);
+        this.setY(0);
         red.setX(32);
         red.setY(350);
         yellow.setX(31);
         yellow.setY(193);
         blue.setX(29);
         blue.setY(39);
-
-        this.setX(-this.getWidth());
-        red.setX(red.getX() - this.getWidth());
-        yellow.setX(yellow.getX() - this.getWidth());
-        blue.setX(blue.getX() - this.getWidth());
     }
 
     public void render(SpriteBatch batch) {
@@ -57,6 +63,9 @@ public class Inventary extends GameObject {
             red.setX(red.getX() + relativePos);
             yellow.setX(yellow.getX() + relativePos);
             blue.setX(blue.getX() + relativePos);
+
+            if (this.getX() > 0)
+                this.setToInitialState();
         }
     }
 

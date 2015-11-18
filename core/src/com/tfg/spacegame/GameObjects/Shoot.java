@@ -17,9 +17,9 @@ public class Shoot extends GameObject{
         this.shooter = shooter;
     }
 
-    public void update(float delta) {
+    public void update(float delta, float x, float y) {
         //Colocamos el disparo cuando éste se realiza
-        if (Gdx.input.justTouched() && !isShooted) {
+        if (Gdx.input.isTouched(1) && !isShooted) {
             this.setX(shooter.getX() + shooter.getWidth());
             this.setY(shooter.getY() + 12);
             isShooted = true;
