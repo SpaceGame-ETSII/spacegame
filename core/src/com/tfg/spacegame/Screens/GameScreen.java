@@ -180,7 +180,12 @@ public class GameScreen implements Screen {
         // Solo disparamos si la lista de disparos está vacía
         // TODO: No es al tocar la pantalla, cambiar esto
         if(Gdx.input.justTouched() && shoots.size == 0 ){
+            // Esta es la acción del disparo básico
+            // El disparo básico crea tres disparos seguidos
+            // No se podrá disparar de nuevo hasta que desaparezcan.
             shoots.add(new Shoot(ship));
+            shoots.add(new Shoot(ship,0.10f));
+            shoots.add(new Shoot(ship,0.20f));
         }
 
 
