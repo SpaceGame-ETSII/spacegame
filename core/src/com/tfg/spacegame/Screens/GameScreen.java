@@ -186,6 +186,7 @@ public class GameScreen implements Screen {
             shoots.add(new Shoot(ship));
             shoots.add(new Shoot(ship,0.10f));
             shoots.add(new Shoot(ship,0.20f));
+            ship.startShootEffect();
         }
 
 
