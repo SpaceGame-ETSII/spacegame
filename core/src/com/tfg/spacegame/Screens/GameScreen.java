@@ -177,9 +177,10 @@ public class GameScreen implements Screen {
         }
 
         // Si tocamos la pantalla disparamos
-        // Solo disparamos si la lista de disparos está vacía
-        // TODO: No es al tocar la pantalla, cambiar esto
-        if(Gdx.input.justTouched() && shoots.size == 0 ){
+        // El disparo puede hacerse de dos formas
+        // 1. Sin multituouch el disparo solo se realizará si pulsamos por delante del primer tercio de la pantalla
+        // 2. Con multitouch el disparo se realizará en cualquier parte de la pantalla
+        if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3)) && shoots.size == 0){
             // Esta es la acción del disparo básico
             // El disparo básico crea tres disparos seguidos
             // No se podrá disparar de nuevo hasta que desaparezcan.
