@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/gaems-dev/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-android/1.7.0/d8c0e81a68812893d0bf80cea37fbcba9f23d38b/gdx-backend-android-1.7.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d8c0e81a68812893d0bf80cea37fbcba9f23d38b">
+        <dex dex="/home/gaems-dev/spacegame/android/build/intermediates/pre-dexed/debug/gdx-backend-android-1.7.0-ad430ae44c2cbc37e11f92883b79ad0f855cb4c5.jar" />
+    </item>
+    <item
+        jar="/home/gaems-dev/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.7.0/a560f1f94b939f2b5ccd4eec752797c3ea6e1c92/gdx-box2d-1.7.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="a560f1f94b939f2b5ccd4eec752797c3ea6e1c92">
+        <dex dex="/home/gaems-dev/spacegame/android/build/intermediates/pre-dexed/debug/gdx-box2d-1.7.0-26d8ff3d89f4c7f99356c402401c0138c98bea1f.jar" />
+    </item>
+    <item
+        jar="/home/gaems-dev/spacegame/core/build/libs/core-1.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8bd6d7182181cf2280113a360680cdd3a657bac0">
+        <dex dex="/home/gaems-dev/spacegame/android/build/intermediates/pre-dexed/debug/core-1.0-efe981eab49971061e83d7afc77de1f727957775.jar" />
+    </item>
+    <item
+        jar="/home/gaems-dev/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.7.0/1b08c96132448b5ab9c0cc8dea3e985dcf0166fd/gdx-1.7.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1b08c96132448b5ab9c0cc8dea3e985dcf0166fd">
+        <dex dex="/home/gaems-dev/spacegame/android/build/intermediates/pre-dexed/debug/gdx-1.7.0-2d640d094e898096f0ffb401839786f79f84805b.jar" />
+    </item>
+
+</items>
