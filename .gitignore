@@ -1,0 +1,7 @@
+*
+
+!.gitignore
+!core/
+!core/src/*
+!android/
+!android/assets/*
