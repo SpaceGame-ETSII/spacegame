@@ -17,5 +17,8 @@ build/
 *~
 .gradle/
 android/build/
+android/libs/
+android/proguard-project.txt
+android/project.properties
 core/build/
 
