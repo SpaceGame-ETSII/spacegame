@@ -1,7 +1,19 @@
 *
 
 !.gitignore
-!core/
-!core/src/*
-!android/
-!android/assets/*
+!/core/
+!/core/src/
+!/core/src/*
+!/core/src/com/
+!/core/src/com/tfg/
+!/core/src/com/tfg/spacegame/
+!/core/src/com/tfg/spacegame/*
+!/core/src/com/tfg/spacegame/*/*
+!/core/src/com/tfg/spacegame/*/*/*
+!/core/src/com/tfg/spacegame/*/*/*/*
+!/android/
+!/android/assets/
+!/android/assets/*
+!/android/assets/*/*
+!/android/assets/*/*/*
+!/android/assets/*/*/*/*
