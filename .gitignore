@@ -15,4 +15,7 @@ spacegame.iml
 gradle/
 build/
 *~
+.gradle/
+android/build/
+core/build/
 
