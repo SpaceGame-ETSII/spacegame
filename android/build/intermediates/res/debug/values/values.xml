@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/home/gaems-dev/Documentos/workspace/spacegame/android/res/values/strings.xml -->
+    <!-- From: file:/home/gaems-dev/git/spacegame/android/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">spacegame</string>
-    <!-- From: file:/home/gaems-dev/Documentos/workspace/spacegame/android/res/values/styles.xml -->
+    <!-- From: file:/home/gaems-dev/git/spacegame/android/res/values/styles.xml -->
     <eat-comment/>
     <style name="GdxTheme" parent="android:Theme">
 		<item name="android:windowBackground">@android:color/transparent</item>
