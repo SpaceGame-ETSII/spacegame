@@ -10,7 +10,7 @@ public class GameObject {
     private Texture texture;
     private Rectangle logicShape;
 
-    public GameObject(String textureName, float x, float y) {
+    public GameObject(String textureName, int x, int y) {
         texture = AssetsManager.loadTexture(textureName);
 
         logicShape = new Rectangle();
@@ -58,6 +58,12 @@ public class GameObject {
 
     public boolean isOverlapingWith(GameObject g){
         return logicShape.overlaps(g.getLogicShape());
+    }
+
+    public boolean isOverlapingWith(float x, float y) {
+        float xLimit = getX() + getWidth();
+        float yLimit = getY() + getHeight();
+        return (x >= getX() && x <= xLimit && y >= getY() && y <= yLimit);
     }
 
 }

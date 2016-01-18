@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.tfg.spacegame.Screens.MainMenuScreen;
+import com.tfg.spacegame.screens.MainMenuScreen;
 
 public class SpaceGame extends Game {
 
