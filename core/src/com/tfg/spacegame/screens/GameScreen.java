@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.tfg.spacegame.gameObjects.Enemies.Type1;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Inventary;
 import com.tfg.spacegame.gameObjects.Ship;
@@ -13,11 +14,13 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.GameState;
 import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
+import java.util.Iterator;
+
 public class GameScreen implements Screen {
     final SpaceGame game;
 
     Ship ship;
-    Enemy enemy;
+    Array<Enemy> enemies;
     Array<Shoot> shoots;
     Inventary inventary;
 
@@ -37,9 +40,11 @@ public class GameScreen implements Screen {
 
         //Creamos los objetos de juego
         ship = new Ship();
-        enemy = new Enemy(SpaceGame.width, SpaceGame.height/2 - 40/2);
+        enemies = new Array<Enemy>();
         shoots = new Array<Shoot>();
         inventary = new Inventary();
+
+        enemies.addAll(Type1.createSquadron());
 
         //Preparamos un listener que si se desliza el dedo a la derecha se abre el inventario
         Gdx.input.setInputProcessor(new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
@@ -118,8 +123,12 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, ship.getVitality() + "", 100, 100);
 
         ship.render(game.batch);
-        if (!enemy.isDefeated)
-            enemy.render(game.batch);
+
+        for(Enemy enemy: enemies){
+            if(!enemy.isDefeated())
+                enemy.render(game.batch);
+        }
+
         for(Shoot shoot: shoots){
             shoot.render(game.batch);
         }
@@ -162,21 +171,40 @@ public class GameScreen implements Screen {
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-        for(Shoot shoot: shoots){
-            shoot.update(delta);
 
-            //Se realizará cuando el disparo dé en el enemigo
-            if (!enemy.isDefeated && shoot.isOverlapingWith(enemy)) {
-                shoots.removeValue(shoot,false);
-                enemy.defeat();
+        for(Enemy enemy: enemies){
+
+            enemy.update(delta);
+
+            //Se realizará cuando el enemigo golpée al jugador
+            if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
+                ship.receiveDamage();
+
+
+            for(Iterator<Shoot> s = shoots.iterator(); s.hasNext();){
+                Shoot shoot = s.next();
+
+                shoot.update(delta);
+
+                //Se realizará cuando el disparo dé en el enemigo
+                if (!enemy.isDefeated() && shoot.isOverlapingWith(enemy)) {
+                    shoots.removeValue(shoot,false);
+                    enemy.defeat();
+                }
+
+                //Si algún disparo sobresale los limites de la pantalla
+                //Se eleminará
+                if(shoot.getX() > SpaceGame.width){
+                    shoots.removeValue(shoot,false);
+                }
             }
 
-            //Si algún disparo sobresale los limites de la pantalla
-            //Se eleminará
-            if(shoot.getX() > SpaceGame.width){
-                shoots.removeValue(shoot,false);
+            // Destruir los enemigos que se salgan de la parte izquierda de la pantalla
+            if(enemy.getX() < 0){
+                enemies.removeValue(enemy,false);
             }
         }
+
 
         // Si tocamos la pantalla disparamos
         // El disparo puede hacerse de dos formas
@@ -192,11 +220,6 @@ public class GameScreen implements Screen {
             ship.startShootEffect();
         }
 
-        enemy.update(delta);
-
-        //Se realizará cuando el enemigo golpée al jugador
-        if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
-            ship.receiveDamage();
     }
 
     @Override
@@ -222,9 +245,11 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         ship.dispose();
-        enemy.dispose();
+        for(Enemy enemy: enemies)
+            enemy.dispose();
         for(Shoot shoot: shoots)
             shoot.dispose();
+        inventary.dispose();
     }
 
 }
