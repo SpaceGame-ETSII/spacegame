@@ -2,6 +2,7 @@ package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.input.GestureDetector;
 
+//Esta clase es para detectar un deslizamiento con el dedo
 public class SimpleDirectionGestureDetector extends GestureDetector {
     public interface DirectionListener {
         void onLeft();
@@ -17,6 +18,7 @@ public class SimpleDirectionGestureDetector extends GestureDetector {
         super(new DirectionGestureListener(directionListener));
     }
 
+    //Clase interna que se encarga de la detección del fling (deslizamiento)
     private static class DirectionGestureListener extends GestureAdapter{
         DirectionListener directionListener;
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.ArrayMap;
 
 public class AssetsManager {
 
+    //Mapa que tendrá la asociación del nombre de las texturas con la imagen concreta de dicha textura
     public static ArrayMap<String, String> assetsReferences;
 
     public static void load() {
@@ -20,6 +21,7 @@ public class AssetsManager {
         assetsReferences.put("blue", "azul.png");
     }
 
+    //Se llamará a este método cada vez que se pretenda cargar una textura
     public static Texture loadTexture(String textureName) {
         return new Texture(Gdx.files.internal(assetsReferences.get(textureName)));
     }

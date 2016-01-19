@@ -7,7 +7,10 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class GameObject {
 
+    //Textura asociada al objeto
     private Texture texture;
+
+    //Objeto lógico, con el que trabajaremos para interactuar con los demás elementos
     private Rectangle logicShape;
 
     public GameObject(String textureName, int x, int y) {
@@ -56,10 +59,12 @@ public class GameObject {
         texture.dispose();
     }
 
+    //Indica si hay una colisión con el objeto pasado por parámetro
     public boolean isOverlapingWith(GameObject g){
         return logicShape.overlaps(g.getLogicShape());
     }
 
+    //Indica si el objeto está sobre el píxel indicado por parámetro
     public boolean isOverlapingWith(float x, float y) {
         float xLimit = getX() + getWidth();
         float yLimit = getY() + getHeight();

@@ -10,7 +10,7 @@ public class Element extends GameObject {
     //Indica si el jugador ha pulsado en el elemento para colocarlo en el equipamiento
     private boolean isActivate;
 
-    //
+    //Efecto de partículas asociado al elemento que se mostrará si isActivate es true
     private ParticleEffect particleEffect;
 
     public Element(String texture, int x, int y, String particleTextureName) {

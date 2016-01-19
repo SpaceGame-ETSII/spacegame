@@ -4,6 +4,8 @@ import com.tfg.spacegame.GameObject;
 
 public class Enemy extends GameObject {
 
+    //Xo, esta clase no está documentada porque va a cambiar entera, sin embargo la base del enemigo tipo 1 está aquí
+
     public boolean isDefeated;
     public float timeToRespawn;
     public float timeToLaunch;
