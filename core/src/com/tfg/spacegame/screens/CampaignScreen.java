@@ -232,7 +232,8 @@ public class CampaignScreen implements Screen{
 
             enemy.update(delta);
 
-            //Se realizará cuando el enemigo golpée al jugador
+            // El jugador habrá recibido daño por un enemigo
+            // si chocan
             if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
                 ship.receiveDamage();
 
@@ -246,17 +247,23 @@ public class CampaignScreen implements Screen{
                     shoots.removeValue(shoot,false);
                     enemy.defeat();
                 }
-
-                //Si algún disparo sobresale los limites de la pantalla
-                //Se eleminará
-                if(shoot.getX() > SpaceGame.width){
-                    shoots.removeValue(shoot,false);
-                }
             }
-
             // Destruir los enemigos que se salgan de la parte izquierda de la pantalla
             if(enemy.getX() < 0){
                 enemies.removeValue(enemy,false);
+            }
+
+            if(enemy.isDefeated())
+                enemies.removeValue(enemy,false);
+        }
+
+        for(Weapon shoot: shoots){
+            shoot.update(delta);
+
+            //Si algún disparo sobresale los limites de la pantalla
+            //Se eleminará
+            if(shoot.getX() > SpaceGame.width){
+                shoots.removeValue(shoot,false);
             }
         }
 

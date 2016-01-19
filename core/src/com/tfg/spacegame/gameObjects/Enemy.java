@@ -17,18 +17,12 @@ public class Enemy extends GameObject {
     public void update(float delta) {
     }
 
-    public void restart() {
-    }
-
     public void defeat() {
+        defeated = true;
     }
 
     public boolean isDefeated(){
         return defeated;
-    }
-
-    public void setDefeated(boolean b){
-        this.defeated = b;
     }
 
     public Vector2 getInitialPosition(){
