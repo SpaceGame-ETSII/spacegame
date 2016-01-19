@@ -176,35 +176,39 @@ public class GameScreen implements Screen {
 
             enemy.update(delta);
 
-            //Se realizará cuando el enemigo golpée al jugador
+            // El jugador habrá recibido daño por un enemigo
+            // si chocan
             if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
                 ship.receiveDamage();
 
-
+            // Sistema de colisiones entre los disparos del jugador
+            // y los enemigos
             for(Iterator<Shoot> s = shoots.iterator(); s.hasNext();){
                 Shoot shoot = s.next();
-
-                shoot.update(delta);
-
                 //Se realizará cuando el disparo dé en el enemigo
                 if (!enemy.isDefeated() && shoot.isOverlapingWith(enemy)) {
                     shoots.removeValue(shoot,false);
                     enemy.defeat();
                 }
-
-                //Si algún disparo sobresale los limites de la pantalla
-                //Se eleminará
-                if(shoot.getX() > SpaceGame.width){
-                    shoots.removeValue(shoot,false);
-                }
             }
-
             // Destruir los enemigos que se salgan de la parte izquierda de la pantalla
             if(enemy.getX() < 0){
                 enemies.removeValue(enemy,false);
             }
+
+            if(enemy.isDefeated())
+                enemies.removeValue(enemy,false);
         }
 
+        for(Shoot shoot: shoots){
+            shoot.update(delta);
+
+            //Si algún disparo sobresale los limites de la pantalla
+            //Se eleminará
+            if(shoot.getX() > SpaceGame.width){
+                shoots.removeValue(shoot,false);
+            }
+        }
 
         // Si tocamos la pantalla disparamos
         // El disparo puede hacerse de dos formas
