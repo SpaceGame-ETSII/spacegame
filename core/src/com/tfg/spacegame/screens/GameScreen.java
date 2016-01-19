@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Inventary;
 import com.tfg.spacegame.gameObjects.Ship;
@@ -14,10 +15,10 @@ import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
 public class GameScreen implements Screen {
     final SpaceGame game;
-    
+
     Ship ship;
     Enemy enemy;
-    Shoot shoot;
+    Array<Shoot> shoots;
     Inventary inventary;
 
     GameState state;
@@ -25,7 +26,7 @@ public class GameScreen implements Screen {
     int scrollingPosition;
 
     int scrollingSpeed;
-    
+
     public GameScreen(final SpaceGame gam) {
         this.game = gam;
 
@@ -37,7 +38,7 @@ public class GameScreen implements Screen {
         //Creamos los objetos de juego
         ship = new Ship();
         enemy = new Enemy(SpaceGame.width, SpaceGame.height/2 - 40/2);
-        shoot = new Shoot(ship);
+        shoots = new Array<Shoot>();
         inventary = new Inventary();
 
         //Preparamos un listener que si se desliza el dedo a la derecha se abre el inventario
@@ -119,8 +120,9 @@ public class GameScreen implements Screen {
         ship.render(game.batch);
         if (!enemy.isDefeated)
             enemy.render(game.batch);
-        if (shoot.isShooted)
+        for(Shoot shoot: shoots){
             shoot.render(game.batch);
+        }
 
         if (ship.getVitality() <= 0)
             state = GameState.LOSE;
@@ -160,14 +162,37 @@ public class GameScreen implements Screen {
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-        shoot.update(delta, v.x, v.y);
-        enemy.update(delta);
+        for(Shoot shoot: shoots){
+            shoot.update(delta);
 
-        //Se realizará cuando el disparo dé en el enemigo
-        if (!enemy.isDefeated && shoot.isOverlapingWith(enemy)) {
-            shoot.restart();
-            enemy.defeat();
+            //Se realizará cuando el disparo dé en el enemigo
+            if (!enemy.isDefeated && shoot.isOverlapingWith(enemy)) {
+                shoots.removeValue(shoot,false);
+                enemy.defeat();
+            }
+
+            //Si algún disparo sobresale los limites de la pantalla
+            //Se eleminará
+            if(shoot.getX() > SpaceGame.width){
+                shoots.removeValue(shoot,false);
+            }
         }
+
+        // Si tocamos la pantalla disparamos
+        // El disparo puede hacerse de dos formas
+        // 1. Sin multituouch el disparo solo se realizará si pulsamos por delante del primer tercio de la pantalla
+        // 2. Con multitouch el disparo se realizará en cualquier parte de la pantalla
+        if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3)) && shoots.size == 0){
+            // Esta es la acción del disparo básico
+            // El disparo básico crea tres disparos seguidos
+            // No se podrá disparar de nuevo hasta que desaparezcan.
+            shoots.add(new Shoot(ship));
+            shoots.add(new Shoot(ship,0.10f));
+            shoots.add(new Shoot(ship,0.20f));
+            ship.startShootEffect();
+        }
+
+        enemy.update(delta);
 
         //Se realizará cuando el enemigo golpée al jugador
         if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
@@ -198,7 +223,8 @@ public class GameScreen implements Screen {
     public void dispose() {
         ship.dispose();
         enemy.dispose();
-        shoot.dispose();
+        for(Shoot shoot: shoots)
+            shoot.dispose();
     }
 
 }
