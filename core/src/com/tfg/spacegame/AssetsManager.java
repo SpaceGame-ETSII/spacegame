@@ -18,6 +18,7 @@ public class AssetsManager {
         assetsReferences.put("red", "rojo.png");
         assetsReferences.put("yellow", "amarillo.png");
         assetsReferences.put("blue", "azul.png");
+        assetsReferences.put("button", "button.png");
     }
 
     public static Texture loadTexture(String textureName) {
