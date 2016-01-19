@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.gameObjects.Enemies.Type1;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Inventary;
 import com.tfg.spacegame.gameObjects.Ship;
@@ -14,6 +15,7 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.weapons.Basic;
 import com.tfg.spacegame.utils.GameState;
 import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
+import java.util.Iterator;
 
 public class CampaignScreen implements Screen{
 
@@ -21,7 +23,7 @@ public class CampaignScreen implements Screen{
 
     //Objetos interactuables de la pantalla
     private Ship ship;
-    private Enemy enemy;
+    private Array<Enemy> enemies;
     private Array<Weapon> shoots;
     private Inventary inventary;
 
@@ -51,9 +53,11 @@ public class CampaignScreen implements Screen{
 
         //Creamos los objetos de juego
         ship = new Ship();
-        enemy = new Enemy(SpaceGame.width, SpaceGame.height/2 - 40/2);
+        enemies = new Array<Enemy>();
         shoots = new Array<Weapon>();
         inventary = new Inventary();
+        
+        enemies.addAll(Type1.createSquadron());
 
         //Creamos los objetos para el diálgo de salida del modo campaña
         exit = new GameObject("buttonExit",750,430);
@@ -141,11 +145,13 @@ public class CampaignScreen implements Screen{
         game.font.draw(game.batch, ship.getVitality() + "", 100, 100);
 
         ship.render(game.batch);
-        if (!enemy.isDefeated)
-            enemy.render(game.batch);
-        for(Weapon weapon : shoots){
+
+        for(Enemy enemy: enemies)
+            if(!enemy.isDefeated())
+                enemy.render(game.batch);
+
+        for(Weapon weapon : shoots)
             weapon.render(game.batch);
-        }
 
         if (ship.getVitality() <= 0)
             state = GameState.LOSE;
@@ -221,19 +227,36 @@ public class CampaignScreen implements Screen{
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-        for(Weapon weapon : shoots){
-            weapon.update(delta);
 
-            //Se realizará cuando el disparo dé en el enemigo
-            if (!enemy.isDefeated && weapon.isOverlapingWith(enemy)) {
-                shoots.removeValue(weapon,false);
-                enemy.defeat();
+        for(Enemy enemy: enemies){
+
+            enemy.update(delta);
+
+            //Se realizará cuando el enemigo golpée al jugador
+            if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
+                ship.receiveDamage();
+
+            for(Iterator<Weapon> s = shoots.iterator(); s.hasNext();){
+                Weapon shoot = s.next();
+
+                shoot.update(delta);
+
+                //Se realizará cuando el disparo dé en el enemigo
+                if (!enemy.isDefeated() && shoot.isOverlapingWith(enemy)) {
+                    shoots.removeValue(shoot,false);
+                    enemy.defeat();
+                }
+
+                //Si algún disparo sobresale los limites de la pantalla
+                //Se eleminará
+                if(shoot.getX() > SpaceGame.width){
+                    shoots.removeValue(shoot,false);
+                }
             }
 
-            //Si algún disparo sobresale los limites de la pantalla
-            //Se eleminará
-            if(weapon.getX() > SpaceGame.width){
-                shoots.removeValue(weapon,false);
+            // Destruir los enemigos que se salgan de la parte izquierda de la pantalla
+            if(enemy.getX() < 0){
+                enemies.removeValue(enemy,false);
             }
         }
 
@@ -248,11 +271,6 @@ public class CampaignScreen implements Screen{
             shoots.addAll(Basic.shootBasicWeapon(ship));
         }
 
-        enemy.update(delta);
-
-        //Se realizará cuando el enemigo golpée al jugador
-        if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
-            ship.receiveDamage();
     }
 
     @Override
@@ -278,7 +296,8 @@ public class CampaignScreen implements Screen{
     @Override
     public void dispose() {
         ship.dispose();
-        enemy.dispose();
+        for(Enemy enemy: enemies)
+            enemy.dispose();
         for(Weapon weapon : shoots)
             weapon.dispose();
         inventary.dispose();
@@ -287,6 +306,5 @@ public class CampaignScreen implements Screen{
         exitConfirm.dispose();
         ventana.dispose();
     }
-
 }
 
