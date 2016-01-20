@@ -14,6 +14,7 @@ import com.tfg.spacegame.gameObjects.Weapon;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.weapons.Basic;
 import com.tfg.spacegame.utils.GameState;
+import com.tfg.spacegame.utils.LevelGenerator;
 import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 import java.util.Iterator;
 
@@ -29,6 +30,8 @@ public class CampaignScreen implements Screen{
 
     //Estado en el que se encuentra el juego
     private GameState state;
+
+    private LevelGenerator level;
 
     //Variables para el diálogo de salida del modo camapaña
     private GameObject exit;
@@ -56,8 +59,8 @@ public class CampaignScreen implements Screen{
         enemies = new Array<Enemy>();
         shoots = new Array<Weapon>();
         inventary = new Inventary();
-        
-        enemies.addAll(Type1.createSquadron());
+
+        level = LevelGenerator.loadLevel("scriptTest");
 
         //Creamos los objetos para el diálgo de salida del modo campaña
         exit = new GameObject("buttonExit",750,430);
@@ -216,6 +219,10 @@ public class CampaignScreen implements Screen{
     }
 
     public void updateLogic(float delta) {
+
+        //Actualizamos los tiempos de espera de aparición de los enemigos
+        enemies = level.update(enemies,delta);
+
         //Actualizamos la posición del scrolling
         scrollingPosition -= delta * SCROLLING_SPEED;
         if(scrollingPosition <= -game.background.getWidth())

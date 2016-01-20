@@ -1,0 +1,7 @@
+{
+  "enemiesToGenerate":[
+    {"name":"type1","x":800, "y":350, "time":5.0},
+    {"name":"type1","x":800, "y":100, "time":5.0},
+    {"name":"type1","x":800, "y":240, "time":7.0}
+  ]
+}
