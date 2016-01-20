@@ -20,6 +20,12 @@ public class AssetsManager {
         assetsReferences.put("blue", "azul.png");
         assetsReferences.put("arrow", "flecha.png");
         assetsReferences.put("slot", "slot.png");
+        assetsReferences.put("ship_red", "nave_roja.png");
+        assetsReferences.put("ship_blue", "nave_azul.png");
+        assetsReferences.put("ship_yellow", "nave_amarilla.png");
+        assetsReferences.put("ship_green", "nave_verde.png");
+        assetsReferences.put("ship_orange", "nave_naranja.png");
+        assetsReferences.put("ship_purple", "nave_morada.png");
     }
 
     public static Texture loadTexture(String textureName) {

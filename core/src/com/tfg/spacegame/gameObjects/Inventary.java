@@ -32,6 +32,8 @@ public class Inventary extends GameObject {
     //Indica si el inventario se está cerrando
     private boolean isClosing;
 
+    private float areSlotsChangeables;
+
     public Inventary() {
         super("inventary", 0, 0);
 
@@ -48,6 +50,8 @@ public class Inventary extends GameObject {
         relativePos = 0.0f;
 
         transitionArrow = 0;
+
+        areSlotsChangeables = 0.0f;
     }
 
     //Se ejecutará cada vez que se active el inventario
@@ -127,11 +131,13 @@ public class Inventary extends GameObject {
         } else {
             //Como el inventario está colocado en su sitio, ahora comprobamos si el jugador está interactuando con algún elemento
 
-            if (Gdx.input.isTouched()) {
+            if (Gdx.input.justTouched()) {
 
-                //Si se ha pulsado algún slot, equipamos el elemento que estuviese activado
-                this.checkSlotIsTouched(slot1, x, y);
-                this.checkSlotIsTouched(slot2, x, y);
+                //Comprobamos si se ha tocado un slot y actuamos en consecuencia
+
+                    this.checkSlotIsTouched(slot1, x, y, ship);
+                    this.checkSlotIsTouched(slot2, x, y, ship);
+
 
                 //Desactivamos los elementos antes de activar el que se haya pulsado (si se dió el caso)
                 deactivateElements();
@@ -213,27 +219,75 @@ public class Inventary extends GameObject {
     }
 
     //Coloca el elemento que estuviese activado sobre un slot si éste ha sido tocado
-    public void checkSlotIsTouched(Slot slot, float x, float y) {
+    public void checkSlotIsTouched(Slot slot, float x, float y, Ship ship) {
         if (slot.isOverlapingWith(x, y)) {
-            if (red.isActivate())
+            if (red.isActivate()) {
                 slot.equipElement(TypeElement.RED);
-            if (blue.isActivate())
+            } else if (blue.isActivate()) {
                 slot.equipElement(TypeElement.BLUE);
-            if (yellow.isActivate())
+            } else if (yellow.isActivate()) {
                 slot.equipElement(TypeElement.YELLOW);
+            } else {
+                slot.unequip();
+            }
+
+            //Actualizamos el color de la nave en el caso de haberse cambiado los slots
+            this.changeColorOfShip(ship);
         }
     }
 
-    //Activa un elemento si éste ha sido tocado
+    //Cambia el color de la nave según los elementos equipados
+    public void changeColorOfShip(Ship ship) {
+        if (slot1.hasElementEquipped() && slot2.hasElementEquipped()) {
+            if ((slot1.hasSpecifiedElement(TypeElement.BLUE) && slot2.hasSpecifiedElement(TypeElement.YELLOW)) ||
+                    (slot1.hasSpecifiedElement(TypeElement.YELLOW) && slot2.hasSpecifiedElement(TypeElement.BLUE))) {
+                ship.setTexture("ship_green");
+            } else if ((slot1.hasSpecifiedElement(TypeElement.RED) && slot2.hasSpecifiedElement(TypeElement.YELLOW)) ||
+                        (slot1.hasSpecifiedElement(TypeElement.YELLOW) && slot2.hasSpecifiedElement(TypeElement.RED))) {
+                ship.setTexture("ship_orange");
+            } else if ((slot1.hasSpecifiedElement(TypeElement.BLUE) && slot2.hasSpecifiedElement(TypeElement.RED)) ||
+                        (slot1.hasSpecifiedElement(TypeElement.RED) && slot2.hasSpecifiedElement(TypeElement.BLUE))) {
+                ship.setTexture("ship_purple");
+            } else if (slot1.hasSpecifiedElement(TypeElement.RED) && slot2.hasSpecifiedElement(TypeElement.RED)) {
+                ship.setTexture("ship_red");
+            } else if (slot1.hasSpecifiedElement(TypeElement.BLUE) && slot2.hasSpecifiedElement(TypeElement.BLUE)) {
+                ship.setTexture("ship_blue");
+            } else if (slot1.hasSpecifiedElement(TypeElement.YELLOW) && slot2.hasSpecifiedElement(TypeElement.YELLOW)) {
+                ship.setTexture("ship_yellow");
+            }
+        } else if (slot1.hasElementEquipped() && !slot2.hasElementEquipped()) {
+            if (slot1.hasSpecifiedElement(TypeElement.RED)) {
+                ship.setTexture("ship_red");
+            } else if (slot1.hasSpecifiedElement(TypeElement.BLUE)) {
+                ship.setTexture("ship_blue");
+            } else if (slot1.hasSpecifiedElement(TypeElement.YELLOW)) {
+                ship.setTexture("ship_yellow");
+            }
+        } else if (!slot1.hasElementEquipped() && slot2.hasElementEquipped()) {
+            if (slot2.hasSpecifiedElement(TypeElement.RED)) {
+                ship.setTexture("ship_red");
+            } else if (slot2.hasSpecifiedElement(TypeElement.BLUE)) {
+                ship.setTexture("ship_blue");
+            } else if (slot2.hasSpecifiedElement(TypeElement.YELLOW)) {
+                ship.setTexture("ship_yellow");
+            }
+        } else {
+            ship.setTexture("ship");
+        }
+    }
+
+    //Activa o desactiva un elemento si éste ha sido tocado
     public void checkAnyElementIsTouched(float x, float y) {
-        if (red.isOverlapingWith(x, y)) {
-            red.setIsActivate(true);
-        }
-        if (yellow.isOverlapingWith(x, y)) {
-            yellow.setIsActivate(true);
-        }
-        if (blue.isOverlapingWith(x, y)) {
-            blue.setIsActivate(true);
+        if (Gdx.input.isTouched()) {
+            if (red.isOverlapingWith(x, y)) {
+                red.setIsActivate(!red.isActivate());
+            } else if (yellow.isOverlapingWith(x, y)) {
+                yellow.setIsActivate(!yellow.isActivate());
+            } else if (blue.isOverlapingWith(x, y)) {
+                blue.setIsActivate(!blue.isActivate());
+            } else {
+                deactivateElements();
+            }
         }
     }
 
