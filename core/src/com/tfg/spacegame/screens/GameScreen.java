@@ -12,6 +12,7 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.GameState;
+import com.tfg.spacegame.utils.LevelGenerator;
 import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
 import java.util.Iterator;
@@ -23,6 +24,8 @@ public class GameScreen implements Screen {
     Array<Enemy> enemies;
     Array<Shoot> shoots;
     Inventary inventary;
+
+    LevelGenerator level;
 
     GameState state;
 
@@ -44,7 +47,7 @@ public class GameScreen implements Screen {
         shoots = new Array<Shoot>();
         inventary = new Inventary();
 
-        enemies.addAll(Type1.createSquadron());
+        level = LevelGenerator.loadLevel("scriptTest");
 
         //Preparamos un listener que si se desliza el dedo a la derecha se abre el inventario
         Gdx.input.setInputProcessor(new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
@@ -160,6 +163,10 @@ public class GameScreen implements Screen {
     }
 
     public void updateLogic(float delta) {
+
+        //Actualizamos los tiempos de espera de aparición de los enemigos
+        enemies = level.update(enemies,delta);
+
         //Actualizamos la posición del scrolling
         scrollingPosition -= delta * scrollingSpeed;
         if(scrollingPosition <= -game.background.getWidth())

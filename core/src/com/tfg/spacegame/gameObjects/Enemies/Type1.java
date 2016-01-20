@@ -27,13 +27,13 @@ public class Type1 extends Enemy{
      * de aparición del primer enemigo. Todos irán retrasados respecto a él.
      * @return Un Array de Type1 con 5 elementos
      */
-    public static Array<Type1> createSquadron(float x, float y){
+    public static Array<Type1> createSquadron(int x, int y){
         Array<Type1> result = new Array<Type1>();
-        result.add(new Type1(SpaceGame.width,SpaceGame.height/2));
-        result.add(new Type1(SpaceGame.width,SpaceGame.height/2,0.35f));
-        result.add(new Type1(SpaceGame.width,SpaceGame.height/2,0.65f));
-        result.add(new Type1(SpaceGame.width,SpaceGame.height/2,0.95f));
-        result.add(new Type1(SpaceGame.width,SpaceGame.height/2,1.25f));
+        result.add(new Type1(x,y));
+        result.add(new Type1(x,y,0.35f));
+        result.add(new Type1(x,y,0.65f));
+        result.add(new Type1(x,y,0.95f));
+        result.add(new Type1(x,y,1.25f));
 
         return result;
     }
