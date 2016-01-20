@@ -37,9 +37,9 @@ public class Inventary extends GameObject {
     public Inventary() {
         super("inventary", 0, 0);
 
-        red = new Element("red", 0, 0, "rojo_seleccionado");
-        yellow = new Element("yellow", 0, 0, "amarillo_seleccionado");
-        blue = new Element("blue", 0, 0, "azul_seleccionado");
+        red = new Element("red", 0, 0);
+        yellow = new Element("yellow", 0, 0);
+        blue = new Element("blue", 0, 0);
 
         slot1 = new Slot("slot", 0, 0);
         slot2 = new Slot("slot", 0, 0);
@@ -74,11 +74,11 @@ public class Inventary extends GameObject {
         this.setX(0);
         this.setY(0);
 
-        red.setX(32);
+        red.setX(delta, 32);
         red.setY(350);
-        yellow.setX(31);
+        yellow.setX(delta, 31);
         yellow.setY(193);
-        blue.setX(29);
+        blue.setX(delta, 29);
         blue.setY(39);
 
         red.setIsActivate(false);
@@ -134,10 +134,8 @@ public class Inventary extends GameObject {
             if (Gdx.input.justTouched()) {
 
                 //Comprobamos si se ha tocado un slot y actuamos en consecuencia
-
-                    this.checkSlotIsTouched(slot1, x, y, ship);
-                    this.checkSlotIsTouched(slot2, x, y, ship);
-
+                this.checkSlotIsTouched(slot1, x, y, ship);
+                this.checkSlotIsTouched(slot2, x, y, ship);
 
                 //Desactivamos los elementos antes de activar el que se haya pulsado (si se dió el caso)
                 deactivateElements();
@@ -154,27 +152,21 @@ public class Inventary extends GameObject {
     //Mueve todos los elementos según la posición relativa
     public void moveAllElements(float delta, float distance) {
         this.setX(this.getX() + distance);
-        red.setX(red.getX() + distance);
-        yellow.setX(yellow.getX() + distance);
-        blue.setX(blue.getX() + distance);
+        red.setX(delta, red.getX() + distance);
+        yellow.setX(delta, yellow.getX() + distance);
+        blue.setX(delta, blue.getX() + distance);
         slot1.setX(delta, slot1.getX() + distance);
         slot2.setX(delta, slot2.getX() + distance);
     }
 
     //Invoca los updates de todos los elementos dentro del inventario
     public void updateAllObjects(float delta) {
-        if (red.isActivate())
-            red.update(delta);
-        if (blue.isActivate())
-            blue.update(delta);
-        if (yellow.isActivate())
-            yellow.update(delta);
-        if (slot1.hasElementEquipped())
-            slot1.update(delta);
-        if (slot2.hasElementEquipped())
-            slot2.update(delta);
-        if (this.isAnyElementActivated())
-            updateArrows(delta);
+        red.update(delta);
+        blue.update(delta);
+        yellow.update(delta);
+        slot1.update(delta);
+        slot2.update(delta);
+        updateArrows(delta);
     }
 
     //Actualiza el movimiento de las flechas que indican la posición de los slots
@@ -192,9 +184,9 @@ public class Inventary extends GameObject {
             relativePos = TRANSITION_SPEED * delta;
 
             this.setX(this.getX() - relativePos);
-            red.setX(red.getX() - relativePos);
-            yellow.setX(yellow.getX() - relativePos);
-            blue.setX(blue.getX() - relativePos);
+            red.setX(delta, red.getX() - relativePos);
+            yellow.setX(delta, yellow.getX() - relativePos);
+            blue.setX(delta, blue.getX() - relativePos);
 
             slot1.setX(delta, slot1.getX() - relativePos);
             slot2.setX(delta, slot1.getX() - relativePos);

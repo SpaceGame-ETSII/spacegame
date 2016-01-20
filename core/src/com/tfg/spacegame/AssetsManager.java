@@ -26,6 +26,13 @@ public class AssetsManager {
         assetsReferences.put("ship_green", "nave_verde.png");
         assetsReferences.put("ship_orange", "nave_naranja.png");
         assetsReferences.put("ship_purple", "nave_morada.png");
+
+        assetsReferences.put("red_selected", "particleEffects/rojo_seleccionado");
+        assetsReferences.put("blue_selected", "particleEffects/azul_seleccionado");
+        assetsReferences.put("yellow_selected", "particleEffects/amarillo_seleccionado");
+        assetsReferences.put("red_element", "particleEffects/rojo_elemento");
+        assetsReferences.put("blue_element", "particleEffects/azul_elemento");
+        assetsReferences.put("yellow_element", "particleEffects/amarillo_elemento");
     }
 
     public static Texture loadTexture(String textureName) {

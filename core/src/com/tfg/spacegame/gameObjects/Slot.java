@@ -47,14 +47,18 @@ public class Slot extends GameObject {
     }
 
     public void update(float delta) {
-        particleEffect.update(delta);
+        if (this.hasElementEquipped()) {
+            particleEffect.update(delta);
+        }
     }
 
     public boolean hasElementEquipped() {
         return !equippedElement.equals(TypeElement.COLORLESS);
     }
 
-    public boolean hasSpecifiedElement(TypeElement type) { return equippedElement.equals(type); }
+    public boolean hasSpecifiedElement(TypeElement type) {
+        return equippedElement.equals(type);
+    }
 
     public void equipElement(TypeElement type) {
         equippedElement = type;
@@ -63,9 +67,9 @@ public class Slot extends GameObject {
         if (type.equals(TypeElement.RED))
             particleEffect.load(Gdx.files.internal("particleEffects/rojo_equipado"), Gdx.files.internal(""));
         else if (type.equals(TypeElement.BLUE))
-            particleEffect.load(Gdx.files.internal("particleEffects/azul_equipado"),Gdx.files.internal(""));
+            particleEffect.load(Gdx.files.internal("particleEffects/azul_equipado"), Gdx.files.internal(""));
         else if (type.equals(TypeElement.YELLOW))
-            particleEffect.load(Gdx.files.internal("particleEffects/amarillo_equipado"),Gdx.files.internal(""));
+            particleEffect.load(Gdx.files.internal("particleEffects/amarillo_equipado"), Gdx.files.internal(""));
 
         particleEffect.getEmitters().first().setPosition((getWidth() / 2) + getX(), (getHeight() / 2) + getY());
     }
