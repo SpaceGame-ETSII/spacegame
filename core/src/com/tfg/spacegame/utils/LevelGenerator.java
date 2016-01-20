@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.tfg.spacegame.gameObjects.Enemies.Type1;
+import com.tfg.spacegame.gameObjects.Enemies.Type2;
 import com.tfg.spacegame.gameObjects.Enemy;
 
 
@@ -49,8 +50,11 @@ public class LevelGenerator {
                     enemies.addAll(Type1.createSquadron(wrapped.x,wrapped.y));
                     // Eliminalo de la lista de enemigos a generar
                     enemiesToGenerate.removeValue(wrapped,false);
-                }else{
-
+                }else if(wrapped.name.equals("type2")){
+                    // Crea el enemigo
+                    enemies.add(Type2.createEnemy(wrapped.x,wrapped.y));
+                    // Eliminalo de la lista de enemigos a generar
+                    enemiesToGenerate.removeValue(wrapped,false);
                 }
             }
         }
