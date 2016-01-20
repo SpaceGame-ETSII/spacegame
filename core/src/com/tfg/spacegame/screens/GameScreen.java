@@ -2,8 +2,19 @@ package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
+import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Inventary;
 import com.tfg.spacegame.gameObjects.Ship;
@@ -12,7 +23,7 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.GameState;
 import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen{
     final SpaceGame game;
     
     Ship ship;
@@ -21,11 +32,18 @@ public class GameScreen implements Screen {
     Inventary inventary;
 
     GameState state;
+    GameObject exit;
+    GameObject exitConfirm;
+    GameObject exitCancel;
+    GameObject ventana;
+    private static boolean isDialogin=false;
+    private static boolean isConfirm=false;
+    private static boolean isCancelled=false;
 
     int scrollingPosition;
 
     int scrollingSpeed;
-    
+
     public GameScreen(final SpaceGame gam) {
         this.game = gam;
 
@@ -39,6 +57,11 @@ public class GameScreen implements Screen {
         enemy = new Enemy(SpaceGame.width, SpaceGame.height/2 - 40/2);
         shoot = new Shoot(ship);
         inventary = new Inventary();
+
+        exit = new GameObject("buttonExit",750,430);
+        ventana = new GameObject("ventana",200,120);
+        exitCancel = new GameObject("buttonCancel",425,200);
+        exitConfirm = new GameObject("buttonConfirm",325,200);
 
         //Preparamos un listener que si se desliza el dedo a la derecha se abre el inventario
         Gdx.input.setInputProcessor(new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
@@ -132,6 +155,36 @@ public class GameScreen implements Screen {
         inventary.render(game.batch);
         ship.render(game.batch);
 
+        if (isDialogin){
+            ventana.render(game.batch);
+            game.font.draw(game.batch, "¿Desea salir del modo campaña?", 300, 320);
+            exitCancel.render(game.batch);
+            exitConfirm.render(game.batch);
+            if (isConfirm){
+                game.setScreen(new MainMenuScreen(game));
+            }
+            if (isCancelled){
+                isDialogin=false;
+            }
+        }else{
+            exit.render(game.batch);
+        }
+
+        if(Gdx.input.isTouched()){
+            Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
+            v = game.camera.unproject(v);
+            if (exit.isOverlapingWith(v.x, v.y)){
+                isDialogin=true;
+                isCancelled=false;
+            }
+            if (exitConfirm.isOverlapingWith(v.x,v.y)){
+                isConfirm=true;
+            }
+            if (exitCancel.isOverlapingWith(v.x,v.y)){
+                isCancelled=true;
+            }
+        }
+
         //Se hará una cosa u otra si el inventario está cerrándose o no
         if (inventary.isClosing()) {
             inventary.updateClosing(delta, ship);
@@ -199,6 +252,13 @@ public class GameScreen implements Screen {
         ship.dispose();
         enemy.dispose();
         shoot.dispose();
+        exit.dispose();
+        exitCancel.dispose();
+        exitConfirm.dispose();
+        ventana.dispose();
     }
 
+    private void exitDialog(float delta) {
+
+    }
 }
