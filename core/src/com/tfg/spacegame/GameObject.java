@@ -3,6 +3,7 @@ package com.tfg.spacegame;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class GameObject {
@@ -53,6 +54,13 @@ public class GameObject {
 
     public void render(SpriteBatch batch){
         batch.draw(texture, logicShape.x, logicShape.y);
+    }
+
+    public void renderRotate(SpriteBatch batch, float n){
+        batch.draw(new TextureRegion(texture), logicShape.x, logicShape.y, logicShape.getWidth()/2, logicShape.getHeight()/2,
+                logicShape.getWidth(), logicShape.getHeight(), 1, 1, n);
+        //batch.draw();
+        //batch.draw(new TextureRegion(texture), (logicShape.x)+(logicShape.getWidth()), (logicShape.y)+(logicShape.getHeight()), (logicShape.x)+(logicShape.getWidth()/2), (logicShape.y)+(logicShape.getHeight()/2), logicShape.getWidth(), logicShape.getHeight(), 1, 1, n);
     }
 
     public void dispose() {

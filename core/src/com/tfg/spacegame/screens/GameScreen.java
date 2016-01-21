@@ -2,8 +2,20 @@ package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
+import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Inventary;
 import com.tfg.spacegame.gameObjects.Ship;
@@ -12,20 +24,27 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.GameState;
 import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen{
     final SpaceGame game;
-    
+
     Ship ship;
     Enemy enemy;
-    Shoot shoot;
+    Array<Shoot> shoots;
     Inventary inventary;
 
     GameState state;
+    GameObject exit;
+    GameObject exitConfirm;
+    GameObject exitCancel;
+    GameObject ventana;
+    private static boolean isDialogin=false;
+    private static boolean isConfirm=false;
+    private static boolean isCancelled=false;
 
     int scrollingPosition;
 
     int scrollingSpeed;
-    
+
     public GameScreen(final SpaceGame gam) {
         this.game = gam;
 
@@ -37,8 +56,13 @@ public class GameScreen implements Screen {
         //Creamos los objetos de juego
         ship = new Ship();
         enemy = new Enemy(SpaceGame.width, SpaceGame.height/2 - 40/2);
-        shoot = new Shoot(ship);
+        shoots = new Array<Shoot>();
         inventary = new Inventary();
+
+        exit = new GameObject("buttonExit",750,430);
+        ventana = new GameObject("ventana",200,120);
+        exitCancel = new GameObject("buttonCancel",425,200);
+        exitConfirm = new GameObject("buttonConfirm",325,200);
 
         //Preparamos un listener que si se desliza el dedo a la derecha se abre el inventario
         Gdx.input.setInputProcessor(new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
@@ -119,8 +143,9 @@ public class GameScreen implements Screen {
         ship.render(game.batch);
         if (!enemy.isDefeated)
             enemy.render(game.batch);
-        if (shoot.isShooted)
+        for(Shoot shoot: shoots){
             shoot.render(game.batch);
+        }
 
         if (ship.getVitality() <= 0)
             state = GameState.LOSE;
@@ -131,6 +156,36 @@ public class GameScreen implements Screen {
     private void renderPause(float delta) {
         inventary.render(game.batch);
         ship.render(game.batch);
+
+        if (isDialogin){
+            ventana.render(game.batch);
+            game.font.draw(game.batch, "¿Desea salir del modo campaña?", 300, 320);
+            exitCancel.render(game.batch);
+            exitConfirm.render(game.batch);
+            if (isConfirm){
+                game.setScreen(new MainMenuScreen(game));
+            }
+            if (isCancelled){
+                isDialogin=false;
+            }
+        }else{
+            exit.render(game.batch);
+        }
+
+        if(Gdx.input.isTouched()){
+            Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
+            v = game.camera.unproject(v);
+            if (exit.isOverlapingWith(v.x, v.y)){
+                isDialogin=true;
+                isCancelled=false;
+            }
+            if (exitConfirm.isOverlapingWith(v.x,v.y)){
+                isConfirm=true;
+            }
+            if (exitCancel.isOverlapingWith(v.x,v.y)){
+                isCancelled=true;
+            }
+        }
 
         //Se hará una cosa u otra si el inventario está cerrándose o no
         if (inventary.isClosing()) {
@@ -160,14 +215,37 @@ public class GameScreen implements Screen {
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-        shoot.update(delta, v.x, v.y);
-        enemy.update(delta);
+        for(Shoot shoot: shoots){
+            shoot.update(delta);
 
-        //Se realizará cuando el disparo dé en el enemigo
-        if (!enemy.isDefeated && shoot.isOverlapingWith(enemy)) {
-            shoot.restart();
-            enemy.defeat();
+            //Se realizará cuando el disparo dé en el enemigo
+            if (!enemy.isDefeated && shoot.isOverlapingWith(enemy)) {
+                shoots.removeValue(shoot,false);
+                enemy.defeat();
+            }
+
+            //Si algún disparo sobresale los limites de la pantalla
+            //Se eleminará
+            if(shoot.getX() > SpaceGame.width){
+                shoots.removeValue(shoot,false);
+            }
         }
+
+        // Si tocamos la pantalla disparamos
+        // El disparo puede hacerse de dos formas
+        // 1. Sin multituouch el disparo solo se realizará si pulsamos por delante del primer tercio de la pantalla
+        // 2. Con multitouch el disparo se realizará en cualquier parte de la pantalla
+        if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3)) && shoots.size == 0){
+            // Esta es la acción del disparo básico
+            // El disparo básico crea tres disparos seguidos
+            // No se podrá disparar de nuevo hasta que desaparezcan.
+            shoots.add(new Shoot(ship));
+            shoots.add(new Shoot(ship,0.10f));
+            shoots.add(new Shoot(ship,0.20f));
+            ship.startShootEffect();
+        }
+
+        enemy.update(delta);
 
         //Se realizará cuando el enemigo golpée al jugador
         if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
@@ -198,7 +276,12 @@ public class GameScreen implements Screen {
     public void dispose() {
         ship.dispose();
         enemy.dispose();
+        for(Shoot shoot: shoots)
+            shoot.dispose();
         shoot.dispose();
+        exit.dispose();
+        exitCancel.dispose();
+        exitConfirm.dispose();
+        ventana.dispose();
     }
-
 }
