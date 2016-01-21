@@ -40,13 +40,11 @@ public class GameObject {
         return logicShape.getY();
     }
 
-    public void setX(float x) {
-        logicShape.x = x;
-    }
+    public void setX(float x) { logicShape.x = x; }
 
-    public void setY(float y) {
-        logicShape.y = y;
-    }
+    public void setY(float y) { logicShape.y = y; }
+
+    public void setTexture(String textureName) { texture = AssetsManager.loadTexture(textureName); }
 
     public Rectangle getLogicShape() {
         return logicShape;

@@ -2,8 +2,8 @@ Untitled
 - Delay -
 active: false
 - Duration - 
-lowMin: 1000.0
-lowMax: 1000.0
+lowMin: 100.0
+lowMax: 100.0
 - Count - 
 min: 0
 max: 200
@@ -71,8 +71,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 40.0
-highMax: 40.0
+highMin: 125.0
+highMax: 125.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -82,13 +82,15 @@ timeline0: 0.0
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 100.0
-highMax: 100.0
+highMin: 50.0
+highMax: 50.0
 relative: false
-scalingCount: 1
+scalingCount: 2
 scaling0: 1.0
-timelineCount: 1
+scaling1: 1.0
+timelineCount: 2
 timeline0: 0.0
+timeline1: 0.56164384
 - Angle - 
 active: true
 lowMin: 0.0
@@ -102,8 +104,8 @@ scaling1: 1.0
 scaling2: 1.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.47260273
-timeline2: 1.0
+timeline1: 0.4041096
+timeline2: 0.98630136
 - Rotation - 
 active: false
 - Wind - 
@@ -112,9 +114,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 0.019607844
-colors1: 0.03137255
-colors2: 0.44705883
+colors0: 0.06666667
+colors1: 0.05882353
+colors2: 0.0
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
