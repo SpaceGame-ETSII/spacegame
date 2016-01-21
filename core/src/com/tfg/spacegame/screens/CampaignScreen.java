@@ -168,10 +168,13 @@ public class CampaignScreen implements Screen{
             exitCancel.render(game.batch);
             exitConfirm.render(game.batch);
             if (isConfirm){
+                isDialogin=false;
+                isConfirm=false;
                 game.setScreen(new MainMenuScreen(game));
             }
             if (isCancelled){
                 isDialogin=false;
+                isCancelled=false;
             }
         }else{
             exit.render(game.batch);
@@ -183,6 +186,7 @@ public class CampaignScreen implements Screen{
             if (exit.isOverlapingWith(v.x, v.y)){
                 isDialogin=true;
                 isCancelled=false;
+                isConfirm=false;
             }
             if (exitConfirm.isOverlapingWith(v.x,v.y)){
                 isConfirm=true;
@@ -282,6 +286,8 @@ public class CampaignScreen implements Screen{
         ship.dispose();
         enemy.dispose();
         for(Shoot shoot: shoots)
+            shoot.dispose();
+        inventary.dispose();
         exit.dispose();
         exitCancel.dispose();
         exitConfirm.dispose();
