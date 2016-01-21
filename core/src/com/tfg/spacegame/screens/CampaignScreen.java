@@ -25,6 +25,7 @@ import com.tfg.spacegame.utils.GameState;
 import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
 public class CampaignScreen implements Screen{
+
     final SpaceGame game;
 
     Ship ship;
@@ -46,6 +47,7 @@ public class CampaignScreen implements Screen{
     int scrollingSpeed;
 
     public CampaignScreen(final SpaceGame gam) {
+
         this.game = gam;
 
         scrollingPosition = 0;
@@ -280,10 +282,11 @@ public class CampaignScreen implements Screen{
         ship.dispose();
         enemy.dispose();
         for(Shoot shoot: shoots)
-            shoot.dispose();
         exit.dispose();
         exitCancel.dispose();
         exitConfirm.dispose();
         ventana.dispose();
     }
+
 }
+
