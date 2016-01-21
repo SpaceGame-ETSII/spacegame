@@ -38,7 +38,7 @@ public class AssetsManager {
         assetsReferences.put("yellow_selected", "particleEffects/amarillo_seleccionado");
         assetsReferences.put("red_element", "particleEffects/rojo_elemento");
         assetsReferences.put("blue_element", "particleEffects/azul_elemento");
-        assetsReferences.put("yellow_element", "particleEffects/amarillo_elemento");
+        assetsReferences.put("yellow_element", "particleEffects/amarillo_elemento")
     }
 
     //Se llamará a este método cada vez que se pretenda cargar una textura

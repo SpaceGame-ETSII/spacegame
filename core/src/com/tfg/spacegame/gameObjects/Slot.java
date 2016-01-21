@@ -55,10 +55,9 @@ public class Slot extends GameObject {
     public boolean hasElementEquipped() {
         return !equippedElement.equals(TypeElement.COLORLESS);
     }
+    
+    public boolean hasSpecifiedElement(TypeElement type) { return equippedElement.equals(type); }
 
-    public boolean hasSpecifiedElement(TypeElement type) {
-        return equippedElement.equals(type);
-    }
 
     public void equipElement(TypeElement type) {
         equippedElement = type;
