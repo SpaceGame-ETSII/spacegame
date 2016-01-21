@@ -83,7 +83,7 @@ public class MainMenuScreen implements Screen {
         game.font.draw(game.batch, "Opciones", 365, 165);
         game.font.draw(game.batch, "Salir", 380, 105);
 
-        updateButton(delta,new GameScreen(game),pulseCampaing);
+        updateButton(delta,new CampaignScreen(game),pulseCampaing);
         updateButton(delta,new ArcadeScreen(game),pulseArcade);
         updateButton(delta,new MultijugadorScreen(game),pulseMulti);
         updateButton(delta,new OptionsScreen(game),pulseOptions);

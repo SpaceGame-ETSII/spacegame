@@ -24,7 +24,7 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.GameState;
 import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
-public class GameScreen implements Screen{
+public class CampaignScreen implements Screen{
     final SpaceGame game;
 
     Ship ship;
@@ -45,7 +45,7 @@ public class GameScreen implements Screen{
 
     int scrollingSpeed;
 
-    public GameScreen(final SpaceGame gam) {
+    public CampaignScreen(final SpaceGame gam) {
         this.game = gam;
 
         scrollingPosition = 0;
@@ -79,8 +79,11 @@ public class GameScreen implements Screen{
                     inventary.setIsClosing(true);
             }
 
-            public void onDown() {}
-            public void onUp() {}
+            public void onDown() {
+            }
+
+            public void onUp() {
+            }
 
         }));
     }
@@ -278,7 +281,6 @@ public class GameScreen implements Screen{
         enemy.dispose();
         for(Shoot shoot: shoots)
             shoot.dispose();
-        shoot.dispose();
         exit.dispose();
         exitCancel.dispose();
         exitConfirm.dispose();
