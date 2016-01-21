@@ -34,13 +34,14 @@ public class CampaignScreen implements Screen{
     Inventary inventary;
 
     GameState state;
+    //Variables para el diálogo de salida del modo camapaña
     GameObject exit;
     GameObject exitConfirm;
     GameObject exitCancel;
     GameObject ventana;
-    private static boolean isDialogin=false;
-    private static boolean isConfirm=false;
-    private static boolean isCancelled=false;
+    private boolean isDialogin=false;
+    private boolean isConfirm=false;
+    private boolean isCancelled=false;
 
     int scrollingPosition;
 
@@ -61,6 +62,7 @@ public class CampaignScreen implements Screen{
         shoots = new Array<Shoot>();
         inventary = new Inventary();
 
+        //Creamos los objetos para el diálgo de salida del modo campaña
         exit = new GameObject("buttonExit",750,430);
         ventana = new GameObject("ventana",200,120);
         exitCancel = new GameObject("buttonCancel",425,200);
@@ -162,6 +164,7 @@ public class CampaignScreen implements Screen{
         inventary.render(game.batch);
         ship.render(game.batch);
 
+        //En función de si estamos en el diálogo para salir o no veremos la ventana para salir del modo campaña
         if (isDialogin){
             ventana.render(game.batch);
             game.font.draw(game.batch, "¿Desea salir del modo campaña?", 300, 320);
@@ -178,8 +181,22 @@ public class CampaignScreen implements Screen{
             }
         }else{
             exit.render(game.batch);
-        }
+            //Se hará una cosa u otra si el inventario está cerrándose o no
+            if (inventary.isClosing()) {
+                inventary.updateClosing(delta, ship);
 
+                //Si el inventario ya no está cerrándose, volvemos a la partida
+                if (!inventary.isClosing())
+                    state = GameState.START;
+            } else {
+                //Creamos un vector que almacenará las posiciones relativas de la cámara
+                Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
+                v = game.camera.unproject(v);
+
+                inventary.update(delta, ship, v.x, v.y);
+            }
+        }
+        //Comprobamos sobre que botón pulsa el usuario y actualizamos las variables del diálgo en consecuencia
         if(Gdx.input.isTouched()){
             Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
             v = game.camera.unproject(v);
@@ -194,22 +211,9 @@ public class CampaignScreen implements Screen{
             if (exitCancel.isOverlapingWith(v.x,v.y)){
                 isCancelled=true;
             }
+
         }
 
-        //Se hará una cosa u otra si el inventario está cerrándose o no
-        if (inventary.isClosing()) {
-            inventary.updateClosing(delta, ship);
-
-            //Si el inventario ya no está cerrándose, volvemos a la partida
-            if (!inventary.isClosing())
-                state = GameState.START;
-        } else {
-            //Creamos un vector que almacenará las posiciones relativas de la cámara
-            Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-            v = game.camera.unproject(v);
-
-            inventary.update(delta, ship, v.x, v.y);
-        }
     }
 
     public void updateLogic(float delta) {

@@ -54,11 +54,9 @@ public class GameObject {
         batch.draw(texture, logicShape.x, logicShape.y);
     }
 
+    //Método para printar un objeto rotando N grados su textura
     public void renderRotate(SpriteBatch batch, float n){
-        batch.draw(new TextureRegion(texture), logicShape.x, logicShape.y, logicShape.getWidth()/2, logicShape.getHeight()/2,
-                logicShape.getWidth(), logicShape.getHeight(), 1, 1, n);
-        //batch.draw();
-        //batch.draw(new TextureRegion(texture), (logicShape.x)+(logicShape.getWidth()), (logicShape.y)+(logicShape.getHeight()), (logicShape.x)+(logicShape.getWidth()/2), (logicShape.y)+(logicShape.getHeight()/2), logicShape.getWidth(), logicShape.getHeight(), 1, 1, n);
+        batch.draw(new TextureRegion(texture), logicShape.x, logicShape.y, logicShape.getWidth()/2, logicShape.getHeight()/2, logicShape.getWidth(), logicShape.getHeight(), 1, 1, n);
     }
 
     public void dispose() {

@@ -15,26 +15,36 @@ public class MainMenuScreen implements Screen {
     GameObject options;
     GameObject exit;
 
+    //Variable que hace referencia al tiempo que dura el efecto de pulsado
     private float timeUntilExit;
-    private boolean pulseCampaing=false;
-    private boolean pulseArcade=false;
-    private boolean pulseMulti=false;
-    private boolean pulseOptions=false;
-    private boolean pulseExit=false;
+    //Todos estos booleans son utilizados para saber si un determinado botón ha sido pulsado
+    private boolean pulseCampaing;
+    private boolean pulseArcade;
+    private boolean pulseMulti;
+    private boolean pulseOptions;
+    private boolean pulseExit;
 
     final SpaceGame game;
 
     public MainMenuScreen(final SpaceGame gam) {
-        create();
-        game = gam;
-    }
-
-    public void create(){
+        //Creamos los botones para el menú principal
         campaing = new GameObject("button",290,315);
         arcade = new GameObject("button",290,255);
         multi = new GameObject("button",290,195);
         options = new GameObject("button",290,135);
         exit = new GameObject("button",290,75);
+
+        //Inicializamos los booleans para saber si ha sido pulsado un botón
+        pulseCampaing=false;
+        pulseArcade=false;
+        pulseMulti=false;
+        pulseOptions=false;
+        pulseExit=false;
+
+        //Inicializamos el timer de espera para el efecto en los botones
+        timeUntilExit=0.5f;
+
+        game = gam;
     }
 
     @Override
@@ -48,7 +58,7 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         // Pintamos el fondo
         game.batch.draw(game.background, 0,0);
-        // Pintamos cada uno de los botones
+        // Pintamos cada uno de los botones, y si han sido pulsados lo vemos en pantalla gracias al método renderRotate
         if (pulseCampaing){
             campaing.renderRotate(game.batch,180);
         }else{
@@ -83,6 +93,7 @@ public class MainMenuScreen implements Screen {
         game.font.draw(game.batch, "Opciones", 365, 165);
         game.font.draw(game.batch, "Salir", 380, 105);
 
+        //Actualizamos los botones si han sido pulsados
         updateButton(delta,new CampaignScreen(game),pulseCampaing);
         updateButton(delta,new ArcadeScreen(game),pulseArcade);
         updateButton(delta,new MultijugadorScreen(game),pulseMulti);
@@ -91,6 +102,7 @@ public class MainMenuScreen implements Screen {
 
         game.batch.end();
 
+        //Comprobamos que botón ha sido pulsado, si ha sido así actualizamos el timer y ponemos a true el boolean correspondiente al botón
         if (Gdx.input.justTouched()) {
 
             Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
