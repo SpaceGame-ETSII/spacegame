@@ -20,7 +20,7 @@ public class AssetsManager {
         assetsReferences.put("yellow", "amarillo.png");
         assetsReferences.put("blue", "azul.png");
         assetsReferences.put("button", "button.png");
-        assetsReferences.put("buttonExit", "button_exit.jpg");
+        assetsReferences.put("buttonExit", "button_exit.png");
         assetsReferences.put("buttonCancel", "button_cancel.png");
         assetsReferences.put("buttonConfirm", "button_confirm.png");
         assetsReferences.put("ventana", "ventana.png");
