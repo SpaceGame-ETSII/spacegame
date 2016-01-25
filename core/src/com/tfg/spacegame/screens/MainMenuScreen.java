@@ -4,47 +4,35 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector3;
-import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.Button;
 
 public class MainMenuScreen implements Screen {
 
-    GameObject campaing;
-    GameObject arcade;
-    GameObject multi;
-    GameObject options;
-    GameObject exit;
+    private final SpaceGame game;
 
-    //Variable que hace referencia al tiempo que dura el efecto de pulsado
+    //Representan las opciones a elegir en el Menú
+    private Button campaign;
+    private Button arcade;
+    private Button multiplayer;
+    private Button options;
+    private Button exit;
+
+    //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
     private float timeUntilExit;
-    //Todos estos booleans son utilizados para saber si un determinado botón ha sido pulsado
-    private boolean pulseCampaing;
-    private boolean pulseArcade;
-    private boolean pulseMulti;
-    private boolean pulseOptions;
-    private boolean pulseExit;
 
-    final SpaceGame game;
+    public MainMenuScreen(final SpaceGame game) {
+        this.game = game;
 
-    public MainMenuScreen(final SpaceGame gam) {
         //Creamos los botones para el menú principal
-        campaing = new GameObject("button",290,315);
-        arcade = new GameObject("button",290,255);
-        multi = new GameObject("button",290,195);
-        options = new GameObject("button",290,135);
-        exit = new GameObject("button",290,75);
-
-        //Inicializamos los booleans para saber si ha sido pulsado un botón
-        pulseCampaing=false;
-        pulseArcade=false;
-        pulseMulti=false;
-        pulseOptions=false;
-        pulseExit=false;
+        campaign = new Button("button", new CampaignScreen(game), 290, 315);
+        arcade = new Button("button", new ArcadeScreen(game), 290, 255);
+        multiplayer = new Button("button", new MultiplayerScreen(game), 290, 195);
+        options = new Button("button", new OptionsScreen(game), 290, 135);
+        exit = new Button("button", null, 290, 75);
 
         //Inicializamos el timer de espera para el efecto en los botones
-        timeUntilExit=0.5f;
-
-        game = gam;
+        timeUntilExit = 0.5f;
     }
 
     @Override
@@ -56,97 +44,65 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(game.camera.combined);
 
         game.batch.begin();
-        // Pintamos el fondo
+
+        // Pintamos el fondo y el título del juego
         game.batch.draw(game.background, 0,0);
-        // Pintamos cada uno de los botones, y si han sido pulsados lo vemos en pantalla gracias al método renderRotate
-        if (pulseCampaing){
-            campaing.renderRotate(game.batch,180);
-        }else{
-            campaing.render(game.batch);
-        }
-        if(pulseArcade){
-            arcade.renderRotate(game.batch,180);
-        }else {
-            arcade.render(game.batch);
-        }
-        if(pulseMulti){
-            multi.renderRotate(game.batch,180);
-        }else {
-            multi.render(game.batch);
-        }
-        if(pulseOptions){
-            options.renderRotate(game.batch,180);
-        }else{
-            options.render(game.batch);
-        }
-        if(pulseExit){
-            exit.renderRotate(game.batch, 180);
-        }else {
-            exit.render(game.batch);
-        }
+        game.font.draw(game.batch, "SPACE GAME", 350, 400);
+
+        // Delegamos el render de los botones
+        campaign.render(game.batch);
+        arcade.render(game.batch);
+        multiplayer.render(game.batch);
+        options.render(game.batch);
+        exit.render(game.batch);
 
         // Pintamos los títulos de los botontes
-        game.font.draw(game.batch, "SPACE GAME", 350, 400);
         game.font.draw(game.batch, "Modo Campaña", 345, 345);
         game.font.draw(game.batch, "Modo Arcade", 350, 285);
         game.font.draw(game.batch, "Modo Multijugador", 340, 225);
         game.font.draw(game.batch, "Opciones", 365, 165);
         game.font.draw(game.batch, "Salir", 380, 105);
 
-        //Actualizamos los botones si han sido pulsados
-        updateButton(delta,new CampaignScreen(game),pulseCampaing);
-        updateButton(delta,new ArcadeScreen(game),pulseArcade);
-        updateButton(delta,new MultijugadorScreen(game),pulseMulti);
-        updateButton(delta,new OptionsScreen(game),pulseOptions);
-        updateExit(delta,pulseExit);
-
         game.batch.end();
 
-        //Comprobamos que botón ha sido pulsado, si ha sido así actualizamos el timer y ponemos a true el boolean correspondiente al botón
+        //Si se ha tocado algún botón, lo marcamos como pulsado
         if (Gdx.input.justTouched()) {
 
             Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
             v = game.camera.unproject(v);
 
-            if(campaing.isOverlapingWith(v.x, v.y)){
+            if (campaign.press(v.x, v.y) ||
+                    arcade.press(v.x, v.y) ||
+                    multiplayer.press(v.x, v.y) ||
+                    options.press(v.x, v.y) ||
+                    exit.press(v.x, v.y)) {
                 timeUntilExit=0.5f;
-                pulseCampaing=true;
-            }
-            if(arcade.isOverlapingWith(v.x, v.y)) {
-                timeUntilExit=0.5f;
-                pulseArcade=true;
-            }
-            if(multi.isOverlapingWith(v.x, v.y)){
-                timeUntilExit=0.5f;
-                pulseMulti=true;
-            }
-            if(options.isOverlapingWith(v.x, v.y)){
-                timeUntilExit=0.5f;
-                pulseOptions=true;
-            }
-            if(exit.isOverlapingWith(v.x, v.y) ){
-                timeUntilExit=0.5f;
-                pulseExit=true;
             }
         }
 
+        //Actualizamos los botones si fueron pulsados previamente
+        updateButton(delta, campaign);
+        updateButton(delta, arcade);
+        updateButton(delta, multiplayer);
+        updateButton(delta, options);
+        updateButton(delta, exit);
+
     }
 
-    public void updateButton(float delta,Screen screen,boolean ex){
-        if(timeUntilExit<=0 && ex){
-            game.setScreen(screen);
-            dispose();
-        }else{
-            timeUntilExit-=delta;
-        }
-    }
+    //Si se ha acabado el tiempo de la pulsación, hacemos la función del botón correspondiente
+    public void updateButton(float delta, Button button){
+        if (timeUntilExit <= 0 && button.isPressed()) {
 
-    public void updateExit(float delta,boolean ex){
-        if(timeUntilExit<=0 && ex){
-            Gdx.app.exit();
+            //Si el screen del botón no es nulo, nos vamos ahí. Si lo es, significa que es el exit y debemos salir
+            if (button.getScreen() != null) {
+                game.setScreen(button.getScreen());
+            } else {
+                Gdx.app.exit();
+            }
+
             dispose();
-        }else{
-            timeUntilExit-=delta;
+        } else {
+            timeUntilExit -= delta;
         }
     }
 
@@ -180,9 +136,9 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void dispose() {
-        campaing.dispose();
+        campaign.dispose();
         arcade.dispose();
-        multi.dispose();
+        multiplayer.dispose();
         options.dispose();
         exit.dispose();
 	}

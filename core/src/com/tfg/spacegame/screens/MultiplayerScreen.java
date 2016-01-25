@@ -5,11 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.tfg.spacegame.SpaceGame;
 
-public class MultijugadorScreen implements Screen {
+public class MultiplayerScreen implements Screen {
 
     final SpaceGame game;
 
-    public MultijugadorScreen(final SpaceGame gam) {
+    public MultiplayerScreen(final SpaceGame gam) {
         game = gam;
     }
 
