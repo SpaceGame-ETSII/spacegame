@@ -2,15 +2,19 @@ package com.tfg.spacegame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.ArrayMap;
 
 public class AssetsManager {
 
     //Mapa que tendrá la asociación del nombre de las texturas con la imagen concreta de dicha textura
-    public static ArrayMap<String, String> assetsReferences;
+    private static ArrayMap<String, String> assetsReferences;
+    private static String particlesFolder = "particleEffects";
 
     public static void load() {
         assetsReferences = new ArrayMap<String, String>();
+
+        //Assets referentes a las imágenes
         assetsReferences.put("background", "fondo.png");
         assetsReferences.put("ship", "nave.png");
         assetsReferences.put("shoot", "disparo.png");
@@ -33,17 +37,27 @@ public class AssetsManager {
         assetsReferences.put("ship_orange", "nave_naranja.png");
         assetsReferences.put("ship_purple", "nave_morada.png");
 
-        assetsReferences.put("red_selected", "particleEffects/rojo_seleccionado");
-        assetsReferences.put("blue_selected", "particleEffects/azul_seleccionado");
-        assetsReferences.put("yellow_selected", "particleEffects/amarillo_seleccionado");
-        assetsReferences.put("red_element", "particleEffects/rojo_elemento");
-        assetsReferences.put("blue_element", "particleEffects/azul_elemento");
-        assetsReferences.put("yellow_element", "particleEffects/amarillo_elemento");
+        //Assets referentes a los efectos de partículas
+        assetsReferences.put("red_selected", particlesFolder + "/rojo_seleccionado");
+        assetsReferences.put("blue_selected", particlesFolder + "/azul_seleccionado");
+        assetsReferences.put("yellow_selected", particlesFolder + "/amarillo_seleccionado");
+        assetsReferences.put("red_element", particlesFolder + "/rojo_elemento");
+        assetsReferences.put("blue_element", particlesFolder + "/azul_elemento");
+        assetsReferences.put("yellow_element", particlesFolder + "/amarillo_elemento");
+        assetsReferences.put("red_equipped", particlesFolder + "/rojo_equipado");
+        assetsReferences.put("blue_equipped", particlesFolder + "/azul_equipado");
+        assetsReferences.put("yellow_equipped", particlesFolder + "/amarillo_equipado");
     }
 
     //Se llamará a este método cada vez que se pretenda cargar una textura
     public static Texture loadTexture(String textureName) {
         return new Texture(Gdx.files.internal(assetsReferences.get(textureName)));
+    }
+
+    public static ParticleEffect loadParticleEffect(String particleName) {
+        ParticleEffect particle = new ParticleEffect();
+        particle.load(Gdx.files.internal(assetsReferences.get(particleName)), Gdx.files.internal(""));
+        return particle;
     }
 
 }

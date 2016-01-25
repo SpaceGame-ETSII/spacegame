@@ -20,11 +20,8 @@ public class Element extends GameObject {
     public Element(String texture, int x, int y) {
         super(texture, x, y);
 
-        activatedParticleEffect = new ParticleEffect();
-        activatedParticleEffect.load(Gdx.files.internal(AssetsManager.assetsReferences.get(texture + "_selected")), Gdx.files.internal(""));
-
-        particleEffect = new ParticleEffect();
-        particleEffect.load(Gdx.files.internal(AssetsManager.assetsReferences.get(texture + "_element")), Gdx.files.internal(""));
+        activatedParticleEffect = AssetsManager.loadParticleEffect(texture + "_selected");
+        particleEffect = AssetsManager.loadParticleEffect(texture + "_element");
     }
 
     public void setX(float delta, float x) {

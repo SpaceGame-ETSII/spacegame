@@ -3,6 +3,7 @@ package com.tfg.spacegame.gameObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.tfg.spacegame.AssetsManager;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.utils.TypeElement;
 
@@ -52,25 +53,29 @@ public class Slot extends GameObject {
         }
     }
 
+    //Devuelve true si hay algún elemento equipado
     public boolean hasElementEquipped() {
         return !equippedElement.equals(TypeElement.COLORLESS);
     }
-    
-    public boolean hasSpecifiedElement(TypeElement type) { return equippedElement.equals(type); }
 
+    //Devuelve true si tiene equipado el elemento que se pasa como parámetro
+    public boolean hasSpecifiedElement(TypeElement type) { return equippedElement.equals(type); }
 
     public void equipElement(TypeElement type) {
         equippedElement = type;
-        particleEffect = new ParticleEffect();
+        if (!type.equals(TypeElement.COLORLESS)) {
+            String color = "red";
 
-        if (type.equals(TypeElement.RED))
-            particleEffect.load(Gdx.files.internal("particleEffects/rojo_equipado"), Gdx.files.internal(""));
-        else if (type.equals(TypeElement.BLUE))
-            particleEffect.load(Gdx.files.internal("particleEffects/azul_equipado"), Gdx.files.internal(""));
-        else if (type.equals(TypeElement.YELLOW))
-            particleEffect.load(Gdx.files.internal("particleEffects/amarillo_equipado"), Gdx.files.internal(""));
+            if (type.equals(TypeElement.RED))
+                color = "red";
+            else if (type.equals(TypeElement.BLUE))
+                color = "blue";
+            else if (type.equals(TypeElement.YELLOW))
+                color = "yellow";
 
-        particleEffect.getEmitters().first().setPosition((getWidth() / 2) + getX(), (getHeight() / 2) + getY());
+            particleEffect = AssetsManager.loadParticleEffect(color + "_equipped");
+            particleEffect.getEmitters().first().setPosition((getWidth() / 2) + getX(), (getHeight() / 2) + getY());
+        }
     }
 
     public void unequip() {
