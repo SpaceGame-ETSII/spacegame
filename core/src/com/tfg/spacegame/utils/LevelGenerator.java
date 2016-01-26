@@ -80,7 +80,6 @@ public class LevelGenerator {
     }
 
     private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper) {
-
         switch (wrapper.type){
             case TYPE1:
                 enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
