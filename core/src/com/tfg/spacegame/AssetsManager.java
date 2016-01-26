@@ -47,6 +47,7 @@ public class AssetsManager {
         assetsReferences.put("red_equipped", particlesFolder + "/rojo_equipado");
         assetsReferences.put("blue_equipped", particlesFolder + "/azul_equipado");
         assetsReferences.put("yellow_equipped", particlesFolder + "/amarillo_equipado");
+        assetsReferences.put("shootEffect", particlesFolder + "/shootEffect");
     }
 
     //Se llamará a este método cada vez que se pretenda cargar una textura
