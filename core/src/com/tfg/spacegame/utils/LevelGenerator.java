@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.tfg.spacegame.gameObjects.enemies.Type1;
 import com.tfg.spacegame.gameObjects.enemies.Type2;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.enemies.Type5;
 
 public class LevelGenerator {
 
@@ -77,6 +78,7 @@ public class LevelGenerator {
     }
 
     private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper) {
+
         switch (wrapper.type){
             case TYPE1:
                 enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));

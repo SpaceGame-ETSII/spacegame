@@ -36,6 +36,8 @@ public class AssetsManager {
         assetsReferences.put("ship_green", "nave_verde.png");
         assetsReferences.put("ship_orange", "nave_naranja.png");
         assetsReferences.put("ship_purple", "nave_morada.png");
+        assetsReferences.put("enemigo_basico_tipo5", "enemigo_basico_tipo5.png");
+        assetsReferences.put("disparo_enemigo_basico_tipo5", "disparo_enemigo_basico_tipo5.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "/rojo_seleccionado");
