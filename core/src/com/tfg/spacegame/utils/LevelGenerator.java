@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.tfg.spacegame.gameObjects.enemies.Type1;
 import com.tfg.spacegame.gameObjects.enemies.Type2;
 import com.tfg.spacegame.gameObjects.Enemy;
@@ -11,11 +12,30 @@ import com.tfg.spacegame.gameObjects.Enemy;
 public class LevelGenerator {
 
     //Clase que se representa un enemigo recogido del script
-    private static class EnemyWrapper {
-        public String type;
+    private static class EnemyWrapper implements Json.Serializable{
+        public TypeEnemy type;
         public int x;
         public int y;
         public float timeToSpawn;
+
+        @Override
+        public void write(Json json) {
+
+        }
+
+        @Override
+        // Al implementar Serializable tenemos que definir como
+        // se van a leer los distintos valores para esta clase
+        public void read(Json json, JsonValue jsonData) {
+            // El problemas valor es el atributo de tipo
+            type = TypeEnemy.valueOf(jsonData.child().asString());
+            // El resto van en orden de aparción en el json
+            // Tenemos que ejecutar un next por cada valor que queramos
+            // comprobar
+            x = jsonData.child().next().asInt();
+            y = jsonData.child().next().next().asInt();
+            timeToSpawn = jsonData.child().next().next().next().asFloat();
+        }
     }
 
     //Cadena de enemigos que se generan desde el script
@@ -53,16 +73,36 @@ public class LevelGenerator {
                 enemiesToGenerate.removeValue(wrapper,false);
             }
         }
-
         return enemies;
     }
 
     private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper) {
-        if (wrapper.type.equals("TYPE1")) {
-            enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
-        } else if (wrapper.type.equals("TYPE2")) {
-            enemies.add(new Type2(wrapper.x, wrapper.y));
-        } else {
+        switch (wrapper.type){
+            case TYPE1:
+                enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
+                break;
+            case TYPE2:
+                enemies.add(new Type2(wrapper.x, wrapper.y));
+                break;
+            case TYPE3:
+                break;
+            case TYPE4:
+                break;
+            case TYPE5:
+                break;
+            case RED:
+                break;
+            case BLUE:
+                break;
+            case YELLOW:
+                break;
+            case GREEN:
+                break;
+            case ORANGE:
+                break;
+            case PURPLE:
+                break;
+            default:
                 throw new IllegalArgumentException("Se ha tratado de genera un enemigo de tipo inexistente");
         }
     }
