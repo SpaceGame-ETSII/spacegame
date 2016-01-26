@@ -91,6 +91,7 @@ public class LevelGenerator {
             case TYPE4:
                 break;
             case TYPE5:
+                enemies.add(new Type5(wrapper.x, wrapper.y));
                 break;
             case RED:
                 break;
