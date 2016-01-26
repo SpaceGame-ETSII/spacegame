@@ -4,25 +4,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.tfg.spacegame.gameObjects.Enemies.Type1;
-import com.tfg.spacegame.gameObjects.Enemies.Type2;
+import com.tfg.spacegame.gameObjects.enemies.Type1;
+import com.tfg.spacegame.gameObjects.enemies.Type2;
 import com.tfg.spacegame.gameObjects.Enemy;
 
-
-/**
- * Created by gaems-dev on 20/01/16.
- */
 public class LevelGenerator {
 
-    private static class EnemyWrapper{
-        public String name;
+    //Clase que se representa un enemigo recogido del script
+    private class EnemyWrapper {
+        public TypeEnemy type;
         public int x;
         public int y;
-        public float time;
+        public float timeToSpawn;
     }
 
-    Array<EnemyWrapper> enemiesToGenerate;
+    //Cadena de enemigos que se generan desde el script
+    public Array<EnemyWrapper> enemiesToGenerate;
 
+    //Convierte los enemigos del json en objetos
     public static LevelGenerator loadLevel(String jsonFile){
         FileHandle file = Gdx.files.internal("levelscripts/"+jsonFile);
         Json json = new Json();
@@ -39,26 +38,69 @@ public class LevelGenerator {
      * @return Los enemigos que estaban creados más los recien creados
      */
     public Array<Enemy> update(Array<Enemy> enemies,float delta){
+
         // Recorro los enemigos a poder generar
-        for(EnemyWrapper wrapped: enemiesToGenerate){
+        for(EnemyWrapper wrapper: enemiesToGenerate){
+
             // Resto el tiempo necesario
-            wrapped.time -= delta;
-            // Si el tiempo se ha cumplido
-            if(wrapped.time<0){
-                if(wrapped.name.equals("type1")){
-                    // Crea el enemigo
-                    enemies.addAll(Type1.createSquadron(wrapped.x,wrapped.y));
-                    // Eliminalo de la lista de enemigos a generar
-                    enemiesToGenerate.removeValue(wrapped,false);
-                }else if(wrapped.name.equals("type2")){
-                    // Crea el enemigo
-                    enemies.add(Type2.createEnemy(wrapped.x,wrapped.y));
-                    // Eliminalo de la lista de enemigos a generar
-                    enemiesToGenerate.removeValue(wrapped,false);
-                }
+            wrapper.timeToSpawn -= delta;
+
+            // Si el tiempo se ha cumplido, generamos el enemigo correspondiente
+            if(wrapper.timeToSpawn < 0){
+
+                //Añadimos el nuevo enemigo y lo eliminamos de la lista a generar
+                this.addEnemy(enemies, wrapper);
+                enemiesToGenerate.removeValue(wrapper,false);
             }
         }
 
         return enemies;
+    }
+
+    private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper) {
+        switch (wrapper.type) {
+            case TYPE1:
+                enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
+                break;
+            case TYPE2:
+                enemies.add(new Type2(wrapper.x,wrapper.y));
+                break;
+            case TYPE3:
+                break;
+            case TYPE4:
+                break;
+            case TYPE5:
+                break;
+            case RED:
+                break;
+            case BLUE:
+                break;
+            case YELLOW:
+                break;
+            case GREEN:
+                break;
+            case ORANGE:
+                break;
+            case PURPLE:
+                break;
+            default:
+                throw new IllegalArgumentException("Se ha tratado de genera un enemigo de tipo inexistente");
+        }
+    }
+
+    /**
+     * Crea un escuadrón de enemigos tipo 1 (5). Los parámetros de entrada son el lugar exacto
+     * de aparición del primer enemigo. Todos irán retrasados respecto a él.
+     * @return Un Array de Type1 con 5 elementos
+     */
+    private static Array<Type1> createSquadron(int x, int y){
+        Array<Type1> result = new Array<Type1>();
+        result.add(new Type1(x,y,0.0f));
+        result.add(new Type1(x,y,0.35f));
+        result.add(new Type1(x,y,0.65f));
+        result.add(new Type1(x,y,0.95f));
+        result.add(new Type1(x,y,1.25f));
+
+        return result;
     }
 }

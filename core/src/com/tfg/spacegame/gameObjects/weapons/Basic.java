@@ -7,9 +7,6 @@ import com.tfg.spacegame.AssetsManager;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Weapon;
 
-/**
- * Created by gaems-dev on 25/01/16.
- */
 public class Basic extends Weapon {
 
     // Velocidad de movimiento

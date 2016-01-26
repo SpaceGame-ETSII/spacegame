@@ -2,14 +2,13 @@ package com.tfg.spacegame.gameObjects;
 
 import com.tfg.spacegame.GameObject;
 
-public class Weapon extends GameObject{
+public class Weapon extends GameObject {
 
-
+    //Objeto de juego que ha provocado el disparo
     private GameObject shooter;
 
-
-    public Weapon(String nameWeapon, int x, int y, GameObject shooter) {
-        super(nameWeapon,x,y);
+    public Weapon(String nameTexture, int x, int y, GameObject shooter) {
+        super(nameTexture,x,y);
         this.shooter = shooter;
     }
 
@@ -17,7 +16,7 @@ public class Weapon extends GameObject{
         return shooter;
     }
 
-    public void update(float delta){
+    public void update(float delta) {
     }
 
 }
