@@ -9,6 +9,7 @@ import com.tfg.spacegame.gameObjects.enemies.Type2;
 import com.tfg.spacegame.gameObjects.enemies.Type3;
 import com.tfg.spacegame.gameObjects.enemies.Type4;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.enemies.Type5;
 
 public class LevelGenerator {
 
@@ -79,6 +80,7 @@ public class LevelGenerator {
     }
 
     private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper) {
+
         switch (wrapper.type){
             case TYPE1:
                 enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
@@ -93,6 +95,7 @@ public class LevelGenerator {
                 enemies.add(new Type4(wrapper.x, wrapper.y));
                 break;
             case TYPE5:
+                enemies.add(new Type5(wrapper.x, wrapper.y));
                 break;
             case RED:
                 break;

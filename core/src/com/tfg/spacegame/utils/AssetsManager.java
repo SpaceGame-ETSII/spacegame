@@ -25,6 +25,7 @@ public class AssetsManager {
         //Texturas referentes a enemies
         assetsReferences.put("tipo3", enemiesFolder+"tipo3.png");
         assetsReferences.put("type4", enemiesFolder+"tipo4.png");
+        assetsReferences.put("enemigo_basico_tipo5", enemiesFolder+"enemigo_basico_tipo5.png");
         assetsReferences.put("type4_shield", enemiesFolder+"tipo4_shield.png");
         assetsReferences.put("enemy", enemiesFolder+"enemigo.png");
 
@@ -53,6 +54,7 @@ public class AssetsManager {
 
         //Texturas referentes a weapons
         assetsReferences.put("shoot", weaponsFolder+"disparo.png");
+        assetsReferences.put("disparo_enemigo_basico_tipo5", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
