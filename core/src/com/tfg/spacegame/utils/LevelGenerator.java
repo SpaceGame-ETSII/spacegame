@@ -11,8 +11,8 @@ import com.tfg.spacegame.gameObjects.Enemy;
 public class LevelGenerator {
 
     //Clase que se representa un enemigo recogido del script
-    private class EnemyWrapper {
-        public TypeEnemy type;
+    private static class EnemyWrapper {
+        public String type;
         public int x;
         public int y;
         public float timeToSpawn;
@@ -58,32 +58,11 @@ public class LevelGenerator {
     }
 
     private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper) {
-        switch (wrapper.type) {
-            case TYPE1:
-                enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
-                break;
-            case TYPE2:
-                enemies.add(new Type2(wrapper.x,wrapper.y));
-                break;
-            case TYPE3:
-                break;
-            case TYPE4:
-                break;
-            case TYPE5:
-                break;
-            case RED:
-                break;
-            case BLUE:
-                break;
-            case YELLOW:
-                break;
-            case GREEN:
-                break;
-            case ORANGE:
-                break;
-            case PURPLE:
-                break;
-            default:
+        if (wrapper.type.equals("TYPE1")) {
+            enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
+        } else if (wrapper.type.equals("TYPE2")) {
+            enemies.add(new Type2(wrapper.x, wrapper.y));
+        } else {
                 throw new IllegalArgumentException("Se ha tratado de genera un enemigo de tipo inexistente");
         }
     }

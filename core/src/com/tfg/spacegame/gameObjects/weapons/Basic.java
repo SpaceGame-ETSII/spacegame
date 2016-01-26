@@ -43,8 +43,10 @@ public class Basic extends Weapon {
 
         // Creamos el efecto de particulas
         shootEffect = AssetsManager.loadParticleEffect("shootEffect");
+
         // Lo ubicamos en el extremo derecha y mitad de altura del shooter
         shootEffect.getEmitters().first().setPosition(shooter.getX() + shooter.getWidth(),shooter.getY()+shooter.getHeight()/2);
+
         // Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará
         shootEffect.start();
 
