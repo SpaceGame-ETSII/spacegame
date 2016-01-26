@@ -7,11 +7,19 @@ import com.tfg.spacegame.gameObjects.Enemy;
  */
 public class Type2 extends Enemy{
 
+    // En el principio este enemigo viajará a una velocidad que
+    // llamaremos "normal" para luego lanzarse hacia el jugador
+    // con una velocidad "alta"
     private static int NORMAL_SPEED = 150;
     private static int HIGH_SPEED = 500;
 
-    private float timeToGoFast = 2f;
-    private int howMuchToMoveSlowly = 200;
+    // Este es el tiempo en el que el enemigo esperará sin
+    // moverse hasta que se lance hacía el jugador
+    private float timeToGoFast;
+
+    // Cuantos pixeles se moverá con velocidad normal
+    // desde la parte extrema derecha de la pantalla
+    private int howMuchToMoveSlowly;
 
     public static Type2 createEnemy(int x, int y){
         Type2 result;
@@ -21,9 +29,10 @@ public class Type2 extends Enemy{
 
     public Type2(int x, int y) {
         super("enemy", x, y);
+        timeToGoFast = 2f;
+        howMuchToMoveSlowly = 200;
     }
 
-    @Override
     public void update(float delta){
         // Mientras tengamos que seguir moviendonos lentamente
         if(howMuchToMoveSlowly > 0){

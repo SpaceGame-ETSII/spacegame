@@ -15,7 +15,8 @@ public class Basic extends Weapon {
     // Velocidad de movimiento
     public static final float SPEED = 600;
 
-    // Delay es el tiempo necesario a esperar para que empiece a moverse el disparo
+    // Tiempo necesario a esperar para que empiece a moverse el disparo
+    // Se trata de un delay de aparición
     private float timeToMove;
 
     // Efecto de particulas de este disparo
@@ -29,14 +30,14 @@ public class Basic extends Weapon {
     public static Array<Basic> shootBasicWeapon(GameObject shooter){
         Array<Basic> result = new Array<Basic>();
         // Los tiempos son a 'ojo', esto se puede consultar
-        result.add(new Basic(shooter));
+        result.add(new Basic(shooter, 0.0f));
         result.add(new Basic(shooter, 0.1f));
         result.add(new Basic(shooter, 0.2f));
 
         return result;
     }
 
-    public Basic(GameObject shooter) {
+    public Basic(GameObject shooter, float delay) {
         // Situamos el disparo en el sitio correcto
         // X - Extremo derecha del shooter
         // Y - La mitad del alto del shooter - la mitad del alto del disparo
@@ -49,21 +50,10 @@ public class Basic extends Weapon {
         shootEffect.getEmitters().first().setPosition(shooter.getX() + shooter.getWidth(),shooter.getY()+shooter.getHeight()/2);
         // Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará
         shootEffect.start();
-    }
-
-    public Basic(GameObject shooter, float delay) {
-        super("shoot", (int)(shooter.getX()+shooter.getWidth()),(int)(shooter.getY()+shooter.getHeight()/2),shooter);
-        this.setY(this.getY()-this.getHeight()/2);
 
         timeToMove = delay;
-
-        shootEffect = AssetsManager.loadParticleEffect("shootEffect");
-        shootEffect.getEmitters().first().setPosition(shooter.getX() + shooter.getWidth(),shooter.getY()+shooter.getHeight()/2);
-
-        shootEffect.start();
     }
 
-    @Override
     public void update(float delta) {
         // Esperaremos a que sea el momento correcto para moverse
         if(timeToMove < 0){
@@ -83,19 +73,16 @@ public class Basic extends Weapon {
 
             // Podemos además ir actualizando la posición Y por si el shooter se está moviendo
             this.setY(getShooter().getY()+getShooter().getHeight()/2 - this.getHeight()/2);
-
         }
     }
 
-    @Override
     public void render(SpriteBatch batch){
         super.render(batch);
         // Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
         if(timeToMove < 0)
             shootEffect.draw(batch);
     }
-
-    @Override
+    
     public void dispose(){
         super.dispose();
         shootEffect.dispose();
