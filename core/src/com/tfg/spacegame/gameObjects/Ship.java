@@ -3,9 +3,10 @@ package com.tfg.spacegame.gameObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.tfg.spacegame.AssetsManager;
+import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.utils.ShootsManager;
 
 public class Ship extends GameObject {
 
@@ -55,6 +56,10 @@ public class Ship extends GameObject {
             timeToUndamagable -= delta;
         if (timeToUndamagable <= 0)
             this.changeToDamagable();
+    }
+
+    public void shoot(){
+        ShootsManager.shootBurstBasicWeapon(this);
     }
 
     public int getVitality() {

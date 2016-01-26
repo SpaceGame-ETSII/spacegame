@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.tfg.spacegame.gameObjects.enemies.Type1;
 import com.tfg.spacegame.gameObjects.enemies.Type2;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.enemies.Type4;
 
 public class LevelGenerator {
 
@@ -43,7 +44,7 @@ public class LevelGenerator {
 
     //Convierte los enemigos del json en objetos
     public static LevelGenerator loadLevel(String jsonFile){
-        FileHandle file = Gdx.files.internal("levelscripts/"+jsonFile);
+        FileHandle file = AssetsManager.loadScript(jsonFile);
         Json json = new Json();
 
         return json.fromJson(LevelGenerator.class,file);
@@ -87,6 +88,7 @@ public class LevelGenerator {
             case TYPE3:
                 break;
             case TYPE4:
+                enemies.add(new Type4(wrapper.x, wrapper.y));
                 break;
             case TYPE5:
                 break;

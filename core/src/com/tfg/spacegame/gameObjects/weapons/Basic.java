@@ -2,9 +2,9 @@ package com.tfg.spacegame.gameObjects.weapons;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
-import com.tfg.spacegame.AssetsManager;
+import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Weapon;
 
 public class Basic extends Weapon {
@@ -19,48 +19,46 @@ public class Basic extends Weapon {
     // Efecto de particulas de este disparo
     private ParticleEffect shootEffect;
 
-    /**
-     * Crea una ráfaga de tres disparos básicos
-     * @param shooter - La nave
-     * @return Un array con tres elementos
-     */
-    public static Array<Basic> shootBasicWeapon(GameObject shooter){
-        Array<Basic> result = new Array<Basic>();
-        // Los tiempos son a 'ojo', esto se puede consultar
-        result.add(new Basic(shooter, 0.0f));
-        result.add(new Basic(shooter, 0.1f));
-        result.add(new Basic(shooter, 0.2f));
-
-        return result;
-    }
-
-    public Basic(GameObject shooter, float delay) {
+    public Basic(GameObject shooter, int x, int y, float delay) {
         // Situamos el disparo en el sitio correcto
         // X - Extremo derecha del shooter
         // Y - La mitad del alto del shooter - la mitad del alto del disparo
-        super("shoot", (int)(shooter.getX()+shooter.getWidth()),(int)(shooter.getY()+shooter.getHeight()/2),shooter);
-        this.setY(this.getY()-this.getHeight()/2);
+        super("shoot",x,y,shooter);
 
         // Creamos el efecto de particulas
         shootEffect = AssetsManager.loadParticleEffect("shootEffect");
 
-        // Lo ubicamos en el extremo derecha y mitad de altura del shooter
-        shootEffect.getEmitters().first().setPosition(shooter.getX() + shooter.getWidth(),shooter.getY()+shooter.getHeight()/2);
+        this.updateParticleEffect();
+
 
         // Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará
         shootEffect.start();
-
         timeToMove = delay;
+    }
+
+    public void updateParticleEffect() {
+        if (this.getShooter() instanceof Enemy){
+            shootEffect.getEmitters().first().setPosition(this.getShooter().getX(),this.getShooter().getY()+this.getShooter().getHeight()/2);
+            // Rotamos el efecto de particulas 180º
+            shootEffect.getEmitters().first().getAngle().setHigh(135,225);
+            shootEffect.getEmitters().first().getAngle().setLow(160, 200);
+        }else{
+            // Lo ubicamos en el extremo derecha y mitad de altura del shooter
+            shootEffect.getEmitters().first().setPosition(this.getShooter().getX() + this.getShooter().getWidth(),this.getShooter().getY()+this.getShooter().getHeight()/2);
+        }
     }
 
     public void update(float delta) {
         // Esperaremos a que sea el momento correcto para moverse
         if(timeToMove < 0){
             // Actualizamos el movimiento del disparo
-            this.setX(this.getX() + (SPEED * delta));
+            if(getShooter() instanceof Enemy)
+                this.setX(this.getX() - (SPEED * delta));
+            else
+                this.setX(this.getX() + (SPEED * delta));
 
-            // Actualizamos la posición del efecto de particulas de acuerdo con la posición de la nave
-            shootEffect.getEmitters().first().setPosition(getShooter().getX() + getShooter().getWidth(), getShooter().getY() + getShooter().getHeight() / 2);
+            // Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
+            this.updateParticleEffect();
             // Actualizamos el efecto de particulas
             shootEffect.update(delta);
 

@@ -4,18 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Inventary;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Weapon;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.gameObjects.weapons.Basic;
-import com.tfg.spacegame.utils.GameState;
-import com.tfg.spacegame.utils.LevelGenerator;
-import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
-import java.util.Iterator;
+import com.tfg.spacegame.utils.*;
 
 public class CampaignScreen implements Screen{
 
@@ -23,14 +18,10 @@ public class CampaignScreen implements Screen{
 
     //Objetos interactuables de la pantalla
     private Ship ship;
-    private Array<Enemy> enemies;
-    private Array<Weapon> shoots;
     private Inventary inventary;
 
     //Estado en el que se encuentra el juego
     private GameState state;
-
-    private LevelGenerator level;
 
     //Variables para el diálogo de salida del modo camapaña
     private GameObject exit;
@@ -55,11 +46,9 @@ public class CampaignScreen implements Screen{
 
         //Creamos los objetos de juego
         ship = new Ship();
-        enemies = new Array<Enemy>();
-        shoots = new Array<Weapon>();
+        EnemyManager.load();
+        ShootsManager.load();
         inventary = new Inventary();
-
-        level = LevelGenerator.loadLevel("scriptTest");
 
         //Creamos los objetos para el diálgo de salida del modo campaña
         exit = new GameObject("buttonExit",750,430);
@@ -148,12 +137,9 @@ public class CampaignScreen implements Screen{
 
         ship.render(game.batch);
 
-        for(Enemy enemy: enemies)
-            if(!enemy.isDefeated())
-                enemy.render(game.batch);
+        EnemyManager.render();
 
-        for(Weapon weapon : shoots)
-            weapon.render(game.batch);
+        ShootsManager.render();
 
         if (ship.getVitality() <= 0)
             state = GameState.LOSE;
@@ -219,9 +205,6 @@ public class CampaignScreen implements Screen{
 
     public void updateLogic(float delta) {
 
-        //Actualizamos los tiempos de espera de aparición de los enemigos
-        enemies = level.update(enemies,delta);
-
         //Actualizamos la posición del scrolling
         scrollingPosition -= delta * SCROLLING_SPEED;
         if(scrollingPosition <= -game.background.getWidth())
@@ -234,52 +217,19 @@ public class CampaignScreen implements Screen{
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
 
-        for(Enemy enemy: enemies){
+        EnemyManager.update(delta);
 
-            enemy.update(delta);
-
-            // El jugador habrá recibido daño por un enemigo
-            // si chocan
-            if (ship.isOverlapingWith(enemy) && !ship.isUndamagable())
-                ship.receiveDamage();
-
-            for(Iterator<Weapon> s = shoots.iterator(); s.hasNext();){
-                Weapon shoot = s.next();
-
-                //Se realizará cuando el disparo dé en el enemigo
-                if (!enemy.isDefeated() && shoot.isOverlapingWith(enemy)) {
-                    shoots.removeValue(shoot,false);
-                    enemy.defeat();
-                }
-            }
-            // Destruir los enemigos que se salgan de la parte izquierda de la pantalla
-            if(enemy.getX() < 0){
-                enemies.removeValue(enemy,false);
-            }
-
-            if(enemy.isDefeated())
-                enemies.removeValue(enemy,false);
-        }
-
-        for(Weapon shoot: shoots){
-            shoot.update(delta);
-
-            //Si algún disparo sobresale los limites de la pantalla
-            //Se eleminará
-            if(shoot.getX() > SpaceGame.width){
-                shoots.removeValue(shoot,false);
-            }
-        }
+        ShootsManager.update(delta);
 
         // Si tocamos la pantalla disparamos
         // El disparo puede hacerse de dos formas
         // 1. Sin multituouch el disparo solo se realizará si pulsamos por delante del primer tercio de la pantalla
         // 2. Con multitouch el disparo se realizará en cualquier parte de la pantalla
-        if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3)) && shoots.size == 0){
+        if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3))){
             // Esta es la acción del disparo básico
             // El disparo básico crea tres disparos seguidos
             // No se podrá disparar de nuevo hasta que desaparezcan.
-            shoots.addAll(Basic.shootBasicWeapon(ship));
+            ship.shoot();
         }
 
     }
@@ -307,10 +257,11 @@ public class CampaignScreen implements Screen{
     @Override
     public void dispose() {
         ship.dispose();
-        for(Enemy enemy: enemies)
+        for(Enemy enemy: EnemyManager.enemies)
             enemy.dispose();
-        for(Weapon weapon : shoots)
+        for(Weapon weapon : ShootsManager.shoots)
             weapon.dispose();
+
         inventary.dispose();
         exit.dispose();
         exitCancel.dispose();

@@ -1,9 +1,8 @@
 package com.tfg.spacegame.gameObjects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.tfg.spacegame.AssetsManager;
+import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.utils.TypeElement;
 

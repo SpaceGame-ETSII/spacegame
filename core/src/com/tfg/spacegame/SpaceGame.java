@@ -6,11 +6,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.screens.MainMenuScreen;
+import com.tfg.spacegame.utils.AssetsManager;
 
 public class SpaceGame extends Game {
 
-	public SpriteBatch batch;
-	public BitmapFont font;
+	public static SpriteBatch batch;
+	public static BitmapFont font;
 	public Texture background;
 	public OrthographicCamera camera;
 	public static int width = 800;
