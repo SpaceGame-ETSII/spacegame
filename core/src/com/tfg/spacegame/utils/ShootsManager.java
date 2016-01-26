@@ -19,21 +19,14 @@ public class ShootsManager {
 
     /**
      * Crea una ráfaga de tres disparos básicos
-     * @param shooter - La nave
-     * @return Un array con tres elementos
+     * @param shooter - El shooter que realizó el disparo
      */
     public static void shootBurstBasicWeapon(GameObject shooter){
         Basic basic = new Basic(shooter,0,0,0.0f);
 
         if(canShipShoot(TypeWeapon.BASIC)){
-            int x;
-
-            if(shooter instanceof Enemy)
-                x = (int) (shooter.getX());
-            else
-                x = (int) (shooter.getX() + shooter.getWidth());
-
-            int y = (int)(shooter.getY()+shooter.getHeight()/2);
+            int x = (int) (shooter.getX() + shooter.getWidth());
+            int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
             basic.setX(x);
             basic.setY(y);
@@ -45,6 +38,10 @@ public class ShootsManager {
         }
     }
 
+    /**
+     * Lanza un único disparo básico
+     * @param shooter - El shooter que realizó el disparo
+     */
     public static void shootOneBasicWeapon(GameObject shooter) {
         Basic basic = new Basic(shooter,0,0,0.0f);
 
@@ -57,15 +54,22 @@ public class ShootsManager {
         shoots.add(basic);
     }
 
+    /**
+     * Indica si la nave puede disparar en el momento actual, según el arma
+     * @param shooter - El tipo de disparo equipado en la nave
+     * @return Indica si puede o no disparar la nave
+     */
     private static boolean canShipShoot(TypeWeapon type) {
         boolean result = false;
         Array<Weapon> selected = new Array<Weapon>();
 
+        //Obtenemos todos los disparos en pantalla que realizó la nave
         for(Weapon w : shoots){
-            if(w.getShooter() instanceof  Ship)
+            if(w.getShooter() instanceof Ship)
                 selected.add(w);
         }
 
+        //Según el tipo de disparo, la condición será distinta
         switch (type){
             case BASIC:
                 if(selected.size == 0)

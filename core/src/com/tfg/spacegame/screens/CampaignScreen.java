@@ -86,12 +86,12 @@ public class CampaignScreen implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.camera.update();
-        game.batch.setProjectionMatrix(game.camera.combined);
+        SpaceGame.batch.setProjectionMatrix(game.camera.combined);
 
-        game.batch.begin();
+        SpaceGame.batch.begin();
 
-        game.batch.draw(game.background, scrollingPosition,0);
-        game.batch.draw(game.background, game.background.getWidth()+scrollingPosition,0);
+        SpaceGame.batch.draw(game.background, scrollingPosition, 0);
+        SpaceGame.batch.draw(game.background, game.background.getWidth() + scrollingPosition, 0);
 
         switch (state) {
             case LOSE:
@@ -112,11 +112,11 @@ public class CampaignScreen implements Screen{
                 break;
         }
 
-        game.batch.end();
+        SpaceGame.batch.end();
     }
 
     private void renderLose(float delta) {
-        game.font.draw(game.batch, "Game Over", 370, 240);
+        SpaceGame.font.draw(SpaceGame.batch, "Game Over", 370, 240);
 
         if (Gdx.input.justTouched()) {
             state = GameState.READY;
@@ -126,19 +126,17 @@ public class CampaignScreen implements Screen{
     }
 
     private void renderReady(float delta) {
-        game.font.draw(game.batch, "Tap to start", 370, 240);
+        SpaceGame.font.draw(SpaceGame.batch, "Tap to start", 370, 240);
 
         if (Gdx.input.justTouched())
             state = GameState.START;
     }
 
     private void renderStart(float delta) {
-        game.font.draw(game.batch, ship.getVitality() + "", 100, 100);
+        SpaceGame.font.draw(SpaceGame.batch, ship.getVitality() + "", 100, 100);
 
         ship.render(game.batch);
-
         EnemyManager.render();
-
         ShootsManager.render();
 
         if (ship.getVitality() <= 0)
@@ -148,26 +146,29 @@ public class CampaignScreen implements Screen{
     }
 
     private void renderPause(float delta) {
-        inventary.render(game.batch);
-        ship.render(game.batch);
+        inventary.render(SpaceGame.batch);
+        ship.render(SpaceGame.batch);
 
         //En función de si estamos en el diálogo para salir o no veremos la ventana para salir del modo campaña
         if (isDialogin){
-            ventana.render(game.batch);
-            game.font.draw(game.batch, "¿Desea salir del modo campaña?", 300, 320);
-            exitCancel.render(game.batch);
-            exitConfirm.render(game.batch);
-            if (isConfirm){
-                isDialogin=false;
-                isConfirm=false;
+            ventana.render(SpaceGame.batch);
+            SpaceGame.font.draw(SpaceGame.batch, "¿Desea salir del modo campaña?", 300, 320);
+            exitCancel.render(SpaceGame.batch);
+            exitConfirm.render(SpaceGame.batch);
+
+            if (isConfirm) {
+                isDialogin = false;
+                isConfirm = false;
                 game.setScreen(new MainMenuScreen(game));
             }
-            if (isCancelled){
-                isDialogin=false;
-                isCancelled=false;
+
+            if (isCancelled) {
+                isDialogin = false;
+                isCancelled = false;
             }
         }else{
-            exit.render(game.batch);
+            exit.render(SpaceGame.batch);
+
             //Se hará una cosa u otra si el inventario está cerrándose o no
             if (inventary.isClosing()) {
                 inventary.updateClosing(delta, ship);
@@ -183,19 +184,20 @@ public class CampaignScreen implements Screen{
                 inventary.update(delta, ship, v.x, v.y);
             }
         }
+
         //Comprobamos sobre que botón pulsa el usuario y actualizamos las variables del diálgo en consecuencia
-        if(Gdx.input.isTouched()){
+        if (Gdx.input.isTouched()) {
             Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
             v = game.camera.unproject(v);
-            if (exit.isOverlapingWith(v.x, v.y)){
+            if (exit.isOverlapingWith(v.x, v.y)) {
                 isDialogin=true;
                 isCancelled=false;
                 isConfirm=false;
             }
-            if (exitConfirm.isOverlapingWith(v.x,v.y)){
+            if (exitConfirm.isOverlapingWith(v.x,v.y)) {
                 isConfirm=true;
             }
-            if (exitCancel.isOverlapingWith(v.x,v.y)){
+            if (exitCancel.isOverlapingWith(v.x,v.y)) {
                 isCancelled=true;
             }
 
@@ -216,9 +218,7 @@ public class CampaignScreen implements Screen{
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-
         EnemyManager.update(delta);
-
         ShootsManager.update(delta);
 
         // Si tocamos la pantalla disparamos
@@ -226,9 +226,6 @@ public class CampaignScreen implements Screen{
         // 1. Sin multituouch el disparo solo se realizará si pulsamos por delante del primer tercio de la pantalla
         // 2. Con multitouch el disparo se realizará en cualquier parte de la pantalla
         if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3))){
-            // Esta es la acción del disparo básico
-            // El disparo básico crea tres disparos seguidos
-            // No se podrá disparar de nuevo hasta que desaparezcan.
             ship.shoot();
         }
 
@@ -261,7 +258,6 @@ public class CampaignScreen implements Screen{
             enemy.dispose();
         for(Weapon weapon : ShootsManager.shoots)
             weapon.dispose();
-
         inventary.dispose();
         exit.dispose();
         exitCancel.dispose();

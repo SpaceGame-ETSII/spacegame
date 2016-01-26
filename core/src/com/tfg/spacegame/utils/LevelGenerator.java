@@ -30,7 +30,8 @@ public class LevelGenerator {
         public void read(Json json, JsonValue jsonData) {
             // El problemas valor es el atributo de tipo
             type = TypeEnemy.valueOf(jsonData.child().asString());
-            // El resto van en orden de aparción en el json
+
+            // El resto van en orden de aparición en el json
             // Tenemos que ejecutar un next por cada valor que queramos
             // comprobar
             x = jsonData.child().next().asInt();

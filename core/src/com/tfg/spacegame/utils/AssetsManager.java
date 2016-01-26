@@ -14,7 +14,7 @@ public class AssetsManager {
     private static String particlesFolder = "particleEffects/";
     private static String enemiesFolder = "textures/enemies/";
     private static String weaponsFolder = "textures/weapons/";
-    private static String levelScriptsFolder = "levelscripts/";
+    private static String levelScriptsFolder = "levelScripts/";
     private static String shipsFolder = "textures/ships/";
     private static String othersFolder = "textures/others/";
 
@@ -22,13 +22,13 @@ public class AssetsManager {
     public static void load() {
         assetsReferences = new ArrayMap<String, String>();
 
-        //Assets referentes a las imágenes
-
+        //Texturas referentes a enemies
         assetsReferences.put("tipo3", enemiesFolder+"tipo3.png");
         assetsReferences.put("type4", enemiesFolder+"tipo4.png");
         assetsReferences.put("type4_shield", enemiesFolder+"tipo4_shield.png");
         assetsReferences.put("enemy", enemiesFolder+"enemigo.png");
 
+        //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
         assetsReferences.put("inventary", othersFolder+"inventario.png");
         assetsReferences.put("red", othersFolder+"rojo.png");
@@ -42,6 +42,7 @@ public class AssetsManager {
         assetsReferences.put("arrow", othersFolder+"flecha.png");
         assetsReferences.put("slot", othersFolder+"slot.png");
 
+        //Texturas referentes a ships
         assetsReferences.put("ship", shipsFolder+"nave.png");
         assetsReferences.put("ship_red", shipsFolder+"nave_roja.png");
         assetsReferences.put("ship_blue", shipsFolder+"nave_azul.png");
@@ -50,6 +51,7 @@ public class AssetsManager {
         assetsReferences.put("ship_orange", shipsFolder+"nave_naranja.png");
         assetsReferences.put("ship_purple", shipsFolder+"nave_morada.png");
 
+        //Texturas referentes a weapons
         assetsReferences.put("shoot", weaponsFolder+"disparo.png");
 
         //Assets referentes a los efectos de partículas
@@ -64,6 +66,7 @@ public class AssetsManager {
         assetsReferences.put("yellow_equipped", particlesFolder + "amarillo_equipado");
         assetsReferences.put("shootEffect", particlesFolder + "shootEffect");
 
+        //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
     }
 
