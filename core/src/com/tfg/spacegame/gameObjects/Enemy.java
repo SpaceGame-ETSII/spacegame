@@ -5,7 +5,6 @@ import com.tfg.spacegame.GameObject;
 
 public class Enemy extends GameObject {
 
-
     private boolean defeated;
     private Vector2 initialPosition;
 
