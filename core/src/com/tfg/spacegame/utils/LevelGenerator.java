@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Json;
 import com.tfg.spacegame.gameObjects.enemies.Type1;
 import com.tfg.spacegame.gameObjects.enemies.Type2;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.enemies.Type5;
 
 public class LevelGenerator {
 
@@ -62,6 +63,8 @@ public class LevelGenerator {
             enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
         } else if (wrapper.type.equals("TYPE2")) {
             enemies.add(new Type2(wrapper.x, wrapper.y));
+        } else if (wrapper.type.equals("TYPE5")){
+            enemies.add(new Type5(wrapper.x, wrapper.y));
         } else {
                 throw new IllegalArgumentException("Se ha tratado de genera un enemigo de tipo inexistente");
         }
