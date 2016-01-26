@@ -1,14 +1,14 @@
 package com.tfg.spacegame.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.tfg.spacegame.gameObjects.enemies.Type1;
 import com.tfg.spacegame.gameObjects.enemies.Type2;
-import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.enemies.Type3;
 import com.tfg.spacegame.gameObjects.enemies.Type4;
+import com.tfg.spacegame.gameObjects.Enemy;
 
 public class LevelGenerator {
 
@@ -86,6 +86,7 @@ public class LevelGenerator {
                 enemies.add(new Type2(wrapper.x, wrapper.y));
                 break;
             case TYPE3:
+                enemies.add(new Type3(wrapper.x, wrapper.y));
                 break;
             case TYPE4:
                 enemies.add(new Type4(wrapper.x, wrapper.y));

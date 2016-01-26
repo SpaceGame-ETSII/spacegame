@@ -24,6 +24,7 @@ public class AssetsManager {
 
         //Assets referentes a las imágenes
 
+        assetsReferences.put("tipo3", enemiesFolder+"tipo3.png");
         assetsReferences.put("type4", enemiesFolder+"tipo4.png");
         assetsReferences.put("type4_shield", enemiesFolder+"tipo4_shield.png");
         assetsReferences.put("enemy", enemiesFolder+"enemigo.png");
