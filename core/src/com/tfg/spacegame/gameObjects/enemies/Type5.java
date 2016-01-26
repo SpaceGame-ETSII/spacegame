@@ -1,6 +1,5 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.gameObjects.Enemy;
 
 public class Type5 extends Enemy{
