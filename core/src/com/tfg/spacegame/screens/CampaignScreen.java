@@ -2,25 +2,16 @@ package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.Align;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Inventary;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.Weapon;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.weapons.Basic;
 import com.tfg.spacegame.utils.GameState;
 import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
@@ -31,7 +22,7 @@ public class CampaignScreen implements Screen{
     //Objetos interactuables de la pantalla
     private Ship ship;
     private Enemy enemy;
-    private Array<Shoot> shoots;
+    private Array<Weapon> shoots;
     private Inventary inventary;
 
     //Estado en el que se encuentra el juego
@@ -61,7 +52,7 @@ public class CampaignScreen implements Screen{
         //Creamos los objetos de juego
         ship = new Ship();
         enemy = new Enemy(SpaceGame.width, SpaceGame.height/2 - 40/2);
-        shoots = new Array<Shoot>();
+        shoots = new Array<Weapon>();
         inventary = new Inventary();
 
         //Creamos los objetos para el diálgo de salida del modo campaña
@@ -152,8 +143,8 @@ public class CampaignScreen implements Screen{
         ship.render(game.batch);
         if (!enemy.isDefeated)
             enemy.render(game.batch);
-        for(Shoot shoot: shoots){
-            shoot.render(game.batch);
+        for(Weapon weapon : shoots){
+            weapon.render(game.batch);
         }
 
         if (ship.getVitality() <= 0)
@@ -230,19 +221,19 @@ public class CampaignScreen implements Screen{
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-        for(Shoot shoot: shoots){
-            shoot.update(delta);
+        for(Weapon weapon : shoots){
+            weapon.update(delta);
 
             //Se realizará cuando el disparo dé en el enemigo
-            if (!enemy.isDefeated && shoot.isOverlapingWith(enemy)) {
-                shoots.removeValue(shoot,false);
+            if (!enemy.isDefeated && weapon.isOverlapingWith(enemy)) {
+                shoots.removeValue(weapon,false);
                 enemy.defeat();
             }
 
             //Si algún disparo sobresale los limites de la pantalla
             //Se eleminará
-            if(shoot.getX() > SpaceGame.width){
-                shoots.removeValue(shoot,false);
+            if(weapon.getX() > SpaceGame.width){
+                shoots.removeValue(weapon,false);
             }
         }
 
@@ -254,10 +245,7 @@ public class CampaignScreen implements Screen{
             // Esta es la acción del disparo básico
             // El disparo básico crea tres disparos seguidos
             // No se podrá disparar de nuevo hasta que desaparezcan.
-            shoots.add(new Shoot(ship));
-            shoots.add(new Shoot(ship,0.10f));
-            shoots.add(new Shoot(ship,0.20f));
-            ship.startShootEffect();
+            shoots.addAll(Basic.shootBasicWeapon(ship));
         }
 
         enemy.update(delta);
@@ -291,8 +279,8 @@ public class CampaignScreen implements Screen{
     public void dispose() {
         ship.dispose();
         enemy.dispose();
-        for(Shoot shoot: shoots)
-            shoot.dispose();
+        for(Weapon weapon : shoots)
+            weapon.dispose();
         inventary.dispose();
         exit.dispose();
         exitCancel.dispose();
