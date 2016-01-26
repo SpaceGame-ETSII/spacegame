@@ -228,7 +228,7 @@ public class CampaignScreen implements Screen{
         if(scrollingPosition <= -game.background.getWidth())
             scrollingPosition = 0;
 
-        //Creamos un vector que almacenará las posiciones relativas de la cámara
+        //Creamos +un vector que almacenará las posiciones relativas de la cámara
         Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
         v = game.camera.unproject(v);
 
@@ -246,8 +246,6 @@ public class CampaignScreen implements Screen{
 
             for(Iterator<Weapon> s = shoots.iterator(); s.hasNext();){
                 Weapon shoot = s.next();
-
-                shoot.update(delta);
 
                 //Se realizará cuando el disparo dé en el enemigo
                 if (!enemy.isDefeated() && shoot.isOverlapingWith(enemy)) {
