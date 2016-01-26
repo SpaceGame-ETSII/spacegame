@@ -11,7 +11,7 @@ public class Type5 extends Enemy{
 
     public Type5(int x, int y) {
         super("enemigo_basico_tipo5", x, y);
-        pixelsToMove = 650;
+        pixelsToMove = 500;
     }
 
     public void update(float delta){
