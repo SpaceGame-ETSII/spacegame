@@ -3,6 +3,7 @@ package com.tfg.spacegame.gameObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.tfg.spacegame.AssetsManager;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 
@@ -25,8 +26,7 @@ public class Ship extends GameObject {
         timeToUndamagable = 3.0f;
         this.setY(SpaceGame.height/2 - getHeight()/2);
 
-        particleEffect = new ParticleEffect();
-        particleEffect.load(Gdx.files.internal("particleEffects/shootEffect"),Gdx.files.internal(""));
+        particleEffect = AssetsManager.loadParticleEffect("shootEffect");
         particleEffect.getEmitters().first().setPosition(this.getX() + this.getWidth(),this.getY()+this.getHeight()/2);
     }
 

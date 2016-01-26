@@ -28,32 +28,34 @@ public class CampaignScreen implements Screen{
 
     final SpaceGame game;
 
-    Ship ship;
-    Enemy enemy;
-    Array<Shoot> shoots;
-    Inventary inventary;
+    //Objetos interactuables de la pantalla
+    private Ship ship;
+    private Enemy enemy;
+    private Array<Shoot> shoots;
+    private Inventary inventary;
 
-    GameState state;
+    //Estado en el que se encuentra el juego
+    private GameState state;
+
     //Variables para el diálogo de salida del modo camapaña
-    GameObject exit;
-    GameObject exitConfirm;
-    GameObject exitCancel;
-    GameObject ventana;
+    private GameObject exit;
+    private GameObject exitConfirm;
+    private GameObject exitCancel;
+    private GameObject ventana;
+
+    //Indican el estado de la ventana de diálogo para salir del juego
     private boolean isDialogin=false;
     private boolean isConfirm=false;
     private boolean isCancelled=false;
 
-    int scrollingPosition;
+    //Ayudan con la posición de la ventana cuando se abre y se cierra el inventario
+    private int scrollingPosition;
+    private static final int SCROLLING_SPEED = 120;
 
-    int scrollingSpeed;
+    public CampaignScreen(final SpaceGame game) {
 
-    public CampaignScreen(final SpaceGame gam) {
-
-        this.game = gam;
-
+        this.game = game;
         scrollingPosition = 0;
-        scrollingSpeed = 120;
-
         state = GameState.READY;
 
         //Creamos los objetos de juego
@@ -218,7 +220,7 @@ public class CampaignScreen implements Screen{
 
     public void updateLogic(float delta) {
         //Actualizamos la posición del scrolling
-        scrollingPosition -= delta * scrollingSpeed;
+        scrollingPosition -= delta * SCROLLING_SPEED;
         if(scrollingPosition <= -game.background.getWidth())
             scrollingPosition = 0;
 
