@@ -85,7 +85,7 @@ public class ShootsManager {
             weapon.render(SpaceGame.batch);
     }
 
-    public static void update(float delta){
+    public static void update(float delta, Ship ship){
         for(Weapon shoot: shoots){
             shoot.update(delta);
 
@@ -95,6 +95,9 @@ public class ShootsManager {
                     shoot.getY()+shoot.getHeight() < 0 || shoot.getY() > SpaceGame.height){
                 shoots.removeValue(shoot,false);
             }
+
+            if (ship.isOverlapingWith(shoot) && !ship.isUndamagable())
+                ship.receiveDamage();
         }
     }
 }

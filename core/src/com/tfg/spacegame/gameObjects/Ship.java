@@ -1,6 +1,7 @@
 package com.tfg.spacegame.gameObjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.utils.AssetsManager;
@@ -11,7 +12,12 @@ import com.tfg.spacegame.utils.ShootsManager;
 public class Ship extends GameObject {
 
     public static final float SPEED = 50;
-    private int vitality;
+
+    //Indica la cantidad de golpes recibidos
+    private int damageReceived;
+
+    //Indica el máximo de golpes que se puede recibir
+    private static final int VITALITY = 5;
 
     //Variable usada para hacer la nave invulnerable cuando es golpeada
     private boolean undamagable;
@@ -19,22 +25,22 @@ public class Ship extends GameObject {
     //Se usará como contador para volver la nave vulnerable
     private float timeToUndamagable;
 
-    private ParticleEffect particleEffect;
+    //Imagen de la cabina que irá sobre la nave y que se actualizará con los daños
+    private Texture cockpit;
 
     public Ship() {
         super("ship", 0, 0);
-        vitality = 5;
-        timeToUndamagable = 3.0f;
-        this.setY(SpaceGame.height/2 - getHeight()/2);
 
-        particleEffect = AssetsManager.loadParticleEffect("shootEffect");
-        particleEffect.getEmitters().first().setPosition(this.getX() + this.getWidth(),this.getY()+this.getHeight()/2);
+        damageReceived = 0;
+        timeToUndamagable = 3.0f;
+        cockpit = AssetsManager.loadTexture("cockpit");
+        this.setY(SpaceGame.height/2 - getHeight()/2);
     }
 
     @Override
     public void render(SpriteBatch batch){
         super.render(batch);
-        this.particleEffect.draw(batch);
+        batch.draw(cockpit, this.getX() + 76, this.getY() + 24);
     }
 
     public void update(float delta, float x, float y) {
@@ -62,17 +68,18 @@ public class Ship extends GameObject {
         ShootsManager.shootBurstBasicWeapon(this);
     }
 
-    public int getVitality() {
-        return vitality;
+    public int getDamageReceived() {
+        return damageReceived;
     }
 
     public void receiveDamage() {
-        vitality--;
+        damageReceived++;
+        cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
         undamagable = true;
     }
 
-    public void startShootEffect(){
-        particleEffect.start();
+    public boolean isDefeated() {
+        return damageReceived >= VITALITY;
     }
 
     public boolean isUndamagable() {
@@ -82,6 +89,12 @@ public class Ship extends GameObject {
     public void changeToDamagable() {
         undamagable = false;
         timeToUndamagable = 3.0f;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        cockpit.dispose();
     }
 
 }

@@ -51,6 +51,11 @@ public class AssetsManager {
         assetsReferences.put("ship_green", shipsFolder+"nave_verde.png");
         assetsReferences.put("ship_orange", shipsFolder+"nave_naranja.png");
         assetsReferences.put("ship_purple", shipsFolder+"nave_morada.png");
+        assetsReferences.put("cockpit", shipsFolder+"cabina.png");
+        assetsReferences.put("cockpit_damage1", shipsFolder+"cabina_daño1.png");
+        assetsReferences.put("cockpit_damage2", shipsFolder+"cabina_daño2.png");
+        assetsReferences.put("cockpit_damage3", shipsFolder+"cabina_daño3.png");
+        assetsReferences.put("cockpit_damage4", shipsFolder+"cabina_daño4.png");
 
         //Texturas referentes a weapons
         assetsReferences.put("shoot", weaponsFolder+"disparo.png");
