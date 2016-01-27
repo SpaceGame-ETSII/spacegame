@@ -34,7 +34,6 @@ public class ShootsManager {
             shoots.add(basic);
             shoots.add(new Basic(shooter,x,y, 0.1f));
             shoots.add(new Basic(shooter,x,y, 0.2f));
-
         }
     }
 
@@ -45,8 +44,8 @@ public class ShootsManager {
     public static void shootOneBasicWeapon(GameObject shooter) {
         Basic basic = new Basic(shooter,0,0,0.0f);
 
-        int x = (int) (shooter.getX());
-        int y = (int) (shooter.getY()+shooter.getHeight()/2);
+        int x = (int) (shooter.getX() - basic.getWidth());
+        int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
         basic.setX(x);
         basic.setY(y);
@@ -56,7 +55,7 @@ public class ShootsManager {
 
     /**
      * Indica si la nave puede disparar en el momento actual, según el arma
-     * @param shooter - El tipo de disparo equipado en la nave
+     * @param type - El tipo de disparo equipado en la nave
      * @return Indica si puede o no disparar la nave
      */
     private static boolean canShipShoot(TypeWeapon type) {
