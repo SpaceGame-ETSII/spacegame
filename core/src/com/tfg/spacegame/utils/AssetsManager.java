@@ -25,8 +25,9 @@ public class AssetsManager {
         //Texturas referentes a enemies
         assetsReferences.put("tipo3", enemiesFolder+"tipo3.png");
         assetsReferences.put("type4", enemiesFolder+"tipo4.png");
-        assetsReferences.put("enemigo_basico_tipo5", enemiesFolder+"enemigo_basico_tipo5.png");
         assetsReferences.put("type4_shield", enemiesFolder+"tipo4_shield.png");
+        assetsReferences.put("type4_body", enemiesFolder+"tipo4_body.png");
+        assetsReferences.put("enemigo_basico_tipo5", enemiesFolder+"enemigo_basico_tipo5.png");
         assetsReferences.put("enemy", enemiesFolder+"enemigo.png");
 
         //Texturas referentes a others
