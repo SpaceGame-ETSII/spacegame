@@ -1,13 +1,16 @@
 package com.tfg.spacegame.utils;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Weapon;
+import com.tfg.spacegame.gameObjects.enemies.Type5;
 import com.tfg.spacegame.gameObjects.weapons.Basic;
+import com.tfg.spacegame.gameObjects.weapons.BigShoot;
 
 public class ShootsManager {
 
@@ -56,7 +59,7 @@ public class ShootsManager {
 
     /**
      * Indica si la nave puede disparar en el momento actual, según el arma
-     * @param shooter - El tipo de disparo equipado en la nave
+     * @param type - El tipo de disparo equipado en la nave
      * @return Indica si puede o no disparar la nave
      */
     private static boolean canShipShoot(TypeWeapon type) {
@@ -97,5 +100,17 @@ public class ShootsManager {
                 shoots.removeValue(shoot,false);
             }
         }
+    }
+
+    public static void shootOneType5Weapon(GameObject shooter) {
+        BigShoot bigShoot = new BigShoot(shooter,0,0,0f);
+
+        int x = (int) (shooter.getX());
+        int y = (int) (shooter.getY()+shooter.getHeight()/2);
+
+        bigShoot.setX(x);
+        bigShoot.setY(y);
+
+        shoots.add(bigShoot);
     }
 }
