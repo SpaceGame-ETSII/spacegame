@@ -53,6 +53,7 @@ public class Type3 extends Enemy {
             this.setX(initialXToRotate + (DIAMETER * MathUtils.cosDeg(degrees)));
             this.setY(this.getInitialPosition().y + (DIAMETER * MathUtils.sinDeg(degrees)));
 
+
             //Si el tiempo se ha acabado, el enemigo disparará
             if (timeToShoot <= 0) {
                 this.shoot();
@@ -60,17 +61,6 @@ public class Type3 extends Enemy {
             } else {
                 timeToShoot -= FREQUENCY * delta;
             }
-
-            /*
-            if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
-                this.shoot();
-            } else if (MathUtils.cosDeg(degrees) == 0 && MathUtils.sinDeg(degrees) == 1) {
-                this.shoot();
-            } else if (MathUtils.cosDeg(degrees) == -1 && MathUtils.sinDeg(degrees) == 0) {
-                this.shoot();
-            } else if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
-                this.shoot();
-            }*/
 
         }
     }
