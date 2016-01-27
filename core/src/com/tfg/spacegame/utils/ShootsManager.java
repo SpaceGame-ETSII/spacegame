@@ -37,7 +37,6 @@ public class ShootsManager {
             shoots.add(basic);
             shoots.add(new Basic(shooter,x,y, 0.1f));
             shoots.add(new Basic(shooter,x,y, 0.2f));
-
         }
     }
 
@@ -48,8 +47,8 @@ public class ShootsManager {
     public static void shootOneBasicWeapon(GameObject shooter) {
         Basic basic = new Basic(shooter,0,0,0.0f);
 
-        int x = (int) (shooter.getX());
-        int y = (int) (shooter.getY()+shooter.getHeight()/2);
+        int x = (int) (shooter.getX() - basic.getWidth());
+        int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
         basic.setX(x);
         basic.setY(y);
