@@ -133,13 +133,11 @@ public class CampaignScreen implements Screen{
     }
 
     private void renderStart(float delta) {
-        SpaceGame.font.draw(SpaceGame.batch, ship.getVitality() + "", 100, 100);
-
         ship.render(game.batch);
         EnemyManager.render();
         ShootsManager.render();
 
-        if (ship.getVitality() <= 0)
+        if (ship.isDefeated())
             state = GameState.LOSE;
 
         updateLogic(delta);
@@ -219,7 +217,7 @@ public class CampaignScreen implements Screen{
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
         EnemyManager.update(delta);
-        ShootsManager.update(delta);
+        ShootsManager.update(delta, ship);
 
         // Si tocamos la pantalla disparamos
         // El disparo puede hacerse de dos formas
