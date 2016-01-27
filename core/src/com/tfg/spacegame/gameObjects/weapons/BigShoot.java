@@ -8,6 +8,7 @@ import com.tfg.spacegame.gameObjects.Weapon;
 import com.tfg.spacegame.utils.AssetsManager;
 
 public class BigShoot extends Weapon{
+
     //Velocidad de movimiento
     public static final float SPEED = 200;
 
@@ -23,9 +24,7 @@ public class BigShoot extends Weapon{
 
         // Creamos el efecto de particulas
         shootEffect = AssetsManager.loadParticleEffect("shootType5Effect");
-
         this.updateParticleEffect();
-
 
         // Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará
         shootEffect.start();
@@ -34,10 +33,7 @@ public class BigShoot extends Weapon{
 
     public void updateParticleEffect() {
         if (this.getShooter() instanceof Enemy){
-            shootEffect.getEmitters().first().setPosition(this.getShooter().getX(),this.getShooter().getY()+this.getShooter().getHeight()/2);
-            // Rotamos el efecto de particulas 180º
-            shootEffect.getEmitters().first().getAngle().setHigh(135,225);
-            shootEffect.getEmitters().first().getAngle().setLow(160, 200);
+            shootEffect.getEmitters().first().setPosition(this.getX(),this.getY()+18);
         }else{
             throw new IllegalArgumentException("No puede disparar siendo diferente de un enemigo básico tipo 5");
         }
@@ -52,25 +48,25 @@ public class BigShoot extends Weapon{
             else
                 this.setX(this.getX() + (SPEED * delta));
 
-            // Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
+            //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
             this.updateParticleEffect();
-            // Actualizamos el efecto de particulas
-            shootEffect.update(delta);
 
+            //Actualizamos el efecto de particulas
+            shootEffect.update(delta);
         }
-        // Mientras no sea el momento para moverse
+        //Mientras no sea el momento para moverse
         else{
-            // Vamos a ir restando el tiempo de delay con el delta hasta que sea menor que 0
+            //Vamos a ir restando el tiempo de delay con el delta hasta que sea menor que 0
             timeToMove-=delta;
 
-            // Podemos además ir actualizando la posición Y por si el shooter se está moviendo
+            //Podemos además ir actualizando la posición Y por si el shooter se está moviendo
             this.setY(getShooter().getY()+getShooter().getHeight()/2 - this.getHeight()/2);
         }
     }
 
     public void render(SpriteBatch batch){
         super.render(batch);
-        // Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
+        //Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
         if(timeToMove < 0)
             shootEffect.draw(batch);
     }

@@ -68,6 +68,7 @@ public class AssetsManager {
         assetsReferences.put("yellow_equipped", particlesFolder + "amarillo_equipado");
         assetsReferences.put("shootEffect", particlesFolder + "shootEffect");
         assetsReferences.put("shootType5Effect", particlesFolder + "tipo5");
+        assetsReferences.put("warningType5Effect", particlesFolder + "aviso_tipo5");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
@@ -78,12 +79,14 @@ public class AssetsManager {
         return new Texture(Gdx.files.internal(assetsReferences.get(textureName)));
     }
 
+    //Se llamará a este método cada vez que se pretenda cargar un efecto de partículas
     public static ParticleEffect loadParticleEffect(String particleName) {
         ParticleEffect particle = new ParticleEffect();
         particle.load(Gdx.files.internal(assetsReferences.get(particleName)), Gdx.files.internal(""));
         return particle;
     }
 
+    //Se llamará a este método cada vez que se pretenda cargar script del juego
     public static FileHandle loadScript(String scriptName){
         return Gdx.files.internal(assetsReferences.get(scriptName));
     }
