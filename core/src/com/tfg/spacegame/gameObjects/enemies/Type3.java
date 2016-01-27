@@ -3,6 +3,7 @@ package com.tfg.spacegame.gameObjects.enemies;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.utils.ShootsManager;
 
 public class Type3 extends Enemy {
 
@@ -15,6 +16,12 @@ public class Type3 extends Enemy {
     //Indicará el diámetro del círculo que dibujará el enemigo
     private static final int DIAMETER = 150;
 
+    //Será el valor de referencia que servirá para la frecuencia de disparo
+    private static final int FREQUENCY = 100;
+
+    //Valor inicial al que se reiniciará el timeToShoot
+    private static final float INITIAL_TIME_TO_SHOOT = 150.0f;
+
     //Indicará el grado del movimiento que irá variando con la ondulación
     private float degrees;
 
@@ -24,10 +31,14 @@ public class Type3 extends Enemy {
     //Cantidad de pixeles que quedan para que el enemigo empiece a girar
     private int pixelsToMoveSlowly;
 
+    //Tiempo que queda hasta el disparo
+    private float timeToShoot;
+
     public Type3(int x, int y) {
         super("tipo3", x, y);
 
         pixelsToMoveSlowly = 150;
+        timeToShoot = INITIAL_TIME_TO_SHOOT;
         initialXToRotate = SpaceGame.width - (pixelsToMoveSlowly * ACCELERATION);
     }
 
@@ -41,17 +52,31 @@ public class Type3 extends Enemy {
             degrees += SPEED * delta;
             this.setX(initialXToRotate + (DIAMETER * MathUtils.cosDeg(degrees)));
             this.setY(this.getInitialPosition().y + (DIAMETER * MathUtils.sinDeg(degrees)));
-            if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
 
-            } else if (MathUtils.cosDeg(degrees) == 0 && MathUtils.sinDeg(degrees) == 1) {
-
-            } else if (MathUtils.cosDeg(degrees) == -1 && MathUtils.sinDeg(degrees) == 0) {
-
-            } else if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
-
+            //Si el tiempo se ha acabado, el enemigo disparará
+            if (timeToShoot <= 0) {
+                this.shoot();
+                timeToShoot = INITIAL_TIME_TO_SHOOT;
+            } else {
+                timeToShoot -= FREQUENCY * delta;
             }
 
+            /*
+            if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
+                this.shoot();
+            } else if (MathUtils.cosDeg(degrees) == 0 && MathUtils.sinDeg(degrees) == 1) {
+                this.shoot();
+            } else if (MathUtils.cosDeg(degrees) == -1 && MathUtils.sinDeg(degrees) == 0) {
+                this.shoot();
+            } else if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
+                this.shoot();
+            }*/
+
         }
+    }
+
+    public void shoot(){
+        ShootsManager.shootOneBasicWeapon(this);
     }
 
 }
