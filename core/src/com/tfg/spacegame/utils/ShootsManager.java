@@ -100,4 +100,20 @@ public class ShootsManager {
                 ship.receiveDamage();
         }
     }
+
+    //Gestiona la colisión del shoot pasado por parámetro con la nave
+    public static void manageCollisionWithShip(Weapon shoot) {
+        //TODO
+    }
+
+    //Gestiona la colisión del shoot y el enemigo pasados por parámetro
+    public static void manageCollisionWithEnemy(Pair<Weapon,Enemy> shootToEnemy) {
+        //TODO
+    }
+
+    //Gestiona la colisión de los dos shoots pasados por parámetro
+    public static void manageCollisionWithShoot(Pair<Weapon, Weapon> shootToShoot) {
+        //TODO
+    }
+
 }
