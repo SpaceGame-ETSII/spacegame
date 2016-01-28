@@ -28,4 +28,8 @@ public class Enemy extends GameObject {
         return initialPosition;
     }
 
+    public void collideWithShip() {}
+
+    public void collideWithShoot(Shoot shoot) {}
+
 }

@@ -8,7 +8,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Inventary;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Weapon;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.*;
 
@@ -254,8 +254,8 @@ public class CampaignScreen implements Screen{
         ship.dispose();
         for(Enemy enemy: EnemiesManager.enemies)
             enemy.dispose();
-        for(Weapon weapon : ShootsManager.shoots)
-            weapon.dispose();
+        for(Shoot shoot : ShootsManager.shoots)
+            shoot.dispose();
         inventary.dispose();
         exit.dispose();
         exitCancel.dispose();

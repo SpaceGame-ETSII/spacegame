@@ -4,7 +4,7 @@ package com.tfg.spacegame.utils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Weapon;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class EnemiesManager {
 
@@ -30,8 +30,9 @@ public class EnemiesManager {
                 enemies.removeValue(enemy,false);
             }
 
-            if(enemy.isDefeated())
-                enemies.removeValue(enemy,false);
+            if(enemy.isDefeated()) {
+                enemies.removeValue(enemy, false);
+            }
         }
     }
 
@@ -41,13 +42,16 @@ public class EnemiesManager {
                 enemy.render(SpaceGame.batch);
     }
 
-    //Gestiona la colisión del enemigo pasado por parámetro con la nave
+    //Gestiona la reacción de la colisión del enemigo pasado por parámetro con la nave
     public static void manageCollisionWithShip(Enemy enemy) {
-        //TODO
+        enemy.collideWithShip();
     }
 
-    //Gestiona la colisión del enemigo con el arma
-    public static void manageCollisionWithShoot(Pair<Weapon, Enemy> shootToEnemy) {
-        //TODO
+    //Gestiona la reacción de la colisión del enemigo con el arma
+    public static void manageCollisionWithShoot(Pair<Shoot, Enemy> shootToEnemy) {
+        Shoot shoot = shootToEnemy.getFirst();
+        Enemy enemy = shootToEnemy.getSecond();
+
+        enemy.collideWithShoot(shoot);
     }
 }

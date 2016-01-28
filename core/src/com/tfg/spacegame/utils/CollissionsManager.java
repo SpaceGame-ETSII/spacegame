@@ -3,27 +3,27 @@ package com.tfg.spacegame.utils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Weapon;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class CollissionsManager {
 
     //Contendrán las colisiones realizadas
-    private static Array<Pair<Weapon, Enemy>> shootsToEnemies;
-    private static Array<Pair<Weapon, Weapon>> shootsToShoots;
+    private static Array<Pair<Shoot, Enemy>> shootsToEnemies;
+    private static Array<Pair<Shoot, Shoot>> shootsToShoots;
 
     public void load() {
-        shootsToEnemies = new Array<Pair<Weapon, Enemy>>();
-        shootsToShoots = new Array<Pair<Weapon, Weapon>>();
+        shootsToEnemies = new Array<Pair<Shoot, Enemy>>();
+        shootsToShoots = new Array<Pair<Shoot, Shoot>>();
     }
 
     public void update(float delta, Ship ship) {
         //Arrays que harán de auxiliares para no sobreescribir las originales
         Array<Enemy> enemies = EnemiesManager.enemies;
-        Array<Weapon> shoots = ShootsManager.shoots;
+        Array<Shoot> shoots = ShootsManager.shoots;
 
         //Almacenan el enemigo o bala que han chocado con la nave
         Enemy enemyOverlapsShip = null;
-        Weapon shootOverlapsShip = null;
+        Shoot shootOverlapsShip = null;
 
         //Indicará que un shoot ya ha dado con un enemigo, y servirá para que no se compruebe posteriormente con otro shoot
         boolean shootIsOverlapped;
@@ -41,7 +41,7 @@ public class CollissionsManager {
         }
 
         //Ahora comprobamos las colisiones de los shoots
-        for (Weapon shootDst: shoots) {
+        for (Shoot shootDst: shoots) {
             shootIsOverlapped = false;
 
             //En primer lugar comprobamos si el shoot dió a la nave, siempre y cuando no hubiese sido golpeada antes
@@ -55,7 +55,7 @@ public class CollissionsManager {
                 for (Enemy enemy : enemies) {
                     if (shootDst.isOverlapingWith(enemy)) {
                         //Añadimos el par colisionado a la lista
-                        shootsToEnemies.add(new Pair<Weapon, Enemy>(shootDst, enemy));
+                        shootsToEnemies.add(new Pair<Shoot, Enemy>(shootDst, enemy));
 
                         //Borramos los elementos de la colisión para que no se comprueben más
                         shoots.removeValue(shootDst, false);
@@ -70,10 +70,10 @@ public class CollissionsManager {
                 //Por último, si la bala no ha chocado con un enemigo, comprobamos si ha chocado con otra bala
                 if (!shootIsOverlapped) {
 
-                    for (Weapon shootSrc : shoots) {
+                    for (Shoot shootSrc : shoots) {
                         if (shootDst != shootSrc && shootDst.isOverlapingWith(shootSrc)) {
                             //Añadimos el par colisionado a la lista
-                            shootsToShoots.add(new Pair<Weapon, Weapon>(shootDst, shootSrc));
+                            shootsToShoots.add(new Pair<Shoot, Shoot>(shootDst, shootSrc));
 
                             //Borramos los elementos de la colisión para que no se comprueben más
                             shoots.removeValue(shootDst, false);
@@ -104,28 +104,28 @@ public class CollissionsManager {
         ship.receiveDamage();
         EnemiesManager.manageCollisionWithShip(enemy);
     }
-    
+
     //Gestiona una colisión de shoot a la nave
-    private void manageShootToShip(Weapon shoot, Ship ship) {
+    private void manageShootToShip(Shoot shoot, Ship ship) {
         ship.receiveDamage();
         ShootsManager.manageCollisionWithShip(shoot);
     }
 
     //Gestionará las colisiones entre disparos y enemigos
     private void manageShootsToEnemies() {
-        for (Pair<Weapon, Enemy> shootToEnemy: shootsToEnemies) {
+        for (Pair<Shoot, Enemy> shootToEnemy: shootsToEnemies) {
             EnemiesManager.manageCollisionWithShoot(shootToEnemy);
             ShootsManager.manageCollisionWithEnemy(shootToEnemy);
         }
-        shootsToEnemies = new Array<Pair<Weapon, Enemy>>();
+        shootsToEnemies = new Array<Pair<Shoot, Enemy>>();
     }
 
     //Gestionará las colisiones entre disparos y disparos
     private void manageShootsToShoots() {
-        for (Pair<Weapon, Weapon> shootToShoot: shootsToShoots) {
+        for (Pair<Shoot, Shoot> shootToShoot: shootsToShoots) {
             ShootsManager.manageCollisionWithShoot(shootToShoot);
         }
-        shootsToShoots = new Array<Pair<Weapon, Weapon>>();
+        shootsToShoots = new Array<Pair<Shoot, Shoot>>();
     }
 
 }

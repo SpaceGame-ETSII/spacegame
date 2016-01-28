@@ -6,15 +6,15 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Weapon;
-import com.tfg.spacegame.gameObjects.weapons.Basic;
+import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.shoots.Basic;
 
 public class ShootsManager {
 
-    public static Array<Weapon> shoots;
+    public static Array<Shoot> shoots;
 
     public static void load() {
-        shoots = new Array<Weapon>();
+        shoots = new Array<Shoot>();
     }
 
     /**
@@ -60,10 +60,10 @@ public class ShootsManager {
      */
     private static boolean canShipShoot(TypeWeapon type) {
         boolean result = false;
-        Array<Weapon> selected = new Array<Weapon>();
+        Array<Shoot> selected = new Array<Shoot>();
 
         //Obtenemos todos los disparos en pantalla que realizó la nave
-        for(Weapon w : shoots){
+        for(Shoot w : shoots){
             if(w.getShooter() instanceof Ship)
                 selected.add(w);
         }
@@ -81,12 +81,12 @@ public class ShootsManager {
     }
 
     public static void render(){
-        for(Weapon weapon : shoots)
-            weapon.render(SpaceGame.batch);
+        for(Shoot shoot : shoots)
+            shoot.render(SpaceGame.batch);
     }
 
     public static void update(float delta, Ship ship){
-        for(Weapon shoot: shoots){
+        for(Shoot shoot: shoots){
             shoot.update(delta);
 
             //Si algún disparo sobresale los limites de la pantalla
@@ -101,19 +101,26 @@ public class ShootsManager {
         }
     }
 
-    //Gestiona la colisión del shoot pasado por parámetro con la nave
-    public static void manageCollisionWithShip(Weapon shoot) {
-        //TODO
+    //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave
+    public static void manageCollisionWithShip(Shoot shoot) {
+        shoot.collideWithShip();
     }
 
-    //Gestiona la colisión del shoot y el enemigo pasados por parámetro
-    public static void manageCollisionWithEnemy(Pair<Weapon,Enemy> shootToEnemy) {
-        //TODO
+    //Gestiona la reacción de la colisión del shoot y el enemigo pasados por parámetro
+    public static void manageCollisionWithEnemy(Pair<Shoot,Enemy> shootToEnemy) {
+        Shoot shoot = shootToEnemy.getFirst();
+        Enemy enemy = shootToEnemy.getSecond();
+
+        shoot.collideWithEnemy(enemy);
     }
 
-    //Gestiona la colisión de los dos shoots pasados por parámetro
-    public static void manageCollisionWithShoot(Pair<Weapon, Weapon> shootToShoot) {
-        //TODO
+    //Gestiona la reacción de la colisión de los dos shoots pasados por parámetro
+    public static void manageCollisionWithShoot(Pair<Shoot, Shoot> shootToShoot) {
+        Shoot shoot1 = shootToShoot.getFirst();
+        Shoot shoot2 = shootToShoot.getSecond();
+
+        shoot1.collideWithShoot(shoot2);
+        shoot2.collideWithShoot(shoot1);
     }
 
 }
