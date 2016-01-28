@@ -72,20 +72,26 @@ public class Ship extends GameObject {
         return damageReceived;
     }
 
+    //Aumenta en uno el daño a la nave, la vuelve invunerable y cambia la apariencia de la cabina
     public void receiveDamage() {
         damageReceived++;
-        cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
-        undamagable = true;
+        if (damageReceived < VITALITY) {
+            cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
+            undamagable = true;
+        }
     }
 
+    //Indica si la nave está derrotada, es decir, que el daño recibido sea mayor o igual a la vitalidad
     public boolean isDefeated() {
         return damageReceived >= VITALITY;
     }
 
+    //Inicia si la navez puede recibir daños
     public boolean isUndamagable() {
         return undamagable;
     }
 
+    //Hace que la nave pueda volver a recibir daños en el caso en que estuviese vulnerable
     public void changeToDamagable() {
         undamagable = false;
         timeToUndamagable = 3.0f;

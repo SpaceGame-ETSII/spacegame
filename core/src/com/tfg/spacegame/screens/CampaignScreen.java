@@ -46,7 +46,7 @@ public class CampaignScreen implements Screen{
 
         //Creamos los objetos de juego
         ship = new Ship();
-        EnemyManager.load();
+        EnemiesManager.load();
         ShootsManager.load();
         inventary = new Inventary();
 
@@ -134,7 +134,7 @@ public class CampaignScreen implements Screen{
 
     private void renderStart(float delta) {
         ship.render(game.batch);
-        EnemyManager.render();
+        EnemiesManager.render();
         ShootsManager.render();
 
         if (ship.isDefeated())
@@ -216,7 +216,7 @@ public class CampaignScreen implements Screen{
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-        EnemyManager.update(delta);
+        EnemiesManager.update(delta);
         ShootsManager.update(delta, ship);
 
         // Si tocamos la pantalla disparamos
@@ -252,7 +252,7 @@ public class CampaignScreen implements Screen{
     @Override
     public void dispose() {
         ship.dispose();
-        for(Enemy enemy: EnemyManager.enemies)
+        for(Enemy enemy: EnemiesManager.enemies)
             enemy.dispose();
         for(Weapon weapon : ShootsManager.shoots)
             weapon.dispose();

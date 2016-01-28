@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 
-public class EnemyManager {
+public class EnemiesManager {
 
     public static Array<Enemy> enemies;
     private static LevelGenerator level;
