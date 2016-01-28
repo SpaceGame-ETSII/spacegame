@@ -28,8 +28,12 @@ public class Ship extends GameObject {
     //Imagen de la cabina que irá sobre la nave y que se actualizará con los daños
     private Texture cockpit;
 
+    private int a;
+
     public Ship() {
         super("ship", 0, 0);
+
+        a = -10;
 
         damageReceived = 0;
         timeToUndamagable = 3.0f;
@@ -39,8 +43,17 @@ public class Ship extends GameObject {
 
     @Override
     public void render(SpriteBatch batch){
-        super.render(batch);
-        batch.draw(cockpit, this.getX() + 76, this.getY() + 24);
+        if (!this.isUndamagable() || (this.isUndamagable() && a > 0)) {
+            super.render(batch);
+            batch.draw(cockpit, this.getX() + 76, this.getY() + 24);
+        }
+
+        if (this.isUndamagable()) {
+            if (a >= 10) {
+                a = -10;
+            }
+            a++;
+        }
     }
 
     public void update(float delta, float x, float y) {
@@ -74,10 +87,13 @@ public class Ship extends GameObject {
 
     //Aumenta en uno el daño a la nave, la vuelve invunerable y cambia la apariencia de la cabina
     public void receiveDamage() {
-        damageReceived++;
-        if (damageReceived < VITALITY) {
-            cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
-            undamagable = true;
+        if (!undamagable) {
+            damageReceived++;
+            if (damageReceived < VITALITY) {
+                cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
+                undamagable = true;
+            }
+            //Gdx.input.vibrate(1000);
         }
     }
 

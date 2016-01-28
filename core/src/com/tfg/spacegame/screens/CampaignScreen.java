@@ -46,9 +46,10 @@ public class CampaignScreen implements Screen{
 
         //Creamos los objetos de juego
         ship = new Ship();
+        inventary = new Inventary();
         EnemiesManager.load();
         ShootsManager.load();
-        inventary = new Inventary();
+        CollissionsManager.load();
 
         //Creamos los objetos para el diálgo de salida del modo campaña
         exit = new GameObject("buttonExit",750,430);
@@ -216,6 +217,7 @@ public class CampaignScreen implements Screen{
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
+        CollissionsManager.update(delta, ship);
         EnemiesManager.update(delta);
         ShootsManager.update(delta, ship);
 
