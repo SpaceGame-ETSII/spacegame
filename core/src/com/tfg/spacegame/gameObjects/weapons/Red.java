@@ -17,10 +17,10 @@ public class Red extends Weapon{
     private ParticleEffect shootEffect;
 
     public Red(GameObject shooter, int x, int y,float delay) {
-        super("shoot", x, y, shooter);
+        super("shoot_red", x, y, shooter);
 
         // Creamos el efecto de particulas
-        shootEffect = AssetsManager.loadParticleEffect("red_weapon");
+        shootEffect = AssetsManager.loadParticleEffect("shoot_redEffect");
         this.updateParticleEffect();
 
         // Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará

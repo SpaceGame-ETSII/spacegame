@@ -54,10 +54,10 @@ public class BigShoot extends Weapon{
     }
 
     public void render(SpriteBatch batch){
-        super.render(batch);
         //Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
         if(timeToMove < 0)
             shootEffect.draw(batch);
+        super.render(batch);
     }
 
     public void dispose(){
