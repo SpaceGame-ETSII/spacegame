@@ -59,7 +59,9 @@ public class Ship extends GameObject {
     }
 
     public void shoot(){
-        ShootsManager.shootBurstBasicWeapon(this);
+
+        //ShootsManager.shootBurstBasicWeapon(this);
+        ShootsManager.shootRedWeapon(this);
     }
 
     public int getVitality() {

@@ -11,6 +11,7 @@ import com.tfg.spacegame.gameObjects.Weapon;
 import com.tfg.spacegame.gameObjects.enemies.Type5;
 import com.tfg.spacegame.gameObjects.weapons.Basic;
 import com.tfg.spacegame.gameObjects.weapons.BigShoot;
+import com.tfg.spacegame.gameObjects.weapons.Red;
 
 public class ShootsManager {
 
@@ -111,5 +112,17 @@ public class ShootsManager {
         bigShoot.setY(y);
 
         shoots.add(bigShoot);
+    }
+
+    public static void shootRedWeapon(GameObject shooter) {
+        Red redShoot = new Red(shooter,0,0,0f);
+
+        int x = (int) (shooter.getX());
+        int y = (int) (shooter.getY());
+
+        redShoot.setX(x);
+        redShoot.setY(y);
+
+        shoots.add(redShoot);
     }
 }

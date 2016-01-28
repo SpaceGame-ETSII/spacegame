@@ -70,6 +70,7 @@ public class AssetsManager {
         assetsReferences.put("shootEffect", particlesFolder + "shootEffect");
         assetsReferences.put("shootType5Effect", particlesFolder + "tipo5");
         assetsReferences.put("warningType5Effect", particlesFolder + "aviso_tipo5");
+        assetsReferences.put("red_weapon", particlesFolder + "arma_roja");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
