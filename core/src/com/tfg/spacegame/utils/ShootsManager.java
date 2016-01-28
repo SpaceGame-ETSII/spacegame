@@ -78,6 +78,10 @@ public class ShootsManager {
                 if(selected.size == 0)
                     result = true;
                 break;
+            case RED:
+                if(selected.size==0)
+                    result = true;
+                break;
             default:
                 throw new IllegalArgumentException("Se ha seleccionado un tipo de arma inválido");
         }
@@ -106,7 +110,7 @@ public class ShootsManager {
         BigShoot bigShoot = new BigShoot(shooter,0,0,0f);
 
         int x = (int) (shooter.getX());
-        int y = (int) (shooter.getY()+shooter.getHeight()/2);
+        int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
         bigShoot.setX(x);
         bigShoot.setY(y);
@@ -117,12 +121,15 @@ public class ShootsManager {
     public static void shootRedWeapon(GameObject shooter) {
         Red redShoot = new Red(shooter,0,0,0f);
 
-        int x = (int) (shooter.getX() + shooter.getWidth());
-        int y = (int) (shooter.getY() + shooter.getHeight()/2);
+        if(canShipShoot(TypeWeapon.RED)){
+            int x = (int) (shooter.getX() + shooter.getWidth());
+            int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
-        redShoot.setX(x);
-        redShoot.setY(y);
+            redShoot.setX(x);
+            redShoot.setY(y);
 
-        shoots.add(redShoot);
+            shoots.add(redShoot);
+        }
+
     }
 }

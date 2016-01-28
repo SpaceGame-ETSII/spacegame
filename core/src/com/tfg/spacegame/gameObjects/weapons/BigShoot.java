@@ -41,23 +41,32 @@ public class BigShoot extends Weapon{
 
     public void update(float delta) {
         // Esperaremos a que sea el momento correcto para moverse
-        // Actualizamos el movimiento del disparo
-        if(getShooter() instanceof Enemy)
-            this.setX(this.getX() - (SPEED * delta));
+        if(timeToMove < 0){
+            // Actualizamos el movimiento del disparo
+            if(getShooter() instanceof Enemy)
+                this.setX(this.getX() - (SPEED * delta));
 
-        //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
-        this.updateParticleEffect();
+            //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
+            this.updateParticleEffect();
 
-        //Actualizamos el efecto de particulas
-        shootEffect.update(delta);
+            //Actualizamos el efecto de particulas
+            shootEffect.update(delta);
+        }
+        //Mientras no sea el momento para moverse
+        else{
+            //Vamos a ir restando el tiempo de delay con el delta hasta que sea menor que 0
+            timeToMove-=delta;
 
+            //Podemos además ir actualizando la posición Y por si el shooter se está moviendo
+            this.setY(getShooter().getY()+getShooter().getHeight()/2 - this.getHeight()/2);
+        }
     }
 
     public void render(SpriteBatch batch){
+        super.render(batch);
         //Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
         if(timeToMove < 0)
             shootEffect.draw(batch);
-        super.render(batch);
     }
 
     public void dispose(){
