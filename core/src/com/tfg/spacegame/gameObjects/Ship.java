@@ -28,31 +28,37 @@ public class Ship extends GameObject {
     //Imagen de la cabina que irá sobre la nave y que se actualizará con los daños
     private Texture cockpit;
 
-    private int a;
+    //Sirve para indicar los tiempos en los que la nave parpadeará a ser invulnerable
+    private int timeForInvisible;
+
+    //Indica el rango por el que se moverá el timeForInvisible
+    private static final int RANGE_INVISIBLE_TIMER = 5;
 
     public Ship() {
         super("ship", 0, 0);
 
-        a = -10;
-
+        timeForInvisible = RANGE_INVISIBLE_TIMER;
         damageReceived = 0;
-        timeToUndamagable = 3.0f;
+        timeToUndamagable = 2.0f;
         cockpit = AssetsManager.loadTexture("cockpit");
         this.setY(SpaceGame.height/2 - getHeight()/2);
     }
 
     @Override
     public void render(SpriteBatch batch){
-        if (!this.isUndamagable() || (this.isUndamagable() && a > 0)) {
+        //Si la nave no está en modo invulnerable o lo está y timeForInvisible es positivo, mostramos la nave
+        if (!this.isUndamagable() || (this.isUndamagable() && timeForInvisible > 0)) {
             super.render(batch);
             batch.draw(cockpit, this.getX() + 76, this.getY() + 24);
         }
 
+        //Si la nave está en modo invulnerable, actualizamos el valor de timeForInvisible
         if (this.isUndamagable()) {
-            if (a >= 10) {
-                a = -10;
+            //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
+            if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
+                timeForInvisible = -RANGE_INVISIBLE_TIMER;
             }
-            a++;
+            timeForInvisible++;
         }
     }
 
@@ -93,7 +99,7 @@ public class Ship extends GameObject {
                 cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
                 undamagable = true;
             }
-            //Gdx.input.vibrate(1000);
+            Gdx.input.vibrate(300);
         }
     }
 
