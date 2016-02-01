@@ -135,8 +135,8 @@ public class CampaignScreen implements Screen{
     private void renderStart(float delta) {
         SpaceGame.font.draw(SpaceGame.batch, ship.getVitality() + "", 100, 100);
 
-        ship.render(game.batch);
         ShootsManager.render();
+        ship.render(game.batch);
         EnemyManager.render();
 
         if (ship.getVitality() <= 0)

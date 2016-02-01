@@ -122,7 +122,7 @@ public class ShootsManager {
         Red redShoot = new Red(shooter,0,0,0f);
 
         if(canShipShoot(TypeWeapon.RED)){
-            int x = (int) (shooter.getX() + shooter.getWidth());
+            int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
             redShoot.setX(x);
