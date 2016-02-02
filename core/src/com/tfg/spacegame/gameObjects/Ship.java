@@ -2,6 +2,7 @@ package com.tfg.spacegame.gameObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.GameObject;
@@ -38,6 +39,9 @@ public class Ship extends GameObject {
     //Indica el color de la nave
     private ColorShip color;
 
+    //Efecto de partículas para el fuego de la nave
+    private ParticleEffect fireEffect;
+
     public Ship() {
         super("ship", 0, 0);
 
@@ -49,6 +53,19 @@ public class Ship extends GameObject {
 
         //Inicializamos el color de la nava a incoloro
         color = ColorShip.COLORLESS;
+
+        //Creamos el efecto de partículas del fuego
+        fireEffect = AssetsManager.loadParticleEffect("fire");
+
+        this.updateParticleEffect();
+
+        //Lo iniciamos, pero aunque lo iniciemos si no hay un update no avanzará
+        fireEffect.start();
+    }
+
+    private void updateParticleEffect() {
+        fireEffect.getEmitters().first().setPosition(this.getX() + 40,this.getY() + this.getHeight()/2 + 2);
+        fireEffect.start();
     }
 
     @Override
@@ -67,9 +84,17 @@ public class Ship extends GameObject {
             }
             timeForInvisible++;
         }
+
+        fireEffect.draw(batch);
     }
 
     public void update(float delta, float x, float y) {
+
+        //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
+        this.updateParticleEffect();
+
+        //Actualizamos el efecto de particulas
+        fireEffect.update(delta);
 
         //Movimiento de la nave
         if (Gdx.input.isTouched() && y < (this.getY() + this.getHeight() / 2 ) && x < (this.getX() + this.getWidth()))
@@ -88,6 +113,7 @@ public class Ship extends GameObject {
             timeToUndamagable -= delta;
         if (timeToUndamagable <= 0)
             this.changeToDamagable();
+
     }
 
     public void changeColor(ColorShip color){
@@ -138,6 +164,7 @@ public class Ship extends GameObject {
     public void dispose() {
         super.dispose();
         cockpit.dispose();
+        fireEffect.dispose();
     }
 
 }

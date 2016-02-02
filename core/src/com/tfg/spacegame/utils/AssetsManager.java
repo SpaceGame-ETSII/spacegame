@@ -78,6 +78,8 @@ public class AssetsManager {
         assetsReferences.put("red_effect_shoot", particlesFolder + "arma_roja");
         assetsReferences.put("basic_effect_shoot", particlesFolder + "basico_efecto_disparo");
         assetsReferences.put("basic_effect_shock", particlesFolder + "basico_efecto_choque");
+        assetsReferences.put("basic", particlesFolder + "basico");
+        assetsReferences.put("fire", particlesFolder + "fire");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");

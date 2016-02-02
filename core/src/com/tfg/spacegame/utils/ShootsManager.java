@@ -34,8 +34,8 @@ public class ShootsManager {
             basic.setY(y);
 
             shoots.add(basic);
-            shoots.add(new Basic(shooter,x,y, 0.1f));
-            shoots.add(new Basic(shooter,x,y, 0.2f));
+            //shoots.add(new Basic(shooter,x,y, 0.1f));
+            //shoots.add(new Basic(shooter,x,y, 0.2f));
         }
     }
 

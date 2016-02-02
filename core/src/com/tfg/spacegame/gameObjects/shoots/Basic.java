@@ -19,6 +19,8 @@ public class Basic extends Shoot {
     // Efecto de particulas de este disparo
     private ParticleEffect shootEffect;
 
+    private ParticleEffect shoot;
+
     // Efecto de partículas cuando el disparo choca
     private ParticleEffect shockEffect;
 
@@ -33,6 +35,7 @@ public class Basic extends Shoot {
 
         // Creamos los efectos de particulas
         shootEffect = AssetsManager.loadParticleEffect("basic_effect_shoot");
+        shoot = AssetsManager.loadParticleEffect("basic");
         shockEffect = AssetsManager.loadParticleEffect("basic_effect_shoot");
 
         this.updateParticleEffect();
@@ -40,6 +43,7 @@ public class Basic extends Shoot {
         // Lo iniciamos, pero aunque lo iniciemos si no hay un update no avanzará
         shootEffect.start();
         shockEffect.start();
+        shoot.start();
         timeToMove = delay;
         timeToShockEffect = 1.0f;
     }
@@ -52,6 +56,7 @@ public class Basic extends Shoot {
                 shootEffect.getEmitters().first().getAngle().setHigh(135, 225);
                 shootEffect.getEmitters().first().getAngle().setLow(160, 200);
             } else {
+                shoot.getEmitters().first().setPosition(this.getX() + 3, this.getY() + 7);
                 // Lo ubicamos en el extremo derecha y mitad de altura del shooter
                 shootEffect.getEmitters().first().setPosition(this.getShooter().getX() + this.getShooter().getWidth(), this.getShooter().getY() + this.getShooter().getHeight() / 2);
             }
@@ -62,6 +67,7 @@ public class Basic extends Shoot {
                 shockEffect.getEmitters().first().getAngle().setHigh(135, 225);
                 shockEffect.getEmitters().first().getAngle().setLow(160, 200);
             } else {
+                shoot.getEmitters().first().setPosition(this.getX() + 3, this.getY() + 7);
                 shockEffect.getEmitters().first().setPosition(this.getX() + this.getWidth(), this.getY());
             }
         }
@@ -81,6 +87,7 @@ public class Basic extends Shoot {
                 this.updateParticleEffect();
                 // Actualizamos el efecto de particulas
                 shootEffect.update(delta);
+                shoot.update(delta);
 
             }
             // Mientras no sea el momento para moverse
@@ -111,6 +118,7 @@ public class Basic extends Shoot {
             super.render(batch);
             // Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
             if (timeToMove < 0)
+                shoot.draw(batch);
                 shootEffect.draw(batch);
         } else {
             shockEffect.draw(batch);
@@ -135,5 +143,6 @@ public class Basic extends Shoot {
     public void dispose(){
         super.dispose();
         shootEffect.dispose();
+        shoot.dispose();
     }
 }
