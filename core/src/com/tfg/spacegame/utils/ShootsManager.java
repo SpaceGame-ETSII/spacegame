@@ -105,9 +105,8 @@ public class ShootsManager {
                     shoot.isDeletable()){
                 shoots.removeValue(shoot,false);
             }
-
-            updateBurst(delta, ship);
         }
+        updateBurst(delta, ship);
     }
 
     //Actualiza el estado de la ráfaga ee disparo que haya en pantalla

@@ -6,7 +6,7 @@ import com.tfg.spacegame.gameObjects.Shoot;
 
 public class Type1 extends Enemy{
 
-    public static final int SPEED = 100;
+    public static final int SPEED = 200;
 
     //Indicará el rango de ondulación
     private static final int AMPLITUDE = 80;

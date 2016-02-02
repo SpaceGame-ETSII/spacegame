@@ -11,25 +11,22 @@ public class Type2 extends Enemy{
     private static final int NORMAL_SPEED = 150;
     private static final int HIGH_SPEED = 500;
 
+    // Píxel al que el enemigo se moverá antes de acelerar
+    private static final int LIMIT_TO_MOVE_SLOW = 600;
+
     // Este es el tiempo en el que el enemigo esperará sin
     // moverse hasta que se lance hacía el jugador
     private float timeToGoFast;
 
-    // Cantidad de pixeles se moverá con velocidad normal
-    // desde la parte extrema derecha de la pantalla
-    private int pixelsToMoveSlowly;
-
     public Type2(int x, int y) {
         super("enemy", x, y, 3);
         timeToGoFast = 2f;
-        pixelsToMoveSlowly = 200;
     }
 
     public void update(float delta){
         // Mientras tengamos que seguir moviendonos lentamente
-        if (pixelsToMoveSlowly > 0) {
+        if (this.getX() > LIMIT_TO_MOVE_SLOW) {
             this.setX(this.getX() - NORMAL_SPEED * delta);
-            pixelsToMoveSlowly -=NORMAL_SPEED*delta;
         } else {
             // Ahora tenemos que esperar hasta que podamos
             // movernos rapidamente
