@@ -31,7 +31,7 @@ public class CollissionsManager {
 
         //Primero comprobamos si algún enemigo ha dado a la nave
         for (Enemy enemy: enemies) {
-            if (enemy.isOverlapingWith(ship)) {
+            if (enemy.isOverlapingWith(ship) && !ship.isUndamagable()) {
                 //Si un enemigo ha dado a la nave la almacenamos en la variable
                 enemyOverlapsShip = enemy;
 
@@ -46,7 +46,8 @@ public class CollissionsManager {
             shootIsOverlapped = false;
 
             //En primer lugar comprobamos si el shoot dió a la nave, siempre y cuando no hubiese sido golpeada antes
-            if (enemyOverlapsShip == null && shootOverlapsShip == null && shootDst.isOverlapingWith(ship) && !shootDst.isShocked()) {
+            if (enemyOverlapsShip == null && shootOverlapsShip == null &&
+                    shootDst.isOverlapingWith(ship) && !shootDst.isShocked() && !ship.isUndamagable()) {
 
                 //Almacenamos el shoot y lo eliminamos de la lista a comprobar
                 shootOverlapsShip = shootDst;
@@ -55,7 +56,7 @@ public class CollissionsManager {
 
                 //Si la bala no dio a la nave, comprobamos si dio a algún enemigo
                 for (Enemy enemy : enemies) {
-                    if (shootDst.isOverlapingWith(enemy)) {
+                    if (shootDst.isOverlapingWith(enemy) && !shootDst.isShocked()) {
 
                         //Añadimos el par colisionado a la lista
                         shootsToEnemies.add(new Pair<Shoot, Enemy>(shootDst, enemy));
@@ -75,7 +76,8 @@ public class CollissionsManager {
 
                     for (Shoot shootSrc : shootsSource) {
 
-                        if (!shootDst.equals(shootSrc) && shootDst.isOverlapingWith(shootSrc)) {
+                        if (!shootDst.equals(shootSrc) && shootDst.isOverlapingWith(shootSrc)
+                                && !shootDst.isShocked() && !shootSrc.isShocked()) {
                             //Añadimos el par colisionado a la lista
                             shootsToShoots.add(new Pair<Shoot, Shoot>(shootDst, shootSrc));
 
@@ -98,7 +100,7 @@ public class CollissionsManager {
             manageShootToShip(shootOverlapsShip, ship);
         }
         manageShootsToEnemies();
-        manageShootsToShoots();
+        //manageShootsToShoots();
     }
 
     //Gestiona una colisión de enemigo a la nave

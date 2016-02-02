@@ -24,7 +24,7 @@ public class ShootsManager {
     public static void shootBurstBasicWeapon(GameObject shooter){
         Basic basic = new Basic(shooter,0,0,0.0f);
 
-        if(canShipShoot(TypeWeapon.BASIC)){
+        if(isShipReadyToShoot(TypeWeapon.BASIC)){
             int x = (int) (shooter.getX() + shooter.getWidth());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
@@ -58,7 +58,7 @@ public class ShootsManager {
      * @param type - El tipo de disparo equipado en la nave
      * @return Indica si puede o no disparar la nave
      */
-    private static boolean canShipShoot(TypeWeapon type) {
+    private static boolean isShipReadyToShoot(TypeWeapon type) {
         boolean result = false;
         Array<Shoot> selected = new Array<Shoot>();
 
@@ -95,9 +95,6 @@ public class ShootsManager {
                     shoot.isDeletable()){
                 shoots.removeValue(shoot,false);
             }
-
-            if (ship.isOverlapingWith(shoot) && !ship.isUndamagable())
-                ship.receiveDamage();
         }
     }
 

@@ -118,6 +118,17 @@ public class Basic extends Shoot {
     }
 
     public void collideWithShip() {
+        super.collideWithShip();
+        this.shock();
+    }
+
+    public void collideWithEnemy(Enemy enemy) {
+        super.collideWithEnemy(enemy);
+        this.shock();
+    }
+
+    public void collideWithShoot(Shoot shoot) {
+        super.collideWithShoot(shoot);
         this.shock();
     }
     
