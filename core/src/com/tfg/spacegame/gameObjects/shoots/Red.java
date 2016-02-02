@@ -1,16 +1,14 @@
-package com.tfg.spacegame.gameObjects.weapons;
+package com.tfg.spacegame.gameObjects.shoots;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Weapon;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 
-public class Red extends Weapon{
+public class Red extends Shoot{
 
     //Velocidad de movimiento
     public static final float SPEED = 800;
@@ -28,7 +26,7 @@ public class Red extends Weapon{
         super("shoot_red", x, y, shooter);
 
         //Creamos el efecto de particulas
-        shootEffect = AssetsManager.loadParticleEffect("shoot_redEffect");
+        shootEffect = AssetsManager.loadParticleEffect("red_effect_shoot");
         this.updateParticleEffect();
 
         //Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará

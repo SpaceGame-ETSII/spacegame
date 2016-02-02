@@ -52,6 +52,11 @@ public class AssetsManager {
         assetsReferences.put("ship_green", shipsFolder+"nave_verde.png");
         assetsReferences.put("ship_orange", shipsFolder+"nave_naranja.png");
         assetsReferences.put("ship_purple", shipsFolder+"nave_morada.png");
+        assetsReferences.put("cockpit", shipsFolder+"cabina.png");
+        assetsReferences.put("cockpit_damage1", shipsFolder+"cabina_dano1.png");
+        assetsReferences.put("cockpit_damage2", shipsFolder+"cabina_dano2.png");
+        assetsReferences.put("cockpit_damage3", shipsFolder+"cabina_dano3.png");
+        assetsReferences.put("cockpit_damage4", shipsFolder+"cabina_dano4.png");
 
         //Texturas referentes a weapons
         assetsReferences.put("shoot", weaponsFolder+"disparo.png");
@@ -68,10 +73,11 @@ public class AssetsManager {
         assetsReferences.put("red_equipped", particlesFolder + "rojo_equipado");
         assetsReferences.put("blue_equipped", particlesFolder + "azul_equipado");
         assetsReferences.put("yellow_equipped", particlesFolder + "amarillo_equipado");
-        assetsReferences.put("shootEffect", particlesFolder + "shootEffect");
         assetsReferences.put("shootType5Effect", particlesFolder + "tipo5");
         assetsReferences.put("warningType5Effect", particlesFolder + "aviso_tipo5");
-        assetsReferences.put("shoot_redEffect", particlesFolder + "arma_roja");
+        assetsReferences.put("red_effect_shoot", particlesFolder + "arma_roja");
+        assetsReferences.put("basic_effect_shoot", particlesFolder + "basico_efecto_disparo");
+        assetsReferences.put("basic_effect_shock", particlesFolder + "basico_efecto_choque");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");

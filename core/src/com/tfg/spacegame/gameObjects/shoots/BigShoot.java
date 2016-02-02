@@ -1,13 +1,13 @@
-package com.tfg.spacegame.gameObjects.weapons;
+package com.tfg.spacegame.gameObjects.shoots;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Weapon;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 
-public class BigShoot extends Weapon{
+public class BigShoot extends Shoot {
 
     //Velocidad de movimiento
     public static final float SPEED = 200;

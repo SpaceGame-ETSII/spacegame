@@ -1,24 +1,22 @@
 package com.tfg.spacegame.utils;
 
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Weapon;
-import com.tfg.spacegame.gameObjects.enemies.Type5;
-import com.tfg.spacegame.gameObjects.weapons.Basic;
-import com.tfg.spacegame.gameObjects.weapons.BigShoot;
-import com.tfg.spacegame.gameObjects.weapons.Red;
+import com.tfg.spacegame.gameObjects.shoots.BigShoot;
+import com.tfg.spacegame.gameObjects.shoots.Red;
+import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.shoots.Basic;
 
 public class ShootsManager {
 
-    public static Array<Weapon> shoots;
+    public static Array<Shoot> shoots;
 
     public static void load() {
-        shoots = new Array<Weapon>();
+        shoots = new Array<Shoot>();
     }
 
     /**
@@ -28,7 +26,7 @@ public class ShootsManager {
     public static void shootBurstBasicWeapon(GameObject shooter){
         Basic basic = new Basic(shooter,0,0,0.0f);
 
-        if(canShipShoot(TypeWeapon.BASIC)){
+        if(isShipReadyToShoot(TypeWeapon.BASIC)){
             int x = (int) (shooter.getX() + shooter.getWidth());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
@@ -62,12 +60,12 @@ public class ShootsManager {
      * @param type - El tipo de disparo equipado en la nave
      * @return Indica si puede o no disparar la nave
      */
-    private static boolean canShipShoot(TypeWeapon type) {
+    private static boolean isShipReadyToShoot(TypeWeapon type) {
         boolean result = false;
-        Array<Weapon> selected = new Array<Weapon>();
+        Array<Shoot> selected = new Array<Shoot>();
 
         //Obtenemos todos los disparos en pantalla que realizó la nave
-        for(Weapon w : shoots){
+        for(Shoot w : shoots){
             if(w.getShooter() instanceof Ship)
                 selected.add(w);
         }
@@ -89,18 +87,18 @@ public class ShootsManager {
     }
 
     public static void render(){
-        for(Weapon weapon : shoots)
-            weapon.render(SpaceGame.batch);
+        for(Shoot shoot : shoots)
+            shoot.render(SpaceGame.batch);
     }
 
-    public static void update(float delta){
-        for(Weapon shoot: shoots){
+    public static void update(float delta, Ship ship){
+        for(Shoot shoot: shoots){
             shoot.update(delta);
 
-            //Si algún disparo sobresale los limites de la pantalla
-            //Se eleminará
+            //Si algún disparo sobresale los limites de la pantalla o está marcado como borrable, se eliminará
             if(shoot.getX() > SpaceGame.width || shoot.getX()+shoot.getWidth() < 0 ||
-                    shoot.getY()+shoot.getHeight() < 0 || shoot.getY() > SpaceGame.height){
+                    shoot.getY()+shoot.getHeight() < 0 || shoot.getY() > SpaceGame.height ||
+                    shoot.isDeletable()){
                 shoots.removeValue(shoot,false);
             }
         }
@@ -121,7 +119,7 @@ public class ShootsManager {
     public static void shootRedWeapon(GameObject shooter) {
         Red redShoot = new Red(shooter,0,0,0f);
 
-        if(canShipShoot(TypeWeapon.RED)){
+        if(isShipReadyToShoot(TypeWeapon.RED)){
             int x = (int) (shooter.getX() + shooter.getWidth());
             int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
@@ -131,5 +129,27 @@ public class ShootsManager {
             shoots.add(redShoot);
         }
 
+    }
+
+    //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave
+    public static void manageCollisionWithShip(Shoot shoot) {
+        shoot.collideWithShip();
+    }
+
+    //Gestiona la reacción de la colisión del shoot y el enemigo pasados por parámetro
+    public static void manageCollisionWithEnemy(Pair<Shoot,Enemy> shootToEnemy) {
+        Shoot shoot = shootToEnemy.getFirst();
+        Enemy enemy = shootToEnemy.getSecond();
+
+        shoot.collideWithEnemy(enemy);
+    }
+
+    //Gestiona la reacción de la colisión de los dos shoots pasados por parámetro
+    public static void manageCollisionWithShoot(Pair<Shoot, Shoot> shootToShoot) {
+        Shoot shoot1 = shootToShoot.getFirst();
+        Shoot shoot2 = shootToShoot.getSecond();
+
+        shoot1.collideWithShoot(shoot2);
+        shoot2.collideWithShoot(shoot1);
     }
 }

@@ -8,7 +8,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Inventary;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Weapon;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.*;
 
@@ -46,9 +46,10 @@ public class CampaignScreen implements Screen{
 
         //Creamos los objetos de juego
         ship = new Ship();
-        EnemyManager.load();
-        ShootsManager.load();
         inventary = new Inventary();
+        EnemiesManager.load();
+        ShootsManager.load();
+        CollissionsManager.load();
 
         //Creamos los objetos para el diálgo de salida del modo campaña
         exit = new GameObject("buttonExit",750,430);
@@ -133,13 +134,11 @@ public class CampaignScreen implements Screen{
     }
 
     private void renderStart(float delta) {
-        SpaceGame.font.draw(SpaceGame.batch, ship.getVitality() + "", 100, 100);
-
-        ShootsManager.render();
         ship.render(game.batch);
-        EnemyManager.render();
+        EnemiesManager.render();
+        ShootsManager.render();
 
-        if (ship.getVitality() <= 0)
+        if (ship.isDefeated())
             state = GameState.LOSE;
 
         updateLogic(delta);
@@ -218,8 +217,9 @@ public class CampaignScreen implements Screen{
 
         //Realizamos la lógica de los objetos en juego
         ship.update(delta, v.x, v.y);
-        EnemyManager.update(delta);
-        ShootsManager.update(delta);
+        CollissionsManager.update(delta, ship);
+        EnemiesManager.update(delta);
+        ShootsManager.update(delta, ship);
 
         // Si tocamos la pantalla disparamos
         // El disparo puede hacerse de dos formas
@@ -254,10 +254,10 @@ public class CampaignScreen implements Screen{
     @Override
     public void dispose() {
         ship.dispose();
-        for(Enemy enemy: EnemyManager.enemies)
+        for(Enemy enemy: EnemiesManager.enemies)
             enemy.dispose();
-        for(Weapon weapon : ShootsManager.shoots)
-            weapon.dispose();
+        for(Shoot shoot : ShootsManager.shoots)
+            shoot.dispose();
         inventary.dispose();
         exit.dispose();
         exitCancel.dispose();
