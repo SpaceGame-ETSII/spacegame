@@ -89,10 +89,10 @@ public class ShootsManager {
         for(Shoot shoot: shoots){
             shoot.update(delta);
 
-            //Si algún disparo sobresale los limites de la pantalla
-            //Se eleminará
+            //Si algún disparo sobresale los limites de la pantalla o está marcado como borrable, se eliminará
             if(shoot.getX() > SpaceGame.width || shoot.getX()+shoot.getWidth() < 0 ||
-                    shoot.getY()+shoot.getHeight() < 0 || shoot.getY() > SpaceGame.height){
+                    shoot.getY()+shoot.getHeight() < 0 || shoot.getY() > SpaceGame.height ||
+                    shoot.isDeletable()){
                 shoots.removeValue(shoot,false);
             }
 
