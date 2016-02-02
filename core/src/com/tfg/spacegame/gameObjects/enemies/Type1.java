@@ -2,6 +2,7 @@ package com.tfg.spacegame.gameObjects.enemies;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class Type1 extends Enemy{
 
@@ -18,14 +19,14 @@ public class Type1 extends Enemy{
     private float delay;
 
     public Type1(int x, int y, float delay) {
-        super("enemy", x, y);
+        super("enemy", x, y, 3);
 
         this.delay = delay;
         degrees = 0;
     }
 
     public void update(float delta){
-        //Si se ha vencido el tiempo requerido, el enemigo se moverá
+        //Si se ha terminado el tiempo requerido, el enemigo se moverá
         if (delay <= 0) {
             this.setX(this.getX() - SPEED * delta);
             degrees += delta*SPEED;
@@ -36,5 +37,8 @@ public class Type1 extends Enemy{
 
     }
 
+    public void collideWithShoot(Shoot shoot) {
+        this.damage(1);
+    }
 
 }

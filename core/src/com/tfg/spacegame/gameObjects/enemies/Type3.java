@@ -3,6 +3,7 @@ package com.tfg.spacegame.gameObjects.enemies;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.ShootsManager;
 
 public class Type3 extends Enemy {
@@ -12,6 +13,9 @@ public class Type3 extends Enemy {
 
     //Valor por el que se multiplicará la velocidad inicial del enemigo antes de girar
     private static final int ACCELERATION = 2;
+
+    //Posición en la que el enemigo comenzará a girar
+    private static final int INITIAL_X_TO_ROTATE = 650;
 
     //Indicará el diámetro del círculo que dibujará el enemigo
     private static final int DIAMETER = 150;
@@ -26,7 +30,7 @@ public class Type3 extends Enemy {
     private float degrees;
 
     //Indica la posición de la x inicial donde empezará a girar
-    private float initialXToRotate;
+    private float centerOfCircle;
 
     //Cantidad de pixeles que quedan para que el enemigo empiece a girar
     private int pixelsToMoveSlowly;
@@ -34,23 +38,29 @@ public class Type3 extends Enemy {
     //Tiempo que queda hasta el disparo
     private float timeToShoot;
 
+    //Variable auxiliar necesaria para controlar ciertos cálculos posteriores
+    private float aux;
+
     public Type3(int x, int y) {
-        super("tipo3", x, y);
+        super("tipo3", x, y, 7);
 
         pixelsToMoveSlowly = 150;
         timeToShoot = INITIAL_TIME_TO_SHOOT;
-        initialXToRotate = SpaceGame.width - (pixelsToMoveSlowly * ACCELERATION);
+        centerOfCircle = SpaceGame.width - (pixelsToMoveSlowly * ACCELERATION);
     }
 
     public void update(float delta){
         //Si aún no ha empezado a girar
-        if (pixelsToMoveSlowly > 0) {
-            this.setX(this.getX() - SPEED * ACCELERATION * delta);
-            pixelsToMoveSlowly -= SPEED * ACCELERATION * delta;
+        if (this.getX() > INITIAL_X_TO_ROTATE) {
+            aux = this.getX() - SPEED * ACCELERATION * delta;
+            if (aux < INITIAL_X_TO_ROTATE)
+                this.setX(INITIAL_X_TO_ROTATE);
+            else
+                this.setX(aux);
         } else {
             // Si ya ha empezado a girar
             degrees += SPEED * delta;
-            this.setX(initialXToRotate + (DIAMETER * MathUtils.cosDeg(degrees)));
+            this.setX(centerOfCircle + (DIAMETER * MathUtils.cosDeg(degrees)));
             this.setY(this.getInitialPosition().y + (DIAMETER * MathUtils.sinDeg(degrees)));
 
             //Si el tiempo se ha acabado, el enemigo disparará
@@ -60,23 +70,15 @@ public class Type3 extends Enemy {
             } else {
                 timeToShoot -= FREQUENCY * delta;
             }
-
-            /*
-            if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
-                this.shoot();
-            } else if (MathUtils.cosDeg(degrees) == 0 && MathUtils.sinDeg(degrees) == 1) {
-                this.shoot();
-            } else if (MathUtils.cosDeg(degrees) == -1 && MathUtils.sinDeg(degrees) == 0) {
-                this.shoot();
-            } else if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
-                this.shoot();
-            }*/
-
         }
     }
 
     public void shoot(){
         ShootsManager.shootOneBasicWeapon(this);
+    }
+
+    public void collideWithShoot(Shoot shoot) {
+        this.damage(1);
     }
 
 }

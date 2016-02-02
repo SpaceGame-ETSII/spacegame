@@ -3,8 +3,10 @@ package com.tfg.spacegame.gameObjects.enemies;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class Type5 extends Enemy{
 
@@ -24,7 +26,7 @@ public class Type5 extends Enemy{
     private ParticleEffect shootEffectWarning;
 
     public Type5(int x, int y) {
-        super("enemigo_basico_tipo5", x, y);
+        super("enemigo_basico_tipo5", x, y, 10);
         timeToShoot = FREQUENCY_OF_SHOOTING;
         hasShooted = false;
 
@@ -61,7 +63,6 @@ public class Type5 extends Enemy{
                 this.updateParticleEffect();
                 shootEffectWarning.update(delta);
             }
-
         }
     }
 
@@ -80,9 +81,15 @@ public class Type5 extends Enemy{
         super.render(batch);
     }
 
-    public void dispose(){
+    public void dispose() {
         super.dispose();
         shootEffectWarning.dispose();
+    }
+
+    public void collideWithShoot(Shoot shoot) {
+        if (!(shoot instanceof BigShoot)){
+            this.damage(1);
+        }
     }
 
 }

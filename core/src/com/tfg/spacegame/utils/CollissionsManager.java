@@ -100,7 +100,7 @@ public class CollissionsManager {
             manageShootToShip(shootOverlapsShip, ship);
         }
         manageShootsToEnemies();
-        //manageShootsToShoots();
+        manageShootsToShoots();
     }
 
     //Gestiona una colisión de enemigo a la nave
