@@ -27,29 +27,29 @@ public class Red extends Weapon{
     public Red(GameObject shooter, int x, int y,float delay) {
         super("shoot_red", x, y, shooter);
 
-        // Creamos el efecto de particulas
+        //Creamos el efecto de particulas
         shootEffect = AssetsManager.loadParticleEffect("shoot_redEffect");
         this.updateParticleEffect();
 
-        // Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará
+        //Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará
         shootEffect.start();
+
         timeToMove = delay;
         pixelsToDraw = 0;
     }
 
     public void updateParticleEffect() {
         if (this.getShooter() instanceof Ship){
-            //shootEffect.getEmitters().first().setPosition(this.getX()+this.getWidth()/2,this.getY()+this.getHeight()/2);
-            shootEffect.getEmitters().first().setPosition(this.getX()-20,this.getY()+5);
+            shootEffect.getEmitters().first().setPosition(this.getX()-10,this.getY()+3);
         }else{
             throw new IllegalArgumentException("No puede disparar este arma");
         }
     }
 
     public void update(float delta) {
-        // Esperaremos a que sea el momento correcto para moverse
+        //Esperaremos a que sea el momento correcto para moverse
         if (timeToMove < 0) {
-            // Actualizamos el movimiento del disparo
+            //Actualizamos el movimiento del disparo
             if (getShooter() instanceof Ship)
                 this.setX(this.getX() + (SPEED * delta));
             else
@@ -64,7 +64,7 @@ public class Red extends Weapon{
         //Mientras no sea el momento para moverse
         else {
             //Vamos a ir restando el tiempo de delay con el delta hasta que sea menor que 0
-            timeToMove -= delta;
+            timeToMove -= pixelsToDraw;
 
             //Podemos además ir actualizando la posición Y por si el shooter se está moviendo
             this.setY(getShooter().getY() + getShooter().getHeight() / 2 - this.getHeight() / 2);
@@ -72,18 +72,16 @@ public class Red extends Weapon{
     }
 
     public void render(SpriteBatch batch){
+        TextureRegion texture = new TextureRegion(this.getTexture());
 
-        super.render(batch);
-        if(timeToMove < 0)
-            shootEffect.draw(batch);
-        /*TextureRegion texture = new TextureRegion(this.getTexture());
         if(pixelsToDraw<=texture.getRegionWidth()){
             texture.setRegion(0,0,pixelsToDraw,texture.getRegionHeight());
-            batch.draw(texture, this.getLogicShape().x, this.getLogicShape().y);
             pixelsToDraw += 10;
-        }*/
+        }
+        batch.draw(texture, this.getLogicShape().x, this.getLogicShape().y);
 
-
+        if(timeToMove < 0)
+            shootEffect.draw(batch);
     }
 
     public void dispose(){
