@@ -93,7 +93,7 @@ public class Ship extends GameObject {
                 cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
                 undamagable = true;
             }
-            //Gdx.input.vibrate(1000);
+            Gdx.input.vibrate(1000);
         }
     }
 
