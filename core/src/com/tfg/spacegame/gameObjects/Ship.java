@@ -3,10 +3,9 @@ package com.tfg.spacegame.gameObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.utils.ShootsManager;
 
 public class Ship extends GameObject {
 
@@ -36,6 +35,9 @@ public class Ship extends GameObject {
     //Indica el rango por el que se moverá el timeForInvisible
     private static final int RANGE_INVISIBLE_TIMER = 5;
 
+    //Indica el color de la nave
+    private ColorShip color;
+
     public Ship() {
         super("ship", 0, 0);
 
@@ -43,7 +45,10 @@ public class Ship extends GameObject {
         damageReceived = 0;
         timeToUndamagable = DURATION_UNDAMAGABLE;
         cockpit = AssetsManager.loadTexture("cockpit");
-        this.setY(SpaceGame.height/2 - getHeight()/2);
+        this.setY(SpaceGame.height / 2 - getHeight() / 2);
+
+        //Inicializamos el color de la nava a incoloro
+        color = ColorShip.COLORLESS;
     }
 
     @Override
@@ -85,11 +90,18 @@ public class Ship extends GameObject {
             this.changeToDamagable();
     }
 
-    //Realiza un disparo, en función del arma equipada
-    public void shoot(){
+    public void changeColor(ColorShip color){
+        this.color = color;
+    }
 
-        //ShootsManager.shootBurstBasicWeapon(this);
-        ShootsManager.shootRedWeapon(this);
+    //Realiza un disparo, en función del arma equipada
+    public void shoot() {
+        if (this.color.equals(ColorShip.COLORLESS)){
+            ShootsManager.shootBurstBasicWeapon(this);
+        }
+        if (this.color.equals(ColorShip.RED)){
+            ShootsManager.shootRedWeapon(this);
+        }
     }
 
     //Aumenta en uno el daño a la nave, la vuelve invunerable y cambia la apariencia de la cabina

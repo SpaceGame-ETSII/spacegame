@@ -3,6 +3,8 @@ package com.tfg.spacegame.gameObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.utils.ColorShip;
+import com.tfg.spacegame.utils.Pair;
 import com.tfg.spacegame.utils.TypeElement;
 
 public class Inventary extends GameObject {
@@ -234,37 +236,50 @@ public class Inventary extends GameObject {
             if ((slot1.hasSpecifiedElement(TypeElement.BLUE) && slot2.hasSpecifiedElement(TypeElement.YELLOW)) ||
                     (slot1.hasSpecifiedElement(TypeElement.YELLOW) && slot2.hasSpecifiedElement(TypeElement.BLUE))) {
                 ship.setTexture("ship_green");
+                ship.changeColor(ColorShip.GREEN);
             } else if ((slot1.hasSpecifiedElement(TypeElement.RED) && slot2.hasSpecifiedElement(TypeElement.YELLOW)) ||
                         (slot1.hasSpecifiedElement(TypeElement.YELLOW) && slot2.hasSpecifiedElement(TypeElement.RED))) {
                 ship.setTexture("ship_orange");
+                ship.changeColor(ColorShip.ORANGE);
             } else if ((slot1.hasSpecifiedElement(TypeElement.BLUE) && slot2.hasSpecifiedElement(TypeElement.RED)) ||
                         (slot1.hasSpecifiedElement(TypeElement.RED) && slot2.hasSpecifiedElement(TypeElement.BLUE))) {
                 ship.setTexture("ship_purple");
+                ship.changeColor(ColorShip.PURPLE);
             } else if (slot1.hasSpecifiedElement(TypeElement.RED) && slot2.hasSpecifiedElement(TypeElement.RED)) {
                 ship.setTexture("ship_red");
+                ship.changeColor(ColorShip.RED);
             } else if (slot1.hasSpecifiedElement(TypeElement.BLUE) && slot2.hasSpecifiedElement(TypeElement.BLUE)) {
                 ship.setTexture("ship_blue");
+                ship.changeColor(ColorShip.BLUE);
             } else if (slot1.hasSpecifiedElement(TypeElement.YELLOW) && slot2.hasSpecifiedElement(TypeElement.YELLOW)) {
                 ship.setTexture("ship_yellow");
+                ship.changeColor(ColorShip.YELLOW);
             }
         } else if (slot1.hasElementEquipped() && !slot2.hasElementEquipped()) {
             if (slot1.hasSpecifiedElement(TypeElement.RED)) {
                 ship.setTexture("ship_red");
+                ship.changeColor(ColorShip.RED);
             } else if (slot1.hasSpecifiedElement(TypeElement.BLUE)) {
                 ship.setTexture("ship_blue");
+                ship.changeColor(ColorShip.BLUE);
             } else if (slot1.hasSpecifiedElement(TypeElement.YELLOW)) {
                 ship.setTexture("ship_yellow");
+                ship.changeColor(ColorShip.YELLOW);
             }
         } else if (!slot1.hasElementEquipped() && slot2.hasElementEquipped()) {
             if (slot2.hasSpecifiedElement(TypeElement.RED)) {
                 ship.setTexture("ship_red");
+                ship.changeColor(ColorShip.RED);
             } else if (slot2.hasSpecifiedElement(TypeElement.BLUE)) {
                 ship.setTexture("ship_blue");
+                ship.changeColor(ColorShip.BLUE);
             } else if (slot2.hasSpecifiedElement(TypeElement.YELLOW)) {
                 ship.setTexture("ship_yellow");
+                ship.changeColor(ColorShip.YELLOW);
             }
         } else {
             ship.setTexture("ship");
+            ship.changeColor(ColorShip.COLORLESS);
         }
     }
 
