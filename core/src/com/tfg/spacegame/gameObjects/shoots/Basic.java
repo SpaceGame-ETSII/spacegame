@@ -12,10 +12,6 @@ public class Basic extends Shoot {
     // Velocidad de movimiento
     public static final float SPEED = 600;
 
-    // Tiempo necesario a esperar para que empiece a moverse el disparo
-    // Se trata de un delay de aparición
-    private float timeToMove;
-
     // Efecto de particulas de este disparo
     private ParticleEffect shootEffect;
 
@@ -25,7 +21,7 @@ public class Basic extends Shoot {
     // Indica el tiempo que estará en pantalla el efecto al chocar
     private float timeToShockEffect;
 
-    public Basic(GameObject shooter, int x, int y, float delay) {
+    public Basic(GameObject shooter, int x, int y) {
         // Situamos el disparo en el sitio correcto
         // X - Extremo derecha del shooter
         // Y - La mitad del alto del shooter - la mitad del alto del disparo
@@ -40,7 +36,6 @@ public class Basic extends Shoot {
         // Lo iniciamos, pero aunque lo iniciemos si no hay un update no avanzará
         shootEffect.start();
         shockEffect.start();
-        timeToMove = delay;
         timeToShockEffect = 1.0f;
     }
 
@@ -69,28 +64,16 @@ public class Basic extends Shoot {
 
     public void update(float delta) {
         if (!this.isShocked()) {
-            // Esperaremos a que sea el momento correcto para moverse
-            if (timeToMove < 0) {
-                // Actualizamos el movimiento del disparo
-                if (getShooter() instanceof Enemy)
-                    this.setX(this.getX() - (SPEED * delta));
-                else
-                    this.setX(this.getX() + (SPEED * delta));
+            // Actualizamos el movimiento del disparo
+            if (getShooter() instanceof Enemy)
+                this.setX(this.getX() - (SPEED * delta));
+            else
+                this.setX(this.getX() + (SPEED * delta));
 
-                // Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
-                this.updateParticleEffect();
-                // Actualizamos el efecto de particulas
-                shootEffect.update(delta);
-
-            }
-            // Mientras no sea el momento para moverse
-            else {
-                // Vamos a ir restando el tiempo de delay con el delta hasta que sea menor que 0
-                timeToMove -= delta;
-
-                // Podemos además ir actualizando la posición Y por si el shooter se está moviendo
-                this.setY(getShooter().getY() + getShooter().getHeight() / 2 - this.getHeight() / 2);
-            }
+            // Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
+            this.updateParticleEffect();
+            // Actualizamos el efecto de particulas
+            shootEffect.update(delta);
         } else {
             this.updateParticleEffect();
             shockEffect.update(delta);
@@ -109,9 +92,7 @@ public class Basic extends Shoot {
     public void render(SpriteBatch batch){
         if (!this.isShocked()) {
             super.render(batch);
-            // Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
-            if (timeToMove < 0)
-                shootEffect.draw(batch);
+            shootEffect.draw(batch);
         } else {
             shockEffect.draw(batch);
         }

@@ -11,29 +11,32 @@ import com.tfg.spacegame.gameObjects.shoots.Basic;
 
 public class ShootsManager {
 
+    //Almacenará todos los shoots en pantalla
     public static Array<Shoot> shoots;
+
+    //Será necesario para hacer una ráfaga de disparos básicos
+    private static int numberOfBasicShoots;
+
+    //Guarda el último disparo realizado en una ráfaga
+    private static Shoot lastShootOfBurst;
+
+    //Guarda el punto de partida del último disparo realizado en una ráfaga
+    private static float startPoint;
 
     public static void load() {
         shoots = new Array<Shoot>();
+        numberOfBasicShoots = 0;
+        startPoint = 0;
     }
 
     /**
-     * Crea una ráfaga de tres disparos básicos
+     * Prepara la realización de una ráfaga de tres disparos
      * @param shooter - El shooter que realizó el disparo
      */
-    public static void shootBurstBasicWeapon(GameObject shooter){
-        Basic basic = new Basic(shooter,0,0,0.0f);
-
+    public static void shootBurstBasicWeaponForShip(GameObject shooter){
         if(isShipReadyToShoot(TypeWeapon.BASIC)){
-            int x = (int) (shooter.getX() + shooter.getWidth());
-            int y = (int) (shooter.getY() + shooter.getHeight() / 2);
-
-            basic.setX(x);
-            basic.setY(y);
-
-            shoots.add(basic);
-            shoots.add(new Basic(shooter,x,y, 0.1f));
-            shoots.add(new Basic(shooter,x,y, 0.2f));
+            numberOfBasicShoots = 3;
+            startPoint = 0;
         }
     }
 
@@ -41,16 +44,23 @@ public class ShootsManager {
      * Lanza un único disparo básico
      * @param shooter - El shooter que realizó el disparo
      */
-    public static void shootOneBasicWeapon(GameObject shooter) {
-        Basic basic = new Basic(shooter,0,0,0.0f);
+    public static Basic shootOneBasicWeapon(GameObject shooter) {
+        Basic basic = new Basic(shooter,0,0);
 
         int x = (int) (shooter.getX() - basic.getWidth());
         int y = (int) (shooter.getY() + shooter.getHeight()/2);
+
+        if (shooter instanceof Ship) {
+            x += shooter.getWidth() + basic.getWidth();
+            y -= (shooter.getHeight()/2 - basic.getHeight()/2);
+        }
 
         basic.setX(x);
         basic.setY(y);
 
         shoots.add(basic);
+
+        return basic;
     }
 
     /**
@@ -94,6 +104,28 @@ public class ShootsManager {
                     shoot.getY()+shoot.getHeight() < 0 || shoot.getY() > SpaceGame.height ||
                     shoot.isDeletable()){
                 shoots.removeValue(shoot,false);
+            }
+
+            updateBurst(delta, ship);
+        }
+    }
+
+    //Actualiza el estado de la ráfaga ee disparo que haya en pantalla
+    public static void updateBurst(float delta, Ship ship) {
+        //Si estamos en medio de una ráfaga de la nave, continuamos disparando si es el momento
+        if (numberOfBasicShoots > 0) {
+
+            //Disparamos un nuevo shoot en la ráfaga si no hubo un último, o bien la distancia recorrida por el
+            //último es superior a su punto de inicio más su ancho por 1.3
+            if (lastShootOfBurst == null ||
+                    lastShootOfBurst.getX() > (startPoint + lastShootOfBurst.getWidth()) * 1.3) {
+                lastShootOfBurst = shootOneBasicWeapon(ship);
+                numberOfBasicShoots -= 1;
+                startPoint = lastShootOfBurst.getX();
+
+                //Si acabamos de lanzar el último disparo de la ráfaga, no lo guardamos
+                if (numberOfBasicShoots == 0)
+                    lastShootOfBurst = null;
             }
         }
     }

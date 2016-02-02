@@ -87,7 +87,7 @@ public class Ship extends GameObject {
 
     //Realiza un disparo, en función del arma equipada
     public void shoot(){
-        ShootsManager.shootBurstBasicWeapon(this);
+        ShootsManager.shootBurstBasicWeaponForShip(this);
     }
 
     //Aumenta en uno el daño a la nave, la vuelve invunerable y cambia la apariencia de la cabina
