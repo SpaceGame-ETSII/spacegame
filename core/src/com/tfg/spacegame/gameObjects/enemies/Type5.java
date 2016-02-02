@@ -2,6 +2,7 @@ package com.tfg.spacegame.gameObjects.enemies;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class Type5 extends Enemy{
 
@@ -11,7 +12,7 @@ public class Type5 extends Enemy{
     private int pixelsToMove;
 
     public Type5(int x, int y) {
-        super("enemigo_basico_tipo5", x, y);
+        super("enemigo_basico_tipo5", x, y, 10);
         pixelsToMove = 650;
     }
 
@@ -21,6 +22,10 @@ public class Type5 extends Enemy{
             this.setX(this.getX() - SPEED * delta);
             pixelsToMove -= SPEED*delta;
         }
+    }
+
+    public void collideWithShoot(Shoot shoot) {
+        this.damage(1);
     }
 
 }

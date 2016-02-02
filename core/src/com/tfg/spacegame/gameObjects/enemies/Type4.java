@@ -37,7 +37,7 @@ public class Type4 extends Enemy{
     private boolean hasShooted;
 
     public Type4(int x, int y) {
-        super("type4", x, y);
+        super("type4", x, y, 7);
         shield = new GameObject("type4_shield", x + 15,y - 37);
         body = new GameObject("type4_body", x + 35, y - 37);
 

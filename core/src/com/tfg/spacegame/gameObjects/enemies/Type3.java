@@ -3,6 +3,7 @@ package com.tfg.spacegame.gameObjects.enemies;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.ShootsManager;
 
 public class Type3 extends Enemy {
@@ -35,7 +36,7 @@ public class Type3 extends Enemy {
     private float timeToShoot;
 
     public Type3(int x, int y) {
-        super("tipo3", x, y);
+        super("tipo3", x, y, 7);
 
         pixelsToMoveSlowly = 150;
         timeToShoot = INITIAL_TIME_TO_SHOOT;
@@ -60,23 +61,15 @@ public class Type3 extends Enemy {
             } else {
                 timeToShoot -= FREQUENCY * delta;
             }
-
-            /*
-            if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
-                this.shoot();
-            } else if (MathUtils.cosDeg(degrees) == 0 && MathUtils.sinDeg(degrees) == 1) {
-                this.shoot();
-            } else if (MathUtils.cosDeg(degrees) == -1 && MathUtils.sinDeg(degrees) == 0) {
-                this.shoot();
-            } else if (MathUtils.cosDeg(degrees) == 1 && MathUtils.sinDeg(degrees) == 0) {
-                this.shoot();
-            }*/
-
         }
     }
 
     public void shoot(){
         ShootsManager.shootOneBasicWeapon(this);
+    }
+
+    public void collideWithShoot(Shoot shoot) {
+        this.damage(1);
     }
 
 }

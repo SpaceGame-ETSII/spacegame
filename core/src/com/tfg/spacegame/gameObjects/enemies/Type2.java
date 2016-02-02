@@ -1,6 +1,7 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class Type2 extends Enemy{
 
@@ -19,7 +20,7 @@ public class Type2 extends Enemy{
     private int pixelsToMoveSlowly;
 
     public Type2(int x, int y) {
-        super("enemy", x, y);
+        super("enemy", x, y, 3);
         timeToGoFast = 2f;
         pixelsToMoveSlowly = 200;
     }
@@ -40,6 +41,10 @@ public class Type2 extends Enemy{
                 timeToGoFast -= delta;
             }
         }
+    }
+
+    public void collideWithShoot(Shoot shoot) {
+        this.damage(1);
     }
 
 }
