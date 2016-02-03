@@ -1,6 +1,7 @@
 package com.tfg.spacegame.utils;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
@@ -9,6 +10,8 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
+import com.tfg.spacegame.gameObjects.shoots.Blue;
+import com.tfg.spacegame.gameObjects.shoots.Red;
 import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
@@ -75,19 +78,24 @@ public class ShootsManager {
         Array<Shoot> selected = new Array<Shoot>();
 
         //Obtenemos todos los disparos en pantalla que realizó la nave
-        for(Shoot w : shoots){
-            if(w.getShooter() instanceof Ship)
-                selected.add(w);
+        for(Shoot shoot: shoots){
+            if(shoot.getShooter() instanceof Ship && !shoot.isShocked())
+                selected.add(shoot);
         }
 
         //Según el tipo de disparo, la condición será distinta
         switch (type){
             case BASIC:
-                if(selected.size == 0)
+                if(selected.size <= 0)
                     result = true;
                 break;
             case RED:
-                if(selected.size==0)
+                if(selected.size <= 0)
+                    result = true;
+                break;
+            case BLUE:
+                System.out.println(selected.size);
+                if(selected.size <= 1)
                     result = true;
                 break;
             default:
@@ -145,6 +153,41 @@ public class ShootsManager {
         bigShoot.setY(y);
 
         shoots.add(bigShoot);
+    }
+
+    public static void shootRedWeapon(GameObject shooter) {
+        Red redShoot = new Red(shooter,0,0);
+
+        if(isShipReadyToShoot(TypeWeapon.RED)){
+            int x = (int) (shooter.getX() + shooter.getWidth());
+            int y = (int) (shooter.getY() + shooter.getHeight()/2);
+
+            redShoot.setX(x);
+            redShoot.setY(y);
+
+            shoots.add(redShoot);
+        }
+
+    }
+
+    public static void shootBlueWeapon(GameObject shooter, float yTarget) {
+        Blue blueShoot = new Blue(shooter,0,0,yTarget);
+
+        if (shooter instanceof Ship) {
+            if(isShipReadyToShoot(TypeWeapon.BLUE)){
+                System.out.println("hello");
+
+                int x = (int) (shooter.getX() + shooter.getWidth());
+                int y = (int) (shooter.getY() + shooter.getHeight() / 3);
+
+                blueShoot.setX(x);
+                blueShoot.setY(y);
+
+                shoots.add(blueShoot);
+            }
+        } else {
+
+        }
     }
 
     //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave

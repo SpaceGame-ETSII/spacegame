@@ -68,7 +68,6 @@ public class Ship extends GameObject {
 
     private void updateParticleEffect() {
         fireEffect.getEmitters().first().setPosition(this.getX() + 40,this.getY() + this.getHeight()/2 + 2);
-        fireEffect.start();
     }
 
     @Override
@@ -120,10 +119,9 @@ public class Ship extends GameObject {
 
     }
 
-    public void setX(float x,float delta){
+    public void setX(float x, float delta){
         super.setX(x);
         this.updateParticleEffect();
-        System.out.println(delta);
         fireEffect.update(delta);
     }
 
@@ -132,9 +130,28 @@ public class Ship extends GameObject {
     }
 
     //Realiza un disparo, en función del arma equipada
-    public void shoot() {
-        if (this.color.equals(ColorShip.COLORLESS)){
-            ShootsManager.shootBurstBasicWeaponForShip(this);
+    public void shoot(float x, float y) {
+        switch (color) {
+            case COLORLESS:
+                ShootsManager.shootBurstBasicWeaponForShip(this);
+                break;
+            case RED:
+                ShootsManager.shootRedWeapon(this);
+                break;
+            case BLUE:
+                ShootsManager.shootBlueWeapon(this, y);
+                break;
+            case YELLOW:
+                break;
+            case GREEN:
+                break;
+            case ORANGE:
+                break;
+            case PURPLE:
+                break;
+            default:
+                ShootsManager.shootBurstBasicWeaponForShip(this);
+                break;
         }
     }
 
