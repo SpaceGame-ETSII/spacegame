@@ -10,6 +10,7 @@ import com.tfg.spacegame.SpaceGame;
 
 public class Ship extends GameObject {
 
+    //Indica la velocidad para el movimiento de la nave
     public static final float SPEED = 50;
 
     //Indica la cantidad de golpes recibidos
