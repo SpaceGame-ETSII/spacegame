@@ -91,7 +91,11 @@ public class LevelGenerator {
                 enemies.add(new Type3(wrapper.x, wrapper.y));
                 break;
             case TYPE4:
-                enemies.add(new Type4(wrapper.x, wrapper.y));
+                //Debemos agregar todas las partes del enemigo
+                Type4 type4 = new Type4(wrapper.x, wrapper.y);
+                enemies.add(type4);
+                enemies.add(type4.getShield());
+                enemies.add(type4.getBody());
                 break;
             case TYPE5:
                 enemies.add(new Type5(wrapper.x, wrapper.y));

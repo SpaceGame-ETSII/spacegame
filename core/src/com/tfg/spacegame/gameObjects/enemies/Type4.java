@@ -5,15 +5,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
 public class Type4 extends Enemy{
 
     // El escudo del enemigo
-    private GameObject shield;
+    private PartOfEnemy shield;
     // El cuerpo del enemigo
-    private GameObject body;
+    private PartOfEnemy body;
 
     private static final int SPEED = 100;
 
@@ -39,8 +40,8 @@ public class Type4 extends Enemy{
 
     public Type4(int x, int y) {
         super("type4", x, y, 7, AssetsManager.loadParticleEffect("basic_destroyed"));
-        shield = new GameObject("type4_shield", x + 15,y - 37);
-        body = new GameObject("type4_body", x + 35, y - 37);
+        shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 1, AssetsManager.loadParticleEffect("basic_destroyed"), this, false);
+        body = new PartOfEnemy("type4_body", x + 35, y - 37, 1, AssetsManager.loadParticleEffect("basic_destroyed"), this, true);
 
         timeToShoot = FREQUENCY_OF_SHOOTING;
         timeToOpenCannon = FREQUENCY_OF_OPEN_CANNON;
@@ -53,14 +54,11 @@ public class Type4 extends Enemy{
         super.update(delta);
 
         if (!this.isDefeated()) {
-            // Si el cuerpo del enemigo supera el alto de la pantalla
-            // La direccion debe ser negativa para ir hacía abajo
+
+            // Evitamos que el enemigo se salga de la pantalla tanto por arriba como por abajo
             if(body.getY() + body.getHeight() > SpaceGame.height){
                 direction = -1;
-            }
-            // Si en cambio es inferior a la parte inferior de la pantalla
-            // La direccion debe ser positiva para ir hacía arriba
-            else if(body.getY() < 0 ){
+            } else if(body.getY() < 0 ){
                 direction = 1;
             }
 
@@ -98,17 +96,39 @@ public class Type4 extends Enemy{
         }
     }
 
+    public PartOfEnemy getShield() {
+        return shield;
+    }
+
+    public PartOfEnemy getBody() {
+        return body;
+    }
+
     public void shoot(){
         ShootsManager.shootOneBasicWeapon(this);
     }
 
     public void render(SpriteBatch batch){
-        // Mientras que el tiemp ode espera del cañon no ha concluido
-        // No es necesario mostrar el cañon
-        if(timeToOpenCannon < 0)
+        if (!this.isDefeated()) {
+            // Mientras que el tiempo de espera del cañon no ha concluido
+            // No es necesario mostrar el cañon
+            if (timeToOpenCannon < 0)
+                super.render(batch);
+            shield.render(batch);
+            body.render(batch);
+        } else {
             super.render(batch);
-        shield.render(batch);
-        body.render(batch);
+        }
+    }
+
+    public void changeToDeletable() {
+        super.changeToDeletable();
+        shield.changeToDeletable();
+        body.changeToDeletable();
+    }
+
+    public void collideWithShoot(Shoot shoot) {
+        this.damage(1);
     }
 
     public void dispose(){

@@ -32,9 +32,6 @@ public class Type2 extends Enemy{
             if (this.getX() > LIMIT_TO_MOVE_SLOW) {
                 this.setX(this.getX() - NORMAL_SPEED * delta);
             } else {
-                // Ahora tenemos que esperar hasta que podamos
-                // movernos rapidamente
-
                 // Si el tiempo ya ha acabado, podemos movernos rapidamente
                 if (timeToGoFast <= 0) {
                     this.setX(this.getX() - HIGH_SPEED * delta);

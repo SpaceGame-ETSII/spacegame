@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 
 public class EnemiesManager {
 
@@ -25,7 +26,7 @@ public class EnemiesManager {
 
             enemy.update(delta);
 
-            //Se eliminan los enemigos que se salgan de la parte izquierda de la pantalla
+            //Se eliminan los enemigos que se salgan de la parte izquierda de la pantalla o estén marcados como borrables
             if(enemy.getX() < 0 || enemy.isDeletable()){
                 enemies.removeValue(enemy,false);
             }
@@ -34,7 +35,8 @@ public class EnemiesManager {
 
     public static void render() {
         for(Enemy enemy: enemies)
-            if(!enemy.isDeletable())
+            //El enemigo se pintará si no está marcado para borrar y no es parte de un enemigo mayor
+            if(!enemy.isDeletable() && !(enemy instanceof PartOfEnemy))
                 enemy.render(SpaceGame.batch);
     }
 

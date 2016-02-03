@@ -42,7 +42,7 @@ public class Enemy extends GameObject {
     }
 
     public void updateParticleEffect() {
-        destroyEffect.getEmitters().first().setPosition(this.getX(), this.getY());
+        destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
     }
 
     public void render(SpriteBatch batch) {
