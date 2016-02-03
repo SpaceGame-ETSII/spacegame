@@ -4,12 +4,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import com.tfg.spacegame.gameObjects.enemies.Type1;
-import com.tfg.spacegame.gameObjects.enemies.Type2;
-import com.tfg.spacegame.gameObjects.enemies.Type3;
-import com.tfg.spacegame.gameObjects.enemies.Type4;
+import com.tfg.spacegame.gameObjects.enemies.*;
 import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.enemies.Type5;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {
@@ -102,6 +98,7 @@ public class LevelGenerator {
                 enemies.add(new Type5(wrapper.x, wrapper.y));
                 break;
             case RED:
+                enemies.add(new RedEnemy(wrapper.x, wrapper.y));
                 break;
             case BLUE:
                 break;

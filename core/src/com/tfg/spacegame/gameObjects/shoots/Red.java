@@ -64,11 +64,19 @@ public class Red extends Shoot{
                 shootEffect.getEmitters().first().getAngle().setHigh(135, 225);
                 shootEffect.getEmitters().first().getAngle().setLow(160, 200);
             } else {
-                //FALTA EL ENEMIGO ROJO
+                shoot.getEmitters().first().setPosition(this.getX() + this.getShooter().getWidth()/2, this.getY());
+                shootEffect.getEmitters().first().setPosition(this.getShooter().getX(), this.getShooter().getY() + this.getShooter().getHeight() / 2);
+                // Rotamos el efecto de particulas 180º
+                shootEffect.getEmitters().first().getAngle().setHigh(135, 225);
+                shootEffect.getEmitters().first().getAngle().setLow(160, 200);
             }
         } else {
             //Si el disparo ha chocado, el efecto a mostrar es el del shockEffect
             if (this.getShooter() instanceof Enemy) {
+                shockEffect.getEmitters().first().setPosition(this.getX(), this.getY());
+                // Rotamos el efecto de particulas 180º
+                shockEffect.getEmitters().first().getAngle().setHigh(135, 225);
+                shockEffect.getEmitters().first().getAngle().setLow(160, 200);
             } else {
                 shockEffect.getEmitters().first().setPosition(this.getX() + this.getWidth(), this.getY());
             }

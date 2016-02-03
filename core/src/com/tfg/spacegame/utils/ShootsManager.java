@@ -150,8 +150,17 @@ public class ShootsManager {
 
     public static void shootRedWeapon(GameObject shooter) {
         Red redShoot = new Red(shooter,0,0,0f);
+        if (shooter instanceof Ship){
+            if(isShipReadyToShoot(TypeWeapon.RED)){
+                int x = (int) (shooter.getX() + shooter.getWidth());
+                int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
-        if(isShipReadyToShoot(TypeWeapon.RED)){
+                redShoot.setX(x);
+                redShoot.setY(y);
+
+                shoots.add(redShoot);
+            }
+        }else {
             int x = (int) (shooter.getX() + shooter.getWidth());
             int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
@@ -160,6 +169,7 @@ public class ShootsManager {
 
             shoots.add(redShoot);
         }
+
 
     }
 
