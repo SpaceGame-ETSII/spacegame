@@ -31,7 +31,7 @@ public class Type5 extends Enemy{
         hasShooted = false;
 
         //Creamos el efecto de particulas
-        shootEffectWarning = AssetsManager.loadParticleEffect("warningType5Effect");
+        shootEffectWarning = AssetsManager.loadParticleEffect("warning_shoot_type5_effect");
         this.updateParticleEffect();
 
         //Iniciamos el efecto de partículas

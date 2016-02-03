@@ -17,16 +17,17 @@ public class Red extends Shoot{
      Se trata de un delay de aparición*/
     private float timeToMove;
 
+    //Variable para guardar el tamaño del disparo a pintar en pantalla, así conseguimos pintar el disparo de manera dinámica
     private int pixelsToDraw;
 
     //Efecto de particulas de este disparo
     private ParticleEffect shootEffect;
 
     public Red(GameObject shooter, int x, int y,float delay) {
-        super("shoot_red", x, y, shooter);
+        super("red_shoot", x, y, shooter);
 
         //Creamos el efecto de particulas
-        shootEffect = AssetsManager.loadParticleEffect("red_effect_shoot");
+        shootEffect = AssetsManager.loadParticleEffect("red_shoot");
         this.updateParticleEffect();
 
         //Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará

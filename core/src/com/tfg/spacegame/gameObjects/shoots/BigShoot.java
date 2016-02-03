@@ -20,10 +20,10 @@ public class BigShoot extends Shoot {
     private ParticleEffect shootEffect;
 
     public BigShoot(GameObject shooter, int x, int y, float delay) {
-        super("disparo_enemigo_basico_tipo5", x, y, shooter);
+        super("bigshoot_shoot", x, y, shooter);
 
         // Creamos el efecto de particulas
-        shootEffect = AssetsManager.loadParticleEffect("shootType5Effect");
+        shootEffect = AssetsManager.loadParticleEffect("bigshoot_shoot_effect");
         this.updateParticleEffect();
 
         // Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará

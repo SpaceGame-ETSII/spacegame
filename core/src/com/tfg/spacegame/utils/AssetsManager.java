@@ -59,9 +59,9 @@ public class AssetsManager {
         assetsReferences.put("cockpit_damage4", shipsFolder+"cabina_dano4.png");
 
         //Texturas referentes a weapons
-        assetsReferences.put("shoot", weaponsFolder+"disparo.png");
-        assetsReferences.put("disparo_enemigo_basico_tipo5", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
-        assetsReferences.put("shoot_red", weaponsFolder+"disparo_rojo.png");
+        assetsReferences.put("basic_shoot", weaponsFolder+"disparo.png");
+        assetsReferences.put("bigshoot_shoot", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
+        assetsReferences.put("red_shoot", weaponsFolder+"disparo_rojo.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
@@ -73,13 +73,13 @@ public class AssetsManager {
         assetsReferences.put("red_equipped", particlesFolder + "rojo_equipado");
         assetsReferences.put("blue_equipped", particlesFolder + "azul_equipado");
         assetsReferences.put("yellow_equipped", particlesFolder + "amarillo_equipado");
-        assetsReferences.put("shootType5Effect", particlesFolder + "tipo5");
-        assetsReferences.put("warningType5Effect", particlesFolder + "aviso_tipo5");
-        assetsReferences.put("red_effect_shoot", particlesFolder + "arma_roja");
+        assetsReferences.put("bigshoot_shoot_effect", particlesFolder + "basico_grande_efecto");
+        assetsReferences.put("warning_shoot_type5_effect", particlesFolder + "aviso_disparo_tipo5");
+        assetsReferences.put("red_shoot_effect", particlesFolder + "arma_roja");
         assetsReferences.put("basic_effect_shoot", particlesFolder + "basico_efecto_disparo");
         assetsReferences.put("basic_effect_shock", particlesFolder + "basico_efecto_choque");
-        assetsReferences.put("basic", particlesFolder + "basico");
-        assetsReferences.put("fire", particlesFolder + "fire");
+        assetsReferences.put("basic_shoot_effect", particlesFolder + "basico_efecto");
+        assetsReferences.put("propulsion_ship_effect", particlesFolder + "propulsion_nave");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");

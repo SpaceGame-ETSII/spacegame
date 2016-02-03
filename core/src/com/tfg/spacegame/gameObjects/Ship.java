@@ -55,7 +55,7 @@ public class Ship extends GameObject {
         color = ColorShip.COLORLESS;
 
         //Creamos el efecto de partículas del fuego
-        fireEffect = AssetsManager.loadParticleEffect("fire");
+        fireEffect = AssetsManager.loadParticleEffect("propulsion_ship_effect");
 
         this.updateParticleEffect();
 
