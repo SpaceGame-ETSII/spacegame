@@ -61,6 +61,7 @@ public class AssetsManager {
         //Texturas referentes a weapons
         assetsReferences.put("basic_shoot", weaponsFolder+"disparo.png");
         assetsReferences.put("bigshoot_shoot", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
+        assetsReferences.put("blue_shoot", weaponsFolder+"disparo_azul.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
