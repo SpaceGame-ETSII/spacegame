@@ -17,11 +17,17 @@ public class SpaceGame extends Game {
 	public static int width = 800;
 	public static int height = 480;
 
+	public static int[] default_blending;
+
 	@Override
 	public void create () {
 		AssetsManager.load();
 
 		batch = new SpriteBatch();
+
+		default_blending = new int[2];
+		default_blending[0]=batch.getBlendSrcFunc();
+		default_blending[0]=batch.getBlendDstFunc();
 		font = new BitmapFont();
 		background = AssetsManager.loadTexture("background");
 
@@ -30,6 +36,7 @@ public class SpaceGame extends Game {
 
 		this.setScreen(new MainMenuScreen(this));
 	}
+
 
 	public void render() {
 		super.render();

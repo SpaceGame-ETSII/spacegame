@@ -33,13 +33,6 @@ public class EnemiesManager {
         }
     }
 
-    public static void render() {
-        for(Enemy enemy: enemies)
-            //El enemigo se pintará si no está marcado para borrar y no es parte de un enemigo mayor
-            if(!enemy.isDeletable() && !(enemy instanceof PartOfEnemy))
-                enemy.render(SpaceGame.batch);
-    }
-
     //Gestiona la reacción de la colisión del enemigo pasado por parámetro con la nave
     public static void manageCollisionWithShip(Enemy enemy) {
         enemy.collideWithShip();

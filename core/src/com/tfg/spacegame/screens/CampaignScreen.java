@@ -52,6 +52,7 @@ public class CampaignScreen implements Screen{
         inventary = new Inventary();
         EnemiesManager.load();
         ShootsManager.load();
+        RenderManager.initialize();
         CollissionsManager.load();
 
         //Creamos los objetos para el diálgo de salida del modo campaña
@@ -91,6 +92,9 @@ public class CampaignScreen implements Screen{
 
         game.camera.update();
         SpaceGame.batch.setProjectionMatrix(game.camera.combined);
+
+        SpaceGame.default_blending[0] = SpaceGame.batch.getBlendSrcFunc();
+        SpaceGame.default_blending[1] = SpaceGame.batch.getBlendDstFunc();
 
         SpaceGame.batch.begin();
 
@@ -139,8 +143,7 @@ public class CampaignScreen implements Screen{
     private void renderStart(float delta) {
         ship.render(game.batch);
         ShootsManager.render();
-        EnemiesManager.render();
-
+        RenderManager.render();
         if (ship.isDefeated())
             state = GameState.LOSE;
 

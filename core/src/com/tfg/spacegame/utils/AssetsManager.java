@@ -23,12 +23,12 @@ public class AssetsManager {
         assetsReferences = new ArrayMap<String, String>();
 
         //Texturas referentes a enemies
-        assetsReferences.put("tipo3", enemiesFolder+"tipo3.png");
+        assetsReferences.put("tipo3", enemiesFolder+"tipo3n.png");
         assetsReferences.put("type4", enemiesFolder+"tipo4.png");
         assetsReferences.put("type4_shield", enemiesFolder+"tipo4_shield.png");
         assetsReferences.put("type4_body", enemiesFolder+"tipo4_body.png");
         assetsReferences.put("enemigo_basico_tipo5", enemiesFolder+"enemigo_basico_tipo5.png");
-        assetsReferences.put("enemy", enemiesFolder+"enemigo.png");
+        assetsReferences.put("enemy", enemiesFolder+"tipo2.png");
 
         //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
