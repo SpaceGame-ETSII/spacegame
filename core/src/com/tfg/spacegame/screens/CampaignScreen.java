@@ -11,6 +11,9 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.*;
+import com.tfg.spacegame.utils.enums.GameState;
+import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
 public class CampaignScreen implements Screen{
 

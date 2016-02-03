@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.utils.enums.ColorShip;
+import com.tfg.spacegame.utils.ShootsManager;
 
 public class Ship extends GameObject {
 

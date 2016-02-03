@@ -3,9 +3,8 @@ package com.tfg.spacegame.gameObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.utils.ColorShip;
-import com.tfg.spacegame.utils.Pair;
-import com.tfg.spacegame.utils.TypeElement;
+import com.tfg.spacegame.utils.enums.ColorShip;
+import com.tfg.spacegame.utils.enums.TypeElement;
 
 public class Inventary extends GameObject {
 

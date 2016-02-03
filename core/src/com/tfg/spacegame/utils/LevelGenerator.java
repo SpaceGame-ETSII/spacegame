@@ -10,6 +10,7 @@ import com.tfg.spacegame.gameObjects.enemies.Type3;
 import com.tfg.spacegame.gameObjects.enemies.Type4;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.enemies.Type5;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {
 

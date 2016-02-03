@@ -9,6 +9,7 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
+import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
 

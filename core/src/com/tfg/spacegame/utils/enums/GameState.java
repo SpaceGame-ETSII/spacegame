@@ -1,4 +1,4 @@
-package com.tfg.spacegame.utils;
+package com.tfg.spacegame.utils.enums;
 
 /**
  * Created by gaems-dev on 28/10/15.
