@@ -2,7 +2,6 @@ package com.tfg.spacegame.gameObjects.enemies;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;

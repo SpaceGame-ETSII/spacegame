@@ -6,6 +6,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
+import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
 
@@ -84,6 +85,10 @@ public class ShootsManager {
                 if(selected.size == 0)
                     result = true;
                 break;
+            case RED:
+                if(selected.size==0)
+                    result = true;
+                break;
             default:
                 throw new IllegalArgumentException("Se ha seleccionado un tipo de arma inválido");
         }
@@ -129,6 +134,18 @@ public class ShootsManager {
         }
     }
 
+    public static void shootOneType5Weapon(GameObject shooter) {
+        BigShoot bigShoot = new BigShoot(shooter,0,0,0f);
+
+        int x = (int) (shooter.getX());
+        int y = (int) (shooter.getY() + shooter.getHeight()/2);
+
+        bigShoot.setX(x);
+        bigShoot.setY(y);
+
+        shoots.add(bigShoot);
+    }
+
     //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave
     public static void manageCollisionWithShip(Shoot shoot) {
         shoot.collideWithShip();
@@ -150,5 +167,4 @@ public class ShootsManager {
         shoot1.collideWithShoot(shoot2);
         shoot2.collideWithShoot(shoot1);
     }
-
 }

@@ -59,8 +59,8 @@ public class AssetsManager {
         assetsReferences.put("cockpit_damage4", shipsFolder+"cabina_dano4.png");
 
         //Texturas referentes a weapons
-        assetsReferences.put("shoot", weaponsFolder+"disparo.png");
-        assetsReferences.put("disparo_enemigo_basico_tipo5", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
+        assetsReferences.put("basic_shoot", weaponsFolder+"disparo.png");
+        assetsReferences.put("bigshoot_shoot", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
@@ -72,9 +72,14 @@ public class AssetsManager {
         assetsReferences.put("red_equipped", particlesFolder + "rojo_equipado");
         assetsReferences.put("blue_equipped", particlesFolder + "azul_equipado");
         assetsReferences.put("yellow_equipped", particlesFolder + "amarillo_equipado");
+        assetsReferences.put("bigshoot_shoot_effect", particlesFolder + "basico_grande_efecto");
+        assetsReferences.put("warning_shoot_type5_effect", particlesFolder + "aviso_disparo_tipo5");
         assetsReferences.put("basic_effect_shoot", particlesFolder + "basico_efecto_disparo");
         assetsReferences.put("basic_effect_shock", particlesFolder + "basico_efecto_choque");
+        assetsReferences.put("basic_shoot_effect", particlesFolder + "basico_efecto");
+        assetsReferences.put("propulsion_ship_effect", particlesFolder + "propulsion_nave");
         assetsReferences.put("basic_destroyed", particlesFolder + "basico_derrotado");
+        assetsReferences.put("basic_type5_destroyed", particlesFolder + "basico_tipo5_derrotado");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
@@ -85,12 +90,14 @@ public class AssetsManager {
         return new Texture(Gdx.files.internal(assetsReferences.get(textureName)));
     }
 
+    //Se llamará a este método cada vez que se pretenda cargar un efecto de partículas
     public static ParticleEffect loadParticleEffect(String particleName) {
         ParticleEffect particle = new ParticleEffect();
         particle.load(Gdx.files.internal(assetsReferences.get(particleName)), Gdx.files.internal(""));
         return particle;
     }
 
+    //Se llamará a este método cada vez que se pretenda cargar script del juego
     public static FileHandle loadScript(String scriptName){
         return Gdx.files.internal(assetsReferences.get(scriptName));
     }

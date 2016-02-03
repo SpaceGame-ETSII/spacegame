@@ -1,7 +1,5 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;

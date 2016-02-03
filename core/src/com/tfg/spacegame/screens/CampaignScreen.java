@@ -135,8 +135,8 @@ public class CampaignScreen implements Screen{
 
     private void renderStart(float delta) {
         ship.render(game.batch);
-        EnemiesManager.render();
         ShootsManager.render();
+        EnemiesManager.render();
 
         if (ship.isDefeated())
             state = GameState.LOSE;

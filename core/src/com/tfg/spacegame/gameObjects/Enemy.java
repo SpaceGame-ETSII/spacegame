@@ -26,8 +26,8 @@ public class Enemy extends GameObject {
         deletable = false;
         this.destroyEffect = destroyEffect;
 
-        this.updateParticleEffect();
-        destroyEffect.start();
+        this.destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
+        this.destroyEffect.start();
     }
 
     public void update(float delta) {

@@ -45,6 +45,10 @@ public class GameObject {
 
     public void setY(float y) { logicShape.y = y; }
 
+    public Texture getTexture(){
+        return texture;
+    }
+
     public void setTexture(String textureName) { texture = AssetsManager.loadTexture(textureName); }
 
     public Rectangle getLogicShape() {
