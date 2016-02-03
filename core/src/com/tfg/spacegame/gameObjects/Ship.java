@@ -132,11 +132,26 @@ public class Ship extends GameObject {
 
     //Realiza un disparo, en función del arma equipada
     public void shoot() {
-        if (this.color.equals(ColorShip.COLORLESS)){
-            ShootsManager.shootBurstBasicWeaponForShip(this);
-        }
-        if (this.color.equals(ColorShip.RED)){
-            ShootsManager.shootRedWeapon(this);
+        switch (color) {
+            case COLORLESS:
+                ShootsManager.shootBurstBasicWeaponForShip(this);
+                break;
+            case RED:
+                ShootsManager.shootRedWeapon(this);
+                break;
+            case BLUE:
+                break;
+            case YELLOW:
+                break;
+            case GREEN:
+                break;
+            case ORANGE:
+                break;
+            case PURPLE:
+                break;
+            default:
+                ShootsManager.shootBurstBasicWeaponForShip(this);
+                break;
         }
     }
 
