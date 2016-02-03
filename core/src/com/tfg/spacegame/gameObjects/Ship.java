@@ -123,7 +123,6 @@ public class Ship extends GameObject {
     public void setX(float x,float delta){
         super.setX(x);
         this.updateParticleEffect();
-        System.out.println(delta);
         fireEffect.update(delta);
     }
 
@@ -135,6 +134,9 @@ public class Ship extends GameObject {
     public void shoot() {
         if (this.color.equals(ColorShip.COLORLESS)){
             ShootsManager.shootBurstBasicWeaponForShip(this);
+        }
+        if (this.color.equals(ColorShip.RED)){
+            ShootsManager.shootRedWeapon(this);
         }
     }
 

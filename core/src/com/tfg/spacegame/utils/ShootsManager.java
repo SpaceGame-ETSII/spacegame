@@ -9,6 +9,7 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
+import com.tfg.spacegame.gameObjects.shoots.Red;
 import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
@@ -145,6 +146,21 @@ public class ShootsManager {
         bigShoot.setY(y);
 
         shoots.add(bigShoot);
+    }
+
+    public static void shootRedWeapon(GameObject shooter) {
+        Red redShoot = new Red(shooter,0,0,0f);
+
+        if(isShipReadyToShoot(TypeWeapon.RED)){
+            int x = (int) (shooter.getX() + shooter.getWidth());
+            int y = (int) (shooter.getY() + shooter.getHeight()/2);
+
+            redShoot.setX(x);
+            redShoot.setY(y);
+
+            shoots.add(redShoot);
+        }
+
     }
 
     //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave
