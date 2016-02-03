@@ -1,8 +1,11 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.utils.AssetsManager;
 
 public class Type1 extends Enemy{
 
@@ -19,26 +22,32 @@ public class Type1 extends Enemy{
     private float delay;
 
     public Type1(int x, int y, float delay) {
-        super("enemy", x, y, 3);
+        super("enemy", x, y, 1, AssetsManager.loadParticleEffect("basic_destroyed"));
 
         this.delay = delay;
         degrees = 0;
     }
 
     public void update(float delta){
-        //Si se ha terminado el tiempo requerido, el enemigo se moverá
-        if (delay <= 0) {
-            this.setX(this.getX() - SPEED * delta);
-            degrees += delta*SPEED;
-            this.setY(this.getInitialPosition().y + (AMPLITUDE * MathUtils.sinDeg(degrees)));
-        } else {
-            delay -= delta;
+        super.update(delta);
+        if (!this.isDefeated()) {
+            //Si se ha terminado el tiempo requerido, el enemigo se moverá
+            if (delay <= 0) {
+                this.setX(this.getX() - SPEED * delta);
+                degrees += delta * SPEED;
+                this.setY(this.getInitialPosition().y + (AMPLITUDE * MathUtils.sinDeg(degrees)));
+            } else {
+                delay -= delta;
+            }
         }
-
     }
 
     public void collideWithShoot(Shoot shoot) {
         this.damage(1);
+    }
+
+    public void dispose() {
+        super.dispose();
     }
 
 }

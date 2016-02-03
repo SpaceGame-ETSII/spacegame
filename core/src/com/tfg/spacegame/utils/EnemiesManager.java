@@ -26,19 +26,15 @@ public class EnemiesManager {
             enemy.update(delta);
 
             //Se eliminan los enemigos que se salgan de la parte izquierda de la pantalla
-            if(enemy.getX() < 0){
+            if(enemy.getX() < 0 || enemy.isDeletable()){
                 enemies.removeValue(enemy,false);
-            }
-
-            if(enemy.isDefeated()) {
-                enemies.removeValue(enemy, false);
             }
         }
     }
 
     public static void render() {
         for(Enemy enemy: enemies)
-            if(!enemy.isDefeated())
+            if(!enemy.isDeletable())
                 enemy.render(SpaceGame.batch);
     }
 

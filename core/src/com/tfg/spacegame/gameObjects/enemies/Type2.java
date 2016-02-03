@@ -2,6 +2,7 @@ package com.tfg.spacegame.gameObjects.enemies;
 
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.utils.AssetsManager;
 
 public class Type2 extends Enemy{
 
@@ -19,23 +20,27 @@ public class Type2 extends Enemy{
     private float timeToGoFast;
 
     public Type2(int x, int y) {
-        super("enemy", x, y, 3);
+        super("enemy", x, y, 3, AssetsManager.loadParticleEffect("basic_destroyed"));
         timeToGoFast = 2f;
     }
 
     public void update(float delta){
-        // Mientras tengamos que seguir moviendonos lentamente
-        if (this.getX() > LIMIT_TO_MOVE_SLOW) {
-            this.setX(this.getX() - NORMAL_SPEED * delta);
-        } else {
-            // Ahora tenemos que esperar hasta que podamos
-            // movernos rapidamente
+        super.update(delta);
 
-            // Si el tiempo ya ha acabado, podemos movernos rapidamente
-            if (timeToGoFast <= 0) {
-                this.setX(this.getX() - HIGH_SPEED * delta);
+        if (!this.isDefeated()) {
+            // Mientras tengamos que seguir moviendonos lentamente
+            if (this.getX() > LIMIT_TO_MOVE_SLOW) {
+                this.setX(this.getX() - NORMAL_SPEED * delta);
             } else {
-                timeToGoFast -= delta;
+                // Ahora tenemos que esperar hasta que podamos
+                // movernos rapidamente
+
+                // Si el tiempo ya ha acabado, podemos movernos rapidamente
+                if (timeToGoFast <= 0) {
+                    this.setX(this.getX() - HIGH_SPEED * delta);
+                } else {
+                    timeToGoFast -= delta;
+                }
             }
         }
     }
