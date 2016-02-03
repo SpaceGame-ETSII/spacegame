@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
 public class Type3 extends Enemy {
@@ -42,7 +43,7 @@ public class Type3 extends Enemy {
     private float aux;
 
     public Type3(int x, int y) {
-        super("tipo3", x, y, 7);
+        super("tipo3", x, y, 7, AssetsManager.loadParticleEffect("basic_destroyed"));
 
         pixelsToMoveSlowly = 150;
         timeToShoot = INITIAL_TIME_TO_SHOOT;
@@ -50,25 +51,29 @@ public class Type3 extends Enemy {
     }
 
     public void update(float delta){
-        //Si aún no ha empezado a girar
-        if (this.getX() > INITIAL_X_TO_ROTATE) {
-            aux = this.getX() - SPEED * ACCELERATION * delta;
-            if (aux < INITIAL_X_TO_ROTATE)
-                this.setX(INITIAL_X_TO_ROTATE);
-            else
-                this.setX(aux);
-        } else {
-            // Si ya ha empezado a girar
-            degrees += SPEED * delta;
-            this.setX(centerOfCircle + (DIAMETER * MathUtils.cosDeg(degrees)));
-            this.setY(this.getInitialPosition().y + (DIAMETER * MathUtils.sinDeg(degrees)));
+        super.update(delta);
 
-            //Si el tiempo se ha acabado, el enemigo disparará
-            if (timeToShoot <= 0) {
-                this.shoot();
-                timeToShoot = INITIAL_TIME_TO_SHOOT;
+        if (!this.isDefeated()) {
+            //Si aún no ha empezado a girar
+            if (this.getX() > INITIAL_X_TO_ROTATE) {
+                aux = this.getX() - SPEED * ACCELERATION * delta;
+                if (aux < INITIAL_X_TO_ROTATE)
+                    this.setX(INITIAL_X_TO_ROTATE);
+                else
+                    this.setX(aux);
             } else {
-                timeToShoot -= FREQUENCY * delta;
+                // Si ya ha empezado a girar
+                degrees += SPEED * delta;
+                this.setX(centerOfCircle + (DIAMETER * MathUtils.cosDeg(degrees)));
+                this.setY(this.getInitialPosition().y + (DIAMETER * MathUtils.sinDeg(degrees)));
+
+                //Si el tiempo se ha acabado, el enemigo disparará
+                if (timeToShoot <= 0) {
+                    this.shoot();
+                    timeToShoot = INITIAL_TIME_TO_SHOOT;
+                } else {
+                    timeToShoot -= FREQUENCY * delta;
+                }
             }
         }
     }

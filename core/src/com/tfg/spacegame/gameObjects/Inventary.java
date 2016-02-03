@@ -148,6 +148,9 @@ public class Inventary extends GameObject {
 
             //Actualizamos cada objeto en los casos que sean necesario
             updateAllObjects(delta);
+
+            //Actualizamos la nave para mantener su efecto de partículas activo
+            ship.setX(ship.getX(),delta);
         }
     }
 

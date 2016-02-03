@@ -99,11 +99,10 @@ public class Basic extends Shoot {
             } else {
                 this.changeToDeletable();
             }
-
         }
-
     }
 
+    @Override
     public void render(SpriteBatch batch){
         if (!this.isShocked()) {
             super.render(batch);

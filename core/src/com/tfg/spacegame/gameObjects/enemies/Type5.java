@@ -7,6 +7,7 @@ import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.utils.AssetsManager;
 
 public class Type5 extends Enemy{
 
@@ -26,7 +27,7 @@ public class Type5 extends Enemy{
     private ParticleEffect shootEffectWarning;
 
     public Type5(int x, int y) {
-        super("enemigo_basico_tipo5", x, y, 10);
+        super("enemigo_basico_tipo5", x, y, 10, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
         timeToShoot = FREQUENCY_OF_SHOOTING;
         hasShooted = false;
 
@@ -39,8 +40,10 @@ public class Type5 extends Enemy{
     }
 
     public void update(float delta){
+        super.update(delta);
+
         //Mientras el enemigo tenga distancia que recorrer hasta un punto fijo dado, vamos actualizando su posición
-        if (this.getX()>=450) {
+        if (this.getX()>=450 && !this.isDefeated()) {
             this.setX(this.getX() - SPEED * delta);
         }else{
             //Si hemos sobrepasado el tiempo para disparar
@@ -67,7 +70,11 @@ public class Type5 extends Enemy{
     }
 
     public void updateParticleEffect() {
-        shootEffectWarning.getEmitters().first().setPosition(this.getX(),this.getY()+this.getHeight()/2);
+        if (this.isDefeated()){
+            super.updateParticleEffect();
+        }else {
+            shootEffectWarning.getEmitters().first().setPosition(this.getX(), this.getY() + this.getHeight() / 2);
+        }
     }
 
     public void shoot(){
