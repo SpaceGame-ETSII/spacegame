@@ -61,7 +61,6 @@ public class AssetsManager {
         //Texturas referentes a weapons
         assetsReferences.put("basic_shoot", weaponsFolder+"disparo.png");
         assetsReferences.put("bigshoot_shoot", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
-        assetsReferences.put("red_shoot", weaponsFolder+"disparo_rojo.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
@@ -75,7 +74,6 @@ public class AssetsManager {
         assetsReferences.put("yellow_equipped", particlesFolder + "amarillo_equipado");
         assetsReferences.put("bigshoot_shoot_effect", particlesFolder + "basico_grande_efecto");
         assetsReferences.put("warning_shoot_type5_effect", particlesFolder + "aviso_disparo_tipo5");
-        assetsReferences.put("red_shoot_effect", particlesFolder + "arma_roja");
         assetsReferences.put("basic_effect_shoot", particlesFolder + "basico_efecto_disparo");
         assetsReferences.put("basic_effect_shock", particlesFolder + "basico_efecto_choque");
         assetsReferences.put("basic_shoot_effect", particlesFolder + "basico_efecto");

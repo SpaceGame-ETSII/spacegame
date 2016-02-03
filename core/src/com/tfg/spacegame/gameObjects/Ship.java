@@ -134,9 +134,6 @@ public class Ship extends GameObject {
         if (this.color.equals(ColorShip.COLORLESS)){
             ShootsManager.shootBurstBasicWeaponForShip(this);
         }
-        if (this.color.equals(ColorShip.RED)){
-            ShootsManager.shootRedWeapon(this);
-        }
     }
 
     //Aumenta en uno el daño a la nave, la vuelve invunerable y cambia la apariencia de la cabina
