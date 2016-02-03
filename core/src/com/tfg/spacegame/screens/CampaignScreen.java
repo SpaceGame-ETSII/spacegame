@@ -228,7 +228,7 @@ public class CampaignScreen implements Screen{
         // El disparo puede hacerse de dos formas
         // 1. Sin multituouch el disparo solo se realizará si pulsamos por delante del primer tercio de la pantalla
         // 2. Con multitouch el disparo se realizará en cualquier parte de la pantalla
-        if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3))){
+        if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3)) && Gdx.input.justTouched()){
             ship.shoot();
         }
 

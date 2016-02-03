@@ -76,19 +76,19 @@ public class ShootsManager {
         Array<Shoot> selected = new Array<Shoot>();
 
         //Obtenemos todos los disparos en pantalla que realizó la nave
-        for(Shoot w : shoots){
-            if(w.getShooter() instanceof Ship)
-                selected.add(w);
+        for(Shoot shoot : shoots){
+            if(shoot.getShooter() instanceof Ship && !shoot.isShocked())
+                selected.add(shoot);
         }
 
         //Según el tipo de disparo, la condición será distinta
         switch (type){
             case BASIC:
-                if(selected.size == 0)
+                if(selected.size <= 0)
                     result = true;
                 break;
             case RED:
-                if(selected.size==0)
+                if(selected.size <= 0)
                     result = true;
                 break;
             default:

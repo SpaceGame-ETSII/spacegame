@@ -2,16 +2,16 @@ Untitled
 - Delay -
 active: false
 - Duration - 
-lowMin: 200.0
-lowMax: 200.0
+lowMin: 100.0
+lowMax: 100.0
 - Count - 
-min: 0
-max: 200
+min: 25
+max: 50
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 100.0
-highMax: 100.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -38,12 +38,12 @@ active: false
 - Y Offset - 
 active: false
 - Spawn Shape - 
-shape: point
+shape: square
 - Spawn Width - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
+highMin: 30.0
+highMax: 30.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -52,8 +52,8 @@ timeline0: 0.0
 - Spawn Height - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
+highMin: 6.0
+highMax: 6.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -103,9 +103,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 0.4862745
-colors1: 0.4862745
-colors2: 0.4862745
+colors0: 0.76862746
+colors1: 0.03529412
+colors2: 0.03529412
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 
