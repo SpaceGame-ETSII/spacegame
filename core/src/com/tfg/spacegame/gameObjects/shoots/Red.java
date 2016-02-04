@@ -119,7 +119,7 @@ public class Red extends Shoot{
                 texture.setRegion(0,0,pixelsToDraw,texture.getRegionHeight());
                 pixelsToDraw += 10;
             }
-            batch.draw(texture, this.getLogicShape().x, this.getLogicShape().y);
+            batch.draw(texture, this.getX(), this.getY());
 
             if(timeToMove < 0) {
                 shoot.draw(batch);

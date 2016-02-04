@@ -62,6 +62,7 @@ public class AssetsManager {
         assetsReferences.put("basic_shoot", weaponsFolder+"disparo.png");
         assetsReferences.put("bigshoot_shoot", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
         assetsReferences.put("red_shoot", weaponsFolder+"disparo_rojo.png");
+        assetsReferences.put("yellow_shoot", weaponsFolder+"disparo_amarillo.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
