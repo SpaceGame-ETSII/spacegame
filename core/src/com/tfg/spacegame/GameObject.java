@@ -4,11 +4,8 @@ package com.tfg.spacegame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.ShapeGenerator;
 
 public class GameObject {
 
@@ -21,7 +18,20 @@ public class GameObject {
     public GameObject(String textureName, int x, int y) {
         texture = AssetsManager.loadTexture(textureName);
 
-        logicShape = ShapeGenerator.getRectangle(texture);
+        float vertices[] = new float[8];
+        vertices[0] = 0;
+        vertices[1] = 0;
+
+        vertices[2] = 0;
+        vertices[3] = texture.getHeight();
+
+        vertices[4] = texture.getWidth();
+        vertices[5] = texture.getHeight();
+
+        vertices[6] = texture.getWidth();
+        vertices[7] = 0;
+
+        logicShape = new Polygon(vertices);
         logicShape.setPosition(x,y);
     }
 
@@ -30,18 +40,7 @@ public class GameObject {
     }
 
     public float getHeight() {
-        float result;
-
-        if(logicShape.getVertices()[3] > logicShape.getVertices()[5])
-            result = logicShape.getVertices()[3];
-        else
-            result = logicShape.getVertices()[5];
-
-        if(logicShape.getVertices()[1] < logicShape.getVertices()[7])
-            result -= logicShape.getVertices()[1];
-        else
-            result -= logicShape.getVertices()[7];
-        return  result;
+        return logicShape.getVertices()[5] - logicShape.getVertices()[7];
     }
 
     public float getX() {
@@ -79,13 +78,12 @@ public class GameObject {
         batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
     }
 
-
     public void dispose() {
         texture.dispose();
     }
 
     //Indica si hay una colisión con el objeto pasado por parámetro
-    public boolean isOverlapingWith(GameObject g){
+    public boolean isOverlapingWith(GameObject g) {
         return this.getLogicShape().getBoundingRectangle().overlaps(g.getLogicShape().getBoundingRectangle());
     }
 
