@@ -92,6 +92,10 @@ public class ShootsManager {
                 if(selected.size <= 0)
                     result = true;
                 break;
+            case YELLOW:
+                if(selected.size <= 0)
+                    result = true;
+                break;
             default:
                 throw new IllegalArgumentException("Se ha seleccionado un tipo de arma inválido");
         }
@@ -112,6 +116,12 @@ public class ShootsManager {
                     shoot.getY()+shoot.getHeight() < 0 || shoot.getY() > SpaceGame.height ||
                     shoot.isDeletable()){
                 shoots.removeValue(shoot,false);
+            }
+
+            if(shoot instanceof Yellow){
+                Yellow yellow = (Yellow) shoot;
+                if (yellow.isDeletable())
+                    shoots.removeValue(shoot,false);
             }
         }
         updateBurst(delta, ship);
@@ -165,9 +175,11 @@ public class ShootsManager {
     }
 
     public static void shootYellowWeapon(Ship ship) {
-        Yellow yellowShoot =new Yellow(ship);
+        Yellow yellowShoot = new Yellow(ship);
 
-        shoots.add(yellowShoot);
+        if(isShipReadyToShoot(TypeWeapon.RED)){
+            shoots.add(yellowShoot);
+        }
     }
 
     //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave
