@@ -22,23 +22,18 @@ public class Yellow extends Shoot{
 
     private ParticleEffect shootEffect;
 
-    private ShapeRenderer sr;
-
     public Yellow(GameObject shooter) {
         super("yellow_shoot", 0, 0, shooter);
         this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
         this.setY(getShooter().getY() + this.getHeight()/2);
         this.getLogicShape().setOrigin(0,this.getHeight()/2);
-        sr = new ShapeRenderer();
-        sr.setAutoShapeType(true);
 
         shootEffect = AssetsManager.loadParticleEffect("yellow_shoot_effect");
-        shootEffect.getEmitters().first().setPosition(this.getX(), this.getY()+this.getHeight()/2);
+        shootEffect.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY()+this.getHeight()/2);
 
         shootEffect.start();
 
         vector = new Vector2();
-
     }
 
     public void update(float delta){
@@ -46,12 +41,17 @@ public class Yellow extends Shoot{
         shootEffect.update(delta);
         shootEffect.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY() + this.getHeight()/2);
 
-        if(Gdx.input.isTouched(1)){
+        if(Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && SpaceGame.getTouchPos(0).x > SpaceGame.width/3)){
             // Obtenemos el angulo a donde tenemos que girar
             float x1 = this.getX();
             float y1 = this.getY();
             float x2 = this.getX()+this.getWidth();
-            float y2 = SpaceGame.getTouchPos(1).y;
+            // Dependiendo de si ha habido multitouch o no obtenemos el valor Y correspondiente
+            float y2;
+            if(Gdx.input.isTouched(1))
+                y2 = SpaceGame.getTouchPos(1).y;
+            else
+                y2 = SpaceGame.getTouchPos(0).y;
             vector.set(x2-x1,y2-y1);
             // Basta con llamar al vector.angle para tener el angulo a girar
             // Hay que tener que cuenta que hay que invertir este angulo, es decir
