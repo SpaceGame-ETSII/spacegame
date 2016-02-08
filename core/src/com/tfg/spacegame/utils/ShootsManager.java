@@ -171,17 +171,14 @@ public class ShootsManager {
     }
 
     public static void shootBlueWeapon(GameObject shooter, float yTarget) {
-        Blue blueShoot = new Blue(shooter,0,0,yTarget);
+        Blue blueShoot;
 
         if (shooter instanceof Ship) {
             if(isShipReadyToShoot(TypeWeapon.BLUE)){
-                System.out.println("hello");
-
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight() / 3);
 
-                blueShoot.setX(x);
-                blueShoot.setY(y);
+                blueShoot = new Blue(shooter,x,y,yTarget);
 
                 shoots.add(blueShoot);
             }
