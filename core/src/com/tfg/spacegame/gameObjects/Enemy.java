@@ -85,5 +85,4 @@ public class Enemy extends GameObject {
         super.dispose();
         destroyEffect.dispose();
     }
-
 }

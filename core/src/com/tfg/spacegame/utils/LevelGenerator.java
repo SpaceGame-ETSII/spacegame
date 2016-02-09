@@ -4,12 +4,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import com.tfg.spacegame.gameObjects.enemies.Type1;
-import com.tfg.spacegame.gameObjects.enemies.Type2;
-import com.tfg.spacegame.gameObjects.enemies.Type3;
-import com.tfg.spacegame.gameObjects.enemies.Type4;
+import com.tfg.spacegame.gameObjects.Ship;
+import com.tfg.spacegame.gameObjects.enemies.*;
 import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.enemies.Type5;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {
@@ -61,7 +58,7 @@ public class LevelGenerator {
      * @param delta
      * @return Los enemigos que estaban creados más los recien creados
      */
-    public Array<Enemy> update(Array<Enemy> enemies,float delta){
+    public Array<Enemy> update(Array<Enemy> enemies,float delta, Ship target){
 
         // Recorro los enemigos a poder generar
         for(EnemyWrapper wrapper: enemiesToGenerate){
@@ -73,14 +70,14 @@ public class LevelGenerator {
             if(wrapper.timeToSpawn < 0){
 
                 //Añadimos el nuevo enemigo y lo eliminamos de la lista a generar
-                this.addEnemy(enemies, wrapper);
+                this.addEnemy(enemies, wrapper, target);
                 enemiesToGenerate.removeValue(wrapper,false);
             }
         }
         return enemies;
     }
 
-    private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper) {
+    private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper, Ship target) {
         switch (wrapper.type){
             case TYPE1:
                 enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
@@ -106,6 +103,7 @@ public class LevelGenerator {
             case BLUE:
                 break;
             case YELLOW:
+                enemies.add(new YellowEnemy(wrapper.x,wrapper.y, target));
                 break;
             case GREEN:
                 break;

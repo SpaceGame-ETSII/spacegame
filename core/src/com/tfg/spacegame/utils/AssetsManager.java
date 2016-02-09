@@ -29,6 +29,7 @@ public class AssetsManager {
         assetsReferences.put("type4_body", enemiesFolder+"tipo4_body.png");
         assetsReferences.put("enemigo_basico_tipo5", enemiesFolder+"enemigo_basico_tipo5.png");
         assetsReferences.put("enemy", enemiesFolder+"enemigo.png");
+        assetsReferences.put("yellow_enemy", enemiesFolder+"amarillo.png");
 
         //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
@@ -86,6 +87,7 @@ public class AssetsManager {
         assetsReferences.put("red_shoot_effect_shoot", particlesFolder + "arma_roja_efecto_disparo");
         assetsReferences.put("red_effect_shock", particlesFolder + "arma_roja_efecto_choque");
         assetsReferences.put("yellow_shoot_effect", particlesFolder + "arma_amarilla");
+        assetsReferences.put("yellow_enemy_defeated", particlesFolder + "enemigo_amarillo_derrotado");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");

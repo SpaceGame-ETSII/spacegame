@@ -4,6 +4,7 @@ package com.tfg.spacegame.utils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 
@@ -18,9 +19,9 @@ public class EnemiesManager {
         level = LevelGenerator.loadLevel("scriptTest");
     }
 
-    public static void update(float delta){
+    public static void update(float delta, Ship target){
         //Actualizamos los tiempos de espera de aparición de los enemigos
-        enemies = level.update(enemies,delta);
+        enemies = level.update(enemies,delta, target);
 
         for(Enemy enemy: enemies){
 
