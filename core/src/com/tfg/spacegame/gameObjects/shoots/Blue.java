@@ -131,7 +131,6 @@ public class Blue extends Shoot {
             this.setX(this.getX() - (SPEED * delta));
         }
 
-
         this.updateParticleEffect();
         propulsionEffect.update(delta);
     }

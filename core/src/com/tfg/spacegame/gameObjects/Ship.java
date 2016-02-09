@@ -91,7 +91,7 @@ public class Ship extends GameObject {
 
     }
 
-    public void update(float delta, float x, float y) {
+    public void update(float delta, float x, float y, boolean canShipMove) {
 
         //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
         this.updateParticleEffect();
@@ -100,10 +100,12 @@ public class Ship extends GameObject {
         fireEffect.update(delta);
 
         //Movimiento de la nave
-        if (Gdx.input.isTouched() && y < (this.getY() + this.getHeight() / 2 ) && x < (this.getX() + this.getWidth()))
-            this.setY(this.getY() - ( Math.abs(y - (this.getY() + this.getHeight()/ 2 )) * SPEED * delta));
-        if (Gdx.input.isTouched() && y > (this.getY() + this.getHeight() / 2 ) && x < (this.getX() + this.getWidth()))
-            this.setY(this.getY() + ( Math.abs(y - (this.getY() + this.getHeight()/ 2 )) * SPEED * delta));
+        if (canShipMove) {
+            if (y < (this.getY() + this.getHeight() / 2))
+                this.setY(this.getY() - (Math.abs(y - (this.getY() + this.getHeight() / 2)) * SPEED * delta));
+            if (y > (this.getY() + this.getHeight() / 2))
+                this.setY(this.getY() + (Math.abs(y - (this.getY() + this.getHeight() / 2)) * SPEED * delta));
+        }
 
         //Controlamos si la nave se sale de la pantalla
         if (this.getY() < 0)

@@ -41,6 +41,12 @@ public class CampaignScreen implements Screen{
     private int scrollingPosition;
     private static final int SCROLLING_SPEED = 120;
 
+    //Se usará para recoger las coordenadas con respecto a la cámara
+    private Vector3 coordinates;
+
+    //Servirá para comprobar si la nave puede moverse según la posición del dedo
+    private boolean canShipMove;
+
     public CampaignScreen(final SpaceGame game) {
 
         this.game = game;
@@ -214,24 +220,35 @@ public class CampaignScreen implements Screen{
         if(scrollingPosition <= -game.background.getWidth())
             scrollingPosition = 0;
 
-        //Creamos +un vector que almacenará las posiciones relativas de la cámara
-        Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-        v = game.camera.unproject(v);
+        //Creamos un vector que almacenará las posiciones relativas de la cámara
+        coordinates = SpaceGame.getTouchPos(0);
 
-        //Realizamos la lógica de los objetos en juego
-        ship.update(delta, v.x, v.y);
-        CollissionsManager.update(delta, ship);
-        EnemiesManager.update(delta);
-        ShootsManager.update(delta, ship);
+        //Comprobamos si la posición del dedo corresponde al lugar donde se puede mover la nave
+        if (Gdx.input.isTouched() && coordinates.x < (ship.getX() + ship.getWidth()))
+            canShipMove = true;
+        else
+            canShipMove = false;
+
+        ship.update(delta, coordinates.x, coordinates.y, canShipMove);
 
         // Si tocamos la pantalla disparamos
         // El disparo puede hacerse de dos formas
         // 1. Sin multituouch el disparo solo se realizará si pulsamos por delante del primer tercio de la pantalla
         // 2. Con multitouch el disparo se realizará en cualquier parte de la pantalla
         if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3)) && Gdx.input.justTouched()) {
-            ship.shoot(v.x, v.y);
+
+            //Si la nave pudo moverse, significa que para disparar tenemos que comprobar el segundo dedo
+            if (canShipMove) {
+                coordinates = SpaceGame.getTouchPos(1);
+            }
+
+            ship.shoot(coordinates.x, coordinates.y);
         }
 
+        //Realizamos la lógica de los objetos en juego
+        CollissionsManager.update(delta, ship);
+        EnemiesManager.update(delta);
+        ShootsManager.update(delta, ship);
     }
 
     @Override
