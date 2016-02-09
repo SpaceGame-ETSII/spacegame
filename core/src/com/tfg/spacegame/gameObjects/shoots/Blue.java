@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
@@ -43,7 +44,7 @@ public class Blue extends Shoot {
     private int direction;
 
     public Blue(GameObject shooter, int x, int y, float yTarget) {
-        super("blue_shoot",x,y,shooter);
+        super("blue_shoot",x,y,shooter, null, null);
 
         propulsionEffect = AssetsManager.loadParticleEffect("blue_propulsion_effect");
 
@@ -142,6 +143,21 @@ public class Blue extends Shoot {
     public void render(SpriteBatch batch){
         super.render(batch);
         propulsionEffect.draw(batch);
+    }
+
+    public void collideWithShip() {
+        super.collideWithShip();
+        this.shock();
+    }
+
+    public void collideWithEnemy(Enemy enemy) {
+        super.collideWithEnemy(enemy);
+        this.shock();
+    }
+
+    public void collideWithShoot(Shoot shoot) {
+        super.collideWithShoot(shoot);
+        this.shock();
     }
 
     public void dispose(){
