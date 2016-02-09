@@ -98,7 +98,6 @@ public class Ship extends GameObject {
 
         //Actualizamos el efecto de particulas
         fireEffect.update(delta);
-
         //Movimiento de la nave
         if (canShipMove) {
             if (y < (this.getY() + this.getHeight() / 2))
@@ -144,6 +143,7 @@ public class Ship extends GameObject {
                 ShootsManager.shootBlueWeapon(this, y);
                 break;
             case YELLOW:
+                ShootsManager.shootYellowWeapon(this);
                 break;
             case GREEN:
                 break;

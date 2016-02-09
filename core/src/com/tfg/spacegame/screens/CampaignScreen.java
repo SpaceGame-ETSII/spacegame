@@ -195,8 +195,7 @@ public class CampaignScreen implements Screen{
 
         //Comprobamos sobre que botón pulsa el usuario y actualizamos las variables del diálgo en consecuencia
         if (Gdx.input.isTouched()) {
-            Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-            v = game.camera.unproject(v);
+            Vector3 v = SpaceGame.getTouchPos(0);
             if (exit.isOverlapingWith(v.x, v.y)) {
                 isDialogin=true;
                 isCancelled=false;
