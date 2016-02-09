@@ -32,7 +32,7 @@ public class Button extends GameObject {
         }
     }
 
-    private void setPressed(boolean pressed) {
+    public void setPressed(boolean pressed) {
         this.pressed = pressed;
     }
 

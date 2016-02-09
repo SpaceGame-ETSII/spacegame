@@ -5,10 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Inventary;
-import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.*;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
@@ -26,16 +23,7 @@ public class CampaignScreen implements Screen{
     //Estado en el que se encuentra el juego
     private GameState state;
 
-    //Variables para el diálogo de salida del modo camapaña
-    private GameObject exit;
-    private GameObject exitConfirm;
-    private GameObject exitCancel;
-    private GameObject ventana;
-
-    //Indican el estado de la ventana de diálogo para salir del juego
-    private boolean isDialogin=false;
-    private boolean isConfirm=false;
-    private boolean isCancelled=false;
+    private DialogBox menuExitDialog;
 
     //Ayudan con la posición de la ventana cuando se abre y se cierra el inventario
     private int scrollingPosition;
@@ -54,11 +42,12 @@ public class CampaignScreen implements Screen{
         ShootsManager.load();
         CollissionsManager.load();
 
+        menuExitDialog = new DialogBox();
         //Creamos los objetos para el diálgo de salida del modo campaña
-        exit = new GameObject("buttonExit",750,430);
-        ventana = new GameObject("ventana",200,120);
-        exitCancel = new GameObject("buttonCancel",425,200);
-        exitConfirm = new GameObject("buttonConfirm",325,200);
+        menuExitDialog.addElement("window", new GameObject("ventana", 200, 120));
+        menuExitDialog.addElement("exit", new Button("buttonExit", this, 750, 430));
+        menuExitDialog.addElement("cancel", new Button("buttonCancel", this, 425, 200));
+        menuExitDialog.addElement("confirm", new Button("buttonConfirm", this, 325, 200));
 
         //Preparamos un listener que si se desliza el dedo a la derecha se abre el inventario
         Gdx.input.setInputProcessor(new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
@@ -152,24 +141,24 @@ public class CampaignScreen implements Screen{
         ship.render(SpaceGame.batch);
 
         //En función de si estamos en el diálogo para salir o no veremos la ventana para salir del modo campaña
-        if (isDialogin){
-            ventana.render(SpaceGame.batch);
+        if (menuExitDialog.isDialogIn()){
+            menuExitDialog.renderElement("window");
             SpaceGame.font.draw(SpaceGame.batch, "¿Desea salir del modo campaña?", 300, 320);
-            exitCancel.render(SpaceGame.batch);
-            exitConfirm.render(SpaceGame.batch);
+            menuExitDialog.renderElement("confirm");
+            menuExitDialog.renderElement("cancel");
 
-            if (isConfirm) {
-                isDialogin = false;
-                isConfirm = false;
+            if (menuExitDialog.getElementButton("confirm").isPressed()) {
+                menuExitDialog.setDialogIn(false);
+                menuExitDialog.getElementButton("confirm").setPressed(false);
                 game.setScreen(new MainMenuScreen(game));
             }
 
-            if (isCancelled) {
-                isDialogin = false;
-                isCancelled = false;
+            if (menuExitDialog.getElementButton("cancel").isPressed()) {
+                menuExitDialog.setDialogIn(false);
+                menuExitDialog.getElementButton("cancel").setPressed(false);
             }
         }else{
-            exit.render(SpaceGame.batch);
+            menuExitDialog.renderElement("exit");
 
             //Se hará una cosa u otra si el inventario está cerrándose o no
             if (inventary.isClosing()) {
@@ -190,18 +179,18 @@ public class CampaignScreen implements Screen{
         //Comprobamos sobre que botón pulsa el usuario y actualizamos las variables del diálgo en consecuencia
         if (Gdx.input.isTouched()) {
             Vector3 v = SpaceGame.getTouchPos(0);
-            if (exit.isOverlapingWith(v.x, v.y)) {
-                isDialogin=true;
-                isCancelled=false;
-                isConfirm=false;
+            if (menuExitDialog.getElementButton("exit").isOverlapingWith(v.x, v.y)) {
+                menuExitDialog.setDialogIn(true);
+                menuExitDialog.getElementButton("cancel").setPressed(false);
+                menuExitDialog.getElementButton("confirm").setPressed(false);
             }
-            if (exitConfirm.isOverlapingWith(v.x,v.y)) {
-                isConfirm=true;
+            if (menuExitDialog.getElementButton("confirm").isOverlapingWith(v.x, v.y)) {
+                menuExitDialog.getElementButton("confirm").setPressed(true);
             }
-            if (exitCancel.isOverlapingWith(v.x,v.y)) {
-                isCancelled=true;
-            }
+            if (menuExitDialog.getElementButton("cancel").isOverlapingWith(v.x, v.y)) {
+                menuExitDialog.getElementButton("cancel").setPressed(true);
 
+            }
         }
 
     }
@@ -261,10 +250,7 @@ public class CampaignScreen implements Screen{
         for(Shoot shoot : ShootsManager.shoots)
             shoot.dispose();
         inventary.dispose();
-        exit.dispose();
-        exitCancel.dispose();
-        exitConfirm.dispose();
-        ventana.dispose();
+        menuExitDialog.dispose();
     }
 }
 
