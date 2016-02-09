@@ -46,7 +46,7 @@ public class CollissionsManager {
             shootIsOverlapped = false;
 
             //En primer lugar comprobamos si el shoot dió a la nave, siempre y cuando no hubiese sido golpeada antes
-            if (enemyOverlapsShip == null && shootOverlapsShip == null &&
+            if (enemyOverlapsShip == null && shootOverlapsShip == null && shootDst.getShooter() != ship &&
                     shootDst.isOverlapingWith(ship) && !shootDst.isShocked() && !ship.isUndamagable()) {
 
                 //Almacenamos el shoot y lo eliminamos de la lista a comprobar
@@ -56,7 +56,7 @@ public class CollissionsManager {
 
                 //Si la bala no dio a la nave, comprobamos si dio a algún enemigo
                 for (Enemy enemy : enemies) {
-                    if (shootDst.isOverlapingWith(enemy) && !shootDst.isShocked() && !enemy.isDefeated()) {
+                    if (shootDst.isOverlapingWith(enemy) && !shootDst.isShocked() && !enemy.isDefeated() && shootDst.getShooter() != enemy) {
 
                         //Añadimos el par colisionado a la lista
                         shootsToEnemies.add(new Pair<Shoot, Enemy>(shootDst, enemy));

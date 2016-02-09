@@ -162,7 +162,7 @@ public class ShootsManager {
                 shoots.add(redShoot);
             }
         }else if (shooter instanceof RedEnemy){
-            int x = (int) (shooter.getX());
+            int x = (int) (shooter.getX() - redShoot.getWidth());
             int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
             redShoot.setX(x);
