@@ -7,6 +7,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
 import com.tfg.spacegame.utils.AssetsManager;
 
 public class Red extends Shoot{
@@ -37,6 +38,7 @@ public class Red extends Shoot{
         super("red_shoot", x, y, shooter);
 
         texture = new TextureRegion(this.getTexture());
+        texture.setRegion(0,0,10,this.getHeight());
 
         //Creamos el efecto de particulas
         shoot = AssetsManager.loadParticleEffect("red_shoot_effect");
@@ -59,16 +61,17 @@ public class Red extends Shoot{
         if (!this.isShocked()) {
             //Se actuará de forma distinta si el shooter es enemigo o no
             if (this.getShooter() instanceof Ship) {
-                shoot.getEmitters().first().setPosition(this.getX()-10,this.getY()+3);
+                shoot.getEmitters().first().setPosition(this.getX() - 10,this.getY() + 3);
                 shootEffect.getEmitters().first().setPosition(this.getX(), this.getY());
                 shootEffect.getEmitters().first().getAngle().setHigh(135, 225);
                 shootEffect.getEmitters().first().getAngle().setLow(160, 200);
-            } else {
-                shoot.getEmitters().first().setPosition(this.getX() + this.getShooter().getWidth()/2, this.getY());
-                shootEffect.getEmitters().first().setPosition(this.getShooter().getX(), this.getShooter().getY() + this.getShooter().getHeight() / 2);
-                // Rotamos el efecto de particulas 180º
-                shootEffect.getEmitters().first().getAngle().setHigh(135, 225);
-                shootEffect.getEmitters().first().getAngle().setLow(160, 200);
+            } else if (this.getShooter() instanceof RedEnemy){
+                shoot.getEmitters().first().setPosition(this.getX(), this.getY());
+                shootEffect.getEmitters().first().setPosition(this.getShooter().getX(), this.getShooter().getY() + this.getShooter().getHeight()/2);
+                //Rotamos el efecto de particulas 180º
+                shoot.getEmitters().first().getAngle().setHigh(180,180);
+                //shootEffect.getEmitters().first().getAngle().setHigh(135, 225);
+                //shootEffect.getEmitters().first().getAngle().setLow(160, 200);
             }
         } else {
             //Si el disparo ha chocado, el efecto a mostrar es el del shockEffect
@@ -88,11 +91,11 @@ public class Red extends Shoot{
             //Esperaremos a que sea el momento correcto para moverse
             if (timeToMove < 0) {
                 //Actualizamos el movimiento del disparo
-                if (getShooter() instanceof Ship)
+                if (getShooter() instanceof Ship) {
                     this.setX(this.getX() + (SPEED * delta));
-                else
+                }else{
                     this.setX(this.getX() - (SPEED * delta));
-
+                }
                 //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
                 this.updateParticleEffect();
 
@@ -103,8 +106,8 @@ public class Red extends Shoot{
             //Mientras no sea el momento para moverse
             else {
                 //Vamos a ir restando el tiempo de delay con el delta hasta que sea menor que 0
-                timeToMove -= pixelsToDraw;
-
+                //timeToMove -= pixelsToDraw;
+                timeToMove -= delta;
                 //Podemos además ir actualizando la posición Y por si el shooter se está moviendo
                 this.setY(getShooter().getY() + getShooter().getHeight() / 2 - this.getHeight() / 2);
             }
@@ -123,16 +126,24 @@ public class Red extends Shoot{
 
     public void render(SpriteBatch batch){
         if (!this.isShocked()) {
-            if(pixelsToDraw<=texture.getRegionWidth()){
-                texture.setRegion(0,0,pixelsToDraw,texture.getRegionHeight());
-                pixelsToDraw += 10;
-            }
-            batch.draw(texture, this.getLogicShape().x, this.getLogicShape().y);
+            //if (this.getShooter() instanceof Ship){
+                /*if(pixelsToDraw<=texture.getRegionWidth()){
+                    texture.setRegion(0,0,pixelsToDraw,texture.getRegionHeight());
+                    pixelsToDraw += 10;
+                }
+            /*}else{
+                if(pixelsToDraw<=texture.getRegionWidth()){
+                    texture.setRegion(-this.getShooter().getX(),-this.getShooter().getY(),pixelsToDraw,texture.getRegionHeight());
+                    pixelsToDraw += 10;
+                }
+            }*/
 
-            if(timeToMove < 0) {
+            //batch.draw(texture, this.getLogicShape().x, this.getLogicShape().y);
+            super.render(batch);
+            //if(timeToMove < 0) {
                 shoot.draw(batch);
                 shootEffect.draw(batch);
-            }
+            // }
         } else {
             shockEffect.draw(batch);
         }

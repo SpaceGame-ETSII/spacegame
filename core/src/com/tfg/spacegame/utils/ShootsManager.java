@@ -6,6 +6,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
+import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
 import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
@@ -160,8 +161,8 @@ public class ShootsManager {
 
                 shoots.add(redShoot);
             }
-        }else {
-            int x = (int) (shooter.getX() + shooter.getWidth());
+        }else if (shooter instanceof RedEnemy){
+            int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
             redShoot.setX(x);
@@ -169,7 +170,6 @@ public class ShootsManager {
 
             shoots.add(redShoot);
         }
-
 
     }
 
