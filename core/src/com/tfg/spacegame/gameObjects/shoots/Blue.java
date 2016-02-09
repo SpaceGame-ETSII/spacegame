@@ -44,7 +44,9 @@ public class Blue extends Shoot {
     private int direction;
 
     public Blue(GameObject shooter, int x, int y, float yTarget) {
-        super("blue_shoot",x,y,shooter, null, null);
+        super("blue_effect_shock",x,y,shooter,
+                AssetsManager.loadParticleEffect("blue_effect_shock"),
+                AssetsManager.loadParticleEffect("blue_effect_shock"));
 
         propulsionEffect = AssetsManager.loadParticleEffect("blue_propulsion_effect");
 
@@ -133,11 +135,32 @@ public class Blue extends Shoot {
         }
 
         this.updateParticleEffect();
-        propulsionEffect.update(delta);
+
+        //Actualizamos los efectos de partículas
+        super.update(delta);
+
+        if (!this.isShocked()) {
+            propulsionEffect.update(delta);
+        }
     }
 
     public void updateParticleEffect() {
-        propulsionEffect.getEmitters().first().setPosition(this.getX(),this.getY() + this.getHeight()/2);
+        super.updateParticleEffect();
+
+        //Comprobamos si el disparo ha chocado
+        if (!this.isShocked()) {
+            //Se actuará de forma distinta si el shooter es enemigo o no
+            if (this.getShooter() instanceof Enemy) {
+                propulsionEffect.getEmitters().first().setPosition(this.getX(),this.getY() + this.getHeight()/2);
+
+                // Rotamos el efecto de particulas 180º
+                propulsionEffect.getEmitters().first().getAngle().setHigh(180,180);
+            } else {
+                // Lo centramos con la nave para que salga en la posición de su cañón
+                propulsionEffect.getEmitters().first().setPosition(this.getX(),this.getY() + this.getHeight()/2);
+            }
+        }
+
     }
 
     public void render(SpriteBatch batch){
