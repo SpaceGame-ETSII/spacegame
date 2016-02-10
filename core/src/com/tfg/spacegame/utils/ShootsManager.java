@@ -10,7 +10,9 @@ import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
 import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
+import com.tfg.spacegame.gameObjects.shoots.Blue;
 import com.tfg.spacegame.gameObjects.shoots.Red;
+import com.tfg.spacegame.gameObjects.shoots.Yellow;
 import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
@@ -77,7 +79,7 @@ public class ShootsManager {
         Array<Shoot> selected = new Array<Shoot>();
 
         //Obtenemos todos los disparos en pantalla que realizó la nave
-        for(Shoot shoot : shoots){
+        for(Shoot shoot: shoots){
             if(shoot.getShooter() instanceof Ship && !shoot.isShocked())
                 selected.add(shoot);
         }
@@ -89,6 +91,14 @@ public class ShootsManager {
                     result = true;
                 break;
             case RED:
+                if(selected.size <= 0)
+                    result = true;
+                break;
+            case BLUE:
+                if(selected.size <= 1)
+                    result = true;
+                break;
+            case YELLOW:
                 if(selected.size <= 0)
                     result = true;
                 break;
@@ -112,6 +122,12 @@ public class ShootsManager {
                     shoot.getY()+shoot.getHeight() < 0 || shoot.getY() > SpaceGame.height ||
                     shoot.isDeletable()){
                 shoots.removeValue(shoot,false);
+            }
+
+            if(shoot instanceof Yellow){
+                Yellow yellow = (Yellow) shoot;
+                if (yellow.isDeletable())
+                    shoots.removeValue(shoot,false);
             }
         }
         updateBurst(delta, ship);
@@ -150,7 +166,7 @@ public class ShootsManager {
     }
 
     public static void shootRedWeapon(GameObject shooter) {
-        Red redShoot = new Red(shooter,0,0,0f);
+        Red redShoot = new Red(shooter,0,0);
         if (shooter instanceof Ship){
             if(isShipReadyToShoot(TypeWeapon.RED)){
                 int x = (int) (shooter.getX() + shooter.getWidth());
@@ -171,6 +187,31 @@ public class ShootsManager {
             shoots.add(redShoot);
         }
 
+    }
+
+    public static void shootBlueWeapon(GameObject shooter, float yTarget) {
+        Blue blueShoot;
+
+        if (shooter instanceof Ship) {
+            if (isShipReadyToShoot(TypeWeapon.BLUE)) {
+                int x = (int) (shooter.getX() + shooter.getWidth());
+                int y = (int) (shooter.getY() + shooter.getHeight() / 3);
+
+                blueShoot = new Blue(shooter, x, y, yTarget);
+
+                shoots.add(blueShoot);
+            }
+        } else {
+
+        }
+    }
+
+    public static void shootYellowWeapon(Ship ship) {
+        Yellow yellowShoot = new Yellow(ship);
+
+        if(isShipReadyToShoot(TypeWeapon.RED)){
+            shoots.add(yellowShoot);
+        }
     }
 
     //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave
@@ -194,4 +235,5 @@ public class ShootsManager {
         shoot1.collideWithShoot(shoot2);
         shoot2.collideWithShoot(shoot1);
     }
+
 }

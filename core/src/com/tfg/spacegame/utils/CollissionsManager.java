@@ -56,7 +56,8 @@ public class CollissionsManager {
 
                 //Si la bala no dio a la nave, comprobamos si dio a algún enemigo
                 for (Enemy enemy : enemies) {
-                    if (shootDst.isOverlapingWith(enemy) && !shootDst.isShocked() && !enemy.isDefeated() && shootDst.getShooter() != enemy) {
+                    if (shootDst.isOverlapingWith(enemy) && !shootDst.isShocked() && !enemy.isDefeated() &&
+                            shootDst.getShooter() != enemy) {
 
                         //Añadimos el par colisionado a la lista
                         shootsToEnemies.add(new Pair<Shoot, Enemy>(shootDst, enemy));

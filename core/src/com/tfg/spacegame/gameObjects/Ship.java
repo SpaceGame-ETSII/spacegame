@@ -68,7 +68,6 @@ public class Ship extends GameObject {
 
     private void updateParticleEffect() {
         fireEffect.getEmitters().first().setPosition(this.getX() + 40,this.getY() + this.getHeight()/2 + 2);
-        fireEffect.start();
     }
 
     @Override
@@ -92,19 +91,20 @@ public class Ship extends GameObject {
 
     }
 
-    public void update(float delta, float x, float y) {
+    public void update(float delta, float x, float y, boolean canShipMove) {
 
         //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
         this.updateParticleEffect();
 
         //Actualizamos el efecto de particulas
         fireEffect.update(delta);
-
         //Movimiento de la nave
-        if (Gdx.input.isTouched() && y < (this.getY() + this.getHeight() / 2 ) && x < (this.getX() + this.getWidth()))
-            this.setY(this.getY() - ( Math.abs(y - (this.getY() + this.getHeight()/ 2 )) * SPEED * delta));
-        if (Gdx.input.isTouched() && y > (this.getY() + this.getHeight() / 2 ) && x < (this.getX() + this.getWidth()))
-            this.setY(this.getY() + ( Math.abs(y - (this.getY() + this.getHeight()/ 2 )) * SPEED * delta));
+        if (canShipMove) {
+            if (y < (this.getY() + this.getHeight() / 2))
+                this.setY(this.getY() - (Math.abs(y - (this.getY() + this.getHeight() / 2)) * SPEED * delta));
+            if (y > (this.getY() + this.getHeight() / 2))
+                this.setY(this.getY() + (Math.abs(y - (this.getY() + this.getHeight() / 2)) * SPEED * delta));
+        }
 
         //Controlamos si la nave se sale de la pantalla
         if (this.getY() < 0)
@@ -120,7 +120,7 @@ public class Ship extends GameObject {
 
     }
 
-    public void setX(float x,float delta){
+    public void setX(float x, float delta){
         super.setX(x);
         this.updateParticleEffect();
         fireEffect.update(delta);
@@ -131,7 +131,7 @@ public class Ship extends GameObject {
     }
 
     //Realiza un disparo, en función del arma equipada
-    public void shoot() {
+    public void shoot(float x, float y) {
         switch (color) {
             case COLORLESS:
                 ShootsManager.shootBurstBasicWeaponForShip(this);
@@ -140,8 +140,10 @@ public class Ship extends GameObject {
                 ShootsManager.shootRedWeapon(this);
                 break;
             case BLUE:
+                ShootsManager.shootBlueWeapon(this, y);
                 break;
             case YELLOW:
+                ShootsManager.shootYellowWeapon(this);
                 break;
             case GREEN:
                 break;
