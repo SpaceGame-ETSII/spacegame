@@ -37,21 +37,21 @@ public class Red extends Shoot{
     public Red(GameObject shooter, int x, int y,float delay) {
         super("red_shoot", x, y, shooter);
 
-        texture = new TextureRegion(this.getTexture());
-        texture.setRegion(0,0,10,this.getHeight());
-
         //Creamos el efecto de particulas
         shoot = AssetsManager.loadParticleEffect("red_shoot_effect");
-        shootEffect = AssetsManager.loadParticleEffect("red_effect_shock");
-        shockEffect = AssetsManager.loadParticleEffect("red_shoot_effect_shoot");
+        shootEffect = AssetsManager.loadParticleEffect("red_shoot_effect_shoot");
+        shockEffect = AssetsManager.loadParticleEffect("red_effect_shock");
 
         this.updateParticleEffect();
 
-        //Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará
+        //Los iniciamos, pero aunque los iniciemos si no haya un update no avanzarán
         shoot.start();
         shootEffect.start();
         shockEffect.start();
 
+        //Inicializamos las variables para pintar el disparo a trozos y no la textura entera
+        texture = new TextureRegion(this.getTexture());
+        texture.setRegion(0,0,10,this.getHeight());
         timeToMove = delay;
         pixelsToDraw = 0;
     }
@@ -65,19 +65,17 @@ public class Red extends Shoot{
                 shootEffect.getEmitters().first().setPosition(this.getX(), this.getY());
                 shootEffect.getEmitters().first().getAngle().setHigh(135, 225);
                 shootEffect.getEmitters().first().getAngle().setLow(160, 200);
-            } else if (this.getShooter() instanceof RedEnemy){
+            } else if (this.getShooter() instanceof Enemy){
                 shoot.getEmitters().first().setPosition(this.getX(), this.getY());
                 shootEffect.getEmitters().first().setPosition(this.getShooter().getX(), this.getShooter().getY() + this.getShooter().getHeight()/2);
                 //Rotamos el efecto de particulas 180º
                 shoot.getEmitters().first().getAngle().setHigh(180,180);
-                //shootEffect.getEmitters().first().getAngle().setHigh(135, 225);
-                //shootEffect.getEmitters().first().getAngle().setLow(160, 200);
             }
         } else {
             //Si el disparo ha chocado, el efecto a mostrar es el del shockEffect
             if (this.getShooter() instanceof Enemy) {
                 shockEffect.getEmitters().first().setPosition(this.getX(), this.getY());
-                // Rotamos el efecto de particulas 180º
+                //Cambiamos en ángulo del efecto de partículas de choque
                 shockEffect.getEmitters().first().getAngle().setHigh(135, 225);
                 shockEffect.getEmitters().first().getAngle().setLow(160, 200);
             } else {
@@ -106,8 +104,7 @@ public class Red extends Shoot{
             //Mientras no sea el momento para moverse
             else {
                 //Vamos a ir restando el tiempo de delay con el delta hasta que sea menor que 0
-                //timeToMove -= pixelsToDraw;
-                timeToMove -= delta;
+                timeToMove -= pixelsToDraw;
                 //Podemos además ir actualizando la posición Y por si el shooter se está moviendo
                 this.setY(getShooter().getY() + getShooter().getHeight() / 2 - this.getHeight() / 2);
             }
@@ -126,24 +123,17 @@ public class Red extends Shoot{
 
     public void render(SpriteBatch batch){
         if (!this.isShocked()) {
-            //if (this.getShooter() instanceof Ship){
-                /*if(pixelsToDraw<=texture.getRegionWidth()){
-                    texture.setRegion(0,0,pixelsToDraw,texture.getRegionHeight());
-                    pixelsToDraw += 10;
-                }
-            /*}else{
-                if(pixelsToDraw<=texture.getRegionWidth()){
-                    texture.setRegion(-this.getShooter().getX(),-this.getShooter().getY(),pixelsToDraw,texture.getRegionHeight());
-                    pixelsToDraw += 10;
-                }
-            }*/
+            //Vamos pintando parte por parte del disparo, en lugar de que salga la textura entera
+            if(pixelsToDraw<=texture.getRegionWidth()){
+                texture.setRegion(0,0,pixelsToDraw,texture.getRegionHeight());
+                pixelsToDraw += 10;
+            }
+            batch.draw(texture, this.getLogicShape().x, this.getLogicShape().y);
 
-            //batch.draw(texture, this.getLogicShape().x, this.getLogicShape().y);
-            super.render(batch);
-            //if(timeToMove < 0) {
+            if(timeToMove < 0) {
                 shoot.draw(batch);
                 shootEffect.draw(batch);
-            // }
+            }
         } else {
             shockEffect.draw(batch);
         }
