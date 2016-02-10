@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
@@ -13,7 +14,7 @@ import com.tfg.spacegame.utils.AssetsManager;
 public class Blue extends Shoot {
 
     //Velocidad de movimiento
-    public static final float SPEED = 250;
+    public static final float SPEED = 300;
 
     //Constante que se multiplicará por la velocidad cuando el misil gire
     public static final float ACCELERATION = 70;
@@ -43,10 +44,13 @@ public class Blue extends Shoot {
     //Servirá para indicar si el giro va en el sentido de las agujas del reloj o al revés
     private int direction;
 
+    //Servirá para impedir que la nave gire si el yTarget es apenas diferentemente apreciable al Y del shooter
+    private boolean canRotate;
+
     public Blue(GameObject shooter, int x, int y, float yTarget) {
-        super("blue_effect_shock",x,y,shooter,
-                AssetsManager.loadParticleEffect("blue_effect_shock"),
-                AssetsManager.loadParticleEffect("blue_effect_shock"));
+        super("blue_shoot",x,y,shooter,
+                AssetsManager.loadParticleEffect("blue_shoot_effect_shoot"),
+                AssetsManager.loadParticleEffect("blue_shoot_effect_shock"));
 
         propulsionEffect = AssetsManager.loadParticleEffect("blue_propulsion_effect");
 
@@ -65,11 +69,11 @@ public class Blue extends Shoot {
 
         //Dependiendo de si es la nave o no el shooter, el disparo vendrá de la derecha o la izquierda
         if (shooter instanceof Ship) {
-            xTarget = 700;
+            xTarget = SpaceGame.width - (SpaceGame.width / 8);
             xCenter = ((xTarget - x) / 2) + x;
             xCenterOfCircle = xCenter - diameter;
         } else {
-            xTarget = 100;
+            xTarget = SpaceGame.width / 8;
             xCenter = ((x - xTarget) / 2) + xTarget;
             xCenterOfCircle = xCenter + diameter;
         }
@@ -80,58 +84,67 @@ public class Blue extends Shoot {
         //Damos un valor inicial, aunque realmente no servirá para nada
         direction = 1;
 
+        //Si la distancia entre la posición del shooter y el yTarget no supera el 8% de la pantalla, el disparo irá recto
+        if (Math.abs(yTarget - (shooter.getY() + (shooter.getHeight()/2))) < (SpaceGame.height * 8 / 100)) {
+            canRotate = false;
+        } else {
+            canRotate = true;
+        }
+
         this.updateParticleEffect();
         propulsionEffect.start();
     }
 
     public void update(float delta) {
-        //Actualizamos el movimiento del disparo
-        if (getShooter() instanceof Ship) {
+        if (!this.isShocked()) {
+            //Actualizamos el movimiento del disparo
+            if (getShooter() instanceof Ship) {
 
-            //Comprobamos si la nave está dentro del rango donde debe girar
-            if (Math.abs(xCenter - this.getX()) > diameter) {
-                //La nave está fuera del rango de giro
+                //Comprobamos si la nave no está dentro del rango donde debe girar o si debe rotar
+                if (Math.abs(xCenter - this.getX()) > diameter || !this.canRotate) {
+                    //La nave está fuera del rango de giro
 
-                //Simplemente avanzamos la X
-                this.setX(this.getX() + (SPEED * delta));
+                    //Simplemente avanzamos la X
+                    this.setX(this.getX() + (SPEED * delta));
+                } else {
+                    //La nave está dentro del rango de giro
+
+                    //Si el punto central es superior a la posición del misil, el sentido de giro será el de las agujas del reloj
+                    if (yCenter > this.getY()) {
+                        direction = 1;
+                    } else {
+                        direction = -1;
+                    }
+
+                    //Actualizamos los grados a girar en base a la velocidad, dependiente de delta y en el sentido adecuado
+                    degrees += speed_for_circle * delta * direction;
+
+                    //Comprobamos si los grados sale del rango de 0 a 360, lo que indicará que el misil terminó el primer giro
+                    if (degrees > 360 || degrees < 0) {
+                        //Ahora preparamos el inicio del segundo giro
+
+                        //Colocamos el centro del círculo listo para el siguiente giro
+                        xCenterOfCircle = xCenter + diameter;
+
+                        //Cambiamos a 180 grados que es el primer estado del segundo giro
+                        degrees = 180;
+
+                        //Recolocamos la X para hacer que siempre se salte el if del primer giro
+                        this.setX(xCenter);
+
+                        //Ajustamos para que la posición Y sobre pase el yCenter y no tengamos problemas para que direction se actualice
+                        this.setY((float) (yCenter + 0.1 * direction));
+                    } else {
+                        //En caso de no ser el comienzo del segundo giro, simplemente continuamos el giro normalmente
+                        this.setX(xCenterOfCircle + (diameter * MathUtils.cosDeg(degrees)));
+                        this.setY(yCenter + (diameter * MathUtils.sinDeg(degrees)));
+                    }
+
+                }
             } else {
-                //La nave está dentro del rango de giro
-
-                //Si el punto central es superior a la posición del misil, el sentido de giro será el de las agujas del reloj
-                if (yCenter > this.getY()) {
-                    direction = 1;
-                } else {
-                    direction = -1;
-                }
-
-                //Actualizamos los grados a girar en base a la velocidad, dependiente de delta y en el sentido adecuado
-                degrees += speed_for_circle * delta * direction;
-
-                //Comprobamos si los grados sale del rango de 0 a 360, lo que indicará que el misil terminó el primer giro
-                if (degrees > 360 || degrees < 0) {
-                    //Ahora preparamos el inicio del segundo giro
-
-                    //Colocamos el centro del círculo listo para el siguiente giro
-                    xCenterOfCircle = xCenter + diameter;
-
-                    //Cambiamos a 180 grados que es el primer estado del segundo giro
-                    degrees = 180;
-
-                    //Recolocamos la X para hacer que siempre se salte el if del primer giro
-                    this.setX(xCenter);
-
-                    //Ajustamos para que la posición Y sobre pase el yCenter y no tengamos problemas para que direction se actualice
-                    this.setY((float) (yCenter + 0.1 * direction));
-                } else {
-                    //En caso de no ser el comienzo del segundo giro, simplemente continuamos el giro normalmente
-                    this.setX(xCenterOfCircle + (diameter * MathUtils.cosDeg(degrees)));
-                    this.setY(yCenter + (diameter * MathUtils.sinDeg(degrees)));
-                }
-
+                //De momento, el disparo de un enemigo va recto
+                this.setX(this.getX() - (SPEED * delta));
             }
-        } else {
-            //De momento, el disparo de un enemigo va recto
-            this.setX(this.getX() - (SPEED * delta));
         }
 
         this.updateParticleEffect();
@@ -160,12 +173,13 @@ public class Blue extends Shoot {
                 propulsionEffect.getEmitters().first().setPosition(this.getX(),this.getY() + this.getHeight()/2);
             }
         }
-
     }
 
     public void render(SpriteBatch batch){
         super.render(batch);
-        propulsionEffect.draw(batch);
+        if (!this.isShocked()) {
+            propulsionEffect.draw(batch);
+        }
     }
 
     public void collideWithShip() {

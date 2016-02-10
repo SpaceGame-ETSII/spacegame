@@ -1,22 +1,20 @@
 Untitled
 - Delay -
-active: true
-lowMin: 0.0
-lowMax: 0.0
+active: false
 - Duration - 
-lowMin: 200.0
-lowMax: 200.0
+lowMin: 250.0
+lowMax: 250.0
 - Count - 
 min: 0
-max: 300
+max: 200
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 300.0
-highMax: 300.0
+highMin: 100.0
+highMax: 100.0
 relative: false
 scalingCount: 1
-scaling0: 0.2857143
+scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
 - Life - 
@@ -28,11 +26,11 @@ relative: false
 scalingCount: 3
 scaling0: 1.0
 scaling1: 1.0
-scaling2: 0.3
+scaling2: 1.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.999
-timeline2: 1.0
+timeline1: 0.6369863
+timeline2: 0.8767123
 - Life Offset - 
 active: false
 - X Offset - 
@@ -62,25 +60,21 @@ scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
 - Scale - 
-lowMin: 20.0
-lowMax: 20.0
-highMin: 60.0
-highMax: 60.0
+lowMin: 0.0
+lowMax: 0.0
+highMin: 5.0
+highMax: 5.0
 relative: false
-scalingCount: 3
-scaling0: 0.0
-scaling1: 0.0
-scaling2: 1.0
-timelineCount: 3
+scalingCount: 1
+scaling0: 1.0
+timelineCount: 1
 timeline0: 0.0
-timeline1: 0.58219177
-timeline2: 1.0
 - Velocity - 
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 100.0
-highMax: 100.0
+highMin: 150.0
+highMax: 150.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -88,10 +82,10 @@ timelineCount: 1
 timeline0: 0.0
 - Angle - 
 active: true
-lowMin: -100.0
-lowMax: -100.0
-highMin: 360.0
-highMax: 0.0
+lowMin: 0.0
+lowMax: 0.0
+highMin: -30.0
+highMax: 30.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -99,7 +93,7 @@ scaling1: 1.0
 scaling2: 1.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.5068493
+timeline1: 0.47260273
 timeline2: 1.0
 - Rotation - 
 active: false
@@ -109,9 +103,9 @@ active: false
 active: false
 - Tint - 
 colorsCount: 3
-colors0: 0.0
-colors1: 0.0627451
-colors2: 0.4862745
+colors0: 0.043137256
+colors1: 0.06666667
+colors2: 0.6666667
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 

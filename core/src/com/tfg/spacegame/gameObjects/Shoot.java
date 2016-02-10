@@ -3,7 +3,6 @@ package com.tfg.spacegame.gameObjects;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.utils.AssetsManager;
 
 public class Shoot extends GameObject {
 
@@ -52,9 +51,9 @@ public class Shoot extends GameObject {
 
     public void update(float delta) {
         //Si el disparo no ha chocado mostramos el efecto de salida, y si ha chocado el efecto de destrucción
-        if (!this.isShocked()) {
+        if (!this.isShocked() && shootEffect != null) {
             shootEffect.update(delta);
-        } else {
+        } else if (destroyEffect != null) {
             destroyEffect.update(delta);
 
             // Restamos el tiempo que estará el efecto en pantalla, y si pasa el tiempo, marcamos el shoot como deletable
@@ -66,7 +65,7 @@ public class Shoot extends GameObject {
 
     public void updateParticleEffect() {
         //Comprobamos si el disparo ha chocado
-        if (!this.isShocked()) {
+        if (!this.isShocked() && shootEffect != null) {
             //Se actuará de forma distinta si el shooter es enemigo o no
             if (this.getShooter() instanceof Enemy) {
                 shootEffect.getEmitters().first().setPosition(this.getShooter().getX(), this.getShooter().getY() + this.getShooter().getHeight() / 2);
@@ -78,7 +77,7 @@ public class Shoot extends GameObject {
                 // Lo ubicamos en el extremo derecha y mitad de altura del shooter
                 shootEffect.getEmitters().first().setPosition(this.getShooter().getX() + this.getShooter().getWidth(), this.getShooter().getY() + this.getShooter().getHeight() / 2);
             }
-        } else {
+        } else if (destroyEffect != null) {
             //Si el disparo ha chocado, el efecto a mostrar es el del shockEffect
             if (this.getShooter() instanceof Enemy) {
                 destroyEffect.getEmitters().first().setPosition(this.getX(), this.getY());
@@ -92,8 +91,8 @@ public class Shoot extends GameObject {
     }
 
     public void render(SpriteBatch batch) {
-        super.render(batch);
         if (!this.isShocked()) {
+            super.render(batch);
             if (shootEffect != null)
                 shootEffect.draw(batch);
         } else {
