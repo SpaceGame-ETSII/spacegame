@@ -10,6 +10,8 @@ import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {
 
+    public static Enemy actualEnemy;
+
     //Clase que se representa un enemigo recogido del script
     private static class EnemyWrapper implements Json.Serializable{
         public TypeEnemy type;
@@ -62,11 +64,13 @@ public class LevelGenerator {
         // Recorro los enemigos a poder generar
         for(EnemyWrapper wrapper: enemiesToGenerate){
 
-            // Resto el tiempo necesario
-            wrapper.timeToSpawn -= delta;
+            if (actualEnemy == null || actualEnemy.isDeletable()) {
+                // Resto el tiempo necesario
+                wrapper.timeToSpawn -= delta;
+            }
 
             // Si el tiempo se ha cumplido, generamos el enemigo correspondiente
-            if(wrapper.timeToSpawn < 0){
+            if(wrapper.timeToSpawn < 0 && (actualEnemy == null || !wrapper.equals(actualEnemy))){
 
                 //Añadimos el nuevo enemigo y lo eliminamos de la lista a generar
                 this.addEnemy(enemies, wrapper);
@@ -85,7 +89,9 @@ public class LevelGenerator {
                 enemies.add(new Type2(wrapper.x, wrapper.y));
                 break;
             case TYPE3:
-                enemies.add(new Type3(wrapper.x, wrapper.y));
+                Enemy type3 = new Type3(wrapper.x, wrapper.y);
+                enemies.add(type3);
+                actualEnemy = type3;
                 break;
             case TYPE4:
                 //Debemos agregar todas las partes del enemigo
@@ -93,15 +99,22 @@ public class LevelGenerator {
                 enemies.add(type4);
                 enemies.add(type4.getShield());
                 enemies.add(type4.getBody());
+                actualEnemy = type4;
                 break;
             case TYPE5:
-                enemies.add(new Type5(wrapper.x, wrapper.y));
+                Enemy type5 = new Type5(wrapper.x, wrapper.y);
+                enemies.add(type5);
+                actualEnemy = type5;
                 break;
             case RED:
-                enemies.add(new RedEnemy(wrapper.x, wrapper.y));
+                Enemy red = new RedEnemy(wrapper.x, wrapper.y);
+                enemies.add(red);
+                actualEnemy = red;
                 break;
             case BLUE:
-                enemies.add(new BlueEnemy(wrapper.x, wrapper.y));
+                Enemy blue = new BlueEnemy(wrapper.x, wrapper.y);
+                enemies.add(blue);
+                actualEnemy = blue;
                 break;
             case YELLOW:
                 break;
