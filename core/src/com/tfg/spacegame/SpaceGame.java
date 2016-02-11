@@ -14,7 +14,6 @@ import com.tfg.spacegame.utils.AssetsManager;
 public class SpaceGame extends Game {
 
 	public static SpriteBatch batch;
-	public static BitmapFont font;
 	public Texture background;
 	public static OrthographicCamera camera;
 	public static int width = 800;
@@ -31,7 +30,6 @@ public class SpaceGame extends Game {
 		AssetsManager.load();
 
 		batch = new SpriteBatch();
-		font = new BitmapFont();
 		background = AssetsManager.loadTexture("background");
 
 		camera = new OrthographicCamera();
@@ -67,6 +65,7 @@ public class SpaceGame extends Game {
 
 	public void dispose() {
 		batch.dispose();
-		font.dispose();
+		text.dispose();
+		title.dispose();
 	}
 }

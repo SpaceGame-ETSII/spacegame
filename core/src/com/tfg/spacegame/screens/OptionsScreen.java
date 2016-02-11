@@ -25,7 +25,7 @@ public class OptionsScreen implements Screen {
         // Pintamos el fondo
         game.batch.draw(game.background, 0,0);
 
-        game.font.draw(game.batch, "MENU DE OPCIONES", 350, 400);
+        game.text.draw(game.batch, "MENU DE OPCIONES", 300, 400);
 
         game.batch.end();
     }
