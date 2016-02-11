@@ -101,6 +101,7 @@ public class LevelGenerator {
                 enemies.add(new RedEnemy(wrapper.x, wrapper.y));
                 break;
             case BLUE:
+                enemies.add(new BlueEnemy(wrapper.x, wrapper.y));
                 break;
             case YELLOW:
                 break;
