@@ -17,22 +17,22 @@ public class BigShoot extends Shoot {
     private float timeToMove;
 
     //Efecto de particulas de este disparo
-    private ParticleEffect shootEffect;
+    private ParticleEffect shoot;
 
     public BigShoot(GameObject shooter, int x, int y, float delay) {
-        super("bigshoot_shoot", x, y, shooter);
+        super("bigshoot_shoot", x, y, shooter, AssetsManager.loadParticleEffect("bigshoot_shoot_effect"), null);
 
         // Creamos el efecto de particulas
-        shootEffect = AssetsManager.loadParticleEffect("bigshoot_shoot_effect");
+        shoot = AssetsManager.loadParticleEffect("bigshoot_shoot_effect");
         this.updateParticleEffect();
 
         // Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará
-        shootEffect.start();
+        shoot.start();
         timeToMove = delay;
     }
 
     public void updateParticleEffect() {
-        shootEffect.getEmitters().first().setPosition(this.getX(),this.getY()+18);
+        shoot.getEmitters().first().setPosition(this.getX(),this.getY()+18);
     }
 
     public void update(float delta) {
@@ -46,7 +46,7 @@ public class BigShoot extends Shoot {
             this.updateParticleEffect();
 
             //Actualizamos el efecto de particulas
-            shootEffect.update(delta);
+            shoot.update(delta);
         }
         //Mientras no sea el momento para moverse
         else{
@@ -62,11 +62,11 @@ public class BigShoot extends Shoot {
         super.render(batch);
         //Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
         if(timeToMove < 0)
-            shootEffect.draw(batch);
+            shoot.draw(batch);
     }
 
     public void dispose(){
         super.dispose();
-        shootEffect.dispose();
+        shoot.dispose();
     }
 }

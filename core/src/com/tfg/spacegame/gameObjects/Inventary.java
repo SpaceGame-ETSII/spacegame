@@ -122,12 +122,12 @@ public class Inventary extends GameObject {
             //En caso de no estar en su sitio quiere decir que está en movimiento, por tanto movemos los elementos y la nave según la posición relativa
             relativePos = TRANSITION_SPEED * delta;
             this.moveAllElements(delta, relativePos);
-            ship.setX(ship.getX() + relativePos);
+            ship.setX(ship.getX() + relativePos, delta);
 
             //Evitamos que el inventario se pase de largo
             if (this.getX() > 0) {
                 this.setToInitialState(delta);
-                ship.setX(this.getWidth() + 1);
+                ship.setX(this.getWidth() + 1, delta);
             }
         } else {
             //Como el inventario está colocado en su sitio, ahora comprobamos si el jugador está interactuando con algún elemento
@@ -195,11 +195,11 @@ public class Inventary extends GameObject {
             slot1.setX(delta, slot1.getX() - relativePos);
             slot2.setX(delta, slot1.getX() - relativePos);
 
-            ship.setX(ship.getX() - relativePos);
+            ship.setX(ship.getX() - relativePos, delta);
         } else {
             //Si el inventario se ha cerrado completamente, cambiamos la bandera y recolocamos la nave
             isClosing = false;
-            ship.setX(0);
+            ship.setX(0, delta);
         }
     }
 

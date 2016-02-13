@@ -29,6 +29,8 @@ public class AssetsManager {
         assetsReferences.put("enemigo_basico_tipo5", enemiesFolder+"enemigo_basico_tipo5.png");
         assetsReferences.put("enemy", enemiesFolder+"enemigo.png");
         assetsReferences.put("yellow_enemy", enemiesFolder+"amarillo.png");
+        assetsReferences.put("red_enemy", enemiesFolder+"rojo.png");
+        assetsReferences.put("blue_enemy", enemiesFolder+"azul.png");
 
         //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
@@ -62,6 +64,7 @@ public class AssetsManager {
         assetsReferences.put("basic_shoot", weaponsFolder+"disparo.png");
         assetsReferences.put("bigshoot_shoot", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
         assetsReferences.put("red_shoot", weaponsFolder+"disparo_rojo.png");
+        assetsReferences.put("blue_shoot", weaponsFolder+"disparo_azul.png");
         assetsReferences.put("yellow_shoot", weaponsFolder+"disparo_amarillo.png");
 
         //Assets referentes a los efectos de partículas
@@ -83,8 +86,13 @@ public class AssetsManager {
         assetsReferences.put("basic_destroyed", particlesFolder + "basico_derrotado");
         assetsReferences.put("basic_type5_destroyed", particlesFolder + "basico_tipo5_derrotado");
         assetsReferences.put("red_shoot_effect", particlesFolder + "arma_roja");
+        assetsReferences.put("blue_propulsion_effect", particlesFolder + "propulsion_arma_azul");
+        assetsReferences.put("blue_shoot_effect_shock", particlesFolder + "arma_azul_efecto_choque");
+        assetsReferences.put("blue_shoot_effect_shoot", particlesFolder + "arma_azul_efecto_disparo");
         assetsReferences.put("red_shoot_effect_shoot", particlesFolder + "arma_roja_efecto_disparo");
         assetsReferences.put("red_effect_shock", particlesFolder + "arma_roja_efecto_choque");
+        assetsReferences.put("red_destroyed", particlesFolder + "rojo_derrotado");
+        assetsReferences.put("blue_destroyed", particlesFolder + "azul_derrotado");
         assetsReferences.put("yellow_shoot_effect", particlesFolder + "arma_amarilla");
         assetsReferences.put("yellow_enemy_defeated", particlesFolder + "enemigo_amarillo_derrotado");
 

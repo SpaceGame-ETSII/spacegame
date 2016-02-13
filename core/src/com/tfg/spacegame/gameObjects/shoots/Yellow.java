@@ -23,21 +23,21 @@ public class Yellow extends Shoot{
     private Vector2 vector;
 
     // El efecto de disparo
-    private ParticleEffect shootEffect;
+    private ParticleEffect shoot;
 
     // Tiempo para recargar
     private float timeToFireAgain;
 
     public Yellow(GameObject shooter) {
-        super("yellow_shoot", 0, 0, shooter);
+        super("yellow_shoot", 0, 0, shooter,null,null);
         this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
         this.setY(getShooter().getY() + this.getHeight()/2);
         this.getLogicShape().setOrigin(0,this.getHeight()/2);
 
-        shootEffect = AssetsManager.loadParticleEffect("yellow_shoot_effect");
-        shootEffect.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY()+this.getHeight()/2);
+        shoot = AssetsManager.loadParticleEffect("yellow_shoot_effect");
+        shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY()+this.getHeight()/2);
 
-        shootEffect.start();
+        shoot.start();
 
         timeToFireAgain = FREQUENCY_OF_SHOOTING;
 
@@ -46,8 +46,8 @@ public class Yellow extends Shoot{
 
     public void update(float delta){
         setY(getShooter().getY() + this.getHeight());
-        shootEffect.update(delta);
-        shootEffect.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY() + this.getHeight()/2);
+        shoot.update(delta);
+        shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY() + this.getHeight()/2);
 
         // Controlamos si el jugador sigue queriendo disparar
         if(Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && SpaceGame.getTouchPos(0).x > SpaceGame.width/3)){
@@ -68,29 +68,28 @@ public class Yellow extends Shoot{
             // Rotamos el rectangulo de colisión y el efecto de particulas
             this.getLogicShape().setRotation(angle);
 
-            ParticleEmitter.ScaledNumericValue angles = this.shootEffect.getEmitters().first().getAngle();
+            ParticleEmitter.ScaledNumericValue angles = this.shoot.getEmitters().first().getAngle();
             angles.setLow(angle);
             angles.setHigh(angle-AMPLITUDE_OF_FIRE,angle+AMPLITUDE_OF_FIRE);
         }else{
             // Si no, lo borramos
             //this.changeToDeletable();
-            shootEffect.allowCompletion();
+            shoot.allowCompletion();
 
             if(timeToFireAgain < 0){
                 this.changeToDeletable();
             }else{
                 timeToFireAgain-=delta;
             }
-
         }
     }
 
     public void render(SpriteBatch batch){
-        shootEffect.draw(batch);
+        shoot.draw(batch);
     }
 
     public void dispose(){
         super.dispose();
-        shootEffect.dispose();
+        shoot.dispose();
     }
 }
