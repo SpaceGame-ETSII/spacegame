@@ -18,7 +18,6 @@ public class AssetsManager {
     private static String shipsFolder = "textures/ships/";
     private static String othersFolder = "textures/others/";
 
-
     public static void load() {
         assetsReferences = new ArrayMap<String, String>();
 
