@@ -23,7 +23,7 @@ public class ArcadeScreen implements Screen {
 
         game.batch.begin();
         // Pintamos el fondo
-        game.batch.draw(game.background, 0,0);
+        //game.batch.draw(game.background, 0,0);
 
         game.font.draw(game.batch, "MODO ARCADE", 350, 400);
 

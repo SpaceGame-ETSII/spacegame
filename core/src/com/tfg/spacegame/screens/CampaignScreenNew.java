@@ -1,28 +1,22 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.gameObjects.*;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.*;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
-import com.tfg.spacegame.utils.ShootsManager;
-import com.tfg.spacegame.utils.SimpleDirectionGestureDetector;
 
-public class CampaignScreen implements Screen{
 
-    final SpaceGame game;
+public class CampaignScreenNew extends GameScreen{
+
+    private final SpaceGame game;
 
     //Objetos interactuables de la pantalla
     private Ship ship;
     private Inventary inventary;
-
-    //Estado en el que se encuentra el juego
-    private GameState state;
 
     private DialogBox menuExitDialog;
 
@@ -38,18 +32,14 @@ public class CampaignScreen implements Screen{
 
     public Texture background;
 
-    public CampaignScreen(final SpaceGame game) {
-
+    public CampaignScreenNew(SpaceGame game){
+        super();
         this.game = game;
         scrollingPosition = 0;
-        state = GameState.READY;
 
         //Creamos los objetos de juego
         ship = new Ship();
         inventary = new Inventary();
-        EnemiesManager.load();
-        ShootsManager.load();
-        CollissionsManager.load();
 
         background = AssetsManager.loadTexture("background");
 
@@ -85,69 +75,22 @@ public class CampaignScreen implements Screen{
     }
 
     @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        game.camera.update();
-        SpaceGame.batch.setProjectionMatrix(game.camera.combined);
-
-        SpaceGame.batch.begin();
-
+    public void renderDefault(float delta) {
         SpaceGame.batch.draw(background, scrollingPosition, 0);
         SpaceGame.batch.draw(background, background.getWidth() + scrollingPosition, 0);
-
-        switch (state) {
-            case LOSE:
-                this.renderLose(delta);
-                break;
-            case PAUSE:
-                this.renderPause(delta);
-                break;
-            case READY:
-                this.renderReady(delta);
-                break;
-            case START:
-                this.renderStart(delta);
-                break;
-            case WIN:
-                break;
-            default:
-                break;
-        }
-
-        SpaceGame.batch.end();
     }
 
-    private void renderLose(float delta) {
-        SpaceGame.font.draw(SpaceGame.batch, "Game Over", 370, 240);
-
-        if (Gdx.input.justTouched()) {
-            state = GameState.READY;
-            ship = new Ship();
-        }
-
+    @Override
+    public void updateDefault(float delta) {
+        //Actualizamos la posición del scrolling
+        scrollingPosition -= delta * SCROLLING_SPEED;
+        if(scrollingPosition <= -background.getWidth())
+            scrollingPosition = 0;
     }
 
-    private void renderReady(float delta) {
-        SpaceGame.font.draw(SpaceGame.batch, "Tap to start", 370, 240);
 
-        if (Gdx.input.justTouched())
-            state = GameState.START;
-    }
-
-    private void renderStart(float delta) {
-        ship.render(game.batch);
-        ShootsManager.render();
-        EnemiesManager.render();
-
-        if (ship.isDefeated())
-            state = GameState.LOSE;
-
-        updateLogic(delta);
-    }
-
-    private void renderPause(float delta) {
+    @Override
+    public void renderPause(float delta) {
         inventary.render(SpaceGame.batch);
         ship.render(SpaceGame.batch);
 
@@ -181,7 +124,7 @@ public class CampaignScreen implements Screen{
             } else {
                 //Creamos un vector que almacenará las posiciones relativas de la cámara
                 Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-                v = game.camera.unproject(v);
+                v = SpaceGame.camera.unproject(v);
 
                 inventary.update(delta, ship, v.x, v.y);
             }
@@ -203,16 +146,54 @@ public class CampaignScreen implements Screen{
 
             }
         }
+    }
+
+    @Override
+    public void renderReady(float delta) {
+        SpaceGame.font.draw(SpaceGame.batch, "Tap to start", 370, 240);
+
+        if (Gdx.input.justTouched())
+            state = GameState.START;
+    }
+
+    @Override
+    public void renderStart(float delta) {
+        ship.render(SpaceGame.batch);
+        ShootsManager.render();
+        EnemiesManager.render();
+
+        if (ship.isDefeated())
+            state = GameState.LOSE;
+    }
+
+    @Override
+    public void renderWin(float delta) {
 
     }
 
-    public void updateLogic(float delta) {
+    @Override
+    public void renderLose(float delta) {
+        SpaceGame.font.draw(SpaceGame.batch, "Game Over", 370, 240);
 
-        //Actualizamos la posición del scrolling
-        scrollingPosition -= delta * SCROLLING_SPEED;
-        if(scrollingPosition <= -background.getWidth())
-            scrollingPosition = 0;
+        if (Gdx.input.justTouched()) {
+            state = GameState.READY;
+            ship = new Ship();
+        }
+    }
 
+
+    @Override
+    public void updatePause(float delta) {
+
+    }
+
+    @Override
+    public void updateReady(float delta) {
+
+    }
+
+    @Override
+    public void updateStart(float delta) {
         //Creamos un vector que almacenará las posiciones relativas de la cámara
         coordinates = SpaceGame.getTouchPos(0);
 
@@ -245,27 +226,17 @@ public class CampaignScreen implements Screen{
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void updateWin(float delta) {
+
     }
 
     @Override
-    public void show() {
+    public void updateLose(float delta) {
+
     }
 
     @Override
-    public void hide() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void dispose() {
+    public void disposeScreen() {
         ship.dispose();
         for(Enemy enemy: EnemiesManager.enemies)
             enemy.dispose();
@@ -273,6 +244,6 @@ public class CampaignScreen implements Screen{
             shoot.dispose();
         inventary.dispose();
         menuExitDialog.dispose();
+        super.dispose();
     }
 }
-
