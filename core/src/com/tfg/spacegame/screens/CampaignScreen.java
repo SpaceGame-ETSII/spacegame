@@ -115,7 +115,7 @@ public class CampaignScreen implements Screen{
     }
 
     private void renderLose(float delta) {
-        SpaceGame.font.draw(SpaceGame.batch, "Game Over", 370, 240);
+        SpaceGame.text.draw(SpaceGame.batch, "Game Over", 370, 240);
 
         if (Gdx.input.justTouched()) {
             state = GameState.READY;
@@ -125,7 +125,7 @@ public class CampaignScreen implements Screen{
     }
 
     private void renderReady(float delta) {
-        SpaceGame.font.draw(SpaceGame.batch, "Tap to start", 370, 240);
+        SpaceGame.text.draw(SpaceGame.batch, "Tap to start", 325, 250);
 
         if (Gdx.input.justTouched())
             state = GameState.START;
@@ -149,7 +149,7 @@ public class CampaignScreen implements Screen{
         //En función de si estamos en el diálogo para salir o no veremos la ventana para salir del modo campaña
         if (menuExitDialog.isDialogIn()){
             menuExitDialog.renderElement("window");
-            SpaceGame.font.draw(SpaceGame.batch, "¿Desea salir del modo campaña?", 300, 320);
+            SpaceGame.text.draw(SpaceGame.batch, "¿Desea salir de este modo?", 206, 320);
             menuExitDialog.renderElement("confirm");
             menuExitDialog.renderElement("cancel");
 

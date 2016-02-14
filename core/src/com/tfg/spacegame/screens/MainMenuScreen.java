@@ -47,7 +47,7 @@ public class MainMenuScreen implements Screen {
 
         // Pintamos el fondo y el título del juego
         game.batch.draw(game.background, 0,0);
-        game.font.draw(game.batch, "SPACE GAME", 350, 400);
+        game.title.draw(game.batch, "SPACE GAME", 222, 420);
 
         // Delegamos el render de los botones
         campaign.render(game.batch);
@@ -57,11 +57,11 @@ public class MainMenuScreen implements Screen {
         exit.render(game.batch);
 
         // Pintamos los títulos de los botontes
-        game.font.draw(game.batch, "Modo Campaña", 345, 345);
-        game.font.draw(game.batch, "Modo Arcade", 350, 285);
-        game.font.draw(game.batch, "Modo Multijugador", 340, 225);
-        game.font.draw(game.batch, "Opciones", 365, 165);
-        game.font.draw(game.batch, "Salir", 380, 105);
+        game.text.draw(game.batch, "Campaña", 330, 345);
+        game.text.draw(game.batch, "Arcade", 335, 285);
+        game.text.draw(game.batch, "Multijugador", 298, 225);
+        game.text.draw(game.batch, "Opciones", 330, 165);
+        game.text.draw(game.batch, "Salir", 355, 105);
 
         game.batch.end();
 
