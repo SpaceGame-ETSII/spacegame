@@ -26,7 +26,7 @@ public class Type5 extends Enemy{
     private ParticleEffect shootEffectWarning;
 
     public Type5(int x, int y) {
-        super("enemigo_basico_tipo5", x, y, 10, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
+        super("enemigo_basico_tipo5", x, y, 15, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
         timeToShoot = FREQUENCY_OF_SHOOTING;
         hasShooted = false;
 

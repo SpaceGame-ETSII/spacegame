@@ -17,6 +17,9 @@ import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
 
+    //TODO Hay que borrar esto cuando arreglemos el CampaignScreen
+    public static Ship ship;
+
     //Almacenará todos los shoots en pantalla
     public static Array<Shoot> shoots;
 
@@ -123,13 +126,10 @@ public class ShootsManager {
                     shoot.isDeletable()){
                 shoots.removeValue(shoot,false);
             }
-
-            if(shoot instanceof Yellow){
-                Yellow yellow = (Yellow) shoot;
-                if (yellow.isDeletable())
-                    shoots.removeValue(shoot,false);
-            }
         }
+
+        ShootsManager.ship = ship;
+
         updateBurst(delta, ship);
     }
 
@@ -202,7 +202,12 @@ public class ShootsManager {
                 shoots.add(blueShoot);
             }
         } else {
+            int x = (int) (shooter.getX() + 20);
+            int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
+            blueShoot = new Blue(shooter, x, y, ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+
+            shoots.add(blueShoot);
         }
     }
 
