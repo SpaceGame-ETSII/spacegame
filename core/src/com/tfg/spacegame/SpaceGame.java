@@ -2,8 +2,8 @@ package com.tfg.spacegame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -14,7 +14,6 @@ import com.tfg.spacegame.utils.AssetsManager;
 public class SpaceGame extends Game {
 
 	public static SpriteBatch batch;
-	public Texture background;
 	public static OrthographicCamera camera;
 	public static int width = 800;
 	public static int height = 480;
@@ -30,8 +29,6 @@ public class SpaceGame extends Game {
 		AssetsManager.load();
 
 		batch = new SpriteBatch();
-		background = AssetsManager.loadTexture("background");
-
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, SpaceGame.width, SpaceGame.height);
 

@@ -214,7 +214,7 @@ public class ShootsManager {
     public static void shootYellowWeapon(Ship ship) {
         Yellow yellowShoot = new Yellow(ship);
 
-        if(isShipReadyToShoot(TypeWeapon.RED)){
+        if(isShipReadyToShoot(TypeWeapon.YELLOW)){
             shoots.add(yellowShoot);
         }
     }

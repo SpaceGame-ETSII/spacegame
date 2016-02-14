@@ -3,9 +3,11 @@ package com.tfg.spacegame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
+import com.tfg.spacegame.utils.AssetsManager;
 
 public class MainMenuScreen implements Screen {
 
@@ -21,8 +23,12 @@ public class MainMenuScreen implements Screen {
     //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
     private float timeUntilExit;
 
+    public Texture background;
+
     public MainMenuScreen(final SpaceGame game) {
         this.game = game;
+
+        background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
         campaign = new Button("button", new CampaignScreen(game), 290, 315);
@@ -40,21 +46,21 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.camera.update();
-        game.batch.setProjectionMatrix(game.camera.combined);
+        SpaceGame.camera.update();
+        SpaceGame.batch.setProjectionMatrix(SpaceGame.camera.combined);
 
-        game.batch.begin();
+        SpaceGame.batch.begin();
 
         // Pintamos el fondo y el título del juego
-        game.batch.draw(game.background, 0,0);
+        SpaceGame.batch.draw(background, 0,0);
         game.title.draw(game.batch, "SPACE GAME", 222, 420);
 
         // Delegamos el render de los botones
-        campaign.render(game.batch);
-        arcade.render(game.batch);
-        multiplayer.render(game.batch);
-        options.render(game.batch);
-        exit.render(game.batch);
+        campaign.render(SpaceGame.batch);
+        arcade.render(SpaceGame.batch);
+        multiplayer.render(SpaceGame.batch);
+        options.render(SpaceGame.batch);
+        exit.render(SpaceGame.batch);
 
         // Pintamos los títulos de los botontes
         game.text.draw(game.batch, "Campaña", 330, 345);
@@ -63,13 +69,13 @@ public class MainMenuScreen implements Screen {
         game.text.draw(game.batch, "Opciones", 330, 165);
         game.text.draw(game.batch, "Salir", 355, 105);
 
-        game.batch.end();
+        SpaceGame.batch.end();
 
         //Si se ha tocado algún botón, lo marcamos como pulsado
         if (Gdx.input.justTouched()) {
 
             Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-            v = game.camera.unproject(v);
+            v = SpaceGame.camera.unproject(v);
 
             if (campaign.press(v.x, v.y) ||
                     arcade.press(v.x, v.y) ||
