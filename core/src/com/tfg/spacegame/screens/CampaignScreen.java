@@ -235,7 +235,7 @@ public class CampaignScreen implements Screen{
 
         //Realizamos la lógica de los objetos en juego
         CollissionsManager.update(delta, ship);
-        EnemiesManager.update(delta);
+        EnemiesManager.update(delta, ship);
         ShootsManager.update(delta, ship);
     }
 

@@ -4,8 +4,10 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.enemies.*;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.shoots.Yellow;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {
@@ -117,7 +119,8 @@ public class LevelGenerator {
                 actualEnemy = blue;
                 break;
             case YELLOW:
-                enemies.add(new YellowEnemy(wrapper.x,wrapper.y, target));
+                Enemy yellow = new YellowEnemy(wrapper.x,wrapper.y, target);
+                enemies.add(yellow);
                 break;
             case GREEN:
                 break;
@@ -126,7 +129,7 @@ public class LevelGenerator {
             case PURPLE:
                 break;
             default:
-                throw new IllegalArgumentException("Se ha tratado de genera un enemigo de tipo inexistente");
+                throw new IllegalArgumentException("Se ha tratado de generar un enemigo de tipo inexistente");
         }
     }
 
