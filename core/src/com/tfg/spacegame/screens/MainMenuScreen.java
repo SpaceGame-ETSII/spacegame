@@ -53,7 +53,7 @@ public class MainMenuScreen implements Screen {
 
         // Pintamos el fondo y el título del juego
         SpaceGame.batch.draw(background, 0,0);
-        game.title.draw(game.batch, "SPACE GAME", 222, 420);
+        SpaceGame.drawText(SpaceGame.title,"titleGame",229,420);
 
         // Delegamos el render de los botones
         campaign.render(SpaceGame.batch);
@@ -63,11 +63,11 @@ public class MainMenuScreen implements Screen {
         exit.render(SpaceGame.batch);
 
         // Pintamos los títulos de los botontes
-        game.text.draw(game.batch, "Campaña", 330, 345);
-        game.text.draw(game.batch, "Arcade", 335, 285);
-        game.text.draw(game.batch, "Multijugador", 298, 225);
-        game.text.draw(game.batch, "Opciones", 330, 165);
-        game.text.draw(game.batch, "Salir", 355, 105);
+        SpaceGame.drawText(SpaceGame.text,"campaignTitle",330,345);
+        SpaceGame.drawText(SpaceGame.text,"arcadeTitle",335,285);
+        SpaceGame.drawText(SpaceGame.text,"multiplayerTitle",298,225);
+        SpaceGame.drawText(SpaceGame.text,"optionsTitle",330,165);
+        SpaceGame.drawText(SpaceGame.text,"exitTitle",355,105);
 
         SpaceGame.batch.end();
 

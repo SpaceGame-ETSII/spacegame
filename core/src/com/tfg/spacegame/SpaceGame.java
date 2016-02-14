@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.tfg.spacegame.screens.MainMenuScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 
@@ -23,6 +24,8 @@ public class SpaceGame extends Game {
 
 	public static BitmapFont text;
 	public static BitmapFont title;
+
+	public static I18NBundle bundle;
 
 	@Override
 	public void create () {
@@ -43,6 +46,8 @@ public class SpaceGame extends Game {
 		parameter.size = width / 20;
 		title = generator.generateFont(parameter);
 		generator.dispose();
+
+		bundle = AssetsManager.loadBundle();
 	}
 
 	public void render() {
@@ -58,6 +63,10 @@ public class SpaceGame extends Game {
 		touchPos = camera.unproject(touchPos);
 
 		return touchPos;
+	}
+
+	public static void drawText(BitmapFont font ,String string, float x, float y){
+		font.draw(batch,bundle.get(string),x,y);
 	}
 
 	public void dispose() {

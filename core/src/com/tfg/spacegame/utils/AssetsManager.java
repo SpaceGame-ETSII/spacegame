@@ -5,6 +5,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.utils.ArrayMap;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.Locale;
 
 public class AssetsManager {
 
@@ -98,6 +101,9 @@ public class AssetsManager {
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
+
+        //Asset referente a la localización
+        assetsReferences.put("bundle","localization/bundle");
     }
 
     //Se llamará a este método cada vez que se pretenda cargar una textura
@@ -115,6 +121,10 @@ public class AssetsManager {
     //Se llamará a este método cada vez que se pretenda cargar script del juego
     public static FileHandle loadScript(String scriptName){
         return Gdx.files.internal(assetsReferences.get(scriptName));
+    }
+
+    public static I18NBundle loadBundle(){
+        return I18NBundle.createBundle(Gdx.files.internal(assetsReferences.get("bundle")), Locale.getDefault());
     }
 
 }
