@@ -31,7 +31,7 @@ public class MainMenuScreen implements Screen {
         background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
-        campaign = new Button("button", new CampaignScreenNew(game), 290, 315);
+        campaign = new Button("button", new CampaignScreen(game), 290, 315);
         arcade = new Button("button", new ArcadeScreen(game), 290, 255);
         multiplayer = new Button("button", new MultiplayerScreen(game), 290, 195);
         options = new Button("button", new OptionsScreen(game), 290, 135);
