@@ -1,9 +1,10 @@
 package com.tfg.spacegame.screens;
 
+import com.badlogic.gdx.Screen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.GameScreen;
 
-public class OptionsScreen extends GameScreen {
+public class OptionsScreen implements Screen {
 
     final SpaceGame game;
 
@@ -13,67 +14,37 @@ public class OptionsScreen extends GameScreen {
 
 
 	@Override
-	public void renderEveryState(float delta) {
-		game.font.draw(game.batch, "OPCIONES", 350, 400);
-	}
-
-	@Override
-	public void updateEveryState(float delta) {
+	public void show() {
 
 	}
 
 	@Override
-	public void renderReady(float delta) {
+	public void render(float delta) {
 
 	}
 
 	@Override
-	public void updateReady(float delta) {
+	public void resize(int width, int height) {
 
 	}
 
 	@Override
-	public void renderStart(float delta) {
+	public void pause() {
 
 	}
 
 	@Override
-	public void updateStart(float delta) {
+	public void resume() {
 
 	}
 
 	@Override
-	public void renderPause(float delta) {
+	public void hide() {
 
 	}
 
 	@Override
-	public void updatePause(float delta) {
-
-	}
-
-	@Override
-	public void renderWin(float delta) {
-
-	}
-
-	@Override
-	public void updateWin(float delta) {
-
-	}
-
-	@Override
-	public void renderLose(float delta) {
-
-	}
-
-	@Override
-	public void updateLose(float delta) {
-
-	}
-
-	@Override
-	public void disposeScreen() {
+	public void dispose() {
 
 	}
 }

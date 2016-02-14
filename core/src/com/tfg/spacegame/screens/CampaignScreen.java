@@ -33,9 +33,14 @@ public class CampaignScreen extends GameScreen{
     public Texture background;
 
     public CampaignScreen(SpaceGame game){
-        super();
         this.game = game;
         scrollingPosition = 0;
+
+        EnemiesManager.load();
+        ShootsManager.load();
+        CollissionsManager.load();
+
+        state = GameState.READY;
 
         //Creamos los objetos de juego
         ship = new Ship();

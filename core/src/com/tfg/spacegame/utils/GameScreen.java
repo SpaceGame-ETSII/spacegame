@@ -12,17 +12,6 @@ public abstract class GameScreen implements Screen{
     public GameState state;
 
     /**
-     * Al inicializar
-     */
-    public GameScreen(){
-        EnemiesManager.load();
-        ShootsManager.load();
-        CollissionsManager.load();
-
-        state = GameState.READY;
-    }
-
-    /**
      * Esta sección está pensada para lo que se deba mostrar sin importar el estado del juego
      * Es decir, siempre
      */
