@@ -85,6 +85,7 @@ public class CampaignScreen extends GameScreen{
         SpaceGame.batch.draw(background, background.getWidth() + scrollingPosition, 0);
     }
 
+
     @Override
     public void updateEveryState(float delta) {
         //Actualizamos la posición del scrolling
@@ -102,9 +103,10 @@ public class CampaignScreen extends GameScreen{
         //En función de si estamos en el diálogo para salir o no veremos la ventana para salir del modo campaña
         if (menuExitDialog.isDialogIn()){
             menuExitDialog.renderElement("window");
-            SpaceGame.font.draw(SpaceGame.batch, "¿Desea salir del modo campaña?", 300, 320);
+            SpaceGame.text.draw(SpaceGame.batch, "¿Desea salir de este modo?", 206, 320);
             menuExitDialog.renderElement("confirm");
             menuExitDialog.renderElement("cancel");
+
 
             if (menuExitDialog.getElementButton("confirm").isPressed()) {
                 menuExitDialog.setDialogIn(false);
@@ -155,7 +157,7 @@ public class CampaignScreen extends GameScreen{
 
     @Override
     public void renderReady(float delta) {
-        SpaceGame.font.draw(SpaceGame.batch, "Tap to start", 370, 240);
+        SpaceGame.text.draw(SpaceGame.batch, "Tap to start", 370, 240);
 
         if (Gdx.input.justTouched())
             state = GameState.START;
@@ -178,7 +180,7 @@ public class CampaignScreen extends GameScreen{
 
     @Override
     public void renderLose(float delta) {
-        SpaceGame.font.draw(SpaceGame.batch, "Game Over", 370, 240);
+        SpaceGame.text.draw(SpaceGame.batch, "Game Over", 370, 240);
 
         if (Gdx.input.justTouched()) {
             state = GameState.READY;

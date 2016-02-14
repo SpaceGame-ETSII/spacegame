@@ -12,7 +12,6 @@ public class OptionsScreen implements Screen {
         game = gam;
     }
 
-
 	@Override
 	public void show() {
 

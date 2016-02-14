@@ -13,7 +13,7 @@ public class MultiplayerScreen extends GameScreen {
 
 	@Override
 	public void renderEveryState(float delta) {
-		game.font.draw(game.batch, "MODO MULTIJUGADOR", 350, 400);
+		game.text.draw(game.batch, "MODO MULTIJUGADOR", 290, 400);
 	}
 
 	@Override

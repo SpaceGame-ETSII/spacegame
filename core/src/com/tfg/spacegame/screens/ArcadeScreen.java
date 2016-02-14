@@ -13,7 +13,7 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderEveryState(float delta) {
-		SpaceGame.font.draw(SpaceGame.batch, "MODO ARCADE", 350, 400);
+		game.text.draw(game.batch, "MODO ARCADE", 350, 400);
 	}
 
 	@Override
