@@ -2,7 +2,6 @@ package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Screen;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.utils.GameScreen;
 
 public class OptionsScreen implements Screen {
 

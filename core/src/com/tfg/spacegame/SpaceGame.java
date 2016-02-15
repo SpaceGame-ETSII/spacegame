@@ -24,7 +24,6 @@ public class SpaceGame extends Game {
 
 	public static BitmapFont text;
 	public static BitmapFont title;
-
 	public static I18NBundle bundle;
 
 	@Override

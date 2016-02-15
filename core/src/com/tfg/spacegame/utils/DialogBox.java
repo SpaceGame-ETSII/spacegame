@@ -1,7 +1,5 @@
 package com.tfg.spacegame.utils;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
@@ -48,7 +46,6 @@ public class DialogBox {
     public void setDialogIn(boolean b){
         dialogIn=b;
     }
-
 
     public boolean isDialogIn(){
         return dialogIn;

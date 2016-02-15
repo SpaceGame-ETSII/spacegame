@@ -39,8 +39,8 @@ public class Type4 extends Enemy{
 
     public Type4(int x, int y) {
         super("type4", x, y, 7, AssetsManager.loadParticleEffect("basic_destroyed"));
-        shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 1, AssetsManager.loadParticleEffect("basic_destroyed"), this, false);
-        body = new PartOfEnemy("type4_body", x + 35, y - 37, 1, AssetsManager.loadParticleEffect("basic_destroyed"), this, true);
+        shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false);
+        body = new PartOfEnemy("type4_body", x + 35, y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, true);
 
         timeToShoot = FREQUENCY_OF_SHOOTING;
         timeToOpenCannon = FREQUENCY_OF_OPEN_CANNON;
@@ -120,6 +120,10 @@ public class Type4 extends Enemy{
         }
     }
 
+    public boolean isDamagable() {
+        return timeToOpenCannon < 0;
+    }
+
     public void changeToDeletable() {
         super.changeToDeletable();
         shield.changeToDeletable();
@@ -127,7 +131,10 @@ public class Type4 extends Enemy{
     }
 
     public void collideWithShoot(Shoot shoot) {
-        this.damage(1);
+        if (this.isDamagable()) {
+            this.damage(1);
+            this.getBody().damage(1);
+        }
     }
 
     public void dispose(){
