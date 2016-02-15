@@ -24,12 +24,6 @@ public class CampaignScreen extends GameScreen{
     private int scrollingPosition;
     private static final int SCROLLING_SPEED = 120;
 
-    //Se usará para recoger las coordenadas con respecto a la cámara
-    private Vector3 coordinates;
-
-    //Servirá para comprobar si la nave puede moverse según la posición del dedo
-    private boolean canShipMove;
-
     public Texture background;
 
     public CampaignScreen(SpaceGame game){
@@ -138,7 +132,7 @@ public class CampaignScreen extends GameScreen{
 
         //Comprobamos sobre que botón pulsa el usuario y actualizamos las variables del diálgo en consecuencia
         if (Gdx.input.isTouched()) {
-            Vector3 v = SpaceGame.getTouchPos(0);
+            Vector3 v = TouchManager.getFirstTouchPos();
             if (menuExitDialog.getElementButton("exit").isOverlapingWith(v.x, v.y)) {
                 menuExitDialog.setDialogIn(true);
                 menuExitDialog.getElementButton("cancel").setPressed(false);
@@ -200,28 +194,27 @@ public class CampaignScreen extends GameScreen{
 
     @Override
     public void updateStart(float delta) {
-        //Creamos un vector que almacenará las posiciones relativas de la cámara
-        coordinates = SpaceGame.getTouchPos(0);
 
-        //Comprobamos si la posición del dedo corresponde al lugar donde se puede mover la nave
-        if (Gdx.input.isTouched() && coordinates.x < (ship.getX() + ship.getWidth()))
-            canShipMove = true;
-        else
-            canShipMove = false;
+        // Obtenemos la coordenada Y del touch que pudiera estár en la zona permitida
+        // para movimiento de la nave
+        float yCoordinate = TouchManager.getAnyXTouchLowerThan(ship.getX() + ship.getWidth()).y;
 
-        ship.update(delta, coordinates.x, coordinates.y, canShipMove);
+        // Comprobamos si la coordenada es válida. Si es 0 es que no ha habido ningún touch
+        // y la nave no debe moverse
+        boolean canShipMove = yCoordinate != 0;
+
+        // Actualizamos la nave pasando la posible coordenada de movimiento y el resultado
+        // de preguntar la condicion de movimiento
+        ship.update(delta, yCoordinate, canShipMove);
 
         // Si tocamos la pantalla disparamos
-        // El disparo puede hacerse de dos formas
-        // 1. Sin multituouch el disparo solo se realizará si pulsamos por delante del primer tercio de la pantalla
-        // 2. Con multitouch el disparo se realizará en cualquier parte de la pantalla
-        if((Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && Gdx.input.getX() > SpaceGame.width/3)) && Gdx.input.justTouched()) {
-
-            //Si la nave pudo moverse, significa que para disparar tenemos que comprobar el segundo dedo
-            if (canShipMove) {
-                coordinates = SpaceGame.getTouchPos(1);
-            }
-
+        // Obtenemos un vector de coordenadas. Este vector puede ser cualquier touch que cumpla
+        // con la condición de que la posición X sea superior a la dada
+        Vector3 coordinates = TouchManager.getAnyXTouchGreaterThan(ship.getX() + ship.getWidth());
+        // Preguntamos si el vector de coordenadas no es un vector de 0's. Si lo fuese es que el jugador
+        // no ha tocado la pantalla. Además preguntamos si el toque ha sido solo de una sola vez
+        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched()) {
+            // Disparamos, pasando por parámetro las coordenadas del touch correspondiente
             ship.shoot(coordinates.x, coordinates.y);
         }
 

@@ -1,7 +1,6 @@
 package com.tfg.spacegame.gameObjects.shoots;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +9,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.TouchManager;
 
 public class Yellow extends Shoot{
 
@@ -49,18 +49,17 @@ public class Yellow extends Shoot{
         shoot.update(delta);
         shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY() + this.getHeight()/2);
 
+        float yCoordenate = TouchManager.getAnyXTouchGreaterThan(SpaceGame.width/3).y;
+
         // Controlamos si el jugador sigue queriendo disparar
-        if(Gdx.input.isTouched(1) || (Gdx.input.isTouched(0) && SpaceGame.getTouchPos(0).x > SpaceGame.width/3)){
+        if(yCoordenate != 0){
             // Obtenemos el angulo a donde tenemos que girar
             float x1 = this.getX();
             float y1 = this.getY();
             float x2 = this.getX()+this.getWidth();
             // Dependiendo de si ha habido multitouch o no obtenemos el valor Y correspondiente
-            float y2;
-            if(Gdx.input.isTouched(1))
-                y2 = SpaceGame.getTouchPos(1).y;
-            else
-                y2 = SpaceGame.getTouchPos(0).y;
+            float y2 = yCoordenate;
+
             vector.set(x2-x1,y2-y1);
             // Basta con llamar al vector.angle para tener el angulo a girar
             float angle = vector.angle();

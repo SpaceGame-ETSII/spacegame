@@ -11,31 +11,36 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.tfg.spacegame.screens.MainMenuScreen;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.TouchManager;
 
 public class SpaceGame extends Game {
 
+	// Objeto encargado de la renderización del juego
 	public static SpriteBatch batch;
+	// Con esto vamos a crear un entorno ortonormal 2d y añadirlo al spritebatch
 	public static OrthographicCamera camera;
+
+	// Ancho y alto de la pantalla para la camara ortonormal
 	public static int width = 800;
 	public static int height = 480;
-	private static Vector3 touchPos;
+
 	private FreeTypeFontGenerator generator;
 	private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
 	public static BitmapFont text;
 	public static BitmapFont title;
 
+	// Objeto encargado de la internacionalización del juego
 	public static I18NBundle bundle;
 
 	@Override
 	public void create () {
 		AssetsManager.load();
+		TouchManager.initialize();
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, SpaceGame.width, SpaceGame.height);
-
-		touchPos = new Vector3();
 
 		this.setScreen(new MainMenuScreen(this));
 
@@ -47,22 +52,12 @@ public class SpaceGame extends Game {
 		title = generator.generateFont(parameter);
 		generator.dispose();
 
+		// Cargamos el bundle desde su correspondiente método del asset manager
 		bundle = AssetsManager.loadBundle();
 	}
 
 	public void render() {
 		super.render();
-	}
-
-	public static Vector3 getTouchPos(int point){
-		if(point == 0){
-			touchPos.set(Gdx.input.getX(),Gdx.input.getY(),0);
-		}else{
-			touchPos.set(Gdx.input.getX(point),Gdx.input.getY(point),0);
-		}
-		touchPos = camera.unproject(touchPos);
-
-		return touchPos;
 	}
 
 	public static void drawText(BitmapFont font ,String string, float x, float y){

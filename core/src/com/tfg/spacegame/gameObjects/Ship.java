@@ -91,7 +91,7 @@ public class Ship extends GameObject {
 
     }
 
-    public void update(float delta, float x, float y, boolean canShipMove) {
+    public void update(float delta, float y, boolean canShipMove) {
 
         //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
         this.updateParticleEffect();
