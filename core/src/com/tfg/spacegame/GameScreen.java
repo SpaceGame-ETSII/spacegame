@@ -1,4 +1,4 @@
-package com.tfg.spacegame.utils;
+package com.tfg.spacegame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

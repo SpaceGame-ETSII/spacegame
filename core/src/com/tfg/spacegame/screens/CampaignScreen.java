@@ -4,20 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.*;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
 
 
-public class CampaignScreen extends GameScreen{
+public class CampaignScreen extends GameScreen {
 
     private final SpaceGame game;
 
     //Objetos interactuables de la pantalla
     private Ship ship;
     private Inventary inventary;
-
     private DialogBox menuExitDialog;
 
     //Ayudan con la posición de la ventana cuando se abre y se cierra el inventario

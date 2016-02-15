@@ -1,7 +1,7 @@
 package com.tfg.spacegame.screens;
 
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.utils.GameScreen;
+import com.tfg.spacegame.GameScreen;
 
 public class ArcadeScreen extends GameScreen {
 

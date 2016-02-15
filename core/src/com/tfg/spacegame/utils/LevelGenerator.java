@@ -4,15 +4,18 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.enemies.*;
-import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.shoots.Yellow;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {
 
-    public static Enemy actualEnemy;
+    //Indica el último enemigo mostrado en pantalla
+    public Enemy actualEnemy;
+
+    //Cadena de enemigos que se generan desde el script
+    public Array<EnemyWrapper> enemiesToGenerate;
 
     //Clase que se representa un enemigo recogido del script
     private static class EnemyWrapper implements Json.Serializable{
@@ -41,9 +44,6 @@ public class LevelGenerator {
             timeToSpawn = jsonData.child().next().next().next().asFloat();
         }
     }
-
-    //Cadena de enemigos que se generan desde el script
-    public Array<EnemyWrapper> enemiesToGenerate;
 
     //Convierte los enemigos del json en objetos
     public static LevelGenerator loadLevel(String jsonFile){
@@ -138,7 +138,7 @@ public class LevelGenerator {
      * de aparición del primer enemigo. Todos irán retrasados respecto a él.
      * @return Un Array de Type1 con 5 elementos
      */
-    private static Array<Type1> createSquadron(int x, int y){
+    private Array<Type1> createSquadron(int x, int y){
         Array<Type1> result = new Array<Type1>();
         result.add(new Type1(x,y,0.0f));
         result.add(new Type1(x,y,0.35f));

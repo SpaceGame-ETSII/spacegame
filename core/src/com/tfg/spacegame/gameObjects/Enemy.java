@@ -19,12 +19,22 @@ public class Enemy extends GameObject {
     //Es el efecto de partículas que se mostrará al destruirse
     private ParticleEffect destroyEffect;
 
+    private float timeToFlick;
+    private float timeForInvisible;
+    //Indica el rango por el que se moverá el timeForInvisible
+    private static final int RANGE_INVISIBLE_TIMER = 3;
+
+    private static final float DURATION_FLICK = 0.25f;
+
     public Enemy(String textureName, int x, int y, int vitality, ParticleEffect destroyEffect) {
         super(textureName, x, y);
         initialPosition = new Vector2(x,y);
         this.vitality = vitality;
         deletable = false;
         this.destroyEffect = destroyEffect;
+        timeToFlick = 0;
+        timeForInvisible = RANGE_INVISIBLE_TIMER;
+
 
         this.destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
         this.destroyEffect.start();
@@ -38,6 +48,16 @@ public class Enemy extends GameObject {
                 this.changeToDeletable();
             }
             destroyEffect.update(delta);
+        } else {
+            //Si el tiempo de parpadeo no ha acabado, lo reducimos y actualizamos timeForInvisible
+            if (timeToFlick > 0) {
+                //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
+                if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
+                    timeForInvisible = -RANGE_INVISIBLE_TIMER;
+                }
+                timeForInvisible++;
+                timeToFlick -= delta;
+            }
         }
     }
 
@@ -47,7 +67,10 @@ public class Enemy extends GameObject {
 
     public void render(SpriteBatch batch) {
         if (!this.isDefeated()) {
-            super.render(batch);
+            //El enemigo se pintará si se ha acabado el tiempo de parpadeo o no es momento de estar invisible
+            if (timeToFlick <= 0 || timeForInvisible > 0) {
+                super.render(batch);
+            }
         } else {
             destroyEffect.draw(batch);
         }
@@ -56,6 +79,7 @@ public class Enemy extends GameObject {
     //Daña al enemigo con la cantidad indicada por parámetro
     public void damage(int damage) {
         vitality -= damage;
+        timeToFlick = DURATION_FLICK;
     }
 
     //Indica si el enemigo ha sido derrotado
@@ -73,8 +97,13 @@ public class Enemy extends GameObject {
         return deletable;
     }
 
+    //Devuelve la posición inicial del enemigo dentro de la pantalla
     public Vector2 getInitialPosition(){
         return initialPosition;
+    }
+
+    public boolean isDamagable() {
+        return true;
     }
 
     public void collideWithShip() {}

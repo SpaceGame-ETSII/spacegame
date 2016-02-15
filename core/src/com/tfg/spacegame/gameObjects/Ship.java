@@ -78,15 +78,6 @@ public class Ship extends GameObject {
             batch.draw(cockpit, this.getX() + 76, this.getY() + 24);
         }
 
-        //Si la nave está en modo invulnerable, actualizamos el valor de timeForInvisible
-        if (this.isUndamagable()) {
-            //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
-            if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
-                timeForInvisible = -RANGE_INVISIBLE_TIMER;
-            }
-            timeForInvisible++;
-        }
-
         fireEffect.draw(batch);
 
     }
@@ -112,9 +103,16 @@ public class Ship extends GameObject {
         if (this.getY() > SpaceGame.height - getHeight())
             this.setY(SpaceGame.height - getHeight());
 
-        //Si la nave está en estado invulnerable, el contador se reduce
-        if (undamagable)
+        //Si la nave está en estado invulnerable, el contador se reduce y actualizamos el valor de timeForInvisible
+        if (this.isUndamagable()) {
+            //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
+            if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
+                timeForInvisible = -RANGE_INVISIBLE_TIMER;
+            }
+            timeForInvisible++;
             timeToUndamagable -= delta;
+        }
+
         if (timeToUndamagable <= 0)
             this.changeToDamagable();
 
