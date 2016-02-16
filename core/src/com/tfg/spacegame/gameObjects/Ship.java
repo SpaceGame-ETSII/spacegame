@@ -141,11 +141,12 @@ public class Ship extends GameObject {
                 ShootsManager.shootBlueWeapon(this, y);
                 break;
             case YELLOW:
-                ShootsManager.shootYellowWeapon(this);
+                ShootsManager.shootYellowWeapon(this,x,y);
                 break;
             case GREEN:
                 break;
             case ORANGE:
+                ShootsManager.shootBurstOrangeWeapon(this,x,y);
                 break;
             case PURPLE:
                 break;

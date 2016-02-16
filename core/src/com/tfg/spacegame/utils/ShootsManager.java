@@ -1,18 +1,15 @@
 package com.tfg.spacegame.utils;
 
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
-import com.tfg.spacegame.gameObjects.shoots.BigShoot;
+import com.tfg.spacegame.gameObjects.shoots.*;
 import com.tfg.spacegame.gameObjects.Shoot;
-import com.tfg.spacegame.gameObjects.shoots.Basic;
-import com.tfg.spacegame.gameObjects.shoots.Blue;
-import com.tfg.spacegame.gameObjects.shoots.Red;
-import com.tfg.spacegame.gameObjects.shoots.Yellow;
 import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
@@ -102,6 +99,10 @@ public class ShootsManager {
                     result = true;
                 break;
             case YELLOW:
+                if(selected.size <= 0)
+                    result = true;
+                break;
+            case ORANGE:
                 if(selected.size <= 0)
                     result = true;
                 break;
@@ -211,12 +212,26 @@ public class ShootsManager {
         }
     }
 
-    public static void shootYellowWeapon(Ship ship) {
-        Yellow yellowShoot = new Yellow(ship);
+    public static void shootYellowWeapon(Ship ship,float x, float y) {
+        Yellow yellowShoot = new Yellow(ship, x,  y);
 
-        if(isShipReadyToShoot(TypeWeapon.YELLOW)){
+        if(isShipReadyToShoot(TypeWeapon.YELLOW))
             shoots.add(yellowShoot);
+    }
+
+    public static void shootBurstOrangeWeapon(GameObject gameObject, float x, float y) {
+        int xShoot =(int) (gameObject.getX() + gameObject.getWidth());
+        int yShoot = (int) (gameObject.getY() + gameObject.getHeight()/2);
+
+        Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
+
+        if(enemy != null){
+            Orange orange = new Orange(gameObject,xShoot,yShoot, 0, enemy);
+
+            if(isShipReadyToShoot(TypeWeapon.ORANGE))
+                shoots.add(orange);
         }
+
     }
 
     //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave
@@ -240,5 +255,4 @@ public class ShootsManager {
         shoot1.collideWithShoot(shoot2);
         shoot2.collideWithShoot(shoot1);
     }
-
 }

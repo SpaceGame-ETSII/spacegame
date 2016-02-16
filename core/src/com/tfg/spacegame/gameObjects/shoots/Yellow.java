@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Shoot;
@@ -22,13 +23,15 @@ public class Yellow extends Shoot{
     // Lo usaremos para hacer el calculo del ángulo
     private Vector2 vector;
 
+    private Vector3 targetVector;
+
     // El efecto de disparo
     private ParticleEffect shoot;
 
     // Tiempo para recargar
     private float timeToFireAgain;
 
-    public Yellow(GameObject shooter) {
+    public Yellow(GameObject shooter, float x, float y) {
         super("yellow_shoot", 0, 0, shooter,null,null);
         this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
         this.setY(getShooter().getY() + this.getHeight()/2);
@@ -42,6 +45,8 @@ public class Yellow extends Shoot{
         timeToFireAgain = FREQUENCY_OF_SHOOTING;
 
         vector = new Vector2();
+
+        targetVector = TouchManager.getTouchFromPosition(x,y);
     }
 
     public void update(float delta){
@@ -49,16 +54,14 @@ public class Yellow extends Shoot{
         shoot.update(delta);
         shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY() + this.getHeight()/2);
 
-        float yCoordenate = TouchManager.getAnyXTouchGreaterThan(SpaceGame.width/3).y;
-
         // Controlamos si el jugador sigue queriendo disparar
-        if(yCoordenate != 0){
+        if(TouchManager.isTouchActive(targetVector)){
             // Obtenemos el angulo a donde tenemos que girar
             float x1 = this.getX();
             float y1 = this.getY();
             float x2 = this.getX()+this.getWidth();
             // Dependiendo de si ha habido multitouch o no obtenemos el valor Y correspondiente
-            float y2 = yCoordenate;
+            float y2 = targetVector.y;
 
             vector.set(x2-x1,y2-y1);
             // Basta con llamar al vector.angle para tener el angulo a girar
