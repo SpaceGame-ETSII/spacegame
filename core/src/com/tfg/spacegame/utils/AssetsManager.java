@@ -69,6 +69,7 @@ public class AssetsManager {
         assetsReferences.put("red_shoot", weaponsFolder+"disparo_rojo.png");
         assetsReferences.put("blue_shoot", weaponsFolder+"disparo_azul.png");
         assetsReferences.put("yellow_shoot", weaponsFolder+"disparo_amarillo.png");
+        assetsReferences.put("green_shoot", weaponsFolder+"disparo_verde.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
@@ -94,6 +95,9 @@ public class AssetsManager {
         assetsReferences.put("blue_shoot_effect_shoot", particlesFolder + "arma_azul_efecto_disparo");
         assetsReferences.put("red_shoot_effect_shoot", particlesFolder + "arma_roja_efecto_disparo");
         assetsReferences.put("red_effect_shock", particlesFolder + "arma_roja_efecto_choque");
+        assetsReferences.put("green_propulsion_effect", particlesFolder + "propulsion_arma_verde");
+        assetsReferences.put("green_shoot_effect_shock", particlesFolder + "arma_verde_efecto_choque");
+        assetsReferences.put("green_shoot_effect_shoot", particlesFolder + "arma_verde_efecto_disparo");
         assetsReferences.put("red_destroyed", particlesFolder + "rojo_derrotado");
         assetsReferences.put("blue_destroyed", particlesFolder + "azul_derrotado");
         assetsReferences.put("yellow_shoot_effect", particlesFolder + "arma_amarilla");

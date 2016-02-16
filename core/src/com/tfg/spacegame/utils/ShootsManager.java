@@ -7,12 +7,8 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
-import com.tfg.spacegame.gameObjects.shoots.BigShoot;
+import com.tfg.spacegame.gameObjects.shoots.*;
 import com.tfg.spacegame.gameObjects.Shoot;
-import com.tfg.spacegame.gameObjects.shoots.Basic;
-import com.tfg.spacegame.gameObjects.shoots.Blue;
-import com.tfg.spacegame.gameObjects.shoots.Red;
-import com.tfg.spacegame.gameObjects.shoots.Yellow;
 import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
@@ -103,6 +99,10 @@ public class ShootsManager {
                 break;
             case YELLOW:
                 if(selected.size <= 0)
+                    result = true;
+                break;
+            case GREEN:
+                if(selected.size <= 1)
                     result = true;
                 break;
             default:
@@ -211,12 +211,48 @@ public class ShootsManager {
         }
     }
 
-    public static void shootYellowWeapon(Ship ship) {
-        Yellow yellowShoot = new Yellow(ship);
+    public static void shootYellowWeapon(GameObject shooter) {
+        Yellow yellowShoot = new Yellow(shooter);
 
-        if(isShipReadyToShoot(TypeWeapon.YELLOW)){
+        if (shooter instanceof Ship) {
+            if (isShipReadyToShoot(TypeWeapon.YELLOW)) {
+                shoots.add(yellowShoot);
+            }
+        } else {
             shoots.add(yellowShoot);
         }
+    }
+
+    public static void shootGreenWeapon(GameObject shooter, float yTarget) {
+        Green greenShoot;
+
+        if (shooter instanceof Ship) {
+            if (isShipReadyToShoot(TypeWeapon.GREEN)) {
+                int x = (int) (shooter.getX() + shooter.getWidth());
+                int y = (int) (shooter.getY() + shooter.getHeight() / 3);
+
+                greenShoot = new Green(shooter, x, y, yTarget);
+
+                shoots.add(greenShoot);
+            }
+        } else {
+            int x = (int) (shooter.getX() + 20);
+            int y = (int) (shooter.getY() + shooter.getHeight() / 2);
+
+            greenShoot = new Green(shooter, x, y, ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+
+            shoots.add(greenShoot);
+        }
+    }
+
+    //Deuvelve el arma verde en pantalla disparada por el shooter pasado por parámetro, si no existe devuelve null
+    public static Green getGreenShootByShooterOnScreen(GameObject shooter) {
+        Green green = null;
+        for (Shoot shoot: shoots) {
+            if (shoot instanceof Green && shoot.getShooter().equals(shooter) && !shoot.isShocked())
+                green = (Green) shoot;
+        }
+        return green;
     }
 
     //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave

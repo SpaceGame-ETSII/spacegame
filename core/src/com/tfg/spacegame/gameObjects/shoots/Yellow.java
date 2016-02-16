@@ -31,7 +31,7 @@ public class Yellow extends Shoot{
     public Yellow(GameObject shooter) {
         super("yellow_shoot", 0, 0, shooter,null,null);
         this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
-        this.setY(getShooter().getY() + this.getHeight()/2);
+        this.setY(getShooter().getY() + this.getHeight());
         this.getLogicShape().setOrigin(0,this.getHeight()/2);
 
         shoot = AssetsManager.loadParticleEffect("yellow_shoot_effect");
@@ -45,6 +45,7 @@ public class Yellow extends Shoot{
     }
 
     public void update(float delta){
+        setX(getShooter().getX()+getShooter().getWidth()+this.getHeight());
         setY(getShooter().getY() + this.getHeight());
         shoot.update(delta);
         shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY() + this.getHeight()/2);
