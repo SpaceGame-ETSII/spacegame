@@ -7,12 +7,8 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
-import com.tfg.spacegame.gameObjects.shoots.BigShoot;
+import com.tfg.spacegame.gameObjects.shoots.*;
 import com.tfg.spacegame.gameObjects.Shoot;
-import com.tfg.spacegame.gameObjects.shoots.Basic;
-import com.tfg.spacegame.gameObjects.shoots.Blue;
-import com.tfg.spacegame.gameObjects.shoots.Red;
-import com.tfg.spacegame.gameObjects.shoots.Yellow;
 import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
@@ -103,6 +99,10 @@ public class ShootsManager {
                 break;
             case YELLOW:
                 if(selected.size <= 0)
+                    result = true;
+                break;
+            case PURPLE:
+                if(selected.size <= 1)
                     result = true;
                 break;
             default:
@@ -219,6 +219,23 @@ public class ShootsManager {
         }
     }
 
+    public static void shootPurpleWeapon(GameObject shooter) {
+        Purple purpleShoot = new Purple(shooter,0,0);
+        if (shooter instanceof Ship){
+            if (isShipReadyToShoot(TypeWeapon.PURPLE)){
+                int x = (int) (shooter.getX() + shooter.getWidth());
+                int y = (int) (shooter.getY() + shooter.getHeight()/2);
+
+                purpleShoot.setX(x);
+                purpleShoot.setY(y);
+
+                shoots.add(purpleShoot);
+            }
+        }
+
+
+    }
+
     //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave
     public static void manageCollisionWithShip(Shoot shoot) {
         shoot.collideWithShip();
@@ -240,5 +257,4 @@ public class ShootsManager {
         shoot1.collideWithShoot(shoot2);
         shoot2.collideWithShoot(shoot1);
     }
-
 }

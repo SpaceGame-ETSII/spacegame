@@ -69,6 +69,7 @@ public class AssetsManager {
         assetsReferences.put("red_shoot", weaponsFolder+"disparo_rojo.png");
         assetsReferences.put("blue_shoot", weaponsFolder+"disparo_azul.png");
         assetsReferences.put("yellow_shoot", weaponsFolder+"disparo_amarillo.png");
+        assetsReferences.put("purple_shoot", weaponsFolder+"disparo_morado.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
@@ -98,6 +99,9 @@ public class AssetsManager {
         assetsReferences.put("blue_destroyed", particlesFolder + "azul_derrotado");
         assetsReferences.put("yellow_shoot_effect", particlesFolder + "arma_amarilla");
         assetsReferences.put("yellow_enemy_defeated", particlesFolder + "enemigo_amarillo_derrotado");
+        assetsReferences.put("purple_shoot_effect", particlesFolder + "arma_morada");
+        assetsReferences.put("purple_shoot_effect_shoot", particlesFolder + "arma_morada_efecto_disparo");
+        assetsReferences.put("purple_effect_shock", particlesFolder + "arma_morada_efecto_choque");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
