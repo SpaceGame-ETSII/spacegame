@@ -219,15 +219,15 @@ public class ShootsManager {
         }
     }
 
-    public static void shootPurpleWeapon(GameObject shooter) {
-        Purple purpleShoot = new Purple(shooter,0,0);
+    public static void shootPurpleWeapon(GameObject shooter, float yTarget) {
+        Purple purpleShoot;
+
         if (shooter instanceof Ship){
             if (isShipReadyToShoot(TypeWeapon.PURPLE)){
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
-                purpleShoot.setX(x);
-                purpleShoot.setY(y);
+                purpleShoot = new Purple(shooter,x,y,yTarget);
 
                 shoots.add(purpleShoot);
             }
