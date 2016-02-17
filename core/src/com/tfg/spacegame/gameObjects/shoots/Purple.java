@@ -3,6 +3,8 @@ package com.tfg.spacegame.gameObjects.shoots;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
@@ -13,18 +15,17 @@ import com.tfg.spacegame.utils.AssetsManager;
 public class Purple extends Shoot{
 
     //Velocidad de movimiento
-    public static final float SPEED = 600;
+    public static final float SPEED = 700;
 
     //Efecto de particulas de este disparo
     private ParticleEffect shoot;
 
-    //Indica el punto objetivo adonde se dirigirá la nave
-    private float xTarget;
-
     //Indicará si el misil va a la derecha (1) o a la izquierda (-1)
     private int direction;
 
-    public Purple(GameObject shooter, int x, int y, float yTarget) {
+    private Vector2 vector;
+
+    public Purple(GameObject shooter, int x, int y, float xTarget,float yTarget) {
         super("purple_shoot", x, y, shooter,
                 AssetsManager.loadParticleEffect("purple_shoot_effect_shoot"),
                 AssetsManager.loadParticleEffect("purple_effect_shock"));
@@ -40,11 +41,11 @@ public class Purple extends Shoot{
         //Dependiendo de si es la nave o no el shooter, el disparo vendrá de la derecha o la izquierda
         if (shooter instanceof Ship) {
             direction = 1;
-            xTarget = yTarget;
         } else {
             direction = -1;
-            xTarget = yTarget;
         }
+
+        vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() + shooter.getHeight()/2)));
     }
 
     public void updateParticleEffect() {
@@ -55,6 +56,8 @@ public class Purple extends Shoot{
             //Se actuará de forma distinta si el shooter es enemigo o no
             if (this.getShooter() instanceof Ship) {
                 shoot.getEmitters().first().setPosition(this.getX() - 10,this.getY() + 13);
+
+                //shoot.getEmitters().first().getAngle().setHigh(vector.angle(),vector.angle());
             } else if (this.getShooter() instanceof Enemy){
                 shoot.getEmitters().first().setPosition(this.getX(), this.getY());
 
@@ -66,18 +69,17 @@ public class Purple extends Shoot{
 
     public void update(float delta) {
         if (!this.isShocked()) {
-            //Esperaremos a que sea el momento correcto para moverse
-            //if (timeToMove < 0) {
-                //Actualizamos el movimiento del disparo
-                this.setX(this.getX() + (SPEED * delta * direction));
-                this.setY(getShooter().getY() + getShooter().getHeight() / 2 - this.getHeight() / 2);
-                //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
-                this.updateParticleEffect();
+            //Actualizamos el movimiento del disparo
+            this.setX(this.getX() + ((vector.x/100) * direction));
+            //this.setY(getShooter().getY() + getShooter().getHeight() / 2 - this.getHeight() / 2);
+            this.setY(this.getY() + ((vector.y/100) * direction));
+            //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
+            this.updateParticleEffect();
 
-                //Actualizamos el efecto de particulas
-                shoot.update(delta);
-                super.update(delta);
-            }
+            //Actualizamos el efecto de particulas
+            shoot.update(delta);
+            super.update(delta);
+        }
     }
 
     public void render(SpriteBatch batch){
