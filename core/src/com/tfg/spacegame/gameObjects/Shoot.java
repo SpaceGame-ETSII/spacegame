@@ -55,7 +55,6 @@ public class Shoot extends GameObject {
             shootEffect.update(delta);
         } else if (destroyEffect != null) {
             destroyEffect.update(delta);
-
             // Restamos el tiempo que estará el efecto en pantalla, y si pasa el tiempo, marcamos el shoot como deletable
             if (destroyEffect.isComplete()) {
                 this.changeToDeletable();

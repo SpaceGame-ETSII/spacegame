@@ -2,11 +2,9 @@ package com.tfg.spacegame.gameObjects.shoots;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
@@ -16,19 +14,22 @@ public class Orange extends Shoot{
 
     private static final float SPEEDX = 100;
     private static final float SPEEDY = 100;
-    private static final float SPEEDANGLE = 10;
+    private static final float SPEEDANGLE = 1;
 
     //Efecto de particulas de este disparo
     private ParticleEffect shoot;
 
     private float targetAngle;
+    private float actualAngle;
+
+    private int direction;
 
     private Vector2 movement;
 
     private GameObject target;
 
     public Orange(GameObject shooter, int x, int y, float angle, GameObject target) {
-        super("orange_shoot", x, y, shooter, null, null);
+        super("orange_shoot", x, y, shooter, AssetsManager.loadParticleEffect("orange_shoot_effect_shoot"), AssetsManager.loadParticleEffect("orange_shoot_effect_shock"));
 
         this.setY(this.getY() - this.getHeight()/2);
 
@@ -38,6 +39,9 @@ public class Orange extends Shoot{
         this.target = target;
 
         movement = new Vector2();
+
+        direction = 0;
+        actualAngle = 0;
     }
     public void update(float delta){
         super.update(delta);
@@ -57,14 +61,26 @@ public class Orange extends Shoot{
 
         targetAngle = movement.angle();
 
-        this.setX(this.getX()+SPEEDX * delta * MathUtils.cosDeg(targetAngle));
-        this.setY(this.getY()+SPEEDY * delta * MathUtils.sinDeg(targetAngle));
+        if(targetAngle >=180)
+            targetAngle-=360;
+
+        float diffAngle = targetAngle - actualAngle;
+
+        if(diffAngle < 0 )
+            actualAngle-=SPEEDANGLE;
+        else
+            actualAngle+=SPEEDANGLE;
+
+        this.setX(this.getX()+SPEEDX * delta * MathUtils.cosDeg(actualAngle));
+        this.setY(this.getY()+SPEEDY * delta * MathUtils.sinDeg(actualAngle));
+
     }
 
     public void render(SpriteBatch batch) {
         super.render(batch);
 
-        shoot.draw(batch);
+        if(!isShocked())
+            shoot.draw(batch);
 
     }
 

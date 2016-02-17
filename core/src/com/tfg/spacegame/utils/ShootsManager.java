@@ -232,7 +232,7 @@ public class ShootsManager {
     public static void shootBurstOrangeWeapon(GameObject gameObject, float x, float y) {
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
         if(enemy != null && isShipReadyToShoot(TypeWeapon.ORANGE)){
-            numberOfBasicShoots = 5;
+            numberOfBasicShoots = 7;
             startPoint = 0;
             typeToBurst = TypeWeapon.ORANGE;
             burstTarget = enemy;
