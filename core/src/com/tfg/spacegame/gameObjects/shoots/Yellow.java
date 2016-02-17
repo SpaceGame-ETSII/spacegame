@@ -14,9 +14,6 @@ import com.tfg.spacegame.utils.TouchManager;
 
 public class Yellow extends Shoot{
 
-    // Antes de eliminar el disparo esperamos un poco
-    private static final float FREQUENCY_OF_SHOOTING=0.7f;
-
     // Amplitud del efecto de disparo (el efecto de particulas)
     private static final int AMPLITUDE_OF_FIRE=15;
 
@@ -28,9 +25,6 @@ public class Yellow extends Shoot{
     // El efecto de disparo
     private ParticleEffect shoot;
 
-    // Tiempo para recargar
-    private float timeToFireAgain;
-
     public Yellow(GameObject shooter, float x, float y) {
         super("yellow_shoot", 0, 0, shooter,null,null);
         this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
@@ -41,8 +35,6 @@ public class Yellow extends Shoot{
         shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY()+this.getHeight()/2);
 
         shoot.start();
-
-        timeToFireAgain = FREQUENCY_OF_SHOOTING;
 
         vector = new Vector2();
 
@@ -74,14 +66,10 @@ public class Yellow extends Shoot{
             angles.setLow(angle);
             angles.setHigh(angle-AMPLITUDE_OF_FIRE,angle+AMPLITUDE_OF_FIRE);
         }else{
-            // Si no, lo borramos
-            //this.changeToDeletable();
+            this.shock();
             shoot.allowCompletion();
-
-            if(timeToFireAgain < 0){
+            if (shoot.isComplete()) {
                 this.changeToDeletable();
-            }else{
-                timeToFireAgain-=delta;
             }
         }
     }
