@@ -19,7 +19,7 @@ public class TouchManager {
      * @return True en caso de que si
      */
     public static boolean isFirstTouchActive(){
-        return Gdx.input.isTouched();
+        return Gdx.input.isTouched(0);
     }
 
     /**

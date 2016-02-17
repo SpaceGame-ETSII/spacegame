@@ -31,8 +31,8 @@ public class CampaignScreen extends GameScreen {
     // -1 para ningún touch asignado
     //  0 para el primer touch
     //  1 para el segundo touch
-    private int whichTouchIsShooting;
-    private int whichControlsTheShip;
+    public int whichTouchIsShooting;
+    public int whichControlsTheShip;
 
     public CampaignScreen(SpaceGame game){
         this.game = game;
@@ -239,7 +239,7 @@ public class CampaignScreen extends GameScreen {
         coordinates = TouchManager.getAnyXTouchGreaterThan(ship.getX() + ship.getWidth());
         // Preguntamos si el vector de coordenadas no es un vector de 0's. Si lo fuese es que el jugador
         // no ha tocado la pantalla. Además preguntamos si el toque ha sido solo de una sola vez
-        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched()) {
+        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched() && whichTouchIsShooting == -1) {
             // Disparamos, pasando por parámetro las coordenadas del touch correspondiente
             ship.shoot(coordinates.x, coordinates.y);
             whichTouchIsShooting = TouchManager.assignWhichTouchCorresponds(coordinates);
