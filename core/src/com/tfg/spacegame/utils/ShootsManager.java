@@ -35,6 +35,8 @@ public class ShootsManager {
 
     private static GameObject burstTarget;
 
+    private static double aparitionFactor;
+
     public static void load() {
         shoots = new Array<Shoot>();
         numberOfBasicShoots = 0;
@@ -50,6 +52,7 @@ public class ShootsManager {
             numberOfBasicShoots = 3;
             startPoint = 0;
             typeToBurst = TypeWeapon.BASIC;
+            aparitionFactor = 1.3;
         }
     }
 
@@ -149,7 +152,7 @@ public class ShootsManager {
             //Disparamos un nuevo shoot en la ráfaga si no hubo un último, o bien la distancia recorrida por el
             //último es superior a su punto de inicio más su ancho por 1.3
             if (lastShootOfBurst == null ||
-                    lastShootOfBurst.getX() > (startPoint + lastShootOfBurst.getWidth()) * 1.3) {
+                    lastShootOfBurst.getX() > (startPoint + lastShootOfBurst.getWidth()) * aparitionFactor) {
                 if(typeToBurst.equals(TypeWeapon.BASIC))
                     lastShootOfBurst = shootOneBasicWeapon(ship);
                 else if(typeToBurst.equals(TypeWeapon.ORANGE))
@@ -232,10 +235,11 @@ public class ShootsManager {
     public static void shootBurstOrangeWeapon(GameObject gameObject, float x, float y) {
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
         if(enemy != null && isShipReadyToShoot(TypeWeapon.ORANGE)){
-            numberOfBasicShoots = 7;
+            numberOfBasicShoots = 16;
             startPoint = 0;
             typeToBurst = TypeWeapon.ORANGE;
             burstTarget = enemy;
+            aparitionFactor = 1.1;
         }
 
     }
@@ -246,7 +250,9 @@ public class ShootsManager {
         int xShoot =(int) (shooter.getX() + shooter.getWidth());
         int yShoot = (int) (shooter.getY() + shooter.getHeight()/2);
 
-        result = new Orange(shooter,xShoot,yShoot, 0, target);
+        float angleOfStart = MathUtils.random(-30,30);
+
+        result = new Orange(shooter,xShoot,yShoot, angleOfStart, target);
                 shoots.add(result);
 
         return result;

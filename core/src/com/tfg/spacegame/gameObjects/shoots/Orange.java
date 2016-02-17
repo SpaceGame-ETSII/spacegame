@@ -12,17 +12,19 @@ import com.tfg.spacegame.utils.AssetsManager;
 
 public class Orange extends Shoot{
 
-    private static final float SPEEDX = 100;
-    private static final float SPEEDY = 100;
-    private static final float SPEEDANGLE = 1;
+    private static final float SPEED = 150;
+    private static final float HIGHSPEED = 250;
+    private static final float SPEEDANGLE = 0.7f;
+
+    private static final float LIMIT_TO_CHANGE_ANGLE = 50;
+
+    private float distanceFromOrigin;
 
     //Efecto de particulas de este disparo
     private ParticleEffect shoot;
 
     private float targetAngle;
     private float actualAngle;
-
-    private int direction;
 
     private Vector2 movement;
 
@@ -40,8 +42,9 @@ public class Orange extends Shoot{
 
         movement = new Vector2();
 
-        direction = 0;
-        actualAngle = 0;
+        actualAngle = angle;
+
+        distanceFromOrigin = 0;
     }
     public void update(float delta){
         super.update(delta);
@@ -51,28 +54,37 @@ public class Orange extends Shoot{
 
         shoot.getEmitters().first().setPosition(this.getX()+this.getWidth()/2,this.getY()+this.getHeight()/2);
 
-        float x1 = this.getX() + this.getWidth()/2;
-        float y1 = this.getY() + this.getHeight()/2;
+        if(distanceFromOrigin > LIMIT_TO_CHANGE_ANGLE){
 
-        float x2 = target.getX() + target.getWidth()/2;
-        float y2 = target.getY() + target.getHeight()/2;
+            float x1 = this.getX() + this.getWidth()/2;
+            float y1 = this.getY() + this.getHeight()/2;
 
-        movement.set( x2-x1 , y2-y1 );
+            float x2 = target.getX() + target.getWidth()/2;
+            float y2 = target.getY() + target.getHeight()/2;
 
-        targetAngle = movement.angle();
+            movement.set( x2-x1 , y2-y1 );
 
-        if(targetAngle >=180)
-            targetAngle-=360;
+            targetAngle = movement.angle();
 
-        float diffAngle = targetAngle - actualAngle;
+            if(targetAngle >=180)
+                targetAngle-=360;
 
-        if(diffAngle < 0 )
-            actualAngle-=SPEEDANGLE;
-        else
-            actualAngle+=SPEEDANGLE;
+            float diffAngle = targetAngle - actualAngle;
 
-        this.setX(this.getX()+SPEEDX * delta * MathUtils.cosDeg(actualAngle));
-        this.setY(this.getY()+SPEEDY * delta * MathUtils.sinDeg(actualAngle));
+            if(diffAngle < 0 )
+                actualAngle-=SPEEDANGLE;
+            else
+                actualAngle+=SPEEDANGLE;
+
+            this.setX(this.getX()+ SPEED * delta * MathUtils.cosDeg(actualAngle));
+            this.setY(this.getY()+ SPEED * delta * MathUtils.sinDeg(actualAngle));
+
+        }else{
+            distanceFromOrigin+= HIGHSPEED * delta * MathUtils.cosDeg(actualAngle);
+
+            this.setX(this.getX()+ HIGHSPEED * delta * MathUtils.cosDeg(actualAngle));
+            this.setY(this.getY()+ HIGHSPEED * delta * MathUtils.sinDeg(actualAngle));
+        }
 
     }
 
@@ -81,7 +93,6 @@ public class Orange extends Shoot{
 
         if(!isShocked())
             shoot.draw(batch);
-
     }
 
     public void collideWithEnemy(Enemy enemy) {
