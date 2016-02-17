@@ -25,7 +25,7 @@ public class Yellow extends Shoot{
     // El efecto de disparo
     private ParticleEffect shoot;
 
-    public Yellow(GameObject shooter, float x, float y) {
+    public Yellow(GameObject shooter, float xTarget, float yTarget) {
         super("yellow_shoot", 0, 0, shooter,null,null);
         this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
         this.setY(getShooter().getY() + this.getHeight());
@@ -38,7 +38,7 @@ public class Yellow extends Shoot{
 
         vector = new Vector2();
 
-        targetVector = TouchManager.getTouchFromPosition(x,y);
+        targetVector = TouchManager.getTouchFromPosition(xTarget, yTarget);
     }
 
     public void update(float delta){
