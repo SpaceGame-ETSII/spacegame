@@ -33,6 +33,8 @@ public class Purple extends Shoot{
         //Creamos el efecto de particulas
         shoot = AssetsManager.loadParticleEffect("purple_shoot_effect");
 
+        vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() + shooter.getHeight()/2)));
+
         this.updateParticleEffect();
 
         //Los iniciamos, pero aunque los iniciemos si no haya un update no avanzarán
@@ -44,8 +46,6 @@ public class Purple extends Shoot{
         } else {
             direction = -1;
         }
-
-        vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() + shooter.getHeight()/2)));
     }
 
     public void updateParticleEffect() {
@@ -56,8 +56,8 @@ public class Purple extends Shoot{
             //Se actuará de forma distinta si el shooter es enemigo o no
             if (this.getShooter() instanceof Ship) {
                 shoot.getEmitters().first().setPosition(this.getX() - 10,this.getY() + 13);
-
-                //shoot.getEmitters().first().getAngle().setHigh(vector.angle(),vector.angle());
+                //Rotamos el efecto de partículas para hacerlo coincidir con el ángulo del disparo
+                shoot.getEmitters().first().getAngle().setHigh(vector.angle(),vector.angle());
             } else if (this.getShooter() instanceof Enemy){
                 shoot.getEmitters().first().setPosition(this.getX(), this.getY());
 
@@ -71,8 +71,8 @@ public class Purple extends Shoot{
         if (!this.isShocked()) {
             //Actualizamos el movimiento del disparo
             this.setX(this.getX() + ((vector.x/100) * direction));
-            //this.setY(getShooter().getY() + getShooter().getHeight() / 2 - this.getHeight() / 2);
             this.setY(this.getY() + ((vector.y/100) * direction));
+
             //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
             this.updateParticleEffect();
 
@@ -85,6 +85,7 @@ public class Purple extends Shoot{
     public void render(SpriteBatch batch){
         super.render(batch);
         if (!this.isShocked()) {
+            this.renderRotate(batch,vector.angle());
             shoot.draw(batch);
         }
     }
