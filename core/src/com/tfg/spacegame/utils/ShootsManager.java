@@ -1,8 +1,5 @@
 package com.tfg.spacegame.utils;
 
-
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
@@ -11,7 +8,6 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
 import com.tfg.spacegame.gameObjects.shoots.*;
 import com.tfg.spacegame.gameObjects.Shoot;
-import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
@@ -225,7 +221,6 @@ public class ShootsManager {
             shoots.add(blueShoot);
         }
     }
-
 
     public static void shootYellowWeapon(GameObject shooter, float xTarget, float yTarget) {
         Yellow yellowShoot = new Yellow(shooter, xTarget, yTarget);
