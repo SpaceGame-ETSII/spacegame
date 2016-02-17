@@ -284,6 +284,11 @@ public class ShootsManager {
         }
     }
 
+    public static void shootGreenFireWeapon(GameObject shooter, float xTarget, float yTarget) {
+        GreenFire greenFireShoot = new GreenFire(shooter, xTarget, yTarget);
+        shoots.add(greenFireShoot);
+    }
+
     //Deuvelve el arma verde en pantalla disparada por el shooter pasado por parámetro, si no existe devuelve null
     public static Green getGreenShootByShooterOnScreen(GameObject shooter) {
         Green green = null;

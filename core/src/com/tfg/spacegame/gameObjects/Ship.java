@@ -147,7 +147,7 @@ public class Ship extends GameObject {
             case GREEN:
                 Green green = ShootsManager.getGreenShootByShooterOnScreen(this);
                 if (green != null)
-                    ShootsManager.shootYellowWeapon(green, x, y);
+                    ShootsManager.shootGreenFireWeapon(green, x, y);
                 else
                     ShootsManager.shootGreenWeapon(this, y);
                 break;

@@ -99,6 +99,7 @@ public class AssetsManager {
         assetsReferences.put("green_propulsion_effect", particlesFolder + "propulsion_arma_verde");
         assetsReferences.put("green_shoot_effect_shock", particlesFolder + "arma_verde_efecto_choque");
         assetsReferences.put("green_shoot_effect_shoot", particlesFolder + "arma_verde_efecto_disparo");
+        assetsReferences.put("green_shoot_effect", particlesFolder + "fuego_verde");
         assetsReferences.put("red_destroyed", particlesFolder + "rojo_derrotado");
         assetsReferences.put("blue_destroyed", particlesFolder + "azul_derrotado");
         assetsReferences.put("yellow_shoot_effect", particlesFolder + "arma_amarilla");
