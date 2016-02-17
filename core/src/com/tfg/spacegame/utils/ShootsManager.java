@@ -1,5 +1,6 @@
 package com.tfg.spacegame.utils;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
@@ -255,7 +256,7 @@ public class ShootsManager {
         int xShoot =(int) (shooter.getX() + shooter.getWidth());
         int yShoot = (int) (shooter.getY() + shooter.getHeight()/2);
 
-        float angleOfStart = MathUtils.random(-30,30);
+        float angleOfStart = MathUtils.random(-30, 30);
 
         result = new Orange(shooter,xShoot,yShoot, angleOfStart, target);
                 shoots.add(result);
