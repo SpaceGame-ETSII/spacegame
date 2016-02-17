@@ -31,8 +31,8 @@ public class CampaignScreen extends GameScreen {
     // -1 para ningún touch asignado
     //  0 para el primer touch
     //  1 para el segundo touch
-    public int whichTouchIsShooting;
-    public int whichControlsTheShip;
+    public static int whichTouchIsShooting;
+    public static int whichControlsTheShip;
 
     public CampaignScreen(SpaceGame game){
         this.game = game;

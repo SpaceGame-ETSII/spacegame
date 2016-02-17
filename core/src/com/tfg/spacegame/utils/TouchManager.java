@@ -110,4 +110,13 @@ public class TouchManager {
         return result;
     }
 
+    public static Vector3 getTouchFromPointer(int pointer){
+        Vector3 result = Vector3.Zero;
+        if(pointer == 0)
+            result = firstTouchPos;
+        else if (pointer == 1)
+            result = secondTouchPos;
+        return  result;
+    }
+
 }

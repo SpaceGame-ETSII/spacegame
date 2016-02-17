@@ -2,6 +2,7 @@ package com.tfg.spacegame.utils;
 
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
@@ -10,6 +11,7 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
 import com.tfg.spacegame.gameObjects.shoots.*;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
@@ -29,6 +31,10 @@ public class ShootsManager {
     //Guarda el punto de partida del último disparo realizado en una ráfaga
     private static float startPoint;
 
+    private static TypeWeapon typeToBurst;
+
+    private static GameObject burstTarget;
+
     public static void load() {
         shoots = new Array<Shoot>();
         numberOfBasicShoots = 0;
@@ -43,6 +49,7 @@ public class ShootsManager {
         if(isShipReadyToShoot(TypeWeapon.BASIC)){
             numberOfBasicShoots = 3;
             startPoint = 0;
+            typeToBurst = TypeWeapon.BASIC;
         }
     }
 
@@ -131,11 +138,11 @@ public class ShootsManager {
 
         ShootsManager.ship = ship;
 
-        updateBurst(delta, ship);
+        updateBurst(ship);
     }
 
     //Actualiza el estado de la ráfaga ee disparo que haya en pantalla
-    public static void updateBurst(float delta, Ship ship) {
+    public static void updateBurst(Ship ship) {
         //Si estamos en medio de una ráfaga de la nave, continuamos disparando si es el momento
         if (numberOfBasicShoots > 0) {
 
@@ -143,7 +150,10 @@ public class ShootsManager {
             //último es superior a su punto de inicio más su ancho por 1.3
             if (lastShootOfBurst == null ||
                     lastShootOfBurst.getX() > (startPoint + lastShootOfBurst.getWidth()) * 1.3) {
-                lastShootOfBurst = shootOneBasicWeapon(ship);
+                if(typeToBurst.equals(TypeWeapon.BASIC))
+                    lastShootOfBurst = shootOneBasicWeapon(ship);
+                else if(typeToBurst.equals(TypeWeapon.ORANGE))
+                    lastShootOfBurst = shootOneOrangeWeapon(ship,burstTarget);
                 numberOfBasicShoots -= 1;
                 startPoint = lastShootOfBurst.getX();
 
@@ -220,18 +230,26 @@ public class ShootsManager {
     }
 
     public static void shootBurstOrangeWeapon(GameObject gameObject, float x, float y) {
-        int xShoot =(int) (gameObject.getX() + gameObject.getWidth());
-        int yShoot = (int) (gameObject.getY() + gameObject.getHeight()/2);
-
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
-
-        if(enemy != null){
-            Orange orange = new Orange(gameObject,xShoot,yShoot, 0, enemy);
-
-            if(isShipReadyToShoot(TypeWeapon.ORANGE))
-                shoots.add(orange);
+        if(enemy != null && isShipReadyToShoot(TypeWeapon.ORANGE)){
+            numberOfBasicShoots = 5;
+            startPoint = 0;
+            typeToBurst = TypeWeapon.ORANGE;
+            burstTarget = enemy;
         }
 
+    }
+
+    public static Orange shootOneOrangeWeapon(GameObject shooter, GameObject target) {
+        Orange result = null;
+
+        int xShoot =(int) (shooter.getX() + shooter.getWidth());
+        int yShoot = (int) (shooter.getY() + shooter.getHeight()/2);
+
+        result = new Orange(shooter,xShoot,yShoot, 0, target);
+                shoots.add(result);
+
+        return result;
     }
 
     //Gestiona la reacción de la colisión del shoot pasado por parámetro con la nave

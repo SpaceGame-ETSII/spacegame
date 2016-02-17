@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 
@@ -26,21 +27,15 @@ public class Orange extends Shoot{
 
     private GameObject target;
 
-    ShapeRenderer sr;
-
     public Orange(GameObject shooter, int x, int y, float angle, GameObject target) {
         super("orange_shoot", x, y, shooter, null, null);
 
-        sr = new ShapeRenderer();
-        sr.setAutoShapeType(true);
         this.setY(this.getY() - this.getHeight()/2);
 
         shoot = AssetsManager.loadParticleEffect("orange_shoot_effect");
         shoot.getEmitters().first().setPosition(this.getX()+this.getWidth()/2,this.getY()+this.getHeight()/2);
 
         this.target = target;
-
-
 
         movement = new Vector2();
     }
@@ -71,22 +66,20 @@ public class Orange extends Shoot{
 
         shoot.draw(batch);
 
-        SpaceGame.batch.end();
+    }
 
-        sr.begin();
+    public void collideWithEnemy(Enemy enemy) {
+        super.collideWithEnemy(enemy);
+        this.shock();
+    }
 
-        float x1 = this.getX() + this.getWidth()/2;
-        float y1 = this.getY() + this.getHeight()/2;
+    public void collideWithShoot(Shoot shoot) {
+        super.collideWithShoot(shoot);
+        this.shock();
+    }
 
-        float x2 = target.getX() + target.getWidth()/2;
-        float y2 = target.getY() + target.getHeight()/2;
-
-            sr.line(x1,y1,x2,y2);
-
-        sr.end();
-
-        SpaceGame.batch.begin();
-
-
+    public void collideWithShip() {
+        super.collideWithShip();
+        this.shock();
     }
 }
