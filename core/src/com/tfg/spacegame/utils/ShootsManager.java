@@ -256,7 +256,9 @@ public class ShootsManager {
         int xShoot =(int) (shooter.getX() + shooter.getWidth());
         int yShoot = (int) (shooter.getY() + shooter.getHeight()/2);
 
-        float angleOfStart = MathUtils.random(-30, 30);
+        float angle = (shoots.size/16.0f) * 45f;
+
+        float angleOfStart = MathUtils.random(-angle,angle);
 
         result = new Orange(shooter,xShoot,yShoot, angleOfStart, target);
                 shoots.add(result);
