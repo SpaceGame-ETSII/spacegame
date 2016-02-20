@@ -28,6 +28,8 @@ public class Enemy extends GameObject {
 
     private static final float DURATION_FLICK = 0.25f;
 
+    //Lo usamos para activar el efecto de localización (circulo rojo alrededor del enemigo)
+    //Sólo las armas que apunten a un enemigo tendrán este efecto. (Naranja)
     private boolean targettedByShip;
 
     public Enemy(String textureName, int x, int y, int vitality, ParticleEffect destroyEffect) {
@@ -76,6 +78,7 @@ public class Enemy extends GameObject {
             if (timeToFlick <= 0 || timeForInvisible > 0) {
                 super.render(batch);
 
+                // Si el enemigo es objetivo de un arma, pintamos el efecto de localización
                 if(targettedByShip){
                     SpaceGame.batch.end();
 
@@ -135,6 +138,7 @@ public class Enemy extends GameObject {
 
     public void collideWithShoot(Shoot shoot) {}
 
+    //Usado para activar o desactivar el efecto de localización
     public void setTargettedByShip(boolean b){
         targettedByShip = b;
     }

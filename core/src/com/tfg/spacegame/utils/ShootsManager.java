@@ -28,10 +28,15 @@ public class ShootsManager {
     //Guarda el punto de partida del último disparo realizado en una ráfaga
     private static float startPoint;
 
+    //Tipo de arma a hacer la ráfaga (naranja o basica)
     private static TypeWeapon typeToBurst;
 
+    //Si hubiese un objetivo de la ráfaga, lo guardamos aqui
     private static GameObject burstTarget;
 
+    //Dentro del efecto ráfaga existe un factor de aparición que definiremos
+    //en el método burst. A mayor número mayor tiempo entre disparos
+    //Menos de 1.0 los disparos se soperponen
     private static double aparitionFactor;
 
     public static void load() {
@@ -162,6 +167,7 @@ public class ShootsManager {
                 //Si acabamos de lanzar el último disparo de la ráfaga, no lo guardamos
                 if (numberOfBasicShoots == 0){
                     lastShootOfBurst = null;
+                    // Si el burst era de un tipo naranja, desactivamos el efecto de localización.
                     if(typeToBurst.equals(TypeWeapon.ORANGE)){
                         Enemy enemy = (Enemy) burstTarget;
                         enemy.setTargettedByShip(false);
@@ -260,7 +266,7 @@ public class ShootsManager {
         int xShoot =(int) (shooter.getX() + shooter.getWidth());
         int yShoot = (int) (shooter.getY() + shooter.getHeight()/2);
 
-        float angle = (shoots.size/16.0f) * 45f;
+        float angle = (shoots.size/(float)(numberOfBasicShoots + shoots.size)) * 45f;
 
         float angleOfStart = MathUtils.random(-angle,angle);
 
