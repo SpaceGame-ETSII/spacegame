@@ -149,7 +149,6 @@ public class ShootsManager {
     public static void updateBurst(Ship ship) {
         //Si estamos en medio de una ráfaga de la nave, continuamos disparando si es el momento
         if (numberOfBasicShoots > 0) {
-
             //Disparamos un nuevo shoot en la ráfaga si no hubo un último, o bien la distancia recorrida por el
             //último es superior a su punto de inicio más su ancho por 1.3
             if (lastShootOfBurst == null ||
@@ -160,10 +159,14 @@ public class ShootsManager {
                     lastShootOfBurst = shootOneOrangeWeapon(ship,burstTarget);
                 numberOfBasicShoots -= 1;
                 startPoint = lastShootOfBurst.getX();
-
                 //Si acabamos de lanzar el último disparo de la ráfaga, no lo guardamos
-                if (numberOfBasicShoots == 0)
+                if (numberOfBasicShoots == 0){
                     lastShootOfBurst = null;
+                    if(typeToBurst.equals(TypeWeapon.ORANGE)){
+                        Enemy enemy = (Enemy) burstTarget;
+                        enemy.setTargettedByShip(false);
+                    }
+                }
             }
         }
     }
@@ -246,6 +249,7 @@ public class ShootsManager {
             typeToBurst = TypeWeapon.ORANGE;
             burstTarget = enemy;
             aparitionFactor = 1.1;
+            enemy.setTargettedByShip(true);
         }
 
     }
