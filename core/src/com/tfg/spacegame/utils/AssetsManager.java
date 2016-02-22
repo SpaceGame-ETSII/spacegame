@@ -34,6 +34,8 @@ public class AssetsManager {
         assetsReferences.put("yellow_enemy", enemiesFolder+"amarillo.png");
         assetsReferences.put("red_enemy", enemiesFolder+"rojo.png");
         assetsReferences.put("blue_enemy", enemiesFolder+"azul.png");
+        assetsReferences.put("green_body", enemiesFolder+"verde_body.png");
+        assetsReferences.put("green_shield", enemiesFolder+"verde_shield.png");
 
         //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
@@ -102,6 +104,7 @@ public class AssetsManager {
         assetsReferences.put("green_shoot_effect", particlesFolder + "fuego_verde");
         assetsReferences.put("red_destroyed", particlesFolder + "rojo_derrotado");
         assetsReferences.put("blue_destroyed", particlesFolder + "azul_derrotado");
+        assetsReferences.put("green_destroyed", particlesFolder + "verde_derrotado");
         assetsReferences.put("yellow_shoot_effect", particlesFolder + "arma_amarilla");
         assetsReferences.put("yellow_enemy_defeated", particlesFolder + "enemigo_amarillo_derrotado");
         assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
