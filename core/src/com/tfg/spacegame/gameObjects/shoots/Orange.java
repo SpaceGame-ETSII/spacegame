@@ -42,6 +42,8 @@ public class Orange extends Shoot{
 
         movement = new Vector2();
 
+        super.updateParticleEffect();
+
         actualAngle = angle;
 
         distanceFromOrigin = 0;
@@ -90,7 +92,6 @@ public class Orange extends Shoot{
 
     public void render(SpriteBatch batch) {
         super.render(batch);
-
         if(!isShocked())
             shoot.draw(batch);
     }
