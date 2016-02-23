@@ -12,7 +12,11 @@ import com.tfg.spacegame.utils.ShootsManager;
 
 public class GreenEnemy extends Enemy {
 
+    //Indica la velocidad a la que se moverá el enemigo
     private static final int SPEED = 50;
+
+    //Valor inicial que tendrá el contador de disparo cada vez que se reinicie
+    public static final int INITIAL_COUNTER = 250;
 
     // El escudo del enemigo
     private PartOfEnemy shield;
@@ -20,12 +24,20 @@ public class GreenEnemy extends Enemy {
     // Direccion de movimiento
     private int direction;
 
+    //Indicará cuándo a partir de cuándo puede disparar el enemigo
+    private boolean isReady;
+
+    //Contador que usaremos para saber cuándo disparar
+    private float counter;
+
     public GreenEnemy(int x, int y) {
         super("green_body", x, y, 1500, AssetsManager.loadParticleEffect("green_destroyed"));
         shield = new PartOfEnemy("green_shield", x - 56,y - 33, 15,
                                     AssetsManager.loadParticleEffect("green_destroyed"), this, false);
 
         direction = 1;
+        isReady = false;
+        counter = INITIAL_COUNTER;
     }
 
     public void update(float delta) {
@@ -34,11 +46,20 @@ public class GreenEnemy extends Enemy {
         if (!this.isDefeated()) {
             // Evitamos que el enemigo se salga de la pantalla tanto por arriba como por abajo
             if(this.getY() + this.getHeight() > SpaceGame.height){
-                this.shoot();
                 direction = -1;
             } else if (this.getY() < 0){
-                this.shoot();
                 direction = 1;
+            } else {
+                //Si el enemigo estaba fuera de la pantalla, cambiamos por tanto su estado para que pueda disparar
+                isReady = true;
+            }
+
+            //Si el enemigo está listo y ha terminado el contador, disparará y lo reiniciamos
+            if (isReady && counter <= 0) {
+                this.shoot();
+                counter = INITIAL_COUNTER;
+            } else {
+                counter -= delta * SPEED;
             }
 
             // Movemos las tres partes del enemigo

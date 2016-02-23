@@ -7,11 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.utils.TouchManager;
-
 
 public class Fire extends Shoot {
 
@@ -33,7 +31,7 @@ public class Fire extends Shoot {
         if (!this.isFromShootOfEnemy()) {
             this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
         } else {
-            this.setX((int)(shooter.getX()+this.getHeight()));
+            this.setX((int) shooter.getX());
         }
         this.setY(getShooter().getY() + this.getHeight());
         this.getLogicShape().setOrigin(0,this.getHeight()/2);
@@ -45,7 +43,8 @@ public class Fire extends Shoot {
 
         vector = new Vector2();
 
-        if (shooter instanceof Ship) {
+        //Si es la nave el shooter, o bien el shooter del shoot que ejecutó el fuego, usamos el touchManager
+        if (!this.isFromShootOfEnemy()) {
             targetVector = TouchManager.getTouchFromPosition(xTarget, yTarget);
         } else {
             targetVector = new Vector3();
@@ -55,19 +54,29 @@ public class Fire extends Shoot {
     }
 
     public void update(float delta){
-        setX(getShooter().getX()+getShooter().getWidth()+this.getHeight());
-        setY(getShooter().getY() + this.getHeight());
-        shoot.update(delta);
-        shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY() + this.getHeight()/2);
 
+        float newX;
+        float newY = this.getShooter().getY() + this.getShooter().getHeight()/2 - this.getHeight() / 2;
+
+        if (this.isFromShootOfEnemy()) {
+            targetVector.x = ShootsManager.ship.getX() + ShootsManager.ship.getWidth() / 2;
+            targetVector.y = ShootsManager.ship.getY() + ShootsManager.ship.getHeight() / 2;
+            newX = this.getShooter().getX();
+        } else {
+            newX = this.getShooter().getX() + this.getShooter().getWidth();
+        }
+
+        this.setX(newX);
+        this.setY(newY);
+
+        shoot.update(delta);
+        shoot.getEmitters().first().setPosition(newX + this.getHeight(), newY + this.getHeight() / 2);
         // Controlamos si el jugador sigue queriendo disparar
         // En caso de ser un enemigo el shooter, lo dejamos que dispare constantemente
-        if(TouchManager.isTouchActive(targetVector) || this.isFromShootOfEnemy()) {
-
-            if (this.isFromShootOfEnemy()) {
-                targetVector.x = ShootsManager.ship.getX();
-                targetVector.y = ShootsManager.ship.getY();
-            }
+        // En caso de ser un shoot el shooter, comprobamos si no ha chocado, no es borrable o todavía existe
+        if ((TouchManager.isTouchActive(targetVector) || this.isFromShootOfEnemy()) &&
+                !(this.getShooter() instanceof Shoot &&
+                        (((Shoot) this.getShooter()).isShocked() || ((Shoot) this.getShooter()).isDeletable()))) {
 
             // Obtenemos el angulo a donde tenemos que girar
             vector.set(targetVector.x - this.getX(), targetVector.y - this.getY());
