@@ -38,4 +38,39 @@ public class ShapeRendererManager {
 
         SpaceGame.batch.begin();
     }
+
+    public static void renderRectangle(float x, float y, float width, float height, Color color){
+        valuesToProjectFromCamera.set(x,y,0);
+        SpaceGame.camera.project(valuesToProjectFromCamera);
+
+        SpaceGame.batch.end();
+
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+
+        renderer.setColor(color);
+
+        renderer.rect(x,y,width,height);
+
+        renderer.end();
+
+        SpaceGame.batch.begin();
+    }
+
+    public static void renderFillCircle(float x, float y, float radius, Color color){
+
+        valuesToProjectFromCamera.set(x,y,0);
+        SpaceGame.camera.project(valuesToProjectFromCamera);
+
+        SpaceGame.batch.end();
+
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        renderer.setColor(color);
+
+        renderer.circle(valuesToProjectFromCamera.x,valuesToProjectFromCamera.y,radius);
+
+        renderer.end();
+
+        SpaceGame.batch.begin();
+    }
 }
