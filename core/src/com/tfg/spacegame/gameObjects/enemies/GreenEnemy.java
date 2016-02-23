@@ -1,6 +1,5 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
@@ -22,7 +21,7 @@ public class GreenEnemy extends Enemy {
     private int direction;
 
     public GreenEnemy(int x, int y) {
-        super("green_body", x, y, 15, AssetsManager.loadParticleEffect("green_destroyed"));
+        super("green_body", x, y, 1500, AssetsManager.loadParticleEffect("green_destroyed"));
         shield = new PartOfEnemy("green_shield", x - 56,y - 33, 15,
                                     AssetsManager.loadParticleEffect("green_destroyed"), this, false);
 
@@ -43,7 +42,6 @@ public class GreenEnemy extends Enemy {
             // Movemos las tres partes del enemigo
             this.setY(this.getY() + SPEED * delta * direction);
             shield.setY(shield.getY() + SPEED * delta * direction);
-            System.out.println(this.getY());
         }
     }
 

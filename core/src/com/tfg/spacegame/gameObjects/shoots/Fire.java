@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.TouchManager;
 
@@ -49,13 +50,19 @@ public class Fire extends Shoot {
         // Controlamos si el jugador sigue queriendo disparar
         if(TouchManager.isTouchActive(targetVector)){
             // Obtenemos el angulo a donde tenemos que girar
-            float x1 = this.getX();
-            float y1 = this.getY();
-            float x2 = this.getX()+this.getWidth();
-            // Dependiendo de si ha habido multitouch o no obtenemos el valor Y correspondiente
-            float y2 = targetVector.y;
+            float xSource = this.getX();
+            float ySource = this.getY();
 
-            vector.set(x2-x1,y2-y1);
+            float xTarget;
+            if (this.getShooter() instanceof Ship) {
+                xTarget = this.getX() + this.getWidth();
+            } else {
+                xTarget = targetVector.x;
+            }
+            // Dependiendo de si ha habido multitouch o no obtenemos el valor Y correspondiente
+            float yTarget = targetVector.y;
+
+            vector.set(xTarget-xSource,yTarget-ySource);
             // Basta con llamar al vector.angle para tener el angulo a girar
             float angle = vector.angle();
 
