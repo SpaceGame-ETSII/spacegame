@@ -1,11 +1,14 @@
 package com.tfg.spacegame.gameObjects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.utils.ShapeRendererManager;
 
 public class Enemy extends GameObject {
 
@@ -80,23 +83,12 @@ public class Enemy extends GameObject {
 
                 // Si el enemigo es objetivo de un arma, pintamos el efecto de localización
                 if(targettedByShip){
-                    SpaceGame.batch.end();
 
-                    SpaceGame.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+                    float radius = getWidth();
+                    if(getHeight() > radius)
+                        radius = getHeight();
 
-                    SpaceGame.shapeRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
-
-                    float radius = getWidth()/2;
-                    if(getHeight()/2 > radius)
-                        radius = getHeight()/2;
-
-                    SpaceGame.shapeRenderer.circle(getX()+getWidth()/2, getY()+getHeight()/2, radius + 10);
-
-                    SpaceGame.shapeRenderer.end();
-
-                    SpaceGame.batch.begin();
-
-
+                    ShapeRendererManager.renderCircle(getX()+getWidth()/2, getY()+getHeight()/2,radius, Color.RED);
                 }
             }
         } else {

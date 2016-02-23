@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.tfg.spacegame.screens.MainMenuScreen;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.TouchManager;
 
 public class SpaceGame extends Game {
@@ -33,12 +34,11 @@ public class SpaceGame extends Game {
 	// Objeto encargado de la internacionalización del juego
 	public static I18NBundle bundle;
 
-	public static ShapeRenderer shapeRenderer;
-
 	@Override
 	public void create () {
 		AssetsManager.load();
 		TouchManager.initialize();
+		ShapeRendererManager.initialize();
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -56,9 +56,6 @@ public class SpaceGame extends Game {
 
 		// Cargamos el bundle desde su correspondiente método del asset manager
 		bundle = AssetsManager.loadBundle();
-
-		shapeRenderer = new ShapeRenderer();
-		shapeRenderer.setAutoShapeType(true);
 	}
 
 	public void render() {
