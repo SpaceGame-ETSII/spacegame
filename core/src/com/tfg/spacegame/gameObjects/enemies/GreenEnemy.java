@@ -33,9 +33,11 @@ public class GreenEnemy extends Enemy {
 
         if (!this.isDefeated()) {
             // Evitamos que el enemigo se salga de la pantalla tanto por arriba como por abajo
-            if(this.getY() + this.getShield().getHeight() > SpaceGame.height){
+            if(this.getY() + this.getHeight() > SpaceGame.height){
+                this.shoot();
                 direction = -1;
-            } else if(this.getY() < 0 ){
+            } else if (this.getY() < 0){
+                this.shoot();
                 direction = 1;
             }
 
@@ -57,7 +59,7 @@ public class GreenEnemy extends Enemy {
     }
 
     public void shoot(){
-        ShootsManager.shootOneBasicWeapon(this);
+        ShootsManager.shootGreenWeapon(this.getShield(), 0.0f);
     }
 
     public void collideWithShoot(Shoot shoot) {
@@ -70,6 +72,11 @@ public class GreenEnemy extends Enemy {
                 this.damage(3);
             }
         }
+    }
+
+    public void changeToDeletable() {
+        super.changeToDeletable();
+        shield.changeToDeletable();
     }
 
     public void dispose(){

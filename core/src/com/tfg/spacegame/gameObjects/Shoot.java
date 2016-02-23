@@ -91,7 +91,13 @@ public class Shoot extends GameObject {
 
     public void render(SpriteBatch batch) {
         if (!this.isShocked()) {
-            super.render(batch);
+
+            //Si el shooter es un enemigo, giramos el arma al contrario
+            if (this.getShooter() instanceof Enemy)
+                super.renderRotate(batch, 180);
+            else
+                super.render(batch);
+
             if (shootEffect != null)
                 shootEffect.draw(batch);
         } else {

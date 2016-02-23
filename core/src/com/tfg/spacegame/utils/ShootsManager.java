@@ -226,10 +226,11 @@ public class ShootsManager {
                 shoots.add(blueShoot);
             }
         } else {
-            int x = (int) (shooter.getX() + 20);
+            int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
             blueShoot = new Blue(shooter, x, y, ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+            blueShoot.setX(blueShoot.getX() - blueShoot.getWidth());
 
             shoots.add(blueShoot);
         }
@@ -289,10 +290,11 @@ public class ShootsManager {
                 shoots.add(greenShoot);
             }
         } else {
-            int x = (int) (shooter.getX() + 20);
+            int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
             greenShoot = new Green(shooter, x, y, ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+            greenShoot.setX(greenShoot.getX() - greenShoot.getWidth());
 
             shoots.add(greenShoot);
         }

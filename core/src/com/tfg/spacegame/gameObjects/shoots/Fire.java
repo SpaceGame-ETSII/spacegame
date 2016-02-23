@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.utils.TouchManager;
 
 
@@ -27,7 +29,12 @@ public class Fire extends Shoot {
 
     public Fire(GameObject shooter, float xTarget, float yTarget, ParticleEffect shoot) {
         super("yellow_shoot", 0, 0, shooter,null,null);
-        this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
+
+        if (!this.isFromShootOfEnemy()) {
+            this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
+        } else {
+            this.setX((int)(shooter.getX()+this.getHeight()));
+        }
         this.setY(getShooter().getY() + this.getHeight());
         this.getLogicShape().setOrigin(0,this.getHeight()/2);
 
@@ -38,7 +45,13 @@ public class Fire extends Shoot {
 
         vector = new Vector2();
 
-        targetVector = TouchManager.getTouchFromPosition(xTarget, yTarget);
+        if (shooter instanceof Ship) {
+            targetVector = TouchManager.getTouchFromPosition(xTarget, yTarget);
+        } else {
+            targetVector = new Vector3();
+            targetVector.x = xTarget;
+            targetVector.y = yTarget;
+        }
     }
 
     public void update(float delta){
@@ -48,21 +61,17 @@ public class Fire extends Shoot {
         shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY() + this.getHeight()/2);
 
         // Controlamos si el jugador sigue queriendo disparar
-        if(TouchManager.isTouchActive(targetVector)){
-            // Obtenemos el angulo a donde tenemos que girar
-            float xSource = this.getX();
-            float ySource = this.getY();
+        // En caso de ser un enemigo el shooter, lo dejamos que dispare constantemente
+        if(TouchManager.isTouchActive(targetVector) || this.isFromShootOfEnemy()) {
 
-            float xTarget;
-            if (this.getShooter() instanceof Ship) {
-                xTarget = this.getX() + this.getWidth();
-            } else {
-                xTarget = targetVector.x;
+            if (this.isFromShootOfEnemy()) {
+                targetVector.x = ShootsManager.ship.getX();
+                targetVector.y = ShootsManager.ship.getY();
             }
-            // Dependiendo de si ha habido multitouch o no obtenemos el valor Y correspondiente
-            float yTarget = targetVector.y;
 
-            vector.set(xTarget-xSource,yTarget-ySource);
+            // Obtenemos el angulo a donde tenemos que girar
+            vector.set(targetVector.x - this.getX(), targetVector.y - this.getY());
+
             // Basta con llamar al vector.angle para tener el angulo a girar
             float angle = vector.angle();
 
@@ -79,6 +88,10 @@ public class Fire extends Shoot {
                 this.changeToDeletable();
             }
         }
+    }
+
+    public boolean isFromShootOfEnemy() {
+        return (this.getShooter() instanceof Shoot && ((Shoot) this.getShooter()).getShooter() instanceof Enemy);
     }
 
     public void render(SpriteBatch batch){
