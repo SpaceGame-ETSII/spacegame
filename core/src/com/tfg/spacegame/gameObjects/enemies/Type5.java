@@ -2,6 +2,8 @@ package com.tfg.spacegame.gameObjects.enemies;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.utils.AssetsManager;
@@ -25,6 +27,8 @@ public class Type5 extends Enemy{
     //Variable para el efecto de partículas que indica si el enemigo esta preparado para disparar
     private ParticleEffect shootEffectWarning;
 
+    private ShapeRenderer sr;
+
     public Type5(int x, int y) {
         super("enemigo_basico_tipo5", x, y, 15, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
         timeToShoot = FREQUENCY_OF_SHOOTING;
@@ -36,6 +40,9 @@ public class Type5 extends Enemy{
 
         //Iniciamos el efecto de partículas
         shootEffectWarning.start();
+
+        sr = new ShapeRenderer();
+        sr.setAutoShapeType(true);
     }
 
     public void update(float delta){
@@ -51,7 +58,7 @@ public class Type5 extends Enemy{
                     //Si no ha disparado aún el enemigo
                     if (!hasShooted) {
                         //El enemigo dispara y lo hacemos saber a la variable de control
-                        this.shoot();
+                        //this.shoot();
                         hasShooted = true;
                     } else {
                         //Reseteamos todos los tiempos y controles
@@ -87,6 +94,16 @@ public class Type5 extends Enemy{
         if(!this.hasShooted && !this.isDefeated())
             shootEffectWarning.draw(batch);
         super.render(batch);
+
+        SpaceGame.batch.end();
+
+        sr.begin(ShapeRenderer.ShapeType.Line);
+
+        sr.polygon(this.getLogicShape().getTransformedVertices());
+
+        sr.end();
+
+        SpaceGame.batch.begin();
     }
 
     public void dispose() {

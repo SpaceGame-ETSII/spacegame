@@ -3,6 +3,7 @@ package com.tfg.spacegame.gameObjects.shoots;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
@@ -15,7 +16,7 @@ import com.tfg.spacegame.utils.AssetsManager;
 public class Purple extends Shoot{
 
     //Velocidad de movimiento
-    public static final float SPEED = 700;
+    public static final float SPEED = 40;
 
     //Efecto de particulas de este disparo
     private ParticleEffect shoot;
@@ -23,7 +24,13 @@ public class Purple extends Shoot{
     //Indicará si el misil va a la derecha (1) o a la izquierda (-1)
     private int direction;
 
+    //Variable para almacenar el vector de dirección del disparo
     private Vector2 vector;
+
+    //Variable para almacenar la región de la textura del disparo para poder rotarlo
+    private TextureRegion textureRegion;
+
+    private ShapeRenderer sr;
 
     public Purple(GameObject shooter, int x, int y, float xTarget,float yTarget) {
         super("purple_shoot", x, y, shooter,
@@ -33,19 +40,30 @@ public class Purple extends Shoot{
         //Creamos el efecto de particulas
         shoot = AssetsManager.loadParticleEffect("purple_shoot_effect");
 
+        //Cargamos la textura del disparo
+        textureRegion = new TextureRegion(this.getTexture());
+
+        //Creamos el vector para almacenar hacia donde deberá ir el disparo
         vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() + shooter.getHeight()/2)));
 
+        //Cambiamos el ángulo
+        //this.getLogicShape().setRotation(vector.angle());
+
+        //Actualizamos el efecot de partículas
         this.updateParticleEffect();
 
         //Los iniciamos, pero aunque los iniciemos si no haya un update no avanzarán
         shoot.start();
 
-        //Dependiendo de si es la nave o no el shooter, el disparo vendrá de la derecha o la izquierda
+        //Dependiendo de si es la nave o no el shooter, el disparo ira a la derecha o a la izquierda
         if (shooter instanceof Ship) {
             direction = 1;
         } else {
             direction = -1;
         }
+
+        sr = new ShapeRenderer();
+        sr.setAutoShapeType(true);
     }
 
     public void updateParticleEffect() {
@@ -55,14 +73,15 @@ public class Purple extends Shoot{
         if (!this.isShocked()) {
             //Se actuará de forma distinta si el shooter es enemigo o no
             if (this.getShooter() instanceof Ship) {
-                shoot.getEmitters().first().setPosition(this.getX() - 10,this.getY() + 13);
+                shoot.getEmitters().first().setPosition(this.getX()+ (vector.x/SPEED) , this.getY() + (vector.y/SPEED));
+
                 //Rotamos el efecto de partículas para hacerlo coincidir con el ángulo del disparo
-                shoot.getEmitters().first().getAngle().setHigh(vector.angle(),vector.angle());
+                shoot.getEmitters().first().getAngle().setHigh(vector.angle());
             } else if (this.getShooter() instanceof Enemy){
                 shoot.getEmitters().first().setPosition(this.getX(), this.getY());
 
                 //Rotamos el efecto de particulas 180º
-                shoot.getEmitters().first().getAngle().setHigh(180,180);
+                shoot.getEmitters().first().getAngle().setHigh(vector.angle());
             }
         }
     }
@@ -70,22 +89,40 @@ public class Purple extends Shoot{
     public void update(float delta) {
         if (!this.isShocked()) {
             //Actualizamos el movimiento del disparo
-            this.setX(this.getX() + ((vector.x/100) * direction));
-            this.setY(this.getY() + ((vector.y/100) * direction));
+            this.setX(this.getX() + ((vector.x/SPEED) * direction));
+            this.setY(this.getY() + ((vector.y/SPEED) * direction));
+
+            //this.getLogicShape().setRotation(vector.angle());
 
             //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
             this.updateParticleEffect();
 
             //Actualizamos el efecto de particulas
+            super.update(delta);
             shoot.update(delta);
+        }else{
+            //Actualizamos los efectos de partículas
+            this.updateParticleEffect();
             super.update(delta);
         }
     }
 
     public void render(SpriteBatch batch){
         super.render(batch);
+
+        SpaceGame.batch.end();
+
+        sr.begin(ShapeRenderer.ShapeType.Line);
+
+        sr.polygon(this.getLogicShape().getTransformedVertices());
+
+        sr.end();
+
+        SpaceGame.batch.begin();
+
         if (!this.isShocked()) {
-            this.renderRotate(batch,vector.angle());
+            batch.draw(textureRegion, this.getX(), this.getY(), -textureRegion.getRegionX(), textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), 1f, 1f, vector.angle());
+
             shoot.draw(batch);
         }
     }
@@ -98,6 +135,15 @@ public class Purple extends Shoot{
     public void collideWithEnemy(Enemy enemy) {
         super.collideWithEnemy(enemy);
         this.shock();
+        System.out.println("Coordenada X del arma: " + (this.getX() + this.getWidth()));
+        System.out.println("Coordenada Y del arma: " + (this.getY() + this.getHeight()));
+        System.out.println("Coordenada X del enemigo: " + enemy.getX());
+        System.out.println("Coordenada Y del enemigo: " + enemy.getY());
+        System.out.println("El punto del arma está dentro del enemigo?: "+
+                (enemy.getX() <=this.getX() + this.getWidth() && enemy.getX() + enemy.getWidth() >= this.getX() +
+                        this.getWidth() && enemy.getY() <= this.getY() + this.getHeight() && enemy.getY() + enemy.getHeight()
+                        >= this.getY() + this.getHeight()));
+        System.out.println("¿Ha chocado realmente?: "+ isOverlapingWith(enemy));
     }
 
     public void collideWithShoot(Shoot shoot) {

@@ -70,7 +70,7 @@ public class GameObject {
     }
 
     public void render(SpriteBatch batch){
-        batch.draw(texture, getX(), getY());
+        batch.draw(texture, this.getX(), this.getY());
     }
 
     //Método para printar un objeto rotando N grados su textura
