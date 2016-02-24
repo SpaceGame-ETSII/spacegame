@@ -56,7 +56,6 @@ public class Shoot extends GameObject {
             shootEffect.update(delta);
         } else if (destroyEffect != null) {
             destroyEffect.update(delta);
-
             // Restamos el tiempo que estará el efecto en pantalla, y si pasa el tiempo, marcamos el shoot como deletable
             if (destroyEffect.isComplete()) {
                 this.changeToDeletable();
@@ -95,6 +94,12 @@ public class Shoot extends GameObject {
         if (!this.isShocked()) {
             //Se comprueba que no sea una instancia del arma morada para pintar la textura del arma, ya que ésta deberá tener otro tipo de render
             if (this instanceof Purple==false)
+
+                //Si el shooter es un enemigo, giramos el arma al contrario
+            if (this.getShooter() instanceof Enemy)
+                super.renderRotate(batch, 180);
+            else
+
                 super.render(batch);
 
             if (shootEffect != null)

@@ -34,6 +34,8 @@ public class AssetsManager {
         assetsReferences.put("yellow_enemy", enemiesFolder+"amarillo.png");
         assetsReferences.put("red_enemy", enemiesFolder+"rojo.png");
         assetsReferences.put("blue_enemy", enemiesFolder+"azul.png");
+        assetsReferences.put("green_body", enemiesFolder+"verde_body.png");
+        assetsReferences.put("green_shield", enemiesFolder+"verde_shield.png");
 
         //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
@@ -70,6 +72,8 @@ public class AssetsManager {
         assetsReferences.put("blue_shoot", weaponsFolder+"disparo_azul.png");
         assetsReferences.put("yellow_shoot", weaponsFolder+"disparo_amarillo.png");
         assetsReferences.put("purple_shoot", weaponsFolder+"disparo_morado.png");
+        assetsReferences.put("orange_shoot", weaponsFolder+"disparo_naranja.png");
+        assetsReferences.put("green_shoot", weaponsFolder+"disparo_verde.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
@@ -95,13 +99,22 @@ public class AssetsManager {
         assetsReferences.put("blue_shoot_effect_shoot", particlesFolder + "arma_azul_efecto_disparo");
         assetsReferences.put("red_shoot_effect_shoot", particlesFolder + "arma_roja_efecto_disparo");
         assetsReferences.put("red_effect_shock", particlesFolder + "arma_roja_efecto_choque");
+        assetsReferences.put("green_propulsion_effect", particlesFolder + "propulsion_arma_verde");
+        assetsReferences.put("green_shoot_effect_shock", particlesFolder + "arma_verde_efecto_choque");
+        assetsReferences.put("green_shoot_effect_shoot", particlesFolder + "arma_verde_efecto_disparo");
+        assetsReferences.put("green_shoot_effect", particlesFolder + "fuego_verde");
         assetsReferences.put("red_destroyed", particlesFolder + "rojo_derrotado");
         assetsReferences.put("blue_destroyed", particlesFolder + "azul_derrotado");
+        assetsReferences.put("green_destroyed", particlesFolder + "verde_derrotado");
         assetsReferences.put("yellow_shoot_effect", particlesFolder + "arma_amarilla");
         assetsReferences.put("yellow_enemy_defeated", particlesFolder + "enemigo_amarillo_derrotado");
         assetsReferences.put("purple_shoot_effect", particlesFolder + "arma_morada");
         assetsReferences.put("purple_shoot_effect_shoot", particlesFolder + "arma_morada_efecto_disparo");
         assetsReferences.put("purple_effect_shock", particlesFolder + "arma_morada_efecto_choque");
+        assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
+        assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
+        assetsReferences.put("orange_shoot_effect_shock", particlesFolder + "arma_naranja_efecto_choque");
+        assetsReferences.put("orange_shoot_effect_shoot", particlesFolder + "arma_naranja_efecto_disparo");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");

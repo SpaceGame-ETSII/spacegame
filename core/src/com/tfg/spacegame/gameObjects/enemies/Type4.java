@@ -47,6 +47,7 @@ public class Type4 extends Enemy{
         timeToCloseCannon = FREQUENCY_OF_CLOSE_CANNON;
 
         hasShooted = false;
+        direction = 1;
     }
 
     public void update(float delta){

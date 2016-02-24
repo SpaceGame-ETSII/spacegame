@@ -18,15 +18,15 @@ public class TouchManager {
      * Pregunta si el jugador ha realizado un primer touch
      * @return True en caso de que si
      */
-    private static boolean isFirstTouchActive(){
-        return Gdx.input.isTouched();
+    public static boolean isFirstTouchActive(){
+        return Gdx.input.isTouched(0);
     }
 
     /**
      * Pregunta si el jugador ha realizado un segundo touch
      * @return True en caso de que si
      */
-    private static boolean isSecondTouchActive(){
+    public static boolean isSecondTouchActive(){
         return Gdx.input.isTouched(1);
     }
 
@@ -61,7 +61,7 @@ public class TouchManager {
         Vector3 result = Vector3.Zero;
         if(isFirstTouchActive() && getFirstTouchPos().x < x)
             result = getFirstTouchPos();
-        if(isSecondTouchActive() && getSecondTouchPos().x < x)
+        else if(isSecondTouchActive() && getSecondTouchPos().x < x)
             result = getSecondTouchPos();
         return result;
     }
@@ -77,9 +77,46 @@ public class TouchManager {
         Vector3 result = Vector3.Zero;
         if(isFirstTouchActive() && getFirstTouchPos().x > x)
             result = getFirstTouchPos();
-        if(isSecondTouchActive() && getSecondTouchPos().x > x)
+        else if(isSecondTouchActive() && getSecondTouchPos().x > x)
             result = getSecondTouchPos();
         return result;
+    }
+
+    public static Vector3 getTouchFromPosition(float x, float y){
+        Vector3 result = null;
+        if(firstTouchPos.x == x && firstTouchPos.y == y)
+            result = firstTouchPos;
+        else if (secondTouchPos.x == x && secondTouchPos.y == y)
+            result = secondTouchPos;
+
+        return result;
+    }
+
+    public static boolean isTouchActive(Vector3 vector){
+        boolean result = false;
+        if(vector.equals(getFirstTouchPos()) && isFirstTouchActive())
+            result = true;
+        else if (vector.equals(getSecondTouchPos()) && isSecondTouchActive())
+            result = true;
+        return result;
+    }
+
+    public static int assignWhichTouchCorresponds(Vector3 vector){
+        int result = -1;
+        if(vector.equals(getFirstTouchPos()))
+            result = 0;
+        else if (vector.equals(getSecondTouchPos()))
+            result = 1;
+        return result;
+    }
+
+    public static Vector3 getTouchFromPointer(int pointer){
+        Vector3 result = Vector3.Zero;
+        if(pointer == 0)
+            result = firstTouchPos;
+        else if (pointer == 1)
+            result = secondTouchPos;
+        return  result;
     }
 
 }

@@ -26,6 +26,14 @@ public class CampaignScreen extends GameScreen {
 
     public Texture background;
 
+    // Vamos a controlar que touch está disparando y cual está controlando la nave
+    // Seguiremos el siguiente modelo:
+    // -1 para ningún touch asignado
+    //  0 para el primer touch
+    //  1 para el segundo touch
+    public static int whichTouchIsShooting;
+    public static int whichControlsTheShip;
+
     public CampaignScreen(SpaceGame game){
         this.game = game;
         scrollingPosition = 0;
@@ -48,6 +56,9 @@ public class CampaignScreen extends GameScreen {
         menuExitDialog.addElement("exit", new Button("buttonExit", this, 750, 430));
         menuExitDialog.addElement("cancel", new Button("buttonCancel", this, 425, 200));
         menuExitDialog.addElement("confirm", new Button("buttonConfirm", this, 325, 200));
+
+        whichTouchIsShooting = -1;
+        whichControlsTheShip = -1;
 
         //Preparamos un listener que si se desliza el dedo a la derecha se abre el inventario
         Gdx.input.setInputProcessor(new SimpleDirectionGestureDetector(new SimpleDirectionGestureDetector.DirectionListener() {
@@ -195,27 +206,43 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void updateStart(float delta) {
 
-        // Obtenemos la coordenada Y del touch que pudiera estár en la zona permitida
-        // para movimiento de la nave
-        float yCoordinate = TouchManager.getAnyXTouchLowerThan(ship.getX() + ship.getWidth()).y;
+        // Controlamos si algún touch ya ha dejado de ser pulsado
+        if((whichControlsTheShip == 0 && !TouchManager.isFirstTouchActive()) || (whichControlsTheShip == 1 && !TouchManager.isSecondTouchActive()))
+            whichControlsTheShip = -1;
 
-        // Comprobamos si la coordenada es válida. Si es 0 es que no ha habido ningún touch
-        // y la nave no debe moverse
-        boolean canShipMove = yCoordinate != 0;
+        if((whichTouchIsShooting == 0 && !TouchManager.isFirstTouchActive()) || (whichTouchIsShooting == 1 && !TouchManager.isSecondTouchActive()))
+            whichTouchIsShooting = -1;
 
+        // Obtenemos un vector de coordenadas si está en la zona de movimiento de la nave
+        Vector3 coordinates = TouchManager.getAnyXTouchLowerThan(ship.getX() + ship.getWidth());
+
+        // A priori la nave no puede moverse
+        boolean canShipMove = false;
+        // Obtenemos a priori un touch que pudiera controlar la nave
+        int whoCouldControlTheShip = TouchManager.assignWhichTouchCorresponds(coordinates);
+
+        // Controlamos si la nave puede moverse, esto es:
+        // Si las coordenadas pertenecen a algún touch
+        // Si es la primera vez que los asignadores estan en el estado inicial
+        // Si el posible controlador de la nave no es el mismo touch que uno que esté disparando
+        if(coordinates.y != 0 && (whoCouldControlTheShip != whichTouchIsShooting || whoCouldControlTheShip == -1 && whichTouchIsShooting == -1)) {
+            canShipMove = true;
+            whichControlsTheShip = TouchManager.assignWhichTouchCorresponds(coordinates);
+        }
         // Actualizamos la nave pasando la posible coordenada de movimiento y el resultado
         // de preguntar la condicion de movimiento
-        ship.update(delta, yCoordinate, canShipMove);
+        ship.update(delta, coordinates.y, canShipMove);
 
         // Si tocamos la pantalla disparamos
         // Obtenemos un vector de coordenadas. Este vector puede ser cualquier touch que cumpla
         // con la condición de que la posición X sea superior a la dada
-        Vector3 coordinates = TouchManager.getAnyXTouchGreaterThan(ship.getX() + ship.getWidth());
+        coordinates = TouchManager.getAnyXTouchGreaterThan(ship.getX() + ship.getWidth());
         // Preguntamos si el vector de coordenadas no es un vector de 0's. Si lo fuese es que el jugador
         // no ha tocado la pantalla. Además preguntamos si el toque ha sido solo de una sola vez
-        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched()) {
+        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched() && whichTouchIsShooting == -1) {
             // Disparamos, pasando por parámetro las coordenadas del touch correspondiente
             ship.shoot(coordinates.x, coordinates.y);
+            whichTouchIsShooting = TouchManager.assignWhichTouchCorresponds(coordinates);
         }
 
         //Realizamos la lógica de los objetos en juego

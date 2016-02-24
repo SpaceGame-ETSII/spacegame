@@ -1,8 +1,6 @@
 Untitled
 - Delay -
-active: true
-lowMin: 0.0
-lowMax: 0.0
+active: false
 - Duration - 
 lowMin: 3000.0
 lowMax: 3000.0
@@ -108,8 +106,8 @@ active: false
 - Tint - 
 colorsCount: 3
 colors0: 0.0
-colors1: 0.02745098
-colors2: 1.0
+colors1: 0.34901962
+colors2: 0.0
 timelineCount: 1
 timeline0: 0.0
 - Transparency - 

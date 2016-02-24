@@ -51,6 +51,7 @@ public class BlueEnemy extends Enemy {
                 isReady = true;
             }
 
+            //Si el enemigo está listo y ha terminado el contador, disparará y lo reiniciamos
             if (isReady && counter <= 0) {
                 this.shoot();
                 counter = INITIAL_COUNTER;

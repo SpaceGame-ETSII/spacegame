@@ -53,4 +53,15 @@ public class EnemiesManager {
 
         enemy.collideWithShoot(shoot);
     }
+
+    public static Enemy getEnemyFromPosition(float x, float y) {
+        Enemy result = null;
+        for(Enemy enemy: enemies){
+            if(enemy.getLogicShape().contains(x,y)){
+                result = enemy;
+                break;
+            }
+        }
+        return result;
+    }
 }

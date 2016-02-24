@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.tfg.spacegame.gameObjects.shoots.Green;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
@@ -141,11 +142,17 @@ public class Ship extends GameObject {
                 ShootsManager.shootBlueWeapon(this, y);
                 break;
             case YELLOW:
-                ShootsManager.shootYellowWeapon(this);
+                ShootsManager.shootYellowWeapon(this,x,y);
                 break;
             case GREEN:
+                Green green = ShootsManager.getGreenShootByShooterOnScreen(this);
+                if (green != null)
+                    ShootsManager.shootGreenFireWeapon(green, x, y);
+                else
+                    ShootsManager.shootGreenWeapon(this, y);
                 break;
             case ORANGE:
+                ShootsManager.shootBurstOrangeWeapon(this, x, y);
                 break;
             case PURPLE:
                 ShootsManager.shootPurpleWeapon(this, x, y);
