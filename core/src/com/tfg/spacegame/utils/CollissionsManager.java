@@ -79,6 +79,7 @@ public class CollissionsManager {
 
                         if (!shootDst.equals(shootSrc) && shootDst.isOverlapingWith(shootSrc)
                                 && !shootDst.isShocked() && !shootSrc.isShocked()
+                                && !shootDst.getShooter().equals(shootSrc) && !shootSrc.getShooter().equals(shootDst)
                                 && !shootDst.getShooter().equals(shootSrc.getShooter()) && !shootSrc.getShooter().equals(shootDst.getShooter())) {
                             //Añadimos el par colisionado a la lista
                             shootsToShoots.add(new Pair<Shoot, Shoot>(shootDst, shootSrc));

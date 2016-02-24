@@ -141,6 +141,7 @@ public class ShootsManager {
             if(shoot.getX() > SpaceGame.width || shoot.getX()+shoot.getWidth() < 0 ||
                     shoot.getY()+shoot.getHeight() < 0 || shoot.getY() > SpaceGame.height ||
                     shoot.isDeletable()){
+                shoot.changeToDeletable();
                 shoots.removeValue(shoot,false);
             }
         }
@@ -226,10 +227,11 @@ public class ShootsManager {
                 shoots.add(blueShoot);
             }
         } else {
-            int x = (int) (shooter.getX() + 20);
+            int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
             blueShoot = new Blue(shooter, x, y, ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+            blueShoot.setX(blueShoot.getX() - blueShoot.getWidth());
 
             shoots.add(blueShoot);
         }
@@ -289,10 +291,11 @@ public class ShootsManager {
                 shoots.add(greenShoot);
             }
         } else {
-            int x = (int) (shooter.getX() + 20);
+            int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
             greenShoot = new Green(shooter, x, y, ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+            greenShoot.setX(greenShoot.getX() - greenShoot.getWidth());
 
             shoots.add(greenShoot);
         }
@@ -303,7 +306,7 @@ public class ShootsManager {
         shoots.add(greenFireShoot);
     }
 
-    //Deuvelve el arma verde en pantalla disparada por el shooter pasado por parámetro, si no existe devuelve null
+    //Devuelve el arma verde en pantalla disparada por el shooter pasado por parámetro, si no existe devuelve null
     public static Green getGreenShootByShooterOnScreen(GameObject shooter) {
         Green green = null;
         for (Shoot shoot: shoots) {

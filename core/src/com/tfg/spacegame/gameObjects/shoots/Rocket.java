@@ -9,9 +9,6 @@ import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 
-/**
- * Created by gaems-dev on 17/02/16.
- */
 public class Rocket extends Shoot {
 
     //Velocidad de movimiento
@@ -159,10 +156,10 @@ public class Rocket extends Shoot {
         if (!this.isShocked()) {
             //Se actuará de forma distinta si el shooter es enemigo o no
             if (this.getShooter() instanceof Enemy) {
-                propulsionEffect.getEmitters().first().setPosition(this.getX() + this.getShooter().getWidth(),this.getY() + this.getHeight()/2);
+                propulsionEffect.getEmitters().first().setPosition(this.getX() + this.getWidth(),this.getY() + this.getHeight()/2);
 
                 // Rotamos el efecto de particulas 180º
-                propulsionEffect.getEmitters().first().getAngle().setHigh(180,180);
+                propulsionEffect.getEmitters().first().getAngle().setHigh(0);
             } else {
                 // Lo centramos con la nave para que salga en la posición de su cañón
                 propulsionEffect.getEmitters().first().setPosition(this.getX(),this.getY() + this.getHeight()/2);

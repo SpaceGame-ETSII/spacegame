@@ -10,14 +10,14 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.ShapeRendererManager;
+import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.utils.TouchManager;
-
 
 public class Fire extends Shoot {
 
     // Amplitud del efecto de disparo (el efecto de particulas)
     private static final int AMPLITUDE_OF_FIRE=10;
-    private static final int SHOOT_EFFECT_LIFE = 225;
+    private static final int SHOOT_EFFECT_LIFE = 160;
     private final float FULL_WIDTH;
     private static final float CHANGE_IN_SCALLING = 0.02f;
     private float actualReasonOfScaling;
@@ -32,8 +32,13 @@ public class Fire extends Shoot {
     private ParticleEffect shoot;
 
     public Fire(GameObject shooter, float xTarget, float yTarget, ParticleEffect shoot) {
-        super("yellow_shoot", 0, 0, shooter, null, null);
-        this.setX((int) (shooter.getX() + shooter.getWidth() + this.getHeight()));
+        super("yellow_shoot", 0, 0, shooter,null,null);
+
+        if (!this.isFromShootOfEnemy()) {
+            this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));
+        } else {
+            this.setX((int) shooter.getX());
+        }
         this.setY(getShooter().getY() + this.getHeight());
         this.getLogicShape().setOrigin(0,this.getHeight()/2);
 
@@ -47,26 +52,44 @@ public class Fire extends Shoot {
 
         vector = new Vector2();
 
-        targetVector = TouchManager.getTouchFromPosition(xTarget, yTarget);
-
+        //Si es la nave el shooter, o bien el shooter del shoot que ejecutó el fuego, usamos el touchManager
+        if (!this.isFromShootOfEnemy()) {
+            targetVector = TouchManager.getTouchFromPosition(xTarget, yTarget);
+        } else {
+            targetVector = new Vector3();
+            targetVector.x = xTarget;
+            targetVector.y = yTarget;
+        }
     }
 
     public void update(float delta){
-        setX(getShooter().getX()+getShooter().getWidth()+this.getHeight());
-        setY(getShooter().getY() + this.getHeight());
+
+        float newX;
+        float newY = this.getShooter().getY() + this.getShooter().getHeight()/2 - this.getHeight() / 2;
+
+        if (this.isFromShootOfEnemy()) {
+            targetVector.x = ShootsManager.ship.getX() + ShootsManager.ship.getWidth() / 2;
+            targetVector.y = ShootsManager.ship.getY() + ShootsManager.ship.getHeight() / 2;
+            newX = this.getShooter().getX();
+        } else {
+            newX = this.getShooter().getX() + this.getShooter().getWidth();
+        }
+
+        this.setX(newX);
+        this.setY(newY);
+
         shoot.update(delta);
-        shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY() + this.getHeight()/2);
-
+        shoot.getEmitters().first().setPosition(newX + this.getHeight(), newY + this.getHeight() / 2);
         // Controlamos si el jugador sigue queriendo disparar
-        if(TouchManager.isTouchActive(targetVector)){
-            // Obtenemos el angulo a donde tenemos que girar
-            float x1 = this.getX();
-            float y1 = this.getY();
-            float x2 = this.getX()+this.getWidth();
-            // Dependiendo de si ha habido multitouch o no obtenemos el valor Y correspondiente
-            float y2 = targetVector.y;
+        // En caso de ser un enemigo el shooter, lo dejamos que dispare constantemente
+        // En caso de ser un shoot el shooter, comprobamos si no ha chocado, no es borrable o todavía existe
+        if ((TouchManager.isTouchActive(targetVector) || this.isFromShootOfEnemy()) &&
+                !(this.getShooter() instanceof Shoot &&
+                        (((Shoot) this.getShooter()).isShocked() || ((Shoot) this.getShooter()).isDeletable()))) {
 
-            vector.set(x2-x1,y2-y1);
+            // Obtenemos el angulo a donde tenemos que girar
+            vector.set(targetVector.x - this.getX(), targetVector.y - this.getY());
+
             // Basta con llamar al vector.angle para tener el angulo a girar
             float angle = vector.angle();
 
@@ -99,9 +122,12 @@ public class Fire extends Shoot {
         }
     }
 
+    public boolean isFromShootOfEnemy() {
+        return (this.getShooter() instanceof Shoot && ((Shoot) this.getShooter()).getShooter() instanceof Enemy);
+    }
+
     public void render(SpriteBatch batch){
         shoot.draw(batch);
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(),Color.WHITE);
     }
 
     public void collideWithEnemy(Enemy enemy) {

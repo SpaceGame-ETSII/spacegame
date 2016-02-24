@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.enemies.*;
+import com.tfg.spacegame.gameObjects.shoots.Green;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {
@@ -123,6 +124,10 @@ public class LevelGenerator {
                 enemies.add(yellow);
                 break;
             case GREEN:
+                GreenEnemy green = new GreenEnemy(wrapper.x,wrapper.y);
+                enemies.add(green);
+                enemies.add(green.getShield());
+                actualEnemy = green;
                 break;
             case ORANGE:
                 Enemy orange = new OrangeEnemy(wrapper.x,wrapper.y);

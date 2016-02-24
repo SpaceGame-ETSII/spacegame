@@ -10,5 +10,6 @@
     {"type":"YELLOW", "x":800, "y":150, "timeToSpawn":17.0},
     {"type":"YELLOW", "x":800, "y":240, "timeToSpawn":18.0},
     {"type":"YELLOW", "x":800, "y":330, "timeToSpawn":19.0}
+    {"type":"GREEN", "x":500, "y":100, "timeToSpawn":0.0}
   ]
 }
