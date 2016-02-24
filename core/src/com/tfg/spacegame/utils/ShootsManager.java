@@ -256,16 +256,17 @@ public class ShootsManager {
     public static void shootPurpleWeapon(GameObject shooter, float xTarget, float yTarget) {
         Purple purpleShoot;
 
-        if (shooter instanceof Ship){
-            if (isShipReadyToShoot(TypeWeapon.PURPLE)){
+        if (shooter instanceof Ship) {
+            if (isShipReadyToShoot(TypeWeapon.PURPLE)) {
                 int x = (int) (shooter.getX() + shooter.getWidth());
-                int y = (int) (shooter.getY() + shooter.getHeight()/2);
+                int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
-                purpleShoot = new Purple(shooter,x,y,xTarget,yTarget);
+                purpleShoot = new Purple(shooter, x, y, xTarget, yTarget);
 
                 shoots.add(purpleShoot);
             }
         }
+    }
 
 
     public static void shootBurstOrangeWeapon(GameObject gameObject, float x, float y) {
