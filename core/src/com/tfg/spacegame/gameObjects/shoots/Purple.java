@@ -32,8 +32,6 @@ public class Purple extends Shoot{
     //Variable para almacenar la región de la textura del disparo para poder rotarlo
     private TextureRegion textureRegion;
 
-    private ShapeRenderer sr;
-
     public Purple(GameObject shooter, int x, int y, float xTarget,float yTarget) {
         super("purple_shoot", x, y, shooter,
                 AssetsManager.loadParticleEffect("purple_shoot_effect_shoot"),
@@ -63,9 +61,6 @@ public class Purple extends Shoot{
         } else {
             direction = -1;
         }
-
-        sr = new ShapeRenderer();
-        sr.setAutoShapeType(true);
     }
 
     public void updateParticleEffect() {
@@ -111,17 +106,6 @@ public class Purple extends Shoot{
 
     public void render(SpriteBatch batch){
         super.render(batch);
-
-        SpaceGame.batch.end();
-
-        sr.begin(ShapeRenderer.ShapeType.Line);
-
-        sr.polygon(this.getLogicShape().getTransformedVertices());
-
-        sr.end();
-
-        SpaceGame.batch.begin();
-
         if (!this.isShocked()) {
             batch.draw(textureRegion, this.getX(), this.getY(), -textureRegion.getRegionX(), textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), 1f, 1f, vector.angle());
 
@@ -137,16 +121,6 @@ public class Purple extends Shoot{
     public void collideWithEnemy(Enemy enemy) {
         super.collideWithEnemy(enemy);
         this.shock();
-        System.out.println("Coordenada X del arma: " + (this.getX() + this.getWidth()));
-        System.out.println("Coordenada Y del arma: " + (this.getY() + this.getHeight()));
-        System.out.println("Vertices: " + Arrays.toString( this.getLogicShape().getTransformedVertices()));
-        System.out.println("Coordenada X del enemigo: " + enemy.getX());
-        System.out.println("Coordenada Y del enemigo: " + enemy.getY());
-        System.out.println("El punto del arma está dentro del enemigo?: "+
-                (enemy.getX() <=this.getX() + this.getWidth() && enemy.getX() + enemy.getWidth() >= this.getX() +
-                        this.getWidth() && enemy.getY() <= this.getY() + this.getHeight() && enemy.getY() + enemy.getHeight()
-                        >= this.getY() + this.getHeight()));
-        System.out.println("¿Ha chocado realmente?: "+ isOverlapingWith(enemy));
     }
 
     public void collideWithShoot(Shoot shoot) {
