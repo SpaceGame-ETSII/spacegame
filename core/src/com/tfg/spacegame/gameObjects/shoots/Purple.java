@@ -13,6 +13,8 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 
+import java.util.Arrays;
+
 public class Purple extends Shoot{
 
     //Velocidad de movimiento
@@ -92,7 +94,7 @@ public class Purple extends Shoot{
             this.setX(this.getX() + ((vector.x/SPEED) * direction));
             this.setY(this.getY() + ((vector.y/SPEED) * direction));
 
-            //this.getLogicShape().setRotation(vector.angle());
+            this.getLogicShape().setRotation(vector.angle());
 
             //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
             this.updateParticleEffect();
@@ -137,6 +139,7 @@ public class Purple extends Shoot{
         this.shock();
         System.out.println("Coordenada X del arma: " + (this.getX() + this.getWidth()));
         System.out.println("Coordenada Y del arma: " + (this.getY() + this.getHeight()));
+        System.out.println("Vertices: " + Arrays.toString( this.getLogicShape().getTransformedVertices()));
         System.out.println("Coordenada X del enemigo: " + enemy.getX());
         System.out.println("Coordenada Y del enemigo: " + enemy.getY());
         System.out.println("El punto del arma está dentro del enemigo?: "+

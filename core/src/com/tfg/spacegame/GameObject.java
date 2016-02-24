@@ -4,6 +4,7 @@ package com.tfg.spacegame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.tfg.spacegame.utils.AssetsManager;
 
@@ -84,7 +85,7 @@ public class GameObject {
 
     //Indica si hay una colisión con el objeto pasado por parámetro
     public boolean isOverlapingWith(GameObject g) {
-        return this.getLogicShape().getBoundingRectangle().overlaps(g.getLogicShape().getBoundingRectangle());
+        return Intersector.overlapConvexPolygons(this.getLogicShape(),g.getLogicShape());
     }
 
     //Indica si el objeto está sobre el píxel indicado por parámetro
