@@ -1,6 +1,7 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 
@@ -16,6 +17,12 @@ public class PartOfEnemy extends Enemy {
         super(texture, x, y, vitality, particleEffect);
         this.father = father;
         this.damageable = damageable;
+    }
+
+    public void render(SpriteBatch batch) {
+        if (!father.isDefeated()) {
+            super.render(batch);
+        }
     }
 
     //Si choca con un disparo y es dañable, se resta vitalidad al enemigo padre

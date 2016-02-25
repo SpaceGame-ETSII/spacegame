@@ -117,8 +117,6 @@ public class Type4 extends Enemy{
             // No es necesario mostrar el cañon
             if (timeToOpenCannon < 0)
                 super.render(batch);
-            shield.render(batch);
-            body.render(batch);
         } else {
             super.render(batch);
         }

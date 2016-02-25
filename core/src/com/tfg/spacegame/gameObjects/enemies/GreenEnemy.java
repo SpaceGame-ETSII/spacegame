@@ -80,9 +80,6 @@ public class GreenEnemy extends Enemy {
 
     public void render(SpriteBatch batch){
         super.render(batch);
-        if (!this.isDefeated()) {
-            shield.render(batch);
-        }
     }
 
     public void shoot(){
