@@ -4,7 +4,7 @@
       "entity":"button", "vertices":  [ 0,0,  0,50, 200,50,  200,0 ]
     },
     {
-      "entity":"ship", "vertices":   [ 0,13 , 0,25 , 61,33 , 99,22 , 42,33 ]
+      "entity":"ship", "vertices":   [ 0,13 , 0,25 , 61,33 , 99,22 , 99,13, 42,0 ]
     },
     {
       "entity":"enemy", "vertices":   [ 0,0,  0,40,  40,40,   40,0 ]
@@ -46,7 +46,7 @@
       "entity":"bigshoot_shoot", "vertices": [ 0,0 , 0,40 , 155,40 , 155,0]
     },
     {
-      "entity":"red_shoot", "vertices": [ 0,0 , 0,5 , 150,5 , 15,0 ]
+      "entity":"red_shoot", "vertices": [ 0,0 , 0,5 , 150,5 , 150,0 ]
     },
     {
       "entity":"blue_shoot", "vertices": [ 10,0 , 0,10 , 10,20 , 27,20 , 40,10 , 27,0 ]

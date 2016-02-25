@@ -122,7 +122,6 @@ public class Type5 extends Enemy{
         if(!this.hasShooted && !this.isDefeated())
             shootEffectWarning.draw(batch);
         super.render(batch);
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(),Color.BLUE);
     }
 
     public void dispose() {

@@ -50,7 +50,7 @@ public class SpaceGame extends Game {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, SpaceGame.width, SpaceGame.height);
 
-		this.setScreen(new CampaignScreen(this));
+		this.setScreen(new MainMenuScreen(this));
 
 		generator = new FreeTypeFontGenerator(Gdx.files.internal("pirulen.ttf"));
 		parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
