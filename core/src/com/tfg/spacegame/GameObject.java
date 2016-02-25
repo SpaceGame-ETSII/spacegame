@@ -7,6 +7,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
+import com.tfg.spacegame.gameObjects.Ship;
+import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
+import com.tfg.spacegame.gameObjects.enemies.Type2;
+import com.tfg.spacegame.gameObjects.enemies.Type3;
+import com.tfg.spacegame.gameObjects.enemies.Type4;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 
@@ -17,8 +23,11 @@ public class GameObject {
     //Textura asociada al objeto
     private Texture texture;
 
-    private float xCenter;
-    private float yCenter;
+    //Almacena el centro de la textura
+    private Vector2 center;
+
+    //Distancia entre el centro y el vértice más alejado
+    private float radio;
 
     //Objeto lógico, con el que trabajaremos para interactuar con los demás elementos
     private Polygon logicShape;
@@ -28,14 +37,11 @@ public class GameObject {
 
     public GameObject(String textureName, int x, int y) {
         texture = AssetsManager.loadTexture(textureName);
-
-        yCenter = texture.getHeight() / 2;
-        xCenter = texture.getWidth() / 2;
+        center = new Vector2();
 
         float[] vertices = SpaceGame.loadShape(textureName);
 
         if(vertices == null){
-            System.out.println(textureName);
             vertices = new float[8];
 
             vertices[0] = 0;
@@ -51,9 +57,12 @@ public class GameObject {
             vertices[7] = 0;
         }
         logicShape = new Polygon(vertices);
-        logicShape.setPosition(x,y);
 
-        loadWidthAndHeight();
+        this.loadWidthAndHeight();
+        this.relocateCenter();
+        this.calculateRadio();
+
+        logicShape.setPosition(x,y);
     }
 
     private void loadWidthAndHeight(){
@@ -85,6 +94,29 @@ public class GameObject {
         height = heightGreaterPoint - heightLowestPoint;
     }
 
+    public void relocateCenter() {
+        center.set(this.getX() + (this.getWidth() / 2),
+                   this.getY() + (this.getHeight() / 2));
+    }
+
+    public void calculateRadio() {
+        float[] vertices = this.getLogicShape().getVertices();
+        float distance = 0.0f;
+        float aux;
+
+        for (int i=0; i<vertices.length; i+=2) {
+            aux = Vector2.dst(vertices[i], vertices[i+1], this.getCenter().x, this.getCenter().y);
+            if (distance < aux)
+                distance = aux;
+        }
+
+        radio = distance;
+    }
+
+    public Vector2 getCenter(){ return center; }
+
+    public float getRadio() { return radio; }
+
     public float getWidth() {
         return width;
     }
@@ -101,10 +133,14 @@ public class GameObject {
         return logicShape.getY();
     }
 
-    public void setX(float x) { logicShape.setPosition( x , logicShape.getY()); }
+    public void setX(float x) {
+        logicShape.setPosition( x , logicShape.getY());
+        this.relocateCenter();
+    }
 
     public void setY(float y) {
         logicShape.setPosition(logicShape.getX(), y);
+        this.relocateCenter();
     }
 
     public Texture getTexture(){
@@ -144,7 +180,16 @@ public class GameObject {
 
     //Indica si hay una colisión con el objeto pasado por parámetro
     public boolean isOverlapingWith(GameObject g) {
-        return Intersector.overlapConvexPolygons(this.getLogicShape(),g.getLogicShape());
+        boolean result = false;
+
+        float distance = Vector2.dst(this.getCenter().x, this.getCenter().y, g.getCenter().x, g.getCenter().y);
+        float totalRadios = this.getRadio() + g.getRadio();
+
+        //Solo se comprueba la colisión si la distancia entre los centros es menor a la suma de los radios
+        if (distance < totalRadios) {
+            result = Intersector.overlapConvexPolygons(this.getLogicShape(), g.getLogicShape());
+        }
+        return result;
     }
 
     //Indica si el objeto está sobre el píxel indicado por parámetro
