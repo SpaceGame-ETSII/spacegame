@@ -20,6 +20,7 @@ public class AssetsManager {
     private static String levelScriptsFolder = "levelScripts/";
     private static String shipsFolder = "textures/ships/";
     private static String othersFolder = "textures/others/";
+    private static String settingsFolder = "settings/";
 
     public static void load() {
         assetsReferences = new ArrayMap<String, String>();
@@ -34,6 +35,10 @@ public class AssetsManager {
         assetsReferences.put("yellow_enemy", enemiesFolder+"amarillo.png");
         assetsReferences.put("red_enemy", enemiesFolder+"rojo.png");
         assetsReferences.put("blue_enemy", enemiesFolder+"azul.png");
+        assetsReferences.put("orange_enemy", enemiesFolder+"enemigo_naranja_canon_principal.png");
+        assetsReferences.put("orange_enemy_body", enemiesFolder+"enemigo_naranja_cuerpo.png");
+        assetsReferences.put("orange_enemy_shield", enemiesFolder+"enemigo_naranja_escudo.png");
+        assetsReferences.put("orange_enemy_cannon", enemiesFolder+"enemigo_naranja_canon_secundario.png");
         assetsReferences.put("green_body", enemiesFolder+"verde_body.png");
         assetsReferences.put("green_shield", enemiesFolder+"verde_shield.png");
 
@@ -71,6 +76,7 @@ public class AssetsManager {
         assetsReferences.put("red_shoot", weaponsFolder+"disparo_rojo.png");
         assetsReferences.put("blue_shoot", weaponsFolder+"disparo_azul.png");
         assetsReferences.put("yellow_shoot", weaponsFolder+"disparo_amarillo.png");
+        assetsReferences.put("purple_shoot", weaponsFolder+"disparo_morado.png");
         assetsReferences.put("orange_shoot", weaponsFolder+"disparo_naranja.png");
         assetsReferences.put("green_shoot", weaponsFolder+"disparo_verde.png");
 
@@ -107,6 +113,9 @@ public class AssetsManager {
         assetsReferences.put("green_destroyed", particlesFolder + "verde_derrotado");
         assetsReferences.put("yellow_shoot_effect", particlesFolder + "arma_amarilla");
         assetsReferences.put("yellow_enemy_defeated", particlesFolder + "enemigo_amarillo_derrotado");
+        assetsReferences.put("purple_shoot_effect", particlesFolder + "arma_morada");
+        assetsReferences.put("purple_shoot_effect_shoot", particlesFolder + "arma_morada_efecto_disparo");
+        assetsReferences.put("purple_effect_shock", particlesFolder + "arma_morada_efecto_choque");
         assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
         assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
         assetsReferences.put("orange_shoot_effect_shock", particlesFolder + "arma_naranja_efecto_choque");
@@ -117,6 +126,9 @@ public class AssetsManager {
 
         //Asset referente a la localización
         assetsReferences.put("bundle","localization/bundle");
+
+        //Assets referentes a los archivos de configuracón
+        assetsReferences.put("shapeEntities", settingsFolder + "shapeEntities");
     }
 
     //Se llamará a este método cada vez que se pretenda cargar una textura
@@ -140,6 +152,10 @@ public class AssetsManager {
     //Se llamará a este método cuando se vaya a cargar el bundle
     public static I18NBundle loadBundle(){
         return I18NBundle.createBundle(Gdx.files.internal(assetsReferences.get("bundle")), Locale.getDefault());
+    }
+
+    public static FileHandle loadSetting(String settingsName){
+        return Gdx.files.internal(assetsReferences.get(settingsName));
     }
 
 }

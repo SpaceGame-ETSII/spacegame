@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.screens.MainMenuScreen;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.ShapeLoader;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.TouchManager;
 
@@ -34,11 +36,15 @@ public class SpaceGame extends Game {
 	// Objeto encargado de la internacionalización del juego
 	public static I18NBundle bundle;
 
+	// Objeto encargado de obtener las shapes
+	private static ShapeLoader shapeLoader;
+
 	@Override
 	public void create () {
 		AssetsManager.load();
 		TouchManager.initialize();
 		ShapeRendererManager.initialize();
+		shapeLoader = ShapeLoader.initialize("shapeEntities");
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -64,6 +70,13 @@ public class SpaceGame extends Game {
 
 	public static void drawText(BitmapFont font ,String string, float x, float y){
 		font.draw(batch,bundle.get(string),x,y);
+	}
+
+	/**
+	 * Método que se encarga de obtener los vertices que forman una shape concreta
+	 */
+	public static float[] loadShape(String entity){
+		return shapeLoader.getVertices(entity);
 	}
 
 	public void dispose() {
