@@ -40,7 +40,7 @@ public class Fire extends Shoot {
             this.setX((int) shooter.getX());
         }
         this.setY(getShooter().getY() + this.getHeight());
-        this.getLogicShape().setOrigin(0,this.getHeight()/2);
+        this.setOrigin(0,this.getHeight()/2);
 
         FULL_WIDTH = getWidth();
         actualReasonOfScaling = 1.0f;
@@ -94,7 +94,7 @@ public class Fire extends Shoot {
             float angle = vector.angle();
 
             // Rotamos el rectangulo de colisión y el efecto de particulas
-            this.getLogicShape().setRotation(angle);
+            this.setRotation(angle);
 
             // Gestionamos el escalado del logicShape dependiendo si ha colisionado o no con un enemigo
             // Si la razón de escalado es menor que 1.0f es que
@@ -104,7 +104,7 @@ public class Fire extends Shoot {
                 actualReasonOfScaling = 1.0f;
             }
 
-            this.getLogicShape().setScale( actualReasonOfScaling , 1.0f);
+            this.setScale( actualReasonOfScaling , 1.0f);
 
             shoot.getEmitters().first().getLife().setHigh(SHOOT_EFFECT_LIFE * actualReasonOfScaling);
 

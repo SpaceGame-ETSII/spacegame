@@ -4,8 +4,11 @@ package com.tfg.spacegame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.tfg.spacegame.utils.AssetsManager;
+
+import java.util.Arrays;
 
 public class GameObject {
 
@@ -15,32 +18,71 @@ public class GameObject {
     //Objeto lógico, con el que trabajaremos para interactuar con los demás elementos
     private Polygon logicShape;
 
+    private float width;
+    private float height;
+
     public GameObject(String textureName, int x, int y) {
         texture = AssetsManager.loadTexture(textureName);
 
-        float vertices[] = new float[8];
-        vertices[0] = 0;
-        vertices[1] = 0;
+        float[] vertices = SpaceGame.loadShape(textureName);
 
-        vertices[2] = 0;
-        vertices[3] = texture.getHeight();
+        if(vertices == null){
+            System.out.println(textureName);
+            vertices = new float[8];
 
-        vertices[4] = texture.getWidth();
-        vertices[5] = texture.getHeight();
+            vertices[0] = 0;
+            vertices[1] = 0;
 
-        vertices[6] = texture.getWidth();
-        vertices[7] = 0;
+            vertices[2] = 0;
+            vertices[3] = texture.getHeight();
 
+            vertices[4] = texture.getWidth();
+            vertices[5] = texture.getHeight();
+
+            vertices[6] = texture.getWidth();
+            vertices[7] = 0;
+        }
         logicShape = new Polygon(vertices);
         logicShape.setPosition(x,y);
+
+        loadWidthAndHeight();
+    }
+
+    private void loadWidthAndHeight(){
+
+        float widthLowestPoint = logicShape.getVertices()[0];
+        float widthGreaterPoint = logicShape.getVertices()[0];
+
+        float heightLowestPoint = logicShape.getVertices()[1];
+        float heightGreaterPoint = logicShape.getVertices()[1];
+
+        for(int i = 2; i < logicShape.getVertices().length; i++){
+
+            if(i%2 == 0){
+                if(logicShape.getVertices()[i] < widthLowestPoint)
+                    widthLowestPoint = logicShape.getVertices()[i];
+
+                if(logicShape.getVertices()[i] > widthGreaterPoint)
+                    widthGreaterPoint = logicShape.getVertices()[i];
+            }else{
+                if(logicShape.getVertices()[i] < heightLowestPoint)
+                    heightLowestPoint = logicShape.getVertices()[i];
+
+                if(logicShape.getVertices()[i] > heightGreaterPoint)
+                    heightGreaterPoint = logicShape.getVertices()[i];
+            }
+        }
+
+        width = widthGreaterPoint - widthLowestPoint;
+        height = heightGreaterPoint - heightLowestPoint;
     }
 
     public float getWidth() {
-        return logicShape.getVertices()[6] - logicShape.getVertices()[0];
+        return width;
     }
 
     public float getHeight() {
-        return logicShape.getVertices()[5] - logicShape.getVertices()[7];
+        return height;
     }
 
     public float getX() {
@@ -52,11 +94,11 @@ public class GameObject {
     }
 
     public void setX(float x) {
-        logicShape.setPosition(x,getY());
+        logicShape.setPosition( x , logicShape.getY());
     }
 
     public void setY(float y) {
-        logicShape.setPosition(getX(),y);
+        logicShape.setPosition(logicShape.getX(), y);
     }
 
     public Texture getTexture(){
@@ -67,6 +109,16 @@ public class GameObject {
 
     public Polygon getLogicShape() {
         return logicShape;
+    }
+
+    public void setScale(float x, float y){
+        logicShape.setScale(x,y);
+    }
+    public void setRotation(float angle){
+        logicShape.setRotation(angle);
+    }
+    public void setOrigin(float x,float y){
+        logicShape.setOrigin(x,y);
     }
 
     public void render(SpriteBatch batch){
@@ -84,12 +136,11 @@ public class GameObject {
 
     //Indica si hay una colisión con el objeto pasado por parámetro
     public boolean isOverlapingWith(GameObject g) {
-        return this.getLogicShape().getBoundingRectangle().overlaps(g.getLogicShape().getBoundingRectangle());
+        return Intersector.overlapConvexPolygons(this.getLogicShape(),g.getLogicShape());
     }
 
     //Indica si el objeto está sobre el píxel indicado por parámetro
     public boolean isOverlapingWith(float x, float y) {
-        return this.getLogicShape().contains(x,y);
+        return getLogicShape().contains(x,y);
     }
-
 }

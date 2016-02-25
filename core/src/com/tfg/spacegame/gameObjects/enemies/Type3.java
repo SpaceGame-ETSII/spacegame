@@ -1,10 +1,13 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
 public class Type3 extends Enemy {
@@ -76,6 +79,11 @@ public class Type3 extends Enemy {
                 }
             }
         }
+    }
+
+    public void render(SpriteBatch batch){
+        super.render(batch);
+        ShapeRendererManager.renderCircle(this.getX(),this.getY(),this.getWidth(), Color.BLUE);
     }
 
     public void shoot(){

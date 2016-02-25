@@ -46,6 +46,8 @@ public class Ship extends GameObject {
     //Efecto de partículas para el fuego de la nave
     private ParticleEffect fireEffect;
 
+    private static final float X_POSITION = 80;
+
     public Ship() {
         super("ship", 0, 0);
 
@@ -53,6 +55,7 @@ public class Ship extends GameObject {
         damageReceived = 0;
         timeToUndamagable = DURATION_UNDAMAGABLE;
         cockpit = AssetsManager.loadTexture("cockpit");
+        this.setX(X_POSITION);
         this.setY(SpaceGame.height / 2 - getHeight() / 2);
 
         //Inicializamos el color de la nava a incoloro
@@ -68,7 +71,7 @@ public class Ship extends GameObject {
     }
 
     private void updateParticleEffect() {
-        fireEffect.getEmitters().first().setPosition(this.getX() + 40,this.getY() + this.getHeight()/2 + 2);
+        fireEffect.getEmitters().first().setPosition(this.getX(),this.getY() + this.getHeight()/2 + 2);
     }
 
     @Override
@@ -76,7 +79,7 @@ public class Ship extends GameObject {
         //Si la nave no está en modo invulnerable o lo está y timeForInvisible es positivo, mostramos la nave
         if (!this.isUndamagable() || (this.isUndamagable() && timeForInvisible > 0)) {
             super.render(batch);
-            batch.draw(cockpit, this.getX() + 76, this.getY() + 24);
+            batch.draw(cockpit, this.getX() + 45, this.getY() + 22);
         }
 
         fireEffect.draw(batch);
