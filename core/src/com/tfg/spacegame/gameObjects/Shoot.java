@@ -3,6 +3,7 @@ package com.tfg.spacegame.gameObjects;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.gameObjects.shoots.Purple;
 
 public class Shoot extends GameObject {
 
@@ -91,11 +92,14 @@ public class Shoot extends GameObject {
 
     public void render(SpriteBatch batch) {
         if (!this.isShocked()) {
+            //Se comprueba que no sea una instancia del arma morada para pintar la textura del arma, ya que ésta deberá tener otro tipo de render
+            if (this instanceof Purple==false)
 
-            //Si el shooter es un enemigo, giramos el arma al contrario
+                //Si el shooter es un enemigo, giramos el arma al contrario
             if (this.getShooter() instanceof Enemy)
                 super.renderRotate(batch, 180);
             else
+
                 super.render(batch);
 
             if (shootEffect != null)

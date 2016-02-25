@@ -114,6 +114,10 @@ public class ShootsManager {
                 if(selected.size <= 0)
                     result = true;
                 break;
+            case PURPLE:
+                if(selected.size <= 1)
+                    result = true;
+                break;
             case ORANGE:
                 if(selected.size <= 0)
                     result = true;
@@ -248,6 +252,22 @@ public class ShootsManager {
             shoots.add(yellowShoot);
         }
     }
+
+    public static void shootPurpleWeapon(GameObject shooter, float xTarget, float yTarget) {
+        Purple purpleShoot;
+
+        if (shooter instanceof Ship) {
+            if (isShipReadyToShoot(TypeWeapon.PURPLE)) {
+                int x = (int) (shooter.getX() + shooter.getWidth());
+                int y = (int) (shooter.getY() + shooter.getHeight() / 2);
+
+                purpleShoot = new Purple(shooter, x, y, xTarget, yTarget);
+
+                shoots.add(purpleShoot);
+            }
+        }
+    }
+
 
     public static void shootBurstOrangeWeapon(GameObject gameObject, float x, float y) {
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
