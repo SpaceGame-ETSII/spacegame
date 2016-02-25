@@ -100,8 +100,7 @@ public class LevelGenerator {
                 //Debemos agregar todas las partes del enemigo
                 Type4 type4 = new Type4(wrapper.x, wrapper.y);
                 enemies.add(type4);
-                enemies.add(type4.getShield());
-                enemies.add(type4.getBody());
+                enemies.addAll(type4.getPartsOfEnemy());
                 actualEnemy = type4;
                 break;
             case TYPE5:
@@ -126,14 +125,13 @@ public class LevelGenerator {
             case GREEN:
                 GreenEnemy green = new GreenEnemy(wrapper.x,wrapper.y);
                 enemies.add(green);
-                enemies.add(green.getShield());
+                enemies.addAll(green.getPartsOfEnemy());
                 actualEnemy = green;
                 break;
             case ORANGE:
                 OrangeEnemy orange = new OrangeEnemy(wrapper.x,wrapper.y);
                 enemies.add(orange);
-                enemies.add(orange.getBody());
-                enemies.add(orange.getBody());
+                enemies.addAll(orange.getPartsOfEnemy());
                 break;
             case PURPLE:
                 break;

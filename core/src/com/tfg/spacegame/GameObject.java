@@ -17,6 +17,9 @@ public class GameObject {
     //Textura asociada al objeto
     private Texture texture;
 
+    private float xCenter;
+    private float yCenter;
+
     //Objeto lógico, con el que trabajaremos para interactuar con los demás elementos
     private Polygon logicShape;
 
@@ -25,6 +28,9 @@ public class GameObject {
 
     public GameObject(String textureName, int x, int y) {
         texture = AssetsManager.loadTexture(textureName);
+
+        yCenter = texture.getHeight() / 2;
+        xCenter = texture.getWidth() / 2;
 
         float[] vertices = SpaceGame.loadShape(textureName);
 
@@ -94,9 +100,7 @@ public class GameObject {
         return logicShape.getY();
     }
 
-    public void setX(float x) {
-        logicShape.setPosition( x , logicShape.getY());
-    }
+    public void setX(float x) { logicShape.setPosition( x , logicShape.getY()); }
 
     public void setY(float y) {
         logicShape.setPosition(logicShape.getX(), y);

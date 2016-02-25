@@ -6,9 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.ShapeRendererManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Enemy extends GameObject {
 
@@ -120,6 +125,12 @@ public class Enemy extends GameObject {
     //Devuelve la posición inicial del enemigo dentro de la pantalla
     public Vector2 getInitialPosition(){
         return initialPosition;
+    }
+
+    //Devuelve una lista con los PartOfEnemy en caso de tener alguno
+    //Debe ser sobreescrito por los Enemy que tengan PartOfEnemy
+    public Array<PartOfEnemy> getPartsOfEnemy() {
+        return new Array();
     }
 
     public boolean isDamagable() {

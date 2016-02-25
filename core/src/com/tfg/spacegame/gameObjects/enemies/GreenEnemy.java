@@ -1,6 +1,7 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
@@ -9,6 +10,9 @@ import com.tfg.spacegame.gameObjects.shoots.Green;
 import com.tfg.spacegame.gameObjects.shoots.GreenFire;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GreenEnemy extends Enemy {
 
@@ -68,19 +72,18 @@ public class GreenEnemy extends Enemy {
         }
     }
 
-    public PartOfEnemy getShield() {
-        return shield;
+    public Array<PartOfEnemy> getPartsOfEnemy() {
+        Array<PartOfEnemy> partsOfEnemy = new Array<PartOfEnemy>();
+        partsOfEnemy.add(shield);
+        return partsOfEnemy;
     }
 
     public void render(SpriteBatch batch){
         super.render(batch);
-        if (!this.isDefeated()) {
-            shield.render(batch);
-        }
     }
 
     public void shoot(){
-        ShootsManager.shootGreenWeapon(this.getShield(), 0.0f);
+        ShootsManager.shootGreenWeapon(this.shield, 0.0f);
     }
 
     public void collideWithShoot(Shoot shoot) {

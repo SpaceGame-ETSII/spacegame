@@ -83,7 +83,6 @@ public class Ship extends GameObject {
         }
 
         fireEffect.draw(batch);
-
     }
 
     public void update(float delta, float y, boolean canShipMove) {
@@ -119,13 +118,16 @@ public class Ship extends GameObject {
 
         if (timeToUndamagable <= 0)
             this.changeToDamagable();
-
     }
 
     public void setX(float x, float delta){
         super.setX(x);
         this.updateParticleEffect();
         fireEffect.update(delta);
+    }
+
+    public void setToInitialX(float delta) {
+        this.setX(X_POSITION, delta);
     }
 
     public void changeColor(ColorShip color){
