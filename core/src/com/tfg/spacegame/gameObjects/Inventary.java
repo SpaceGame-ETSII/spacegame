@@ -127,7 +127,6 @@ public class Inventary extends GameObject {
             //Evitamos que el inventario se pase de largo
             if (this.getX() > 0) {
                 this.setToInitialState(delta);
-                ship.setX(this.getWidth() + 1, delta);
             }
         } else {
             //Como el inventario está colocado en su sitio, ahora comprobamos si el jugador está interactuando con algún elemento
@@ -183,7 +182,7 @@ public class Inventary extends GameObject {
 
     //Actualiza el cierre del inventario
     public void updateClosing(float delta, Ship ship) {
-        //Hacemos una cosa u otra según si el inventario no se ha cerrado del todo
+        //Hacemos una cosa u otra según si el inventario no se ha cerrado completamente
         if (this.getX() > -this.getWidth()) {
             relativePos = TRANSITION_SPEED * delta;
 
@@ -199,7 +198,7 @@ public class Inventary extends GameObject {
         } else {
             //Si el inventario se ha cerrado completamente, cambiamos la bandera y recolocamos la nave
             isClosing = false;
-            ship.setX(0, delta);
+            ship.setToInitialX(delta);
         }
     }
 

@@ -2,11 +2,15 @@ package com.tfg.spacegame.gameObjects.enemies;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Type4 extends Enemy{
 
@@ -96,12 +100,11 @@ public class Type4 extends Enemy{
         }
     }
 
-    public PartOfEnemy getShield() {
-        return shield;
-    }
-
-    public PartOfEnemy getBody() {
-        return body;
+    public Array<PartOfEnemy> getPartsOfEnemy() {
+        Array<PartOfEnemy> partsOfEnemy = new Array<PartOfEnemy>();
+        partsOfEnemy.add(body);
+        partsOfEnemy.add(shield);
+        return partsOfEnemy;
     }
 
     public void shoot(){
@@ -134,7 +137,7 @@ public class Type4 extends Enemy{
     public void collideWithShoot(Shoot shoot) {
         if (this.isDamagable()) {
             this.damage(1);
-            this.getBody().damage(1);
+            this.body.damage(1);
         }
     }
 

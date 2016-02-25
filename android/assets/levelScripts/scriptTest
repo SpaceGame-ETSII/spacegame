@@ -1,13 +1,6 @@
 {
   "enemiesToGenerate":[
-    {"type":"TYPE5", "x":900, "y":200, "timeToSpawn":0.0},
-    {"type":"TYPE2", "x":900, "y":350, "timeToSpawn":11.0},
-    {"type":"TYPE2", "x":900, "y":50, "timeToSpawn":11.0},
-    {"type":"TYPE1", "x":900, "y":250, "timeToSpawn":12.0},
-    {"type":"RED", "x":900, "y":200, "timeToSpawn":15.0},
-    {"type":"BLUE", "x":600, "y":-300, "timeToSpawn":15.0},
-    {"type":"YELLOW", "x":800, "y":150, "timeToSpawn":17.0},
-    {"type":"YELLOW", "x":800, "y":240, "timeToSpawn":18.0},
-    {"type":"YELLOW", "x":800, "y":330, "timeToSpawn":19.0}
+    {"type":"TYPE4", "x":600, "y":-300, "timeToSpawn":0.0}
+    {"type":"GREEN", "x":600, "y":-300, "timeToSpawn":1.0}
   ]
 }
