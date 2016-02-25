@@ -29,7 +29,6 @@ public class GameObject {
         float[] vertices = SpaceGame.loadShape(textureName);
 
         if(vertices == null){
-            System.out.println(textureName);
             vertices = new float[8];
 
             vertices[0] = 0;
@@ -125,7 +124,7 @@ public class GameObject {
 
     public void render(SpriteBatch batch){
         batch.draw(texture, getX(), getY());
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
+        //ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 
     //Método para printar un objeto rotando N grados su textura

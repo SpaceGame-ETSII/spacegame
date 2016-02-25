@@ -130,8 +130,10 @@ public class LevelGenerator {
                 actualEnemy = green;
                 break;
             case ORANGE:
-                Enemy orange = new OrangeEnemy(wrapper.x,wrapper.y);
+                OrangeEnemy orange = new OrangeEnemy(wrapper.x,wrapper.y);
                 enemies.add(orange);
+                enemies.add(orange.getBody());
+                enemies.add(orange.getBody());
                 break;
             case PURPLE:
                 break;

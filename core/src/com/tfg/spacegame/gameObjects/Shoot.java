@@ -111,6 +111,7 @@ public class Shoot extends GameObject {
     }
 
     public void collideWithShip() {
+
     }
 
     public void collideWithEnemy(Enemy enemy) {}

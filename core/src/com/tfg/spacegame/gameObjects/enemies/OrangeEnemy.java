@@ -19,17 +19,25 @@ public class OrangeEnemy extends Enemy {
         body.setY((y+getHeight()/2)-body.getHeight()/2);
 
         shield = new PartOfEnemy("orange_enemy_shield",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false);
-        shield.setX(body.getX() - 5);
-        shield.setY(body.getY()+body.getHeight()/2 - shield.getHeight()/2+5);
+        shield.setX(getX() - 63);
+        shield.setY(body.getY()+body.getHeight()/2 - shield.getHeight()/2);
 
         super.updateParticleEffect();
     }
 
+    public PartOfEnemy getShield(){
+        return shield;
+    }
 
+    public PartOfEnemy getBody(){
+        return body;
+    }
 
     public void collideWithShip() {}
 
-    public void collideWithShoot(Shoot shoot) {}
+    public void collideWithShoot(Shoot shoot) {
+
+    }
 
     public void update(float delta){
         super.update(delta);
@@ -39,7 +47,7 @@ public class OrangeEnemy extends Enemy {
     public void render(SpriteBatch batch) {
         super.render(batch);
         body.render(batch);
-        //shield.render(batch);
-
+        shield.render(batch);
     }
+
 }
