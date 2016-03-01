@@ -133,6 +133,10 @@ public class LevelGenerator {
                 enemies.add(orange);
                 break;
             case PURPLE:
+                Enemy purple = new PurpleEnemy(wrapper.x, wrapper.y);
+                enemies.add(purple);
+                enemies.addAll(purple.getPartsOfEnemy());
+                actualEnemy = purple;
                 break;
             default:
                 throw new IllegalArgumentException("Se ha tratado de generar un enemigo de tipo inexistente");

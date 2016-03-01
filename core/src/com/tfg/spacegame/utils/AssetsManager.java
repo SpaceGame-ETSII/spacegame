@@ -41,6 +41,12 @@ public class AssetsManager {
         assetsReferences.put("orange_enemy_cannon", enemiesFolder+"enemigo_naranja_canon_secundario.png");
         assetsReferences.put("green_body", enemiesFolder+"verde_body.png");
         assetsReferences.put("green_shield", enemiesFolder+"verde_shield.png");
+        assetsReferences.put("purple_body", enemiesFolder+"enemigo_morado_cuerpo.png");
+        assetsReferences.put("purple_eye_1", enemiesFolder+"enemigo_morado_ojo1.png");
+        assetsReferences.put("purple_eye_2", enemiesFolder+"enemigo_morado_ojo2.png");
+        assetsReferences.put("purple_eye_3", enemiesFolder+"enemigo_morado_ojo3.png");
+        assetsReferences.put("purple_eye_4", enemiesFolder+"enemigo_morado_ojo4.png");
+        assetsReferences.put("purple_eye_center", enemiesFolder+"enemigo_morado_centro.png");
 
         //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
@@ -120,6 +126,8 @@ public class AssetsManager {
         assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
         assetsReferences.put("orange_shoot_effect_shock", particlesFolder + "arma_naranja_efecto_choque");
         assetsReferences.put("orange_shoot_effect_shoot", particlesFolder + "arma_naranja_efecto_disparo");
+        assetsReferences.put("purple_destroyed", particlesFolder + "morado_derrotado");
+        assetsReferences.put("purple_eye_destroyed", particlesFolder + "morado_ojo_derrotado");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
