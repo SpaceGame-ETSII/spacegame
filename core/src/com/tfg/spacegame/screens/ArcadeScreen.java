@@ -2,6 +2,7 @@ package com.tfg.spacegame.screens;
 
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.GameScreen;
+import com.tfg.spacegame.utils.FontManager;
 
 public class ArcadeScreen extends GameScreen {
 
@@ -13,7 +14,7 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderEveryState(float delta) {
-		game.text.draw(game.batch, "MODO ARCADE", 350, 400);
+		FontManager.text.draw(game.batch, "MODO ARCADE", 350, 400);
 	}
 
 	@Override

@@ -4,39 +4,41 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.FontManager;
 
-public class MainMenuScreen implements Screen {
+public class DemoMenuScreen implements Screen {
 
     private final SpaceGame game;
 
     //Representan las opciones a elegir en el Menú
-    private Button campaign;
-    private Button arcade;
-    private Button multiplayer;
-    private Button options;
-    private Button exit;
+    private Button allEnemies;
+    private Button colorEnemies;
+    private Button greenEnemy;
+    private Button orangeEnemy;
+    private Button purpleEnemy;
 
     //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
     private float timeUntilExit;
 
     public Texture background;
 
-    public MainMenuScreen(final SpaceGame game) {
+    public DemoMenuScreen(final SpaceGame game) {
         this.game = game;
 
         background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
-        campaign = new Button("button", new DemoMenuScreen(game), 290, 315, "campaignTitle");
-        arcade = new Button("button", new ArcadeScreen(game), 290, 255, "arcadeTitle");
-        multiplayer = new Button("button", new MultiplayerScreen(game), 290, 195, "multiplayerTitle");
-        options = new Button("button", new OptionsScreen(game), 290, 135, "optionsTitle");
-        exit = new Button("button", null, 290, 75, "exitTitle");
+        allEnemies = new Button("button", new CampaignScreen(game), 290, 315, "allEnemies");
+        colorEnemies = new Button("button", new CampaignScreen(game), 290, 255, "colorEnemies");
+        greenEnemy = new Button("button", new CampaignScreen(game), 290, 195, "greenEnemy");
+        orangeEnemy = new Button("button", new CampaignScreen(game), 290, 135, "orangeEnemy");
+        purpleEnemy = new Button("button", new CampaignScreen(game), 290, 75, "purpleEnemy");
 
         //Inicializamos el timer de espera para el efecto en los botones
         timeUntilExit = 0.5f;
@@ -54,14 +56,14 @@ public class MainMenuScreen implements Screen {
 
         // Pintamos el fondo y el título del juego
         SpaceGame.batch.draw(background, 0,0);
-        FontManager.drawText(SpaceGame.batch, FontManager.title, "titleGame", 229, 420);
+        FontManager.drawText(SpaceGame.batch, FontManager.text, "titleDemo", 229, 420);
 
         // Delegamos el render de los botones
-        campaign.render(SpaceGame.batch);
-        arcade.render(SpaceGame.batch);
-        multiplayer.render(SpaceGame.batch);
-        options.render(SpaceGame.batch);
-        exit.render(SpaceGame.batch);
+        allEnemies.render(SpaceGame.batch);
+        colorEnemies.render(SpaceGame.batch);
+        greenEnemy.render(SpaceGame.batch);
+        orangeEnemy.render(SpaceGame.batch);
+        purpleEnemy.render(SpaceGame.batch);
 
         SpaceGame.batch.end();
 
@@ -75,21 +77,21 @@ public class MainMenuScreen implements Screen {
             Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
             v = SpaceGame.camera.unproject(v);
 
-            if (campaign.press(v.x, v.y) ||
-                    arcade.press(v.x, v.y) ||
-                    multiplayer.press(v.x, v.y) ||
-                    options.press(v.x, v.y) ||
-                    exit.press(v.x, v.y)) {
+            if (allEnemies.press(v.x, v.y) ||
+                    colorEnemies.press(v.x, v.y) ||
+                    greenEnemy.press(v.x, v.y) ||
+                    orangeEnemy.press(v.x, v.y) ||
+                    purpleEnemy.press(v.x, v.y)) {
                 timeUntilExit=0.5f;
             }
         }
 
         //Actualizamos los botones si fueron pulsados previamente
-        updateButton(delta, campaign);
-        updateButton(delta, arcade);
-        updateButton(delta, multiplayer);
-        updateButton(delta, options);
-        updateButton(delta, exit);
+        updateButton(delta, allEnemies);
+        updateButton(delta, colorEnemies);
+        updateButton(delta, greenEnemy);
+        updateButton(delta, orangeEnemy);
+        updateButton(delta, purpleEnemy);
     }
 
     //Si se ha acabado el tiempo de la pulsación, hacemos la función del botón correspondiente
@@ -110,40 +112,26 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
+    public void show() {
+    }
 
-	@Override
-	public void resize(int width, int height) {
-	}
+    @Override
+    public void resize(int width, int height) {
+    }
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void pause() {
+    }
 
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void resume() {
+    }
 
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void hide() {
+    }
 
-	@Override
-	public void dispose() {
-        campaign.dispose();
-        arcade.dispose();
-        multiplayer.dispose();
-        options.dispose();
-        exit.dispose();
-	}
-
+    @Override
+    public void dispose() {
+    }
 }

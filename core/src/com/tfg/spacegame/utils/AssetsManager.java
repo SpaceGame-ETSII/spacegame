@@ -122,7 +122,11 @@ public class AssetsManager {
         assetsReferences.put("orange_shoot_effect_shoot", particlesFolder + "arma_naranja_efecto_disparo");
 
         //Assets referentes a los scripts de niveles
-        assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
+        assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");
+        assetsReferences.put("colorEnemies", levelScriptsFolder + "colorEnemies");
+        assetsReferences.put("greenEnemy", levelScriptsFolder + "greenEnemy");
+        assetsReferences.put("orangeEnemy", levelScriptsFolder + "orangeEnemy");
+        assetsReferences.put("purpleEnemy", levelScriptsFolder + "purpleEnemy");
 
         //Asset referente a la localización
         assetsReferences.put("bundle","localization/bundle");
@@ -145,6 +149,7 @@ public class AssetsManager {
 
     //Se llamará a este método cada vez que se pretenda cargar script del juego
     public static FileHandle loadScript(String scriptName){
+        System.out.println(scriptName);
         return Gdx.files.internal(assetsReferences.get(scriptName));
     }
 
