@@ -134,8 +134,8 @@ public class LevelGenerator {
                 break;
             case PURPLE:
                 Enemy purple = new PurpleEnemy(wrapper.x, wrapper.y);
-                enemies.add(purple);
                 enemies.addAll(purple.getPartsOfEnemy());
+                enemies.add(purple);
                 actualEnemy = purple;
                 break;
             default:

@@ -4,8 +4,8 @@ active: true
 lowMin: 0.0
 lowMax: 0.0
 - Duration - 
-lowMin: 200.0
-lowMax: 200.0
+lowMin: 1000.0
+lowMax: 1000.0
 - Count - 
 min: 0
 max: 300
@@ -64,8 +64,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 20.0
 lowMax: 20.0
-highMin: 250.0
-highMax: 250.0
+highMin: 500.0
+highMax: 500.0
 relative: false
 scalingCount: 3
 scaling0: 0.0
@@ -73,7 +73,7 @@ scaling1: 0.0
 scaling2: 1.0
 timelineCount: 3
 timeline0: 0.0
-timeline1: 0.36301368
+timeline1: 0.70547944
 timeline2: 1.0
 - Velocity - 
 active: true

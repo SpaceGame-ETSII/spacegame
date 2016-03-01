@@ -60,5 +60,8 @@
     {
       "entity":"green_shoot", "vertices": [ 10,0 , 0,10 , 10,20 , 27,20 , 32,10 , 27,0 ]
     }
+    {
+       "entity":"purple_body", "vertices": [ 180,325 , 334,325 , 334,160 , 180,160 ]
+    }
   ]
 }
