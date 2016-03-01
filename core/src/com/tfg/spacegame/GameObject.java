@@ -165,13 +165,11 @@ public class GameObject {
 
     public void render(SpriteBatch batch){
         batch.draw(texture, getX(), getY());
-        //ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 
     //Método para printar un objeto rotando N grados su textura
     public void renderRotate(SpriteBatch batch, float n){
         batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 
     public void dispose() {

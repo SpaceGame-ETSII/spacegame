@@ -1,6 +1,7 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
@@ -39,6 +40,14 @@ public class OrangeEnemy extends Enemy {
 
     }
 
+    public Array<PartOfEnemy> getPartsOfEnemy() {
+        Array<PartOfEnemy> result = new Array<PartOfEnemy>();
+        result.add(getBody());
+        result.add(getShield());
+
+        return  result;
+    }
+
     public void update(float delta){
         super.update(delta);
         super.updateParticleEffect();
@@ -46,8 +55,6 @@ public class OrangeEnemy extends Enemy {
 
     public void render(SpriteBatch batch) {
         super.render(batch);
-        body.render(batch);
-        shield.render(batch);
     }
 
 }

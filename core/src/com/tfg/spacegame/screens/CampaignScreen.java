@@ -170,8 +170,9 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void renderStart(float delta) {
         ship.render(SpaceGame.batch);
-        ShootsManager.render();
+
         EnemiesManager.render();
+        ShootsManager.render();
 
         if (ship.isDefeated())
             state = GameState.LOSE;

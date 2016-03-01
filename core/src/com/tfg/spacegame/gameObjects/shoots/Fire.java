@@ -19,7 +19,7 @@ public class Fire extends Shoot {
     private static final int AMPLITUDE_OF_FIRE=10;
     private static final int SHOOT_EFFECT_LIFE = 160;
     private final float FULL_WIDTH;
-    private static final float CHANGE_IN_SCALLING = 0.02f;
+    private static final float CHANGE_IN_SCALLING = 0.04f;
     private float actualReasonOfScaling;
 
     // Lo usaremos para hacer el calculo del ángulo
@@ -70,9 +70,9 @@ public class Fire extends Shoot {
         if (this.isFromShootOfEnemy()) {
             targetVector.x = ShootsManager.ship.getX() + ShootsManager.ship.getWidth() / 2;
             targetVector.y = ShootsManager.ship.getY() + ShootsManager.ship.getHeight() / 2;
-            newX = this.getShooter().getX();
+            newX = this.getShooter().getX() - this.getShooter().getHeight()/2;
         } else {
-            newX = this.getShooter().getX() + this.getShooter().getWidth();
+            newX = this.getShooter().getX() + this.getShooter().getWidth() - this.getShooter().getHeight()/4;
         }
 
         this.setX(newX);
@@ -105,6 +105,7 @@ public class Fire extends Shoot {
             }
 
             this.setScale( actualReasonOfScaling , 1.0f);
+
 
             shoot.getEmitters().first().getLife().setHigh(SHOOT_EFFECT_LIFE * actualReasonOfScaling);
 
