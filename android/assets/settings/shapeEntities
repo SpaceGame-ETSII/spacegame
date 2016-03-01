@@ -43,6 +43,9 @@
       "entity":"orange_enemy_shield", "vertices": [0,47 , 12,10, 24,0 , 24,121 , 12,110 , 0,74]
     },
     {
+      "entity":"orange_enemy_cannon", "vertices": [20,0 , 0,20 , 20,40 , 40,20]
+    },
+    {
       "entity":"green_shield", "vertices": [0,100 , 24,173, 49,200 , 67,200 , 67,0 , 49,0 , 24,27]
     },
     {

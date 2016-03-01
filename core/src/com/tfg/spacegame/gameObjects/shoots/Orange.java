@@ -1,13 +1,16 @@
 package com.tfg.spacegame.gameObjects.shoots;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.ShapeRendererManager;
 
 
 public class Orange extends Shoot{
@@ -16,7 +19,7 @@ public class Orange extends Shoot{
     private static final float HIGHSPEED = 250;
     private static final float SPEEDANGLE = 0.7f;
 
-    private static final float LIMIT_TO_CHANGE_ANGLE = 50;
+    private final float LIMIT_TO_CHANGE_ANGLE;
 
     private float distanceFromOrigin;
 
@@ -47,6 +50,12 @@ public class Orange extends Shoot{
         actualAngle = angle;
 
         distanceFromOrigin = 0;
+
+        if(getShooter() instanceof Ship){
+            LIMIT_TO_CHANGE_ANGLE = 50;
+        }else{
+            LIMIT_TO_CHANGE_ANGLE = 0;
+        }
     }
     public void update(float delta){
         super.update(delta);
@@ -56,7 +65,7 @@ public class Orange extends Shoot{
 
         shoot.getEmitters().first().setPosition(this.getX()+this.getWidth()/2,this.getY()+this.getHeight()/2);
 
-        if(distanceFromOrigin > LIMIT_TO_CHANGE_ANGLE){
+        if(distanceFromOrigin >= LIMIT_TO_CHANGE_ANGLE){
 
             float x1 = this.getX() + this.getWidth()/2;
             float y1 = this.getY() + this.getHeight()/2;
@@ -68,7 +77,7 @@ public class Orange extends Shoot{
 
             targetAngle = movement.angle();
 
-            if(targetAngle >=180)
+            if(getShooter() instanceof Ship && targetAngle >=180)
                 targetAngle-=360;
 
             float diffAngle = targetAngle - actualAngle;
@@ -78,14 +87,14 @@ public class Orange extends Shoot{
             else
                 actualAngle+=SPEEDANGLE;
 
-            this.setX(this.getX()+ SPEED * delta * MathUtils.cosDeg(actualAngle));
-            this.setY(this.getY()+ SPEED * delta * MathUtils.sinDeg(actualAngle));
+            this.setX(this.getX()+ SPEED * delta * MathUtils.cosDeg(actualAngle) );
+            this.setY(this.getY()+ SPEED * delta * MathUtils.sinDeg(actualAngle) );
 
         }else{
             distanceFromOrigin+= HIGHSPEED * delta * MathUtils.cosDeg(actualAngle);
 
             this.setX(this.getX()+ HIGHSPEED * delta * MathUtils.cosDeg(actualAngle));
-            this.setY(this.getY()+ HIGHSPEED * delta * MathUtils.sinDeg(actualAngle));
+            this.setY(this.getY() + HIGHSPEED * delta * MathUtils.sinDeg(actualAngle));
         }
 
     }
