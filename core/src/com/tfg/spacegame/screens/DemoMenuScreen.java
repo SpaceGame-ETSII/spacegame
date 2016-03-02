@@ -32,11 +32,11 @@ public class DemoMenuScreen implements Screen {
         background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
-        allEnemies = new Button("button", 290, 315, "allEnemies");
-        colorEnemies = new Button("button", 290, 255, "colorEnemies");
-        greenEnemy = new Button("button", 290, 195, "greenEnemy");
-        orangeEnemy = new Button("button", 290, 135, "orangeEnemy");
-        purpleEnemy = new Button("button", 290, 75, "purpleEnemy");
+        allEnemies = new Button("button", 260, 315, "allEnemies");
+        colorEnemies = new Button("button", 260, 255, "colorEnemies");
+        greenEnemy = new Button("button", 260, 195, "greenEnemy");
+        orangeEnemy = new Button("button", 260, 135, "orangeEnemy");
+        purpleEnemy = new Button("button", 260, 75, "purpleEnemy");
 
         //Inicializamos el timer de espera para el efecto en los botones
         timeUntilExit = 0.5f;
