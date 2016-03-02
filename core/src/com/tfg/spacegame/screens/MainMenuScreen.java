@@ -32,11 +32,11 @@ public class MainMenuScreen implements Screen {
         background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
-        campaign = new Button("button", new DemoMenuScreen(game), 290, 315, "campaignTitle");
-        arcade = new Button("button", new ArcadeScreen(game), 290, 255, "arcadeTitle");
-        multiplayer = new Button("button", new MultiplayerScreen(game), 290, 195, "multiplayerTitle");
-        options = new Button("button", new OptionsScreen(game), 290, 135, "optionsTitle");
-        exit = new Button("button", null, 290, 75, "exitTitle");
+        campaign = new Button("button", 290, 315, "campaignTitle");
+        arcade = new Button("button", 290, 255, "arcadeTitle");
+        multiplayer = new Button("button", 290, 195, "multiplayerTitle");
+        options = new Button("button", 290, 135, "optionsTitle");
+        exit = new Button("button", 290, 75, "exitTitle");
 
         //Inicializamos el timer de espera para el efecto en los botones
         timeUntilExit = 0.5f;
@@ -80,30 +80,24 @@ public class MainMenuScreen implements Screen {
                     multiplayer.press(v.x, v.y) ||
                     options.press(v.x, v.y) ||
                     exit.press(v.x, v.y)) {
+                //Reiniciamos el contador en caso de haberse pulsado un botón
                 timeUntilExit=0.5f;
             }
         }
 
-        //Actualizamos los botones si fueron pulsados previamente
-        updateButton(delta, campaign);
-        updateButton(delta, arcade);
-        updateButton(delta, multiplayer);
-        updateButton(delta, options);
-        updateButton(delta, exit);
-    }
-
-    //Si se ha acabado el tiempo de la pulsación, hacemos la función del botón correspondiente
-    public void updateButton(float delta, Button button){
-        if (timeUntilExit <= 0 && button.isPressed()) {
-
-            //Si el screen del botón no es nulo, nos vamos ahí. Si lo es, significa que es el exit y debemos salir
-            if (button.getScreen() != null) {
-                game.setScreen(button.getScreen());
-            } else {
+        //Si el contador es cero, comprobamos si hay algún botón pulsado y actuamos en consecuencia
+        if (timeUntilExit <= 0) {
+            if (campaign.isPressed()) {
+                game.setScreen(new DemoMenuScreen(game));
+            } else if (arcade.isPressed()) {
+                game.setScreen(new ArcadeScreen(game));
+            } else if (multiplayer.isPressed()) {
+                game.setScreen(new MultiplayerScreen(game));
+            } else if (options.isPressed()) {
+                game.setScreen(new OptionsScreen(game));
+            } else if (exit.isPressed()) {
                 Gdx.app.exit();
             }
-
-            dispose();
         } else {
             timeUntilExit -= delta;
         }

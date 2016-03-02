@@ -1,21 +1,15 @@
 package com.tfg.spacegame.gameObjects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.FontManager;
 
 public class Button extends GameObject {
 
     //Indica si el botón ha sido pulsado
     private boolean pressed;
-
-    //Será el Screen que tenga asociado el botón. Si no tiene ninguno, deberá ser null
-    private Screen screen;
 
     //Será el texto que habrá en el botón, en el caso de haberlo
     private String content;
@@ -24,10 +18,9 @@ public class Button extends GameObject {
     private float contentX;
     private float contentY;
 
-    public Button(String texture, Screen screen, int x, int y, String content) {
+    public Button(String texture, int x, int y, String content) {
         super(texture, x, y);
 
-        this.screen = screen;
         pressed = false;
         this.content = content;
 
@@ -40,6 +33,10 @@ public class Button extends GameObject {
         }
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public boolean isPressed() {
         return pressed;
     }
@@ -47,8 +44,6 @@ public class Button extends GameObject {
     public boolean press(float x, float y) {
         if (super.isOverlapingWith(x, y)) {
             this.setPressed(true);
-            if (screen instanceof CampaignScreen)
-                ((CampaignScreen) screen).loadLevel(content);
             return true;
         } else {
             return false;
@@ -57,11 +52,6 @@ public class Button extends GameObject {
 
     public void setPressed(boolean pressed) {
         this.pressed = pressed;
-    }
-
-    //Crea y devuelve un S
-    public Screen getScreen() {
-        return screen;
     }
 
     //Si el botón está pulsado, girará la textura 180 grados

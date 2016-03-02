@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
@@ -34,11 +32,11 @@ public class DemoMenuScreen implements Screen {
         background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
-        allEnemies = new Button("button", new CampaignScreen(game), 290, 315, "allEnemies");
-        colorEnemies = new Button("button", new CampaignScreen(game), 290, 255, "colorEnemies");
-        greenEnemy = new Button("button", new CampaignScreen(game), 290, 195, "greenEnemy");
-        orangeEnemy = new Button("button", new CampaignScreen(game), 290, 135, "orangeEnemy");
-        purpleEnemy = new Button("button", new CampaignScreen(game), 290, 75, "purpleEnemy");
+        allEnemies = new Button("button", 290, 315, "allEnemies");
+        colorEnemies = new Button("button", 290, 255, "colorEnemies");
+        greenEnemy = new Button("button", 290, 195, "greenEnemy");
+        orangeEnemy = new Button("button", 290, 135, "orangeEnemy");
+        purpleEnemy = new Button("button", 290, 75, "purpleEnemy");
 
         //Inicializamos el timer de espera para el efecto en los botones
         timeUntilExit = 0.5f;
@@ -74,7 +72,7 @@ public class DemoMenuScreen implements Screen {
         //Si se ha tocado algún botón, lo marcamos como pulsado
         if (Gdx.input.justTouched()) {
 
-            Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
+            Vector3 v = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             v = SpaceGame.camera.unproject(v);
 
             if (allEnemies.press(v.x, v.y) ||
@@ -82,30 +80,24 @@ public class DemoMenuScreen implements Screen {
                     greenEnemy.press(v.x, v.y) ||
                     orangeEnemy.press(v.x, v.y) ||
                     purpleEnemy.press(v.x, v.y)) {
+                //Reiniciamos el contador en caso de haberse pulsado un botón
                 timeUntilExit=0.5f;
             }
         }
 
-        //Actualizamos los botones si fueron pulsados previamente
-        updateButton(delta, allEnemies);
-        updateButton(delta, colorEnemies);
-        updateButton(delta, greenEnemy);
-        updateButton(delta, orangeEnemy);
-        updateButton(delta, purpleEnemy);
-    }
-
-    //Si se ha acabado el tiempo de la pulsación, hacemos la función del botón correspondiente
-    public void updateButton(float delta, Button button){
-        if (timeUntilExit <= 0 && button.isPressed()) {
-
-            //Si el screen del botón no es nulo, nos vamos ahí. Si lo es, significa que es el exit y debemos salir
-            if (button.getScreen() != null) {
-                game.setScreen(button.getScreen());
-            } else {
-                Gdx.app.exit();
+        //Si el contador es cero, comprobamos si hay algún botón pulsado y actuamos en consecuencia
+        if (timeUntilExit <= 0) {
+            if (allEnemies.isPressed()) {
+                game.setScreen(new CampaignScreen(game, allEnemies.getContent()));
+            } else if (colorEnemies.isPressed()) {
+                game.setScreen(new CampaignScreen(game, colorEnemies.getContent()));
+            } else if (greenEnemy.isPressed()) {
+                game.setScreen(new CampaignScreen(game, greenEnemy.getContent()));
+            } else if (orangeEnemy.isPressed()) {
+                game.setScreen(new CampaignScreen(game, orangeEnemy.getContent()));
+            } else if (purpleEnemy.isPressed()) {
+                game.setScreen(new CampaignScreen(game, purpleEnemy.getContent()));
             }
-
-            dispose();
         } else {
             timeUntilExit -= delta;
         }

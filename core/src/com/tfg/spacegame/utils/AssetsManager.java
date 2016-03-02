@@ -149,7 +149,6 @@ public class AssetsManager {
 
     //Se llamará a este método cada vez que se pretenda cargar script del juego
     public static FileHandle loadScript(String scriptName){
-        System.out.println(scriptName);
         return Gdx.files.internal(assetsReferences.get(scriptName));
     }
 

@@ -34,12 +34,13 @@ public class CampaignScreen extends GameScreen {
     public static int whichTouchIsShooting;
     public static int whichControlsTheShip;
 
-    public CampaignScreen(SpaceGame game){
+    public CampaignScreen(SpaceGame game, String scriptLevel){
         this.game = game;
         scrollingPosition = 0;
 
         ShootsManager.load();
         CollissionsManager.load();
+        EnemiesManager.load(scriptLevel);
 
         state = GameState.READY;
 
@@ -52,9 +53,9 @@ public class CampaignScreen extends GameScreen {
         menuExitDialog = new DialogBox();
         //Creamos los objetos para el diálgo de salida del modo campaña
         menuExitDialog.addElement("window", new GameObject("ventana", 200, 120));
-        menuExitDialog.addElement("exit", new Button("buttonExit", this, 750, 430, null));
-        menuExitDialog.addElement("cancel", new Button("buttonCancel", this, 425, 200, null));
-        menuExitDialog.addElement("confirm", new Button("buttonConfirm", this, 325, 200, null));
+        menuExitDialog.addElement("exit", new Button("buttonExit", 750, 430, null));
+        menuExitDialog.addElement("cancel", new Button("buttonCancel", 425, 200, null));
+        menuExitDialog.addElement("confirm", new Button("buttonConfirm", 325, 200, null));
 
         whichTouchIsShooting = -1;
         whichControlsTheShip = -1;
@@ -70,8 +71,9 @@ public class CampaignScreen extends GameScreen {
             }
 
             public void onLeft() {
-                if (state.equals(GameState.PAUSE) && !inventary.isClosing())
+                if (state.equals(GameState.PAUSE) && !inventary.isClosing()) {
                     inventary.setIsClosing(true);
+                }
             }
 
             public void onDown() {
@@ -81,10 +83,6 @@ public class CampaignScreen extends GameScreen {
             }
 
         }));
-    }
-
-    public void loadLevel(String scriptLevel) {
-        EnemiesManager.load(scriptLevel);
     }
 
     @Override
@@ -166,8 +164,9 @@ public class CampaignScreen extends GameScreen {
     public void renderReady(float delta) {
         FontManager.drawText(SpaceGame.batch, FontManager.text,"tapToStart",370,240);
 
-        if (Gdx.input.justTouched())
+        if (Gdx.input.justTouched()) {
             state = GameState.START;
+        }
     }
 
     @Override
