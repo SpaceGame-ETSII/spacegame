@@ -47,7 +47,7 @@ public class Purple extends Shoot{
         vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() + shooter.getHeight()/2)));
 
         //Cambiamos el ángulo
-        //this.getLogicShape().setRotation(vector.angle());
+        this.getLogicShape().setRotation(vector.angle());
 
         //Actualizamos el efecot de partículas
         this.updateParticleEffect();
@@ -58,7 +58,7 @@ public class Purple extends Shoot{
         //Dependiendo de si es la nave o no el shooter, el disparo ira a la derecha o a la izquierda
         if (shooter instanceof Ship) {
             direction = 1;
-        } else {
+        } else if (shooter instanceof Enemy){
             direction = -1;
         }
     }
@@ -70,14 +70,14 @@ public class Purple extends Shoot{
         if (!this.isShocked()) {
             //Se actuará de forma distinta si el shooter es enemigo o no
             if (this.getShooter() instanceof Ship) {
-                shoot.getEmitters().first().setPosition(this.getX()+ (vector.x/SPEED) , this.getY() + (vector.y/SPEED));
+                shoot.getEmitters().first().setPosition(this.getX() + (vector.x/SPEED), this.getY() + (vector.y/SPEED));
 
                 //Rotamos el efecto de partículas para hacerlo coincidir con el ángulo del disparo
                 shoot.getEmitters().first().getAngle().setHigh(vector.angle());
             } else if (this.getShooter() instanceof Enemy){
-                shoot.getEmitters().first().setPosition(this.getX(), this.getY());
+                shoot.getEmitters().first().setPosition(this.getX() + (vector.x/SPEED), this.getY() + (vector.y/SPEED));
 
-                //Rotamos el efecto de particulas 180º
+                //Rotamos el efecto de partículas para hacerlo coincidir con el ángulo del disparo
                 shoot.getEmitters().first().getAngle().setHigh(vector.angle());
             }
         }
@@ -85,10 +85,19 @@ public class Purple extends Shoot{
 
     public void update(float delta) {
         if (!this.isShocked()) {
-            //Actualizamos el movimiento del disparo
-            this.setX(this.getX() + ((vector.x/SPEED) * direction));
-            this.setY(this.getY() + ((vector.y/SPEED) * direction));
 
+            if (getShooter() instanceof Ship){
+                //Actualizamos el movimiento del disparo
+                this.setX(this.getX() + ((vector.x/SPEED) * direction));
+                this.setY(this.getY() + ((vector.y/SPEED) * direction));
+            }else {
+                //Actualizamos el movimiento del disparo
+                this.setX(this.getX() - ((vector.x/SPEED) * direction));
+                this.setY(this.getY() - ((vector.y/SPEED) * direction));
+            }
+
+
+            //Actualizamos el ángulo del disparo por si acaso tendría que modificarse
             this.getLogicShape().setRotation(vector.angle());
 
             //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter

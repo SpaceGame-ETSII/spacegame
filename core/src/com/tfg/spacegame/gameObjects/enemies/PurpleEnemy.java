@@ -66,11 +66,13 @@ public class PurpleEnemy extends Enemy {
                 eye2.setX(eye2.getX() - SPEED * delta);
                 eye3.setX(eye3.getX() - SPEED * delta);
                 eye4.setX(eye4.getX() - SPEED * delta);
+                isReady = true;
             }
 
             //Si el enemigo está listo y ha terminado el contador, disparará y lo reiniciamos
             if (isReady && counter <= 0) {
                 //this.shoot();
+                eye1.shoot();
                 counter = INITIAL_COUNTER;
             } else {
                 counter -= delta * SPEED;

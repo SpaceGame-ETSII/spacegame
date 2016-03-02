@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.utils.ShootsManager;
 
 public class Eye extends PartOfEnemy{
 
@@ -21,6 +22,10 @@ public class Eye extends PartOfEnemy{
 
     public boolean getClosed(){
         return closed;
+    }
+
+    public void shoot(){
+        ShootsManager.shootPurpleWeapon(this,0,0);
     }
 
     public void render(SpriteBatch batch) {

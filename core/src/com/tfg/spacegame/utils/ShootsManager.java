@@ -6,6 +6,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
+import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
 import com.tfg.spacegame.gameObjects.shoots.*;
 import com.tfg.spacegame.gameObjects.Shoot;
@@ -265,6 +266,13 @@ public class ShootsManager {
 
                 shoots.add(purpleShoot);
             }
+        }else if (shooter instanceof Enemy) {
+            int x = (int) (shooter.getX());
+            int y = (int) (shooter.getY() + shooter.getHeight() / 2);
+
+            purpleShoot = new Purple(shooter,x,y, ShootsManager.ship.getX(), ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+
+            shoots.add(purpleShoot);
         }
     }
 
