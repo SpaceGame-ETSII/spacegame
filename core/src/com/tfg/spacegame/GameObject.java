@@ -165,6 +165,7 @@ public class GameObject {
 
     public void render(SpriteBatch batch){
         batch.draw(texture, getX(), getY());
+        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(),Color.BLUE);
     }
 
     //Método para printar un objeto rotando N grados su textura
@@ -184,9 +185,9 @@ public class GameObject {
         float totalRadios = this.getRadio() + g.getRadio();
 
         //Solo se comprueba la colisión si la distancia entre los centros es menor a la suma de los radios
-        if (distance < totalRadios) {
+        if (distance < totalRadios)
             result = Intersector.overlapConvexPolygons(this.getLogicShape(), g.getLogicShape());
-        }
+
         return result;
     }
 

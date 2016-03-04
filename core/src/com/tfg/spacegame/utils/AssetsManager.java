@@ -37,6 +37,8 @@ public class AssetsManager {
         assetsReferences.put("blue_enemy", enemiesFolder+"azul.png");
         assetsReferences.put("orange_enemy", enemiesFolder+"enemigo_naranja_canon_principal.png");
         assetsReferences.put("orange_enemy_body", enemiesFolder+"enemigo_naranja_cuerpo.png");
+        assetsReferences.put("orange_enemy_body_aux_up", enemiesFolder+"enemigo_naranja_cuerpo_aux_superior.png");
+        assetsReferences.put("orange_enemy_body_aux_bottom", enemiesFolder+"enemigo_naranja_cuerpo_aux_inferior.png");
         assetsReferences.put("orange_enemy_shield", enemiesFolder+"enemigo_naranja_escudo.png");
         assetsReferences.put("orange_enemy_cannon", enemiesFolder+"enemigo_naranja_canon_secundario.png");
         assetsReferences.put("green_body", enemiesFolder+"verde_body.png");

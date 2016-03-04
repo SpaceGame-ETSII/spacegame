@@ -37,7 +37,13 @@
       "entity":"green_body", "vertices": [0,66 , 19,110 , 71,132 , 123,110 , 143,66 , 123,22 , 71,0 , 19,22]
     },
     {
-      "entity":"orange_enemy_body", "vertices": [0,67 , 47,20, 115,0 , 178,20 , 220,67 , 235,125 , 220,183 , 178,230 , 115,250 , 47,230, 0,183 , 32,183 , 55,168 , 71,125 , 55,82 , 32,67]
+      "entity":"orange_enemy_body", "vertices": [0,10 , 50,0 , 113,20 , 155,67 , 170,125 , 155,183 , 113,230 , 50,250 , 0,240]
+    },
+    {
+      "entity":"orange_enemy_body_aux_up", "vertices": [6,67 , 64,39 , 64,115]
+    },
+    {
+      "entity":"orange_enemy_body_aux_bottom", "vertices": [6,56 , 64,91 , 64,10]
     },
     {
       "entity":"orange_enemy_shield", "vertices": [0,47 , 12,10, 24,0 , 24,121 , 12,110 , 0,74]

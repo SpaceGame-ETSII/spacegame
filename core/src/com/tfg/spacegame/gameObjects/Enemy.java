@@ -139,7 +139,8 @@ public class Enemy extends GameObject {
 
     public void collideWithShip() {}
 
-    public void collideWithShoot(Shoot shoot) {}
+    public void collideWithShoot(Shoot shoot) {
+    }
 
     //Usado para activar o desactivar el efecto de localización
     public void setTargettedByShip(boolean b){

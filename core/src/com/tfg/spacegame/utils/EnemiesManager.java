@@ -6,6 +6,8 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.enemies.Cannon;
+import com.tfg.spacegame.gameObjects.enemies.OrangeEnemy;
 import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 
 public class EnemiesManager {
@@ -50,7 +52,6 @@ public class EnemiesManager {
     public static void manageCollisionWithShoot(Pair<Shoot, Enemy> shootToEnemy) {
         Shoot shoot = shootToEnemy.getFirst();
         Enemy enemy = shootToEnemy.getSecond();
-
         enemy.collideWithShoot(shoot);
     }
 
