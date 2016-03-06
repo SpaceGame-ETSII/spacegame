@@ -112,6 +112,11 @@ public class Enemy extends GameObject {
         return vitality <= 0;
     }
 
+    //Método para devolver vitalidad al enemigo
+    public void healEnemy(int vitality){
+        this.vitality = vitality;
+    }
+
     //Cambia el enemigo a un estado de borrable
     public void changeToDeletable() {
         deletable = true;

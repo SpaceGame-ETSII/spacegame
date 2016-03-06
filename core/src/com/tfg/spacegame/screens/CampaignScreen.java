@@ -38,8 +38,8 @@ public class CampaignScreen extends GameScreen {
         this.game = game;
         scrollingPosition = 0;
 
-        EnemiesManager.load();
         ShootsManager.load();
+        EnemiesManager.load();
         CollissionsManager.load();
 
         state = GameState.READY;

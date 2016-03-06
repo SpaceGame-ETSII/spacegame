@@ -5,11 +5,8 @@ import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
-import com.tfg.spacegame.gameObjects.shoots.Green;
-import com.tfg.spacegame.gameObjects.shoots.GreenFire;
 import com.tfg.spacegame.gameObjects.shoots.Purple;
 import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.ShootsManager;
 
 public class PurpleEnemy extends Enemy {
 
@@ -17,7 +14,10 @@ public class PurpleEnemy extends Enemy {
     private static final int SPEED = 75;
 
     //Valor inicial que tendrá el contador de disparo cada vez que se reinicie
-    public static final int INITIAL_COUNTER = 250;
+    public static final int INITIAL_COUNTER = 200;
+
+    //Valor inicial que tendrá el contador para indicar cada cuanto se reinicirá en combate con el enemigo
+    public static final int RESTART_COUNTER = 600;
 
     //Partes referentes a los ojos del enemigo
     private Eye eye1;
@@ -32,7 +32,13 @@ public class PurpleEnemy extends Enemy {
     private boolean isReady;
 
     //Contador que usaremos para saber cuándo disparar
-    private float counter;
+    private float counterToShoot;
+
+    //Variable para cambiar los ojos que disparan del enemigo
+    private int counterOfShoots;
+
+    //Contador para resetear los ojos del enemigo
+    private float timeToRestart;
 
     public PurpleEnemy(int x, int y) {
         super("purple_eye_center", x, y, 50, AssetsManager.loadParticleEffect("purple_destroyed"));
@@ -52,7 +58,9 @@ public class PurpleEnemy extends Enemy {
         this.setY(body.getY() + 165);
 
         isReady = false;
-        counter = INITIAL_COUNTER;
+        counterToShoot = INITIAL_COUNTER;
+        counterOfShoots = 0;
+        timeToRestart = RESTART_COUNTER;
     }
 
     public void update(float delta) {
@@ -70,12 +78,23 @@ public class PurpleEnemy extends Enemy {
             }
 
             //Si el enemigo está listo y ha terminado el contador, disparará y lo reiniciamos
-            if (isReady && counter <= 0) {
-                //this.shoot();
-                eye1.shoot();
-                counter = INITIAL_COUNTER;
+            if (isReady && counterToShoot <= 0) {
+                this.shoot();
+                counterToShoot = INITIAL_COUNTER;
+                counterOfShoots ++;
             } else {
-                counter -= delta * SPEED;
+                counterToShoot -= delta * SPEED;
+            }
+
+            //Si no has derrotado al enemigo en el tiempo designado, los ojos volverán a aparecer y el combate se reiniciará
+            if (timeToRestart <= 0){
+                eye1.restartEye();
+                eye2.restartEye();
+                eye3.restartEye();
+                eye4.restartEye();
+                timeToRestart = RESTART_COUNTER;
+            } else if (isReady){
+                timeToRestart -= delta * SPEED;
             }
 
         }
@@ -99,7 +118,17 @@ public class PurpleEnemy extends Enemy {
     }
 
     public void shoot(){
-        ShootsManager.shootPurpleWeapon(this,0,0);
+        if (counterOfShoots % 2 == 0){
+            if (!eye2.getClosed())
+                eye2.shoot();
+            if (!eye4.getClosed())
+                eye4.shoot();
+        }else {
+            if (!eye1.getClosed())
+                eye1.shoot();
+            if (!eye3.getClosed())
+                eye3.shoot();
+        }
     }
 
     public void collideWithShoot(Shoot shoot) {
@@ -112,15 +141,6 @@ public class PurpleEnemy extends Enemy {
                 this.damage(3);
             }
         }
-    }
-
-    public void changeToDeletable() {
-        super.changeToDeletable();
-        eye1.changeToDeletable();
-        eye2.changeToDeletable();
-        eye3.changeToDeletable();
-        eye4.changeToDeletable();
-        body.changeToDeletable();
     }
 
     public void dispose(){
