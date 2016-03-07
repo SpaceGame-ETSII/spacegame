@@ -28,22 +28,15 @@ public class Eye extends PartOfEnemy{
         ShootsManager.shootPurpleWeapon(this,0,0);
     }
 
-    public void restartEye(){
-        healEnemy(1);
-        setClosed(false);
-    }
-
     public void render(SpriteBatch batch) {
-        if (!this.isDefeated() && !closed) {
+        if (!closed) {
             super.render(batch);
         }
     }
 
     public void collideWithShoot(Shoot shoot) {
         if (isDamagable()){
-            this.damage(1);
-        }
-        if (isDefeated()){
+            this.damage(0);
             setClosed(true);
         }
     }

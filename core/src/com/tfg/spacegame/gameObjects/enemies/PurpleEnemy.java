@@ -17,7 +17,7 @@ public class PurpleEnemy extends Enemy {
     public static final int INITIAL_COUNTER = 200;
 
     //Valor inicial que tendrá el contador para indicar cada cuanto se reinicirá en combate con el enemigo
-    public static final int RESTART_COUNTER = 600;
+    public static final int RESTART_COUNTER = 2000;
 
     //Partes referentes a los ojos del enemigo
     private Eye eye1;
@@ -67,6 +67,7 @@ public class PurpleEnemy extends Enemy {
         super.update(delta);
 
         if (!this.isDefeated()) {
+            //El enemigo avanza hasta un punto designado, una vez allí ya estará listo para disparar
             if (body.getX() >= 450) {
                 this.setX(this.getX() - SPEED * delta);
                 body.setX(body.getX() - SPEED * delta);
@@ -74,6 +75,8 @@ public class PurpleEnemy extends Enemy {
                 eye2.setX(eye2.getX() - SPEED * delta);
                 eye3.setX(eye3.getX() - SPEED * delta);
                 eye4.setX(eye4.getX() - SPEED * delta);
+
+            }else {
                 isReady = true;
             }
 
@@ -88,12 +91,12 @@ public class PurpleEnemy extends Enemy {
 
             //Si no has derrotado al enemigo en el tiempo designado, los ojos volverán a aparecer y el combate se reiniciará
             if (timeToRestart <= 0){
-                eye1.restartEye();
-                eye2.restartEye();
-                eye3.restartEye();
-                eye4.restartEye();
+                eye1.setClosed(false);
+                eye2.setClosed(false);
+                eye3.setClosed(false);
+                eye4.setClosed(false);
                 timeToRestart = RESTART_COUNTER;
-            } else if (isReady){
+            } else if (isReady && (eye1.getClosed() || eye2.getClosed() || eye3.getClosed() || eye4.getClosed())){
                 timeToRestart -= delta * SPEED;
             }
 
@@ -145,7 +148,7 @@ public class PurpleEnemy extends Enemy {
 
     public void dispose(){
         super.dispose();
-        eye1.dispose();
+        //eye1.dispose();
         eye2.dispose();
         eye3.dispose();
         eye4.dispose();
