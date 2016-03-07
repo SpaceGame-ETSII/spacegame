@@ -21,12 +21,18 @@ public class SpaceGame extends Game {
 	// Con esto vamos a crear un entorno ortonormal 2d y añadirlo al spritebatch
 	public static OrthographicCamera camera;
 
+	public static Platform platform;
+
 	// Ancho y alto de la pantalla para la camara ortonormal
 	public static int width = 800;
 	public static int height = 480;
 
 	// Objeto encargado de obtener las shapes
 	private static ShapeLoader shapeLoader;
+
+	public SpaceGame(Platform platform) {
+		this.platform = platform;
+	}
 
 	@Override
 	public void create () {
