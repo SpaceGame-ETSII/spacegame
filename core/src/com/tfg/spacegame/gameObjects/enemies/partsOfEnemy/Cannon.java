@@ -1,12 +1,13 @@
-package com.tfg.spacegame.gameObjects.enemies;
+package com.tfg.spacegame.gameObjects.enemies.partsOfEnemy;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
-public class Cannon extends PartOfEnemy{
+public class Cannon extends PartOfEnemy {
 
 
     private Vector2 shootingPosition;
@@ -23,5 +24,9 @@ public class Cannon extends PartOfEnemy{
 
     public void shoot(){
         ShootsManager.shootOneOrangeWeapon(this, (int)shootingPosition.x, (int)shootingPosition.y, shootAngle, ShootsManager.ship);
+    }
+    public void move(float speed){
+        this.setX(this.getX() + speed);
+        shootingPosition.x += speed;
     }
 }

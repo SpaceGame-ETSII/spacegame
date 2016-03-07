@@ -6,46 +6,78 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Cannon;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
 
 public class OrangeEnemy extends Enemy {
 
+    // Enumerado para mayor comprensión de los estados por los que pasa el enemigo naranaj
     private enum OrangeEnemyState{
-        OPENING_SHIELD, SHIELD_OPENED, CLOSING_SHIELD, NONE
+        OPENING_SHIELD, SHIELD_OPENED, CLOSING_SHIELD, READY, APPEAR
     }
 
+    // Frecuencia de inicio de las ráfagas de los cañones secundarios
     private static final float  FREQUENCY_OF_BURST = 4f;
+    // Frecuencia de disparo de cada ráfaga
     private static final float  FREQUENCY_OF_SHOOTING = 0.9f;
-    private static final int    NUMBER_OF_SHOOTS = 3;
+    // Número de disparos máximo con los que contaremos cada ráfaga
+    private static final int    MAX_OF_SHOOTS_SECUNDARY_CANNON = 3;
+    // Frecuencia de tiempo de carga para el disparo del cañon principal
     private static final float  FREQUENCY_OF_SHOOT_MAIN_CANNON = 6f;
+    // Maxima velocidad del efecto de particulas que se encarga del efecto de carga
     private static final int    MAXIMUM_VELOCITY_CHARGING_EFFECT = 50;
-    private final float         INITIAL_X_SHIELD;
-    private static final int    MAXIMUM_NUMBER_SHOOTS = 25;
+    // Posicion relativa del escudo con respecto al main Body
+    private final float         SHIELD_OFFSET_X;
+    // Número de disparos máximo con los que contaremos en la ráfaga del cañon principal
+    private static final int    MAX_OF_SHOOTS_MAIN_CANNON = 25;
+    // Cantidad a restar al tiempo de carga cuando un disparo golpee al enemigo
+    private static final double AMOUNT_TO_SUBSTRACT_TIME_CHARGING_MAIN_CANNON = 0.3;
+    // Velocidad de aparición
+    private static final int    APPEAR_SPEED = 30;
+    // Posición limite de aparición relativa a la posición del cañon principal
+    private static final int    APPEAR_POSITION = 580;
 
+    // Tiempo de carga del cañon principal
     private float   timeChargingMainCannon;
+    // Tiempo de ráfaga de disparo
     private float   timeToBurst;
+    // Tiempo de disparo dentro de cada ráfaga
     private float   timeToShoot;
 
+    // Número de bolas de fuego disparadas
     private int     shootsFired;
+    // Número de ráfagas producidas
     private int     burstsFired;
+    // Cañon seleccionado para iniciar la ráfaga de disparo
     private int     selectedCannonToFire;
 
+    // Variable de control para saber si disparamos o no el cañon principal
     private boolean shootMainCannon;
+    // Variable de control para saber en que estado actual se encuentra el enemigo
     private OrangeEnemyState orangeEnemyState;
 
+    // Su escudo
     private PartOfEnemy shield;
+    // Su cuerpo (parte derecha y centro)
     private PartOfEnemy body;
+    // Su cuerpo (parte arriba izquierda)
     private PartOfEnemy body_aux_up;
+    // Su cuerpo (parte abajo izquierda)
     private PartOfEnemy body_aux_bottom;
 
+    // Cañon superior izquierda
     private Cannon cannonUpperLeft;
+    // Cañon superior derecha
     private Cannon cannonUpperRight;
 
+    // Cañon inferior izquierda
     private Cannon cannonLowerLeft;
+    // Cañon inferior derecha
     private Cannon cannonLowerRight;
 
+    // Efecto de partículas encargado del efecto de carga y de disparo del cañon principal
     private ParticleEffect chargeMainCannonEffect;
 
     public OrangeEnemy(int x, int y) {
@@ -53,23 +85,28 @@ public class OrangeEnemy extends Enemy {
 
         chargeMainCannonEffect = AssetsManager.loadParticleEffect("orange_main_cannon_charging");
 
+        // Creación y posicionamiento del cuerpo
         body = new PartOfEnemy("orange_enemy_body",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false);
         body.setX(x + getWidth()/2);
         body.setY((y+getHeight()/2)-body.getHeight()/2);
 
+        // Creación y posicionamiento del cuerpo (arriba izquierda)
         body_aux_up = new PartOfEnemy("orange_enemy_body_aux_up",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false);
         body_aux_up.setX(body.getX()-65);
         body_aux_up.setY(body.getY()+getHeight() + body_aux_up.getHeight() + 10);
 
+        // Creación y posicionamiento del cuerpo (abajo izquierda)
         body_aux_bottom = new PartOfEnemy("orange_enemy_body_aux_bottom",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false);
         body_aux_bottom.setX(body_aux_up.getX());
         body_aux_bottom.setY(body.getY() - body_aux_up.getHeight()/2 + 40);
 
+        // Creación y posicionamiento del escudo
         shield = new PartOfEnemy("orange_enemy_shield",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false);
         shield.setX(body.getX() - 79);
-        INITIAL_X_SHIELD = shield.getX();
-        shield.setY(body.getY()+body.getHeight()/2 - shield.getHeight()/2 + 2);
+        SHIELD_OFFSET_X = 79;
+        shield.setY(body.getY()+body.getHeight()/2 - shield.getHeight()/2 + 1);
 
+        // Creación y posicionamiento de los cañones
         float xPosition = body.getX() - 30;
         float yPosition = body.getY() + body.getHeight()/2 + 90;
 
@@ -89,12 +126,14 @@ public class OrangeEnemy extends Enemy {
         cannonLowerRight = new Cannon(xPosition, yPosition, this, xPosition+10, yPosition+10, 270);
 
         resetStates();
+        orangeEnemyState = OrangeEnemyState.APPEAR;
 
         super.updateParticleEffect();
         chargeMainCannonEffect.getEmitters().first().setPosition(this.getX()-10,this.getY()+this.getHeight()/2);
         chargeMainCannonEffect.start();
     }
 
+    // Método usado para resetear todas las variables de control y de estados
     private void resetStates(){
         timeToBurst             = 0;
         timeToShoot             = 0;
@@ -103,7 +142,6 @@ public class OrangeEnemy extends Enemy {
         timeChargingMainCannon  = 0;
         selectedCannonToFire    = 0;
 
-        orangeEnemyState = OrangeEnemyState.NONE;
         shootMainCannon = false;
     }
 
@@ -111,18 +149,26 @@ public class OrangeEnemy extends Enemy {
         super.update(delta);
         super.updateParticleEffect();
 
+        // Preguntamos cual es el estado por el que está pasando el enemigo
         switch(orangeEnemyState){
             case OPENING_SHIELD:
+                // Abrimos el escudo
                 shield.setX(shield.getX() + 10*delta);
                 if(shield.getX() >= body.getX()){
                     orangeEnemyState = OrangeEnemyState.SHIELD_OPENED;
                 }
+                // Seguimos disparando los cañones secundarios
                 shootSecondaryCannonBurst(delta);
                 break;
             case SHIELD_OPENED:
                 chargeMainCannonEffect.update(delta);
+                // Si no hay que disparar el cañon principal
                 if(!shootMainCannon){
+                    // Cargamos el cañon
                     if(timeChargingMainCannon >= FREQUENCY_OF_SHOOT_MAIN_CANNON){
+                        // El cañon está cargado y preparamos las variables que vamos a necesitar
+                        // para disparar el cañon principal
+                        // reutilizaremos el proceso de ráfaga de los cañones secundarios
                         shootMainCannon = true;
                         timeToBurst=0;
                         timeToShoot=0;
@@ -130,36 +176,63 @@ public class OrangeEnemy extends Enemy {
                         burstsFired=0;
                     }else{
                         timeChargingMainCannon+=delta;
+                        // Aumentamos la velocidad del efecto de particulas
+                        // para dar una sensación de "engorde" conforme pasa el tiempo
+                        // v = 10 + ( (tiempoActual * MaximaVelocidad) / frecuenciaDeEspera )
                         chargeMainCannonEffect.getEmitters().first().getVelocity().setHigh(10+((timeChargingMainCannon*MAXIMUM_VELOCITY_CHARGING_EFFECT)/(FREQUENCY_OF_SHOOT_MAIN_CANNON)));
                     }
                 }else{
-                    chargeMainCannonEffect.getEmitters().first().getVelocity().setHigh((( ( (MAXIMUM_NUMBER_SHOOTS - (shootsFired + 1)) * MAXIMUM_VELOCITY_CHARGING_EFFECT) / MAXIMUM_NUMBER_SHOOTS) ));
+                    // Disminuimos la velocidad del efecto de particulas
+                    // para dar una sensación de que está gastando toda su energia en los disparos
+                    // v = ( cantidadDisparosMaxima - (disparosProducidos + 1) * MaximaVelocidad ) / cantidadDisparosMaxima
+                    chargeMainCannonEffect.getEmitters().first().getVelocity().setHigh((( ( (MAX_OF_SHOOTS_MAIN_CANNON - (shootsFired + 1)) * MAXIMUM_VELOCITY_CHARGING_EFFECT) / MAX_OF_SHOOTS_MAIN_CANNON) ));
+                    // Disparamos
                     this.shoot(delta);
                 }
                 break;
             case CLOSING_SHIELD:
+                // Cerramos el escudo
                 shield.setX(shield.getX() - 10*delta);
-                if(shield.getX() <= INITIAL_X_SHIELD){
-                    shield.setX(INITIAL_X_SHIELD);
+                if(shield.getX() <= (body.getX() - SHIELD_OFFSET_X) ){
+                    shield.setX(body.getX() - SHIELD_OFFSET_X);
+                    // Una vez cerrado reseteamos las variables
                     resetStates();
+                    orangeEnemyState = OrangeEnemyState.READY;
                 }
                 break;
-            case NONE:
+            case READY:
+                // Si no estamos aún en ningun estado de transición
+                // Disparamos los cañones secundarios
                 shootSecondaryCannonBurst(delta);
+                // Si ya hemos producido tres rafagas
                 if(burstsFired >= 3){
+                    // Abrimos el escudo
                     orangeEnemyState = OrangeEnemyState.OPENING_SHIELD;
                 }
+                break;
+            case APPEAR:
+                // Tenemos que hacer aparecer al enemigo
+                if(this.getX() > APPEAR_POSITION)
+                    moveEnemyWithAppearSpeed(delta);
+                else
+                // Si ya hemos alcanzado la posición, el enemigo está listo para actuar
+                    orangeEnemyState = OrangeEnemyState.READY;
                 break;
         }
     }
 
     private void shoot(float delta){
+        // Si se ha cumplido el tiempo de disparo
+        // (el tiempo de disparo para el cañon principal
+        // es la quinta parte que la del cañon secundario)
         if(timeToShoot >= FREQUENCY_OF_SHOOTING/5){
             float angle = MathUtils.random(110,250);
             ShootsManager.shootOneOrangeWeapon(this,(int)(getX() - this.getWidth()/2 +5),(int)(this.getY()+this.getHeight()/2),angle,ShootsManager.ship);
             timeToShoot=0;
             shootsFired++;
-            if(shootsFired>= MAXIMUM_NUMBER_SHOOTS){
+            // Si hemos disparado ya todas las bolas de fuego
+            if(shootsFired>= MAX_OF_SHOOTS_MAIN_CANNON){
+                // Empezamos a cerrar el escudo
                 shootMainCannon=false;
                 orangeEnemyState = OrangeEnemyState.CLOSING_SHIELD;
                 timeChargingMainCannon = 0;
@@ -176,7 +249,7 @@ public class OrangeEnemy extends Enemy {
                 selectedCannonToFire = MathUtils.random(1,4);
             // Dentro de cada ráfaga esperamos a que sea el momento de cada disparo
             if(timeToShoot > FREQUENCY_OF_SHOOTING){
-                // Disparamos siguiendo un patrón aleatorio entre los 4 cañones
+                // Disparamos según que cañon fue seleccionado
                 switch (selectedCannonToFire){
                     case 1:
                         cannonUpperLeft.shoot();
@@ -193,7 +266,10 @@ public class OrangeEnemy extends Enemy {
                 }
                 shootsFired++;
                 timeToShoot = 0;
-                if(shootsFired >= NUMBER_OF_SHOOTS){
+                // Si ya hemos disparado todas las bolas de fuego
+                if(shootsFired >= MAX_OF_SHOOTS_SECUNDARY_CANNON){
+                    // Reseteamos para empezar una nueva ráfaga e incrementamos
+                    // el número de ráfagas disparadas
                     selectedCannonToFire = 0;
                     shootsFired = 0;
                     burstsFired++;
@@ -209,15 +285,56 @@ public class OrangeEnemy extends Enemy {
 
     public void render(SpriteBatch batch) {
         super.render(batch);
+        // Solo si el escudo está abierto se visualizará el efecto de carga
         if(orangeEnemyState.equals(OrangeEnemyState.SHIELD_OPENED))
             chargeMainCannonEffect.draw(batch);
     }
 
     public void collideWithShoot(Shoot shoot) {
+        // para cada disparo, independientemente del que sea, quitará 1 de vida
+        // Pero como veremos mas adelante, solo el arma naranja proporciona la supervivencia
+        // de la nave
         super.damage(1);
-        timeChargingMainCannon-=0.2;
+        // Con cada golpe del shoot, restamos en un valor el tiempo de carga del cañon principal
+        // retrasando así nuestra muerte
+        timeChargingMainCannon-=AMOUNT_TO_SUBSTRACT_TIME_CHARGING_MAIN_CANNON;
+        // Si los daños han sido suficientes (20 golpes) directamente cerramos el escudo sin
+        // que se haya disparado el cañon principal
         if(this.getVitality()%20 == 0)
             orangeEnemyState = OrangeEnemyState.CLOSING_SHIELD;
+    }
+
+    private void moveEnemyWithAppearSpeed(float delta){
+        this.setX(this.getX() - APPEAR_SPEED*delta);
+
+        shield.setX(shield.getX() - APPEAR_SPEED*delta);
+
+        body.setX(body.getX() - APPEAR_SPEED*delta);
+        body_aux_up.setX(body_aux_up.getX() - APPEAR_SPEED*delta);
+        body_aux_bottom.setX(body_aux_bottom.getX() - APPEAR_SPEED*delta);
+
+        cannonLowerLeft.move(-APPEAR_SPEED*delta);
+        cannonUpperLeft.move(-APPEAR_SPEED*delta);
+        cannonLowerRight.move(-APPEAR_SPEED*delta);
+        cannonUpperRight.move(-APPEAR_SPEED*delta);
+
+        chargeMainCannonEffect.getEmitters().first().setPosition(this.getX()-10,this.getY()+this.getHeight()/2);
+    }
+
+    public void changeToDeletable() {
+        super.changeToDeletable();
+
+        shield.changeToDeletable();
+
+        body.changeToDeletable();
+        body_aux_bottom.changeToDeletable();
+        body_aux_up.changeToDeletable();
+
+        cannonLowerLeft.changeToDeletable();
+        cannonLowerRight.changeToDeletable();
+
+        cannonUpperLeft.changeToDeletable();
+        cannonUpperRight.changeToDeletable();
     }
 
     public PartOfEnemy getShield(){
