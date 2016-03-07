@@ -54,7 +54,7 @@ public class DemoMenuScreen implements Screen {
 
         // Pintamos el fondo y el título del juego
         SpaceGame.batch.draw(background, 0,0);
-        FontManager.drawText(SpaceGame.batch, FontManager.text, "titleDemo", 229, 420);
+        FontManager.drawText("titleDemo", 229, 420);
 
         // Delegamos el render de los botones
         allEnemies.render(SpaceGame.batch);

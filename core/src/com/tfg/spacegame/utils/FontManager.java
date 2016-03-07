@@ -4,7 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.tfg.spacegame.SpaceGame;
 
 public class FontManager {
 
@@ -33,8 +38,12 @@ public class FontManager {
         bundle = AssetsManager.loadBundle();
     }
 
-    public static void drawText(SpriteBatch batch, BitmapFont font, String string, float x, float y){
-        font.draw(batch,bundle.get(string),x,y);
+    public static void drawText(String string, float x, float y){
+        text.draw(SpaceGame.batch,bundle.get(string),x,y);
+    }
+
+    public static void drawTitle(String string, float x, float y){
+        title.draw(SpaceGame.batch,bundle.get(string),x,y);
     }
 
     public static String getFromBundle(String string) {

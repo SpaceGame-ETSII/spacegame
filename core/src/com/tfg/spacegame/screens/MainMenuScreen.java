@@ -54,7 +54,7 @@ public class MainMenuScreen implements Screen {
 
         // Pintamos el fondo y el título del juego
         SpaceGame.batch.draw(background, 0,0);
-        FontManager.drawText(SpaceGame.batch, FontManager.title, "titleGame", 229, 420);
+        FontManager.drawTitle("titleGame", 229, 420);
 
         // Delegamos el render de los botones
         campaign.render(SpaceGame.batch);

@@ -63,7 +63,7 @@ public class Button extends GameObject {
         }
 
         if (content != null) {
-            FontManager.drawText(SpaceGame.batch, FontManager.text,content,contentX,contentY);
+            FontManager.drawText(content,contentX,contentY);
         }
     }
 
