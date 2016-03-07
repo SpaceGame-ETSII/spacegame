@@ -142,6 +142,10 @@ public class Enemy extends GameObject {
     public void collideWithShoot(Shoot shoot) {
     }
 
+    public int getVitality(){
+        return vitality;
+    }
+
     //Usado para activar o desactivar el efecto de localización
     public void setTargettedByShip(boolean b){
         targettedByShip = b;

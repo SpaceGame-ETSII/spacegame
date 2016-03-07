@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
-import com.tfg.spacegame.gameObjects.enemies.Type2;
-import com.tfg.spacegame.gameObjects.enemies.Type3;
-import com.tfg.spacegame.gameObjects.enemies.Type4;
+import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.enemies.*;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 
@@ -41,7 +40,9 @@ public class GameObject {
 
         float[] vertices = SpaceGame.loadShape(textureName);
 
+
         if(vertices == null){
+
             vertices = new float[8];
 
             vertices[0] = 0;
@@ -58,11 +59,11 @@ public class GameObject {
         }
         logicShape = new Polygon(vertices);
 
+        logicShape.setPosition(x,y);
+
         this.loadWidthAndHeight();
         this.relocateCenter();
         this.calculateRadio();
-
-        logicShape.setPosition(x,y);
     }
 
     private void loadWidthAndHeight(){
@@ -94,7 +95,9 @@ public class GameObject {
         height = heightGreaterPoint - heightLowestPoint;
     }
 
+
     public void relocateCenter() {
+
         center.set(this.getX() + (this.getWidth() / 2),
                    this.getY() + (this.getHeight() / 2));
     }
@@ -165,7 +168,6 @@ public class GameObject {
 
     public void render(SpriteBatch batch){
         batch.draw(texture, getX(), getY());
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(),Color.BLUE);
     }
 
     //Método para printar un objeto rotando N grados su textura
