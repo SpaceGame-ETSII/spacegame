@@ -83,7 +83,7 @@ public class OrangeEnemy extends Enemy {
     private ParticleEffect chargeMainCannonEffect;
 
     public OrangeEnemy(int x, int y) {
-        super("orange_enemy", x, y, 1, AssetsManager.loadParticleEffect("orange_enemy_defeated"));
+        super("orange_enemy", x, y, 60, AssetsManager.loadParticleEffect("orange_enemy_defeated"));
 
         chargeMainCannonEffect = AssetsManager.loadParticleEffect("orange_main_cannon_charging");
 
