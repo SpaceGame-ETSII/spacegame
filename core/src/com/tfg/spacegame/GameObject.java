@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
-import com.tfg.spacegame.gameObjects.enemies.Type2;
-import com.tfg.spacegame.gameObjects.enemies.Type3;
-import com.tfg.spacegame.gameObjects.enemies.Type4;
+import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.enemies.*;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 
@@ -41,7 +40,9 @@ public class GameObject {
 
         float[] vertices = SpaceGame.loadShape(textureName);
 
+
         if(vertices == null){
+
             vertices = new float[8];
 
             vertices[0] = 0;
@@ -58,11 +59,11 @@ public class GameObject {
         }
         logicShape = new Polygon(vertices);
 
+        logicShape.setPosition(x,y);
+
         this.loadWidthAndHeight();
         this.relocateCenter();
         this.calculateRadio();
-
-        logicShape.setPosition(x,y);
     }
 
     private void loadWidthAndHeight(){
@@ -94,7 +95,9 @@ public class GameObject {
         height = heightGreaterPoint - heightLowestPoint;
     }
 
+
     public void relocateCenter() {
+
         center.set(this.getX() + (this.getWidth() / 2),
                    this.getY() + (this.getHeight() / 2));
     }
@@ -184,9 +187,9 @@ public class GameObject {
         float totalRadios = this.getRadio() + g.getRadio();
 
         //Solo se comprueba la colisión si la distancia entre los centros es menor a la suma de los radios
-        if (distance < totalRadios) {
+        if (distance < totalRadios)
             result = Intersector.overlapConvexPolygons(this.getLogicShape(), g.getLogicShape());
-        }
+
         return result;
     }
 

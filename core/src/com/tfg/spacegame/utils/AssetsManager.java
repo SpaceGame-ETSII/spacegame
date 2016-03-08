@@ -37,6 +37,8 @@ public class AssetsManager {
         assetsReferences.put("blue_enemy", enemiesFolder+"azul.png");
         assetsReferences.put("orange_enemy", enemiesFolder+"enemigo_naranja_canon_principal.png");
         assetsReferences.put("orange_enemy_body", enemiesFolder+"enemigo_naranja_cuerpo.png");
+        assetsReferences.put("orange_enemy_body_aux_up", enemiesFolder+"enemigo_naranja_cuerpo_aux_superior.png");
+        assetsReferences.put("orange_enemy_body_aux_bottom", enemiesFolder+"enemigo_naranja_cuerpo_aux_inferior.png");
         assetsReferences.put("orange_enemy_shield", enemiesFolder+"enemigo_naranja_escudo.png");
         assetsReferences.put("orange_enemy_cannon", enemiesFolder+"enemigo_naranja_canon_secundario.png");
         assetsReferences.put("green_body", enemiesFolder+"verde_body.png");
@@ -117,9 +119,11 @@ public class AssetsManager {
         assetsReferences.put("purple_shoot_effect_shoot", particlesFolder + "arma_morada_efecto_disparo");
         assetsReferences.put("purple_effect_shock", particlesFolder + "arma_morada_efecto_choque");
         assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
-        assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
         assetsReferences.put("orange_shoot_effect_shock", particlesFolder + "arma_naranja_efecto_choque");
         assetsReferences.put("orange_shoot_effect_shoot", particlesFolder + "arma_naranja_efecto_disparo");
+        assetsReferences.put("orange_enemy_defeated", particlesFolder + "enemigo_naranja_derrotado");
+        assetsReferences.put("orange_main_cannon_charging", particlesFolder + "enemigo_naranja_efecto_cannon_principal");
+        assetsReferences.put("orange_secondary_cannon_disabled", particlesFolder + "enemigo_naranja_cannon_secundario_inhabilitado");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");

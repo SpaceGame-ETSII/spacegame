@@ -11,7 +11,7 @@ public class PartOfEnemy extends Enemy {
     private Enemy father;
 
     //Indica si esta parte daña al enemigo padre
-    private boolean damageable;
+    public boolean damageable;
 
     public PartOfEnemy(String texture, int x, int y, int vitality, ParticleEffect particleEffect, Enemy father, boolean damageable) {
         super(texture, x, y, vitality, particleEffect);

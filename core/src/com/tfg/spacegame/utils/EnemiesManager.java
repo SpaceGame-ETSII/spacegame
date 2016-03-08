@@ -49,7 +49,6 @@ public class EnemiesManager {
     public static void manageCollisionWithShoot(Pair<Shoot, Enemy> shootToEnemy) {
         Shoot shoot = shootToEnemy.getFirst();
         Enemy enemy = shootToEnemy.getSecond();
-
         enemy.collideWithShoot(shoot);
     }
 
