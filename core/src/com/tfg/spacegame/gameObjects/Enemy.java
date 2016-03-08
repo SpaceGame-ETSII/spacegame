@@ -146,6 +146,9 @@ public class Enemy extends GameObject {
         return vitality;
     }
 
+    public void setVitality(int v){
+        vitality = v;
+    }
     //Usado para activar o desactivar el efecto de localización
     public void setTargettedByShip(boolean b){
         targettedByShip = b;

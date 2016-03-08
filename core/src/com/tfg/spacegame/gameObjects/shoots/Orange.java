@@ -13,27 +13,36 @@ import com.tfg.spacegame.utils.AssetsManager;
 
 public class Orange extends Shoot{
 
+    // Constantes de velocidad de movimiento del arma naranja
     private final float SPEEDX;
     private final float SPEEDY;
-    private final float HIGHSPEEDX;
-    private final float HIGHSPEEDY;
 
+    // Constantes de velocidad angular en el arma naranja
     private final float SPEEDANGLE;
-
     private final float HIGHSPEEDANGLE;
 
-    private final float LIMIT_TO_CHANGE_ANGLE;
+    // Máximo tiempo en el que irá rapidamente el arma naranja
+    private final float MAX_TIME_GOING_HIGH_SPEED;
 
-    private float distanceFromOrigin;
+    // Velocidad angular actual
+    private float actualSpeedAngle;
 
-    //Efecto de particulas de este disparo
+    // Tiempo actual durante el cual el movimiento angular será rápido
+    private float timeGoingFast;
+
+    // Efecto de particulas de este disparo
     private ParticleEffect shoot;
 
+    // Angulo objetivo
     private float targetAngle;
+
+    // Angulo actual
     private float actualAngle;
 
-    private Vector2 movement;
+    // Vector Origen-Destino
+    private Vector2 ODVector;
 
+    // GameObject objetivo
     private GameObject target;
 
     public Orange(GameObject shooter, int x, int y, float angle, GameObject target) {
@@ -46,30 +55,33 @@ public class Orange extends Shoot{
 
         this.target = target;
 
-        movement = new Vector2();
+        ODVector = new Vector2();
 
         super.updateParticleEffect();
 
         actualAngle = angle;
 
-        distanceFromOrigin = 0;
+        timeGoingFast = 0;
 
+        // Dependiendo si es el Ship o si es el Enemy
+        // tendrá una configuración distinta
+        // ya que el enemy tendrá que girar mas rápidamente al inicio.
         if(getShooter() instanceof Ship){
-            LIMIT_TO_CHANGE_ANGLE = 50;
+            MAX_TIME_GOING_HIGH_SPEED = 0.4f;
             SPEEDX=150;
             SPEEDY=150;
-            HIGHSPEEDY = HIGHSPEEDX = 250;
             SPEEDANGLE = 0.7f;
-            HIGHSPEEDANGLE = 0.7f;
+            HIGHSPEEDANGLE = 0.0f;
         }else{
-            LIMIT_TO_CHANGE_ANGLE = 100;
+            MAX_TIME_GOING_HIGH_SPEED = 1.3f;
             SPEEDANGLE = 0.8f;
-            HIGHSPEEDANGLE = 1.7f;
+            HIGHSPEEDANGLE = 2.3f;
             SPEEDX=250;
             SPEEDY=150;
-            HIGHSPEEDX = 400;
-            HIGHSPEEDY = 100;
         }
+
+        // Al principio la velocidad angular es la rápida
+        actualSpeedAngle = HIGHSPEEDANGLE;
     }
     public void update(float delta){
         super.update(delta);
@@ -80,43 +92,48 @@ public class Orange extends Shoot{
         shoot.getEmitters().first().setPosition(this.getX()+this.getWidth()/2,this.getY()+this.getHeight()/2);
 
         if(!isShocked()){
-            if(distanceFromOrigin >= LIMIT_TO_CHANGE_ANGLE){
-
-                if(calculateDiffAngle() < 0 )
-                    actualAngle-=SPEEDANGLE;
-                else
-                    actualAngle+=SPEEDANGLE;
-
-                this.setX(this.getX()+ SPEEDX * delta * MathUtils.cosDeg(actualAngle) );
-                this.setY(this.getY()+ SPEEDY * delta * MathUtils.sinDeg(actualAngle) );
-            }else{
-                distanceFromOrigin+= Math.abs(HIGHSPEEDX * delta * MathUtils.cosDeg(actualAngle));
-
-                if(getShooter() instanceof Enemy){
-                    if(calculateDiffAngle() < 0 )
-                        actualAngle-=HIGHSPEEDANGLE;
-                    else
-                        actualAngle+=HIGHSPEEDANGLE;
+            // Si ha pasado el tiempo en el que debemos girar rapidamente y la velocidad angular
+            // no es la velocidad angular normal
+            if(timeGoingFast >= MAX_TIME_GOING_HIGH_SPEED && actualSpeedAngle != SPEEDANGLE){
+                // Vamos modificando la velocidad angular dependiendo de si tenemos que sumar o restar
+                if(actualSpeedAngle < SPEEDANGLE){
+                    actualSpeedAngle +=0.1f;
+                }else{
+                    actualSpeedAngle -=0.1f;
                 }
 
-                this.setX(this.getX()+ HIGHSPEEDX * delta * MathUtils.cosDeg(actualAngle));
-                this.setY(this.getY() + HIGHSPEEDY * delta * MathUtils.sinDeg(actualAngle));
+            }else{
+                timeGoingFast+=delta;
             }
+
+            // Calculamos la diferencia de angulo entre el objetivo y nosotros
+            // y dependiendo de si es mayor o menor sumamos
+            if(calculateDiffAngle() < 0 )
+                actualAngle-=actualSpeedAngle;
+            else
+                actualAngle+=actualSpeedAngle;
+
+            // Movemos el arma naranja
+            this.setX(this.getX()+ SPEEDX * delta * MathUtils.cosDeg(actualAngle) );
+            this.setY(this.getY()+ SPEEDY * delta * MathUtils.sinDeg(actualAngle) );
         }
 
 
     }
 
     private float calculateDiffAngle(){
+        // Posicion actual del arma naranja
         float x1 = this.getX() + this.getWidth()/2;
         float y1 = this.getY() + this.getHeight()/2;
 
+        // Posición objetivo
         float x2 = target.getX() + target.getWidth()/2;
         float y2 = target.getY() + target.getHeight()/2;
 
-        movement.set( x2-x1 , y2-y1 );
+        // Calculo del vector origen-destino
+        ODVector.set( x2-x1 , y2-y1 );
 
-        targetAngle = movement.angle();
+        targetAngle = ODVector.angle();
 
         if(getShooter() instanceof Ship && targetAngle >=180)
             targetAngle-=360;

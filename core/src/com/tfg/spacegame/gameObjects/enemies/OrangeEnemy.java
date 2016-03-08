@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Cannon;
+import com.tfg.spacegame.gameObjects.shoots.Orange;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
@@ -19,11 +20,11 @@ public class OrangeEnemy extends Enemy {
     }
 
     // Frecuencia de inicio de las ráfagas de los cañones secundarios
-    private static final float  FREQUENCY_OF_BURST = 4f;
+    private static final float  FREQUENCY_OF_BURST = 3f;
     // Frecuencia de disparo de cada ráfaga
     private static final float  FREQUENCY_OF_SHOOTING = 0.9f;
     // Número de disparos máximo con los que contaremos cada ráfaga
-    private static final int    MAX_OF_SHOOTS_SECUNDARY_CANNON = 3;
+    private static final int    MAX_OF_SHOOTS_SECUNDARY_CANNON = 5;
     // Frecuencia de tiempo de carga para el disparo del cañon principal
     private static final float  FREQUENCY_OF_SHOOT_MAIN_CANNON = 6f;
     // Maxima velocidad del efecto de particulas que se encarga del efecto de carga
@@ -31,13 +32,14 @@ public class OrangeEnemy extends Enemy {
     // Posicion relativa del escudo con respecto al main Body
     private final float         SHIELD_OFFSET_X;
     // Número de disparos máximo con los que contaremos en la ráfaga del cañon principal
-    private static final int    MAX_OF_SHOOTS_MAIN_CANNON = 25;
+    private static final int    MAX_OF_SHOOTS_MAIN_CANNON = 30;
     // Cantidad a restar al tiempo de carga cuando un disparo golpee al enemigo
     private static final double AMOUNT_TO_SUBSTRACT_TIME_CHARGING_MAIN_CANNON = 0.3;
     // Velocidad de aparición
     private static final int    APPEAR_SPEED = 30;
     // Posición limite de aparición relativa a la posición del cañon principal
     private static final int    APPEAR_POSITION = 580;
+    private Array<Integer> aviableSecondaryCannons = new Array<Integer>();
 
     // Tiempo de carga del cañon principal
     private float   timeChargingMainCannon;
@@ -127,6 +129,8 @@ public class OrangeEnemy extends Enemy {
 
         resetStates();
         orangeEnemyState = OrangeEnemyState.APPEAR;
+
+        aviableSecondaryCannons = new Array<Integer>();
 
         super.updateParticleEffect();
         chargeMainCannonEffect.getEmitters().first().setPosition(this.getX()-10,this.getY()+this.getHeight()/2);
@@ -246,7 +250,7 @@ public class OrangeEnemy extends Enemy {
         // Esperamos a que sea el momento de iniciar una ráfaga
         if(timeToBurst > FREQUENCY_OF_BURST){
             if(selectedCannonToFire == 0)
-                selectedCannonToFire = MathUtils.random(1,4);
+                selectCannonToFire();
             // Dentro de cada ráfaga esperamos a que sea el momento de cada disparo
             if(timeToShoot > FREQUENCY_OF_SHOOTING){
                 // Disparamos según que cañon fue seleccionado
@@ -291,17 +295,19 @@ public class OrangeEnemy extends Enemy {
     }
 
     public void collideWithShoot(Shoot shoot) {
-        // para cada disparo, independientemente del que sea, quitará 1 de vida
-        // Pero como veremos mas adelante, solo el arma naranja proporciona la supervivencia
-        // de la nave
-        super.damage(1);
-        // Con cada golpe del shoot, restamos en un valor el tiempo de carga del cañon principal
-        // retrasando así nuestra muerte
-        timeChargingMainCannon-=AMOUNT_TO_SUBSTRACT_TIME_CHARGING_MAIN_CANNON;
-        // Si los daños han sido suficientes (20 golpes) directamente cerramos el escudo sin
-        // que se haya disparado el cañon principal
-        if(this.getVitality()%20 == 0)
-            orangeEnemyState = OrangeEnemyState.CLOSING_SHIELD;
+        if(shoot instanceof Orange) {
+            // para cada disparo, independientemente del que sea, quitará 1 de vida
+            // Pero como veremos mas adelante, solo el arma naranja proporciona la supervivencia
+            // de la nave
+            super.damage(1);
+            // Con cada golpe del shoot, restamos en un valor el tiempo de carga del cañon principal
+            // retrasando así nuestra muerte
+            timeChargingMainCannon -= AMOUNT_TO_SUBSTRACT_TIME_CHARGING_MAIN_CANNON;
+            // Si los daños han sido suficientes (20 golpes) directamente cerramos el escudo sin
+            // que se haya disparado el cañon principal
+            if (this.getVitality() % 20 == 0)
+                orangeEnemyState = OrangeEnemyState.CLOSING_SHIELD;
+        }
     }
 
     private void moveEnemyWithAppearSpeed(float delta){
@@ -319,6 +325,21 @@ public class OrangeEnemy extends Enemy {
         cannonUpperRight.move(-APPEAR_SPEED*delta);
 
         chargeMainCannonEffect.getEmitters().first().setPosition(this.getX()-10,this.getY()+this.getHeight()/2);
+    }
+
+    private void selectCannonToFire(){
+        if(!cannonUpperLeft.isDisable())
+            aviableSecondaryCannons.add(1);
+        if(!cannonUpperRight.isDisable())
+            aviableSecondaryCannons.add(2);
+        if(!cannonLowerLeft.isDisable())
+            aviableSecondaryCannons.add(3);
+        if(!cannonLowerRight.isDisable())
+            aviableSecondaryCannons.add(4);
+
+        selectedCannonToFire = aviableSecondaryCannons.random();
+
+        aviableSecondaryCannons.clear();
     }
 
     public void changeToDeletable() {

@@ -271,13 +271,15 @@ public class ShootsManager {
 
     public static void shootBurstOrangeWeapon(GameObject shooter, float x, float y) {
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
-        if(enemy != null && isShipReadyToShoot(TypeWeapon.ORANGE)){
+        if(enemy != null && isShipReadyToShoot(TypeWeapon.ORANGE) && enemy.isDamagable()){
             numberOfBasicShoots = 12;
             startPoint = 0;
             typeToBurst = TypeWeapon.ORANGE;
             burstTarget = enemy;
             aparitionFactor = 1.0;
             enemy.setTargettedByShip(true);
+        }else if(enemy == null){
+
         }
     }
 

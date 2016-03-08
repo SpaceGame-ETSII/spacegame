@@ -123,6 +123,7 @@ public class AssetsManager {
         assetsReferences.put("orange_shoot_effect_shock", particlesFolder + "arma_naranja_efecto_choque");
         assetsReferences.put("orange_shoot_effect_shoot", particlesFolder + "arma_naranja_efecto_disparo");
         assetsReferences.put("orange_main_cannon_charging", particlesFolder + "enemigo_naranja_efecto_cannon_principal");
+        assetsReferences.put("orange_secondary_cannon_disabled", particlesFolder + "enemigo_naranja_cannon_secundario_inhabilitado");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
