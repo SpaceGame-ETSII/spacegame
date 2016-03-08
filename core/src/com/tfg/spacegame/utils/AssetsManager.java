@@ -48,7 +48,7 @@ public class AssetsManager {
         assetsReferences.put("red", othersFolder+"rojo.png");
         assetsReferences.put("yellow", othersFolder+"amarillo.png");
         assetsReferences.put("blue", othersFolder+"azul.png");
-        assetsReferences.put("button", othersFolder+"button.jpg");
+        assetsReferences.put("button", othersFolder+"button.png");
         assetsReferences.put("buttonExit", othersFolder+"button_exit.jpg");
         assetsReferences.put("buttonCancel", othersFolder+"button_cancel.png");
         assetsReferences.put("buttonConfirm", othersFolder+"button_confirm.png");
@@ -122,7 +122,11 @@ public class AssetsManager {
         assetsReferences.put("orange_shoot_effect_shoot", particlesFolder + "arma_naranja_efecto_disparo");
 
         //Assets referentes a los scripts de niveles
-        assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
+        assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");
+        assetsReferences.put("colorEnemies", levelScriptsFolder + "colorEnemies");
+        assetsReferences.put("greenEnemy", levelScriptsFolder + "greenEnemy");
+        assetsReferences.put("orangeEnemy", levelScriptsFolder + "orangeEnemy");
+        assetsReferences.put("purpleEnemy", levelScriptsFolder + "purpleEnemy");
 
         //Asset referente a la localización
         assetsReferences.put("bundle","localization/bundle");

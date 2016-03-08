@@ -6,17 +6,16 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
-import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 
 public class EnemiesManager {
 
     public static Array<Enemy> enemies;
     private static LevelGenerator level;
 
-    public static void load(){
+    public static void load(String scriptLevel){
         enemies = new Array<Enemy>();
 
-        level = LevelGenerator.loadLevel("scriptTest");
+        level = LevelGenerator.loadLevel(scriptLevel);
     }
 
     public static void update(float delta, Ship target){
