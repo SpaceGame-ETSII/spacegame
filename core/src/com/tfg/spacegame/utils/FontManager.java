@@ -46,6 +46,10 @@ public class FontManager {
         title.draw(SpaceGame.batch,bundle.get(string),x,y);
     }
 
+    public static void draw(String string, float x, float y) {
+        text.draw(SpaceGame.batch,string,x,y);
+    }
+
     public static String getFromBundle(String string) {
         return bundle.get(string);
     }
