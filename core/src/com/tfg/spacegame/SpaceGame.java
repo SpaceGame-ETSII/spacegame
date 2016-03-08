@@ -20,7 +20,7 @@ public class SpaceGame extends Game {
 	public static SpriteBatch batch;
 	// Con esto vamos a crear un entorno ortonormal 2d y añadirlo al spritebatch
 	public static OrthographicCamera camera;
-
+	// Sirve para permitir cambiar la orientación de la pantalla
 	public static Platform platform;
 
 	// Ancho y alto de la pantalla para la camara ortonormal
@@ -51,6 +51,22 @@ public class SpaceGame extends Game {
 
 	public void render() {
 		super.render();
+	}
+
+	//Convierte la pantalla en modo portrait
+	public static void changeToPortrait() {
+		platform.setOrientation("portrait");
+
+		int newWidth = height;
+		int newHeight = width;
+
+		width = newWidth;
+		height = newHeight;
+
+		Gdx.graphics.setDisplayMode(newWidth, newHeight, true);
+
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, SpaceGame.width, SpaceGame.height);
 	}
 
 	/**

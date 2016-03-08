@@ -1,22 +1,13 @@
 package com.tfg.spacegame;
 
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
-import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
-import com.tfg.spacegame.gameObjects.enemies.Type2;
-import com.tfg.spacegame.gameObjects.enemies.Type3;
-import com.tfg.spacegame.gameObjects.enemies.Type4;
 import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.ShapeRendererManager;
-
-import java.util.Arrays;
 
 public class GameObject {
 

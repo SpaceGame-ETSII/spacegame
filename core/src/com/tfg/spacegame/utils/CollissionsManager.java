@@ -1,9 +1,9 @@
 package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.utils.Array;
-import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
+import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
+import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 
 public class CollissionsManager {
 
@@ -16,7 +16,7 @@ public class CollissionsManager {
         shootsToShoots = new Array<Pair<Shoot, Shoot>>();
     }
 
-    public static void update(float delta, Ship ship) {
+    public static void update(float delta, CampaignShip ship) {
         //Arrays que harán de auxiliares para no sobreescribir las originales
         Array<Enemy> enemies = new Array<Enemy>(EnemiesManager.enemies);
         Array<Shoot> shoots = new Array<Shoot>(ShootsManager.shoots);
@@ -106,13 +106,13 @@ public class CollissionsManager {
     }
 
     //Gestiona una colisión de enemigo a la nave
-    private static void manageEnemyToShip(Enemy enemy, Ship ship) {
+    private static void manageEnemyToShip(Enemy enemy, CampaignShip ship) {
         ship.receiveDamage();
         EnemiesManager.manageCollisionWithShip(enemy);
     }
 
     //Gestiona una colisión de shoot a la nave
-    private static void manageShootToShip(Shoot shoot, Ship ship) {
+    private static void manageShootToShip(Shoot shoot, CampaignShip ship) {
         ship.receiveDamage();
         ShootsManager.manageCollisionWithShip(shoot);
     }

@@ -58,6 +58,7 @@ public class AssetsManager {
 
         //Texturas referentes a ships
         assetsReferences.put("ship", shipsFolder+"nave.png");
+        assetsReferences.put("arcadeShip", shipsFolder+"nave_arcade.png");
         assetsReferences.put("ship_red", shipsFolder+"nave_roja.png");
         assetsReferences.put("ship_blue", shipsFolder+"nave_azul.png");
         assetsReferences.put("ship_yellow", shipsFolder+"nave_amarilla.png");

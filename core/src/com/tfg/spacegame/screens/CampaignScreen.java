@@ -6,7 +6,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.gameObjects.*;
+import com.tfg.spacegame.gameObjects.Button;
+import com.tfg.spacegame.gameObjects.campaignMode.*;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
 
@@ -16,11 +17,11 @@ public class CampaignScreen extends GameScreen {
     private final SpaceGame game;
 
     //Objetos interactuables de la pantalla
-    private Ship ship;
+    private CampaignShip ship;
     private Inventary inventary;
     private DialogBox menuExitDialog;
 
-    //Ayudan con la posición de la ventana cuando se abre y se cierra el inventario
+    //Permiten la posición del fondo para realizar el scrolling
     private int scrollingPosition;
     private static final int SCROLLING_SPEED = 120;
 
@@ -45,7 +46,7 @@ public class CampaignScreen extends GameScreen {
         state = GameState.READY;
 
         //Creamos los objetos de juego
-        ship = new Ship();
+        ship = new CampaignShip();
         inventary = new Inventary();
 
         background = AssetsManager.loadTexture("background");
@@ -161,23 +162,20 @@ public class CampaignScreen extends GameScreen {
     }
 
     @Override
-    public void renderReady(float delta) {
-        FontManager.drawText("tapToStart",370,240);
+    public void updatePause(float delta) {
 
-        if (Gdx.input.justTouched()) {
-            state = GameState.START;
-        }
     }
 
     @Override
-    public void renderStart(float delta) {
-        ship.render(SpaceGame.batch);
+    public void renderReady(float delta) {
+        FontManager.drawText("tapToStart",370,240);
+    }
 
-        EnemiesManager.render();
-        ShootsManager.render();
-
-        if (ship.isDefeated())
-            state = GameState.LOSE;
+    @Override
+    public void updateReady(float delta) {
+        if (Gdx.input.justTouched()) {
+            state = GameState.START;
+        }
     }
 
     @Override
@@ -191,19 +189,19 @@ public class CampaignScreen extends GameScreen {
 
         if (Gdx.input.justTouched()) {
             state = GameState.READY;
-            ship = new Ship();
+            ship = new CampaignShip();
         }
     }
 
-
     @Override
-    public void updatePause(float delta) {
+    public void renderStart(float delta) {
+        ship.render(SpaceGame.batch);
 
-    }
+        EnemiesManager.render();
+        ShootsManager.render();
 
-    @Override
-    public void updateReady(float delta) {
-
+        if (ship.isDefeated())
+            state = GameState.LOSE;
     }
 
     @Override
