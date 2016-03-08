@@ -34,13 +34,13 @@ public class CampaignScreen extends GameScreen {
     public static int whichTouchIsShooting;
     public static int whichControlsTheShip;
 
-    public CampaignScreen(SpaceGame game){
+    public CampaignScreen(SpaceGame game, String scriptLevel){
         this.game = game;
         scrollingPosition = 0;
 
-        EnemiesManager.load();
         ShootsManager.load();
         CollissionsManager.load();
+        EnemiesManager.load(scriptLevel);
 
         state = GameState.READY;
 
@@ -53,9 +53,9 @@ public class CampaignScreen extends GameScreen {
         menuExitDialog = new DialogBox();
         //Creamos los objetos para el diálgo de salida del modo campaña
         menuExitDialog.addElement("window", new GameObject("ventana", 200, 120));
-        menuExitDialog.addElement("exit", new Button("buttonExit", this, 750, 430));
-        menuExitDialog.addElement("cancel", new Button("buttonCancel", this, 425, 200));
-        menuExitDialog.addElement("confirm", new Button("buttonConfirm", this, 325, 200));
+        menuExitDialog.addElement("exit", new Button("buttonExit", 750, 430, null));
+        menuExitDialog.addElement("cancel", new Button("buttonCancel", 425, 200, null));
+        menuExitDialog.addElement("confirm", new Button("buttonConfirm", 325, 200, null));
 
         whichTouchIsShooting = -1;
         whichControlsTheShip = -1;
@@ -71,8 +71,9 @@ public class CampaignScreen extends GameScreen {
             }
 
             public void onLeft() {
-                if (state.equals(GameState.PAUSE) && !inventary.isClosing())
+                if (state.equals(GameState.PAUSE) && !inventary.isClosing()) {
                     inventary.setIsClosing(true);
+                }
             }
 
             public void onDown() {
@@ -108,7 +109,7 @@ public class CampaignScreen extends GameScreen {
         //En función de si estamos en el diálogo para salir o no veremos la ventana para salir del modo campaña
         if (menuExitDialog.isDialogIn()){
             menuExitDialog.renderElement("window");
-            SpaceGame.drawText(SpaceGame.text,"exitModeQuestion",206,320);
+            FontManager.drawText("exitModeQuestion",206,320);
             menuExitDialog.renderElement("confirm");
             menuExitDialog.renderElement("cancel");
 
@@ -161,10 +162,11 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void renderReady(float delta) {
-        SpaceGame.drawText(SpaceGame.text,"tapToStart",370,240);
+        FontManager.drawText("tapToStart",370,240);
 
-        if (Gdx.input.justTouched())
+        if (Gdx.input.justTouched()) {
             state = GameState.START;
+        }
     }
 
     @Override
@@ -185,7 +187,7 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void renderLose(float delta) {
-        SpaceGame.drawText(SpaceGame.text,"gameOver",370,240);
+        FontManager.drawText("gameOver",370,240);
 
         if (Gdx.input.justTouched()) {
             state = GameState.READY;

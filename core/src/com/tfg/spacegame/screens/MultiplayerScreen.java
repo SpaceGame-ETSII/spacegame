@@ -2,6 +2,7 @@ package com.tfg.spacegame.screens;
 
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.GameScreen;
+import com.tfg.spacegame.utils.FontManager;
 
 public class MultiplayerScreen extends GameScreen {
 
@@ -13,7 +14,7 @@ public class MultiplayerScreen extends GameScreen {
 
 	@Override
 	public void renderEveryState(float delta) {
-		game.text.draw(game.batch, "MODO MULTIJUGADOR", 290, 400);
+		FontManager.text.draw(game.batch, "MODO MULTIJUGADOR", 290, 400);
 	}
 
 	@Override
