@@ -38,18 +38,18 @@ public class PurpleEnemy extends Enemy {
     private float timeToRestart;
 
     public PurpleEnemy(int x, int y) {
-        super("purple_eye_center", x, y, 50, AssetsManager.loadParticleEffect("purple_destroyed"));
+        super("purple_eye_center", x, y, 30, AssetsManager.loadParticleEffect("purple_destroyed"));
 
         body = new PartOfEnemy("purple_body", x, y, 1,
                 AssetsManager.loadParticleEffect("purple_destroyed"), this, false);
         eye1 = new Eye("purple_eye_1", x + 35, y + 380, 1,
-                AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
+                AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
         eye2 = new Eye("purple_eye_2", x + 10, y + 260, 1,
-                AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
+                AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
         eye3 = new Eye("purple_eye_3", x + 10, y + 145, 1,
-                AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
+                AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
         eye4 = new Eye("purple_eye_4", x + 36, y + 25, 1,
-                AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
+                AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
 
         this.setX(body.getX() + 175);
         this.setY(body.getY() + 165);
@@ -81,7 +81,7 @@ public class PurpleEnemy extends Enemy {
             if (isReady && counterToShoot <= 0) {
                 this.shoot();
                 counterToShoot = INITIAL_COUNTER;
-            } else {
+            } else if (eye1.isWaiting() || eye2.isWaiting() || eye3.isWaiting() || eye4.isWaiting()){
                 counterToShoot -= delta * SPEED;
             }
 
@@ -150,7 +150,7 @@ public class PurpleEnemy extends Enemy {
         if (this.isDamagable()) {
             if (shoot instanceof Basic){
                 //Si el enemigo es alcanzado por un disparo de tipo básico, sólo recibirá un punto de daño
-                this.damage(10);
+                this.damage(1);
             }else if (shoot instanceof Purple){
                 //Si por el contrario, es alcanzado por un disparo de tipo morado, perderá tres puntos de vida
                 this.damage(3);

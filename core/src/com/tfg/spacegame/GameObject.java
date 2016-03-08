@@ -58,11 +58,11 @@ public class GameObject {
         }
         logicShape = new Polygon(vertices);
 
+        logicShape.setPosition(x,y);
+
         this.loadWidthAndHeight();
         this.relocateCenter();
         this.calculateRadio();
-
-        logicShape.setPosition(x,y);
     }
 
     private void loadWidthAndHeight(){

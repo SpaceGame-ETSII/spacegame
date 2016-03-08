@@ -11,6 +11,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.ShapeRendererManager;
+import jdk.nashorn.internal.ir.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,6 @@ public class Enemy extends GameObject {
             //El enemigo se pintará si se ha acabado el tiempo de parpadeo o no es momento de estar invisible
             if (timeToFlick <= 0 || timeForInvisible > 0) {
                 super.render(batch);
-
                 // Si el enemigo es objetivo de un arma, pintamos el efecto de localización
                 if(targettedByShip){
 

@@ -17,7 +17,7 @@ public class Eye extends PartOfEnemy{
     private ParticleEffect shootEffectWarning;
 
     //Frencuencia de disparo se refiere a cada cuantos segundos va a disparar
-    private static final float FREQUENCY_OF_SHOOTING = 5f;
+    private static final float FREQUENCY_OF_SHOOTING = 7f;
 
     //Tiempo necesario para que dispare
     private float timeToShoot;
@@ -63,7 +63,7 @@ public class Eye extends PartOfEnemy{
     public void update(float delta){
         super.update(delta);
 
-        if (!getClosed()) {
+        if (!getClosed() && isWaiting()) {
             //Si hemos sobrepasado el tiempo para disparar
             if (timeToShoot < 0) {
                 //Si no ha disparado aún el enemigo
@@ -111,6 +111,7 @@ public class Eye extends PartOfEnemy{
             if (isWaiting())
                 shootEffectWarning.draw(batch);
         }
+
     }
 
     public boolean isDamagable(){
@@ -119,7 +120,7 @@ public class Eye extends PartOfEnemy{
 
     public void collideWithShoot(Shoot shoot) {
         if (isDamagable()){
-            this.damage(0);
+            this.damage(1);
             setClosed(true);
         }
     }
