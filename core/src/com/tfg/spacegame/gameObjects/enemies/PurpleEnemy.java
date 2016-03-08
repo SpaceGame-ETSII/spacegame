@@ -14,10 +14,10 @@ public class PurpleEnemy extends Enemy {
     private static final int SPEED = 75;
 
     //Valor inicial que tendrá el contador de disparo cada vez que se reinicie
-    public static final int INITIAL_COUNTER = 200;
+    public static final int INITIAL_COUNTER = 150;
 
     //Valor inicial que tendrá el contador para indicar cada cuanto se reinicirá en combate con el enemigo
-    public static final int RESTART_COUNTER = 2000;
+    public static final int RESTART_COUNTER = 1500;
 
     //Partes referentes a los ojos del enemigo
     private Eye eye1;
@@ -34,9 +34,6 @@ public class PurpleEnemy extends Enemy {
     //Contador que usaremos para saber cuándo disparar
     private float counterToShoot;
 
-    //Variable para cambiar los ojos que disparan del enemigo
-    private int counterOfShoots;
-
     //Contador para resetear los ojos del enemigo
     private float timeToRestart;
 
@@ -46,20 +43,19 @@ public class PurpleEnemy extends Enemy {
         body = new PartOfEnemy("purple_body", x, y, 1,
                 AssetsManager.loadParticleEffect("purple_destroyed"), this, false);
         eye1 = new Eye("purple_eye_1", x + 35, y + 380, 1,
-                AssetsManager.loadParticleEffect("purple_eye_destroyed"), this, true);
+                AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
         eye2 = new Eye("purple_eye_2", x + 10, y + 260, 1,
-                AssetsManager.loadParticleEffect("purple_eye_destroyed"), this, true);
+                AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
         eye3 = new Eye("purple_eye_3", x + 10, y + 145, 1,
-                AssetsManager.loadParticleEffect("purple_eye_destroyed"), this, true);
+                AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
         eye4 = new Eye("purple_eye_4", x + 36, y + 25, 1,
-                AssetsManager.loadParticleEffect("purple_eye_destroyed"), this, true);
+                AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
 
         this.setX(body.getX() + 175);
         this.setY(body.getY() + 165);
 
         isReady = false;
         counterToShoot = INITIAL_COUNTER;
-        counterOfShoots = 0;
         timeToRestart = RESTART_COUNTER;
     }
 
@@ -75,8 +71,9 @@ public class PurpleEnemy extends Enemy {
                 eye2.setX(eye2.getX() - SPEED * delta);
                 eye3.setX(eye3.getX() - SPEED * delta);
                 eye4.setX(eye4.getX() - SPEED * delta);
-
             }else {
+                if (isReady==false)
+                    eye1.setWaiting(true);
                 isReady = true;
             }
 
@@ -84,7 +81,6 @@ public class PurpleEnemy extends Enemy {
             if (isReady && counterToShoot <= 0) {
                 this.shoot();
                 counterToShoot = INITIAL_COUNTER;
-                counterOfShoots ++;
             } else {
                 counterToShoot -= delta * SPEED;
             }
@@ -92,6 +88,7 @@ public class PurpleEnemy extends Enemy {
             //Si no has derrotado al enemigo en el tiempo designado, los ojos volverán a aparecer y el combate se reiniciará
             if (timeToRestart <= 0){
                 eye1.setClosed(false);
+                eye1.setWaiting(true);
                 eye2.setClosed(false);
                 eye3.setClosed(false);
                 eye4.setClosed(false);
@@ -120,17 +117,32 @@ public class PurpleEnemy extends Enemy {
         }
     }
 
+    public void changeToDeletable() {
+        super.changeToDeletable();
+        body.changeToDeletable();
+        eye1.changeToDeletable();
+        eye2.changeToDeletable();
+        eye3.changeToDeletable();
+        eye4.changeToDeletable();
+    }
+
     public void shoot(){
-        if (counterOfShoots % 2 == 0){
-            if (!eye2.getClosed())
-                eye2.shoot();
-            if (!eye4.getClosed())
-                eye4.shoot();
-        }else {
-            if (!eye1.getClosed())
-                eye1.shoot();
-            if (!eye3.getClosed())
-                eye3.shoot();
+        if (eye1.isWaiting() && isReady) {
+            eye1.shoot();
+            eye1.setWaiting(false);
+            eye2.setWaiting(true);
+        }else if (eye2.isWaiting()){
+            eye2.shoot();
+            eye2.setWaiting(false);
+            eye3.setWaiting(true);
+        }else if (eye3.isWaiting()){
+            eye3.shoot();
+            eye3.setWaiting(false);
+            eye4.setWaiting(true);
+        }else if (eye4.isWaiting()){
+            eye4.shoot();
+            eye4.setWaiting(false);
+            eye1.setWaiting(true);
         }
     }
 
@@ -148,7 +160,7 @@ public class PurpleEnemy extends Enemy {
 
     public void dispose(){
         super.dispose();
-        //eye1.dispose();
+        eye1.dispose();
         eye2.dispose();
         eye3.dispose();
         eye4.dispose();

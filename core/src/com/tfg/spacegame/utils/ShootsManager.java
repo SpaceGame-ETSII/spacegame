@@ -270,7 +270,7 @@ public class ShootsManager {
             int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
-            purpleShoot = new Purple(shooter,x,y, ShootsManager.ship.getX(), ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+            purpleShoot = new Purple(shooter,x,y, ShootsManager.ship.getX() + (ShootsManager.ship.getWidth()), ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
 
             shoots.add(purpleShoot);
         }

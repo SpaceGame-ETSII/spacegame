@@ -127,7 +127,7 @@ public class AssetsManager {
         assetsReferences.put("orange_shoot_effect_shock", particlesFolder + "arma_naranja_efecto_choque");
         assetsReferences.put("orange_shoot_effect_shoot", particlesFolder + "arma_naranja_efecto_disparo");
         assetsReferences.put("purple_destroyed", particlesFolder + "morado_derrotado");
-        assetsReferences.put("purple_eye_destroyed", particlesFolder + "morado_ojo_derrotado");
+        assetsReferences.put("purple_eye_warning", particlesFolder + "morado_ojo_aviso");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
