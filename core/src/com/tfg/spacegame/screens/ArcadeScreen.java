@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.gameObjects.arcadeMode.ArcadeShip;
+import com.tfg.spacegame.gameObjects.arcadeMode.Obstacle;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.utils.ObstacleManager;
 import com.tfg.spacegame.utils.enums.GameState;
 
 public class ArcadeScreen extends GameScreen {
@@ -24,6 +26,8 @@ public class ArcadeScreen extends GameScreen {
 	//Fondo que se mostrará
 	public Texture background;
 
+	public Obstacle obstacle;
+
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
 
@@ -31,6 +35,8 @@ public class ArcadeScreen extends GameScreen {
 		scrollingPosition = 0;
 		ship = new ArcadeShip();
 		background = AssetsManager.loadTexture("background");
+
+		ObstacleManager.load();
 
 		//Convertimos la pantalla en modo portrait
 		SpaceGame.changeToPortrait();
@@ -70,11 +76,13 @@ public class ArcadeScreen extends GameScreen {
 	@Override
 	public void renderStart(float delta) {
 		ship.render(SpaceGame.batch);
+		ObstacleManager.render();
 	}
 
 	@Override
 	public void updateStart(float delta) {
 		ship.update(delta);
+		ObstacleManager.update(delta);
 	}
 
 	@Override

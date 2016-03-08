@@ -16,6 +16,7 @@ public class AssetsManager {
 
     private static String particlesFolder = "particleEffects/";
     private static String enemiesFolder = "textures/enemies/";
+    private static String obstaclesFolder = "textures/obstacles/";
     private static String weaponsFolder = "textures/weapons/";
     private static String levelScriptsFolder = "levelScripts/";
     private static String shipsFolder = "textures/ships/";
@@ -41,6 +42,11 @@ public class AssetsManager {
         assetsReferences.put("orange_enemy_cannon", enemiesFolder+"enemigo_naranja_canon_secundario.png");
         assetsReferences.put("green_body", enemiesFolder+"verde_body.png");
         assetsReferences.put("green_shield", enemiesFolder+"verde_shield.png");
+
+        //Texturas referentes a obstacles
+        assetsReferences.put("big_obstacle", obstaclesFolder+"meteorito_grande.png");
+        assetsReferences.put("medium_obstacle", obstaclesFolder+"meteorito_mediano.png");
+        assetsReferences.put("small_obstacle", obstaclesFolder+"meteorito_pequeno.png");
 
         //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
