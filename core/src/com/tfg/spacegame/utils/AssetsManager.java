@@ -119,9 +119,9 @@ public class AssetsManager {
         assetsReferences.put("purple_shoot_effect_shoot", particlesFolder + "arma_morada_efecto_disparo");
         assetsReferences.put("purple_effect_shock", particlesFolder + "arma_morada_efecto_choque");
         assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
-        assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
         assetsReferences.put("orange_shoot_effect_shock", particlesFolder + "arma_naranja_efecto_choque");
         assetsReferences.put("orange_shoot_effect_shoot", particlesFolder + "arma_naranja_efecto_disparo");
+        assetsReferences.put("orange_enemy_defeated", particlesFolder + "enemigo_naranja_derrotado");
         assetsReferences.put("orange_main_cannon_charging", particlesFolder + "enemigo_naranja_efecto_cannon_principal");
         assetsReferences.put("orange_secondary_cannon_disabled", particlesFolder + "enemigo_naranja_cannon_secundario_inhabilitado");
 
