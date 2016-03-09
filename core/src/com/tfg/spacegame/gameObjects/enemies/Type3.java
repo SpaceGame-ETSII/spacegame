@@ -82,7 +82,6 @@ public class Type3 extends Enemy {
 
     public void render(){
         super.render();
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(),Color.MAGENTA);
     }
 
     public void shoot(){

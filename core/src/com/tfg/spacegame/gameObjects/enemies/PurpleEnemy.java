@@ -1,9 +1,9 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Eye;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
 import com.tfg.spacegame.gameObjects.shoots.Purple;
 import com.tfg.spacegame.utils.AssetsManager;
@@ -125,11 +125,11 @@ public class PurpleEnemy extends Enemy {
         return partsOfEnemy;
     }
 
-    public void render(SpriteBatch batch){
+    public void render(){
         /*El ojo central (enemigo en sí), solo será visible y por lo tanto dañable cuando los cuatro ojos que disparan
           estén abatidos*/
         if (eye1.getClosed() && eye2.getClosed() && eye3.getClosed() && eye4.getClosed()) {
-            super.render(batch);
+            super.render();
         }
     }
 

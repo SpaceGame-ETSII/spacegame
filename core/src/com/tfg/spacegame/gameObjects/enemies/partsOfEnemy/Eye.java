@@ -1,14 +1,15 @@
-package com.tfg.spacegame.gameObjects.enemies;
+package com.tfg.spacegame.gameObjects.enemies.partsOfEnemy;
 
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
-public class Eye extends PartOfEnemy{
+public class Eye extends PartOfEnemy {
 
     //Atributo para controlar si un ojo está abierto o cerrado
     private boolean closed;
@@ -111,13 +112,13 @@ public class Eye extends PartOfEnemy{
             ShootsManager.shootPurpleWeapon(this,0,0);
     }
 
-    public void render(SpriteBatch batch) {
+    public void render() {
         //Si el ojo está abierto, se pintará la textura
         if (!closed) {
-            super.render(batch);
+            super.render();
             //Si está esperando, pintamos el efecto de partículas
             if (isWaiting())
-                shootEffectWarning.draw(batch);
+                shootEffectWarning.draw(SpaceGame.batch);
         }
 
     }
