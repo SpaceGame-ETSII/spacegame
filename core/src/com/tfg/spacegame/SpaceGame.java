@@ -2,15 +2,8 @@ package com.tfg.spacegame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.I18NBundle;
-import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.screens.MainMenuScreen;
 import com.tfg.spacegame.utils.*;
 
@@ -66,7 +59,7 @@ public class SpaceGame extends Game {
 		Gdx.graphics.setDisplayMode(newWidth, newHeight, true);
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, SpaceGame.width, SpaceGame.height);
+		camera.setToOrtho(false, width, height);
 	}
 
 	/**

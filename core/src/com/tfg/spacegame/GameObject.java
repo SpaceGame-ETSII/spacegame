@@ -49,11 +49,14 @@ public class GameObject {
         }
         logicShape = new Polygon(vertices);
 
+        logicShape.setPosition(x,y);
+
         this.loadWidthAndHeight();
         this.relocateCenter();
         this.calculateRadio();
 
-        logicShape.setPosition(x,y);
+        //Recolocamos el origen del logic shape para cuando se realice un giro con setRotation
+        this.getLogicShape().setOrigin(this.getWidth() / 2, this.getHeight() / 2);
     }
 
     private void loadWidthAndHeight(){
@@ -158,7 +161,7 @@ public class GameObject {
         batch.draw(texture, getX(), getY());
     }
 
-    //Método para printar un objeto rotando N grados su textura
+    //Método para pintar un objeto rotando N grados su textura
     public void renderRotate(SpriteBatch batch, float n){
         batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
     }

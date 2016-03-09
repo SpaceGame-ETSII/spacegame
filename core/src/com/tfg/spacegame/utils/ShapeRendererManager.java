@@ -3,6 +3,7 @@ package com.tfg.spacegame.utils;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 
 /**
@@ -76,16 +77,27 @@ public class ShapeRendererManager {
 
     public static void renderPolygon(float[] vertices, Color color){
 
+        float[] auxVertices = new float[vertices.length];
+        for(int i=1 ; i<vertices.length ; i+=2){
+            valuesToProjectFromCamera.set(vertices[i-1],vertices[i],0);
+            auxVertices[i-1] = SpaceGame.camera.project(valuesToProjectFromCamera).x;
+            auxVertices[i] = SpaceGame.camera.project(valuesToProjectFromCamera).y;
+        }
+
         SpaceGame.batch.end();
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
 
         renderer.setColor(color);
 
-        renderer.polygon(vertices);
+        renderer.polygon(auxVertices);
 
         renderer.end();
 
         SpaceGame.batch.begin();
+    }
+
+    public static void easyRenderPolygon(GameObject g) {
+        renderPolygon(g.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 }

@@ -83,6 +83,8 @@ public class ArcadeScreen extends GameScreen {
 	public void updateStart(float delta) {
 		ship.update(delta);
 		ObstacleManager.update(delta);
+		if (ObstacleManager.existsCollision(ship))
+			state = GameState.READY;
 	}
 
 	@Override
