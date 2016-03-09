@@ -2,6 +2,7 @@ package com.tfg.spacegame.gameObjects;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.GameObject;
 
@@ -29,11 +30,11 @@ public class Element extends GameObject {
         this.update(delta);
     }
 
-    public void render(SpriteBatch batch) {
-        super.render(batch);
-        this.particleEffect.draw(batch);
+    public void render() {
+        super.render();
+        this.particleEffect.draw(SpaceGame.batch);
         if (isActivate) {
-            this.activatedParticleEffect.draw(batch);
+            this.activatedParticleEffect.draw(SpaceGame.batch);
         }
     }
 

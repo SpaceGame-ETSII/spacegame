@@ -1,5 +1,5 @@
 {
   "enemiesToGenerate":[
-    {"type":"GREEN", "x":900, "y":230, "timeToSpawn":0.0}
+    {"type":"ORANGE", "x":900, "y":230, "timeToSpawn":0.0}
   ]
 }

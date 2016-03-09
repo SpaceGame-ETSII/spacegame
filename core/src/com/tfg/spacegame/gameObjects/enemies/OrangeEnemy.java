@@ -1,9 +1,9 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Cannon;
@@ -287,11 +287,11 @@ public class OrangeEnemy extends Enemy {
         }
     }
 
-    public void render(SpriteBatch batch) {
-        super.render(batch);
+    public void render() {
+        super.render();
         // Solo si el escudo está abierto se visualizará el efecto de carga
         if(orangeEnemyState.equals(OrangeEnemyState.SHIELD_OPENED))
-            chargeMainCannonEffect.draw(batch);
+            chargeMainCannonEffect.draw(SpaceGame.batch);
     }
 
     public void collideWithShoot(Shoot shoot) {

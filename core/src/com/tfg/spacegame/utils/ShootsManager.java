@@ -134,7 +134,7 @@ public class ShootsManager {
 
     public static void render(){
         for(Shoot shoot : shoots)
-            shoot.render(SpaceGame.batch);
+            shoot.render();
     }
 
     public static void update(float delta, Ship ship){

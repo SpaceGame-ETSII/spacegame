@@ -1,10 +1,7 @@
 package com.tfg.spacegame.gameObjects.shoots;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
@@ -104,12 +101,12 @@ public class Purple extends Shoot{
         }
     }
 
-    public void render(SpriteBatch batch){
-        super.render(batch);
+    public void render(){
+        super.render();
         if (!this.isShocked()) {
-            batch.draw(textureRegion, this.getX(), this.getY(), -textureRegion.getRegionX(), textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), 1f, 1f, vector.angle());
+            SpaceGame.batch.draw(textureRegion, this.getX(), this.getY(), -textureRegion.getRegionX(), textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), 1f, 1f, vector.angle());
 
-            shoot.draw(batch);
+            shoot.draw(SpaceGame.batch);
         }
     }
 

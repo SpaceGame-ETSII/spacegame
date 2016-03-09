@@ -1,8 +1,8 @@
 package com.tfg.spacegame.gameObjects.enemies.partsOfEnemy;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
@@ -77,10 +77,10 @@ public class Cannon extends PartOfEnemy {
         }
 
     }
-    public void render(SpriteBatch batch) {
-        super.render(batch);
+    public void render() {
+        super.render();
         if (disable)
-            disabledEffect.draw(batch);
+            disabledEffect.draw(SpaceGame.batch);
     }
 
     public boolean isDisable(){

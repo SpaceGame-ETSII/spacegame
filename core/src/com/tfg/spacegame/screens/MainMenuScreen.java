@@ -57,11 +57,11 @@ public class MainMenuScreen implements Screen {
         FontManager.drawTitle("titleGame", 229, 420);
 
         // Delegamos el render de los botones
-        campaign.render(SpaceGame.batch);
-        arcade.render(SpaceGame.batch);
-        multiplayer.render(SpaceGame.batch);
-        options.render(SpaceGame.batch);
-        exit.render(SpaceGame.batch);
+        campaign.render();
+        arcade.render();
+        multiplayer.render();
+        options.render();
+        exit.render();
 
         SpaceGame.batch.end();
 

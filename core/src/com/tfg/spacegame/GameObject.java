@@ -166,13 +166,13 @@ public class GameObject {
         logicShape.setOrigin(x,y);
     }
 
-    public void render(SpriteBatch batch){
-        batch.draw(texture, getX(), getY());
+    public void render(){
+        SpaceGame.batch.draw(texture, getX(), getY());
     }
 
     //Método para printar un objeto rotando N grados su textura
-    public void renderRotate(SpriteBatch batch, float n){
-        batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
+    public void renderRotate(float n){
+        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
     }
 
     public void dispose() {

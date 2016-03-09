@@ -36,7 +36,7 @@ public class ArcadeScreen extends GameScreen {
 		game.width = newWidth;
 		game.height = newHeight;
 
-		Gdx.graphics.setDisplayMode(newWidth, newHeight, true);
+		//Gdx.graphics.setDisplayMode(newWidth, newHeight, true);
 
 		game.camera = new OrthographicCamera();
 		game.camera.setToOrtho(false, SpaceGame.width, SpaceGame.height);

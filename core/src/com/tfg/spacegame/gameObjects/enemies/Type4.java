@@ -1,16 +1,12 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Type4 extends Enemy{
 
@@ -111,14 +107,14 @@ public class Type4 extends Enemy{
         ShootsManager.shootOneBasicWeapon(this);
     }
 
-    public void render(SpriteBatch batch){
+    public void render(){
         if (!this.isDefeated()) {
             // Mientras que el tiempo de espera del cañon no ha concluido
             // No es necesario mostrar el cañon
             if (timeToOpenCannon < 0)
-                super.render(batch);
+                super.render();
         } else {
-            super.render(batch);
+            super.render();
         }
     }
 

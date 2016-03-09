@@ -1,10 +1,10 @@
 package com.tfg.spacegame.gameObjects.shoots;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
@@ -141,10 +141,10 @@ public class Orange extends Shoot{
         return targetAngle - actualAngle;
     }
 
-    public void render(SpriteBatch batch) {
-        super.render(batch);
+    public void render() {
+        super.render();
         if(!isShocked())
-            shoot.draw(batch);
+            shoot.draw(SpaceGame.batch);
     }
 
     public void collideWithEnemy(Enemy enemy) {

@@ -1,8 +1,8 @@
 package com.tfg.spacegame.gameObjects.shoots;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
@@ -58,11 +58,11 @@ public class BigShoot extends Shoot {
         }
     }
 
-    public void render(SpriteBatch batch){
-        super.render(batch);
+    public void render(){
+        super.render();
         //Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
         if(timeToMove < 0)
-            shoot.draw(batch);
+            shoot.draw(SpaceGame.batch);
     }
 
     public void dispose(){

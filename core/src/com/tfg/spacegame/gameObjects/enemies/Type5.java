@@ -1,14 +1,10 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.gameObjects.Shoot;
 
@@ -86,11 +82,11 @@ public class Type5 extends Enemy{
         ShootsManager.shootOneType5Weapon(this);
     }
 
-    public void render(SpriteBatch batch){
+    public void render(){
         //Si el enemigo no ha disparado pintamos el efecto de partículas
         if(!this.hasShooted && !this.isDefeated())
-            shootEffectWarning.draw(batch);
-        super.render(batch);
+            shootEffectWarning.draw(SpaceGame.batch);
+        super.render();
     }
 
     public void dispose() {

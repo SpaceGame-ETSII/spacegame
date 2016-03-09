@@ -2,18 +2,13 @@ package com.tfg.spacegame.gameObjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Enemy extends GameObject {
 
@@ -80,11 +75,11 @@ public class Enemy extends GameObject {
         destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
     }
 
-    public void render(SpriteBatch batch) {
+    public void render() {
         if (!this.isDefeated()) {
             //El enemigo se pintará si se ha acabado el tiempo de parpadeo o no es momento de estar invisible
             if (timeToFlick <= 0 || timeForInvisible > 0) {
-                super.render(batch);
+                super.render();
 
                 // Si el enemigo es objetivo de un arma, pintamos el efecto de localización
                 if(targettedByShip){
@@ -97,7 +92,7 @@ public class Enemy extends GameObject {
                 }
             }
         } else {
-            destroyEffect.draw(batch);
+            destroyEffect.draw(SpaceGame.batch);
         }
     }
 

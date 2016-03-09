@@ -75,7 +75,6 @@ public class ShapeRendererManager {
     }
 
     public static void renderPolygon(float[] vertices, Color color){
-
         SpaceGame.batch.end();
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
