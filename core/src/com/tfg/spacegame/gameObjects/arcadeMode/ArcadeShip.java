@@ -58,7 +58,8 @@ public class ArcadeShip extends GameObject {
     }
 
     public void updateParticleEffect() {
-        fireEffect.getEmitters().first().setPosition(this.getX() + (this.getWidth()/2),this.getY());
+        fireEffect.getEmitters().first().setPosition(this.getX() + (this.getWidth()/2),
+                                                     this.getY() + (this.getHeight() * ((1 - this.getLogicShape().getScaleY()) / 2)));
         fireEffect.getEmitters().first().getAngle().setHigh(270);
     }
 

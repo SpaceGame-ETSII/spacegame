@@ -158,12 +158,20 @@ public class GameObject {
     }
 
     public void render(SpriteBatch batch){
-        batch.draw(texture, getX(), getY());
+        if (this.getLogicShape().getScaleX() != 1 || this.getLogicShape().getScaleY() != 1)
+            this.renderScale(batch, this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY());
+        else
+            batch.draw(texture, getX(), getY());
     }
 
     //Método para pintar un objeto rotando N grados su textura
     public void renderRotate(SpriteBatch batch, float n){
         batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
+    }
+
+    //Método para pintar un objeto a razón de su escalado
+    public void renderScale(SpriteBatch batch, float scaleX, float scaleY){
+        batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), scaleX, scaleY, 0);
     }
 
     public void dispose() {
