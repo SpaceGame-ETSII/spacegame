@@ -1,33 +1,48 @@
 package com.tfg.spacegame.gameObjects.shoots;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 
 
 public class Orange extends Shoot{
 
-    private static final float SPEED = 150;
-    private static final float HIGHSPEED = 250;
-    private static final float SPEEDANGLE = 0.7f;
+    // Constantes de velocidad de movimiento del arma naranja
+    private final float SPEEDX;
+    private final float SPEEDY;
 
-    private static final float LIMIT_TO_CHANGE_ANGLE = 50;
+    // Constantes de velocidad angular en el arma naranja
+    private final float SPEEDANGLE;
+    private final float HIGHSPEEDANGLE;
 
-    private float distanceFromOrigin;
+    // Máximo tiempo en el que irá rapidamente el arma naranja
+    private final float MAX_TIME_GOING_HIGH_SPEED;
 
-    //Efecto de particulas de este disparo
+    // Velocidad angular actual
+    private float actualSpeedAngle;
+
+    // Tiempo actual durante el cual el movimiento angular será rápido
+    private float timeGoingFast;
+
+    // Efecto de particulas de este disparo
     private ParticleEffect shoot;
 
+    // Angulo objetivo
     private float targetAngle;
+
+    // Angulo actual
     private float actualAngle;
 
-    private Vector2 movement;
+    // Vector Origen-Destino
+    private Vector2 ODVector;
 
+    // GameObject objetivo
     private GameObject target;
 
     public Orange(GameObject shooter, int x, int y, float angle, GameObject target) {
@@ -40,13 +55,33 @@ public class Orange extends Shoot{
 
         this.target = target;
 
-        movement = new Vector2();
+        ODVector = new Vector2();
 
         super.updateParticleEffect();
 
         actualAngle = angle;
 
-        distanceFromOrigin = 0;
+        timeGoingFast = 0;
+
+        // Dependiendo si es el Ship o si es el Enemy
+        // tendrá una configuración distinta
+        // ya que el enemy tendrá que girar mas rápidamente al inicio.
+        if(getShooter() instanceof Ship){
+            MAX_TIME_GOING_HIGH_SPEED = 0.4f;
+            SPEEDX=150;
+            SPEEDY=150;
+            SPEEDANGLE = 0.7f;
+            HIGHSPEEDANGLE = 0.0f;
+        }else{
+            MAX_TIME_GOING_HIGH_SPEED = 1.3f;
+            SPEEDANGLE = 0.8f;
+            HIGHSPEEDANGLE = 2.3f;
+            SPEEDX=250;
+            SPEEDY=150;
+        }
+
+        // Al principio la velocidad angular es la rápida
+        actualSpeedAngle = HIGHSPEEDANGLE;
     }
     public void update(float delta){
         super.update(delta);
@@ -56,44 +91,60 @@ public class Orange extends Shoot{
 
         shoot.getEmitters().first().setPosition(this.getX()+this.getWidth()/2,this.getY()+this.getHeight()/2);
 
-        if(distanceFromOrigin > LIMIT_TO_CHANGE_ANGLE){
+        if(!isShocked()){
+            // Si ha pasado el tiempo en el que debemos girar rapidamente y la velocidad angular
+            // no es la velocidad angular normal
+            if(timeGoingFast >= MAX_TIME_GOING_HIGH_SPEED && actualSpeedAngle != SPEEDANGLE){
+                // Vamos modificando la velocidad angular dependiendo de si tenemos que sumar o restar
+                if(actualSpeedAngle < SPEEDANGLE){
+                    actualSpeedAngle +=0.1f;
+                }else{
+                    actualSpeedAngle -=0.1f;
+                }
 
-            float x1 = this.getX() + this.getWidth()/2;
-            float y1 = this.getY() + this.getHeight()/2;
+            }else{
+                timeGoingFast+=delta;
+            }
 
-            float x2 = target.getX() + target.getWidth()/2;
-            float y2 = target.getY() + target.getHeight()/2;
-
-            movement.set( x2-x1 , y2-y1 );
-
-            targetAngle = movement.angle();
-
-            if(targetAngle >=180)
-                targetAngle-=360;
-
-            float diffAngle = targetAngle - actualAngle;
-
-            if(diffAngle < 0 )
-                actualAngle-=SPEEDANGLE;
+            // Calculamos la diferencia de angulo entre el objetivo y nosotros
+            // y dependiendo de si es mayor o menor sumamos
+            if(calculateDiffAngle() < 0 )
+                actualAngle-=actualSpeedAngle;
             else
-                actualAngle+=SPEEDANGLE;
+                actualAngle+=actualSpeedAngle;
 
-            this.setX(this.getX()+ SPEED * delta * MathUtils.cosDeg(actualAngle));
-            this.setY(this.getY()+ SPEED * delta * MathUtils.sinDeg(actualAngle));
-
-        }else{
-            distanceFromOrigin+= HIGHSPEED * delta * MathUtils.cosDeg(actualAngle);
-
-            this.setX(this.getX()+ HIGHSPEED * delta * MathUtils.cosDeg(actualAngle));
-            this.setY(this.getY()+ HIGHSPEED * delta * MathUtils.sinDeg(actualAngle));
+            // Movemos el arma naranja
+            this.setX(this.getX()+ SPEEDX * delta * MathUtils.cosDeg(actualAngle) );
+            this.setY(this.getY()+ SPEEDY * delta * MathUtils.sinDeg(actualAngle) );
         }
+
 
     }
 
-    public void render(SpriteBatch batch) {
-        super.render(batch);
+    private float calculateDiffAngle(){
+        // Posicion actual del arma naranja
+        float x1 = this.getX() + this.getWidth()/2;
+        float y1 = this.getY() + this.getHeight()/2;
+
+        // Posición objetivo
+        float x2 = target.getX() + target.getWidth()/2;
+        float y2 = target.getY() + target.getHeight()/2;
+
+        // Calculo del vector origen-destino
+        ODVector.set( x2-x1 , y2-y1 );
+
+        targetAngle = ODVector.angle();
+
+        if(getShooter() instanceof Ship && targetAngle >=180)
+            targetAngle-=360;
+
+        return targetAngle - actualAngle;
+    }
+
+    public void render() {
+        super.render();
         if(!isShocked())
-            shoot.draw(batch);
+            shoot.draw(SpaceGame.batch);
     }
 
     public void collideWithEnemy(Enemy enemy) {

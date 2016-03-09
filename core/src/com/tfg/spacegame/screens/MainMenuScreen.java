@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.FontManager;
 
 public class MainMenuScreen implements Screen {
 
@@ -31,11 +32,11 @@ public class MainMenuScreen implements Screen {
         background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
-        campaign = new Button("button", new CampaignScreen(game), 290, 315);
-        arcade = new Button("button", new ArcadeScreen(game), 290, 255);
-        multiplayer = new Button("button", new MultiplayerScreen(game), 290, 195);
-        options = new Button("button", new OptionsScreen(game), 290, 135);
-        exit = new Button("button", null, 290, 75);
+        campaign = new Button("button", 260, 315, "campaignTitle");
+        arcade = new Button("button", 260, 255, "arcadeTitle");
+        multiplayer = new Button("button", 260, 195, "multiplayerTitle");
+        options = new Button("button", 260, 135, "optionsTitle");
+        exit = new Button("button", 260, 75, "exitTitle");
 
         //Inicializamos el timer de espera para el efecto en los botones
         timeUntilExit = 0.5f;
@@ -53,24 +54,21 @@ public class MainMenuScreen implements Screen {
 
         // Pintamos el fondo y el título del juego
         SpaceGame.batch.draw(background, 0,0);
-        SpaceGame.drawText(SpaceGame.title,"titleGame",229,420);
+        FontManager.drawTitle("titleGame", 229, 420);
 
         // Delegamos el render de los botones
-        campaign.render(SpaceGame.batch);
-        arcade.render(SpaceGame.batch);
-        multiplayer.render(SpaceGame.batch);
-        options.render(SpaceGame.batch);
-        exit.render(SpaceGame.batch);
-
-        // Pintamos los títulos de los botontes
-        SpaceGame.drawText(SpaceGame.text,"campaignTitle",330,345);
-        SpaceGame.drawText(SpaceGame.text,"arcadeTitle",335,285);
-        SpaceGame.drawText(SpaceGame.text,"multiplayerTitle",298,225);
-        SpaceGame.drawText(SpaceGame.text,"optionsTitle",330,165);
-        SpaceGame.drawText(SpaceGame.text,"exitTitle",355,105);
+        campaign.render();
+        arcade.render();
+        multiplayer.render();
+        options.render();
+        exit.render();
 
         SpaceGame.batch.end();
 
+        this.update(delta);
+    }
+
+    public void update(float delta) {
         //Si se ha tocado algún botón, lo marcamos como pulsado
         if (Gdx.input.justTouched()) {
 
@@ -82,31 +80,24 @@ public class MainMenuScreen implements Screen {
                     multiplayer.press(v.x, v.y) ||
                     options.press(v.x, v.y) ||
                     exit.press(v.x, v.y)) {
+                //Reiniciamos el contador en caso de haberse pulsado un botón
                 timeUntilExit=0.5f;
             }
         }
 
-        //Actualizamos los botones si fueron pulsados previamente
-        updateButton(delta, campaign);
-        updateButton(delta, arcade);
-        updateButton(delta, multiplayer);
-        updateButton(delta, options);
-        updateButton(delta, exit);
-
-    }
-
-    //Si se ha acabado el tiempo de la pulsación, hacemos la función del botón correspondiente
-    public void updateButton(float delta, Button button){
-        if (timeUntilExit <= 0 && button.isPressed()) {
-
-            //Si el screen del botón no es nulo, nos vamos ahí. Si lo es, significa que es el exit y debemos salir
-            if (button.getScreen() != null) {
-                game.setScreen(button.getScreen());
-            } else {
+        //Si el contador es cero, comprobamos si hay algún botón pulsado y actuamos en consecuencia
+        if (timeUntilExit <= 0) {
+            if (campaign.isPressed()) {
+                game.setScreen(new DemoMenuScreen(game));
+            } else if (arcade.isPressed()) {
+                game.setScreen(new ArcadeScreen(game));
+            } else if (multiplayer.isPressed()) {
+                game.setScreen(new MultiplayerScreen(game));
+            } else if (options.isPressed()) {
+                game.setScreen(new OptionsScreen(game));
+            } else if (exit.isPressed()) {
                 Gdx.app.exit();
             }
-
-            dispose();
         } else {
             timeUntilExit -= delta;
         }

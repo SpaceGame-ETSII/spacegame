@@ -37,6 +37,8 @@ public class AssetsManager {
         assetsReferences.put("blue_enemy", enemiesFolder+"azul.png");
         assetsReferences.put("orange_enemy", enemiesFolder+"enemigo_naranja_canon_principal.png");
         assetsReferences.put("orange_enemy_body", enemiesFolder+"enemigo_naranja_cuerpo.png");
+        assetsReferences.put("orange_enemy_body_aux_up", enemiesFolder+"enemigo_naranja_cuerpo_aux_superior.png");
+        assetsReferences.put("orange_enemy_body_aux_bottom", enemiesFolder+"enemigo_naranja_cuerpo_aux_inferior.png");
         assetsReferences.put("orange_enemy_shield", enemiesFolder+"enemigo_naranja_escudo.png");
         assetsReferences.put("orange_enemy_cannon", enemiesFolder+"enemigo_naranja_canon_secundario.png");
         assetsReferences.put("green_body", enemiesFolder+"verde_body.png");
@@ -54,7 +56,7 @@ public class AssetsManager {
         assetsReferences.put("red", othersFolder+"rojo.png");
         assetsReferences.put("yellow", othersFolder+"amarillo.png");
         assetsReferences.put("blue", othersFolder+"azul.png");
-        assetsReferences.put("button", othersFolder+"button.jpg");
+        assetsReferences.put("button", othersFolder+"button.png");
         assetsReferences.put("buttonExit", othersFolder+"button_exit.jpg");
         assetsReferences.put("buttonCancel", othersFolder+"button_cancel.png");
         assetsReferences.put("buttonConfirm", othersFolder+"button_confirm.png");
@@ -123,14 +125,20 @@ public class AssetsManager {
         assetsReferences.put("purple_shoot_effect_shoot", particlesFolder + "arma_morada_efecto_disparo");
         assetsReferences.put("purple_effect_shock", particlesFolder + "arma_morada_efecto_choque");
         assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
-        assetsReferences.put("orange_shoot_effect", particlesFolder + "arma_naranja");
         assetsReferences.put("orange_shoot_effect_shock", particlesFolder + "arma_naranja_efecto_choque");
         assetsReferences.put("orange_shoot_effect_shoot", particlesFolder + "arma_naranja_efecto_disparo");
         assetsReferences.put("purple_destroyed", particlesFolder + "morado_derrotado");
         assetsReferences.put("purple_eye_warning", particlesFolder + "morado_ojo_aviso");
+        assetsReferences.put("orange_enemy_defeated", particlesFolder + "enemigo_naranja_derrotado");
+        assetsReferences.put("orange_main_cannon_charging", particlesFolder + "enemigo_naranja_efecto_cannon_principal");
+        assetsReferences.put("orange_secondary_cannon_disabled", particlesFolder + "enemigo_naranja_cannon_secundario_inhabilitado");
 
         //Assets referentes a los scripts de niveles
-        assetsReferences.put("scriptTest", levelScriptsFolder + "scriptTest");
+        assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");
+        assetsReferences.put("colorEnemies", levelScriptsFolder + "colorEnemies");
+        assetsReferences.put("greenEnemy", levelScriptsFolder + "greenEnemy");
+        assetsReferences.put("orangeEnemy", levelScriptsFolder + "orangeEnemy");
+        assetsReferences.put("purpleEnemy", levelScriptsFolder + "purpleEnemy");
 
         //Asset referente a la localización
         assetsReferences.put("bundle","localization/bundle");

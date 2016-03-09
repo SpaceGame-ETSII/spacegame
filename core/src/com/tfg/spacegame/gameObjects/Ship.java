@@ -3,7 +3,6 @@ package com.tfg.spacegame.gameObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.gameObjects.shoots.Green;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.GameObject;
@@ -75,14 +74,14 @@ public class Ship extends GameObject {
     }
 
     @Override
-    public void render(SpriteBatch batch){
+    public void render(){
         //Si la nave no está en modo invulnerable o lo está y timeForInvisible es positivo, mostramos la nave
         if (!this.isUndamagable() || (this.isUndamagable() && timeForInvisible > 0)) {
-            super.render(batch);
-            batch.draw(cockpit, this.getX() + 45, this.getY() + 22);
+            super.render();
+            SpaceGame.batch.draw(cockpit, this.getX() + 45, this.getY() + 22);
         }
 
-        fireEffect.draw(batch);
+        fireEffect.draw(SpaceGame.batch);
     }
 
     public void update(float delta, float y, boolean canShipMove) {

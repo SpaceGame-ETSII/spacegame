@@ -1,7 +1,6 @@
 package com.tfg.spacegame.gameObjects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.utils.enums.ColorShip;
 import com.tfg.spacegame.utils.enums.TypeElement;
@@ -99,19 +98,19 @@ public class Inventary extends GameObject {
         transitionArrow = 150;
     }
 
-    public void render(SpriteBatch batch) {
-        super.render(batch);
+    public void render() {
+        super.render();
 
-        red.render(batch);
-        yellow.render(batch);
-        blue.render(batch);
+        red.render();
+        yellow.render();
+        blue.render();
 
-        slot1.render(batch);
-        slot2.render(batch);
+        slot1.render();
+        slot2.render();
 
         if (red.isActivate() || blue.isActivate() || yellow.isActivate()) {
-            arrow1.render(batch);
-            arrow2.render(batch);
+            arrow1.render();
+            arrow2.render();
         }
     }
 

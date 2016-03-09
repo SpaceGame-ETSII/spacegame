@@ -40,7 +40,7 @@ public class DialogBox {
     }
 
     public void renderElement(String key){
-        dialogElements.get(key).render(SpaceGame.batch);
+        dialogElements.get(key).render();
     }
 
     public void setDialogIn(boolean b){

@@ -1,6 +1,5 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.SpaceGame;
@@ -114,10 +113,10 @@ public class YellowEnemy extends Enemy{
             this.damage(1);
     }
 
-    public void render(SpriteBatch batch){
+    public void render(){
         if(!isDefeated())
-            super.renderRotate(batch, movement.angle());
+            super.renderRotate(movement.angle());
         else
-            super.render(batch);
+            super.render();
     }
 }
