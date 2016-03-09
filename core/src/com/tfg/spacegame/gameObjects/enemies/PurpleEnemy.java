@@ -40,6 +40,7 @@ public class PurpleEnemy extends Enemy {
     public PurpleEnemy(int x, int y) {
         super("purple_eye_center", x, y, 30, AssetsManager.loadParticleEffect("purple_destroyed"));
 
+        //Creamos las distintas partes que compondrán al enemigo
         body = new PartOfEnemy("purple_body", x, y, 1,
                 AssetsManager.loadParticleEffect("purple_destroyed"), this, false);
         eye1 = new Eye("purple_eye_1", x + 35, y + 380, 1,
@@ -51,9 +52,11 @@ public class PurpleEnemy extends Enemy {
         eye4 = new Eye("purple_eye_4", x + 36, y + 25, 1,
                 AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
 
+        //Actualizamos el ojo central para hacerlo conincidir con su posición dentro del cuerpo del enemigo
         this.setX(body.getX() + 175);
         this.setY(body.getY() + 165);
 
+        //Inicializamos las variables de control
         isReady = false;
         counterToShoot = INITIAL_COUNTER;
         timeToRestart = RESTART_COUNTER;
@@ -72,8 +75,11 @@ public class PurpleEnemy extends Enemy {
                 eye3.setX(eye3.getX() - SPEED * delta);
                 eye4.setX(eye4.getX() - SPEED * delta);
             }else {
+                //Antes de preparar al enemigo para disparar, iniciamos el patrón de disparo del mismo
                 if (isReady==false)
                     eye1.setWaiting(true);
+
+                //Una vez en la posición designada, el enemigo estará listo para empezar a disparar
                 isReady = true;
             }
 
@@ -81,19 +87,27 @@ public class PurpleEnemy extends Enemy {
             if (isReady && counterToShoot <= 0) {
                 this.shoot();
                 counterToShoot = INITIAL_COUNTER;
-            } else if (eye1.isWaiting() || eye2.isWaiting() || eye3.isWaiting() || eye4.isWaiting()){
+            } else
+            /*Para que el contador que marca el inicio del disparo se reduzca, será necesario que alguno
+              de los ojos del enemigo este a la espera de disparar*/
+            if (eye1.isWaiting() || eye2.isWaiting() || eye3.isWaiting() || eye4.isWaiting()){
                 counterToShoot -= delta * SPEED;
             }
 
-            //Si no has derrotado al enemigo en el tiempo designado, los ojos volverán a aparecer y el combate se reiniciará
+            /*Si no has derrotado al enemigo en el tiempo designado, los ojos volverán a aparecer y el combate se
+              reiniciará aunque el enmigo no recuperará la vida que el usuario le haya quitado*/
             if (timeToRestart <= 0){
                 eye1.setClosed(false);
+                //Volvemos a iniciar la secuencia del patrón del disparo del enemigo
                 eye1.setWaiting(true);
                 eye2.setClosed(false);
                 eye3.setClosed(false);
                 eye4.setClosed(false);
                 timeToRestart = RESTART_COUNTER;
-            } else if (isReady && (eye1.getClosed() || eye2.getClosed() || eye3.getClosed() || eye4.getClosed())){
+            } else
+            /*Para que el tiempo de reseteo del combate se decremente será necesario tanto que el enemigo este preparado
+              como que alguno de los ojos este cerrado*/
+            if (isReady && (eye1.getClosed() || eye2.getClosed() || eye3.getClosed() || eye4.getClosed())){
                 timeToRestart -= delta * SPEED;
             }
 
@@ -112,6 +126,8 @@ public class PurpleEnemy extends Enemy {
     }
 
     public void render(SpriteBatch batch){
+        /*El ojo central (enemigo en sí), solo será visible y por lo tanto dañable cuando los cuatro ojos que disparan
+          estén abatidos*/
         if (eye1.getClosed() && eye2.getClosed() && eye3.getClosed() && eye4.getClosed()) {
             super.render(batch);
         }
@@ -127,6 +143,8 @@ public class PurpleEnemy extends Enemy {
     }
 
     public void shoot(){
+        /*Comenzamos la secuencia del patrón de disparo disparando el primer ojo y después irán disparando en orden
+          cada uno de ellos*/
         if (eye1.isWaiting() && isReady) {
             eye1.shoot();
             eye1.setWaiting(false);

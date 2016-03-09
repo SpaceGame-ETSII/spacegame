@@ -46,7 +46,8 @@ public class Purple extends Shoot{
         textureRegion = new TextureRegion(this.getTexture());
 
         //Creamos el vector para almacenar hacia donde deberá ir el disparo
-        vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() + shooter.getHeight()/2)));
+        vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() +
+                shooter.getHeight()/2)));
 
         //Cambiamos el ángulo
         this.getLogicShape().setRotation(vector.angle());
@@ -118,7 +119,8 @@ public class Purple extends Shoot{
     public void render(SpriteBatch batch){
         super.render(batch);
         if (!this.isShocked()) {
-            batch.draw(textureRegion, this.getX(), this.getY(), -textureRegion.getRegionX(), textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), 1f, 1f, vector.angle());
+            batch.draw(textureRegion, this.getX(), this.getY(), -textureRegion.getRegionX(), textureRegion.getRegionY(),
+                    textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), 1f, 1f, vector.angle());
             shoot.draw(batch);
         }
     }
