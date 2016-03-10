@@ -14,20 +14,33 @@ public class YellowEnemy extends Enemy{
 
     // Velocidad del enemigo
     private static final int SPEED = 200;
-
-    // Vector de movimiento del enemigo
-    private Vector2 movement;
-
-    // Variable de control para saber si se ha alcanzado el punto de "inserción"
-    // Con punto de inserción nos referimos a: el vector de movimiento no cambiará
-    private boolean positionReached;
-    private static final float INSERTION_POINT=0.15f;
-
     // A continuación se definen las variables para el efecto sinusoidal o "ola"
     // Velocidad para el cambio en grados
     private static final int INCREMENTAL_DEGREE_SPEED = 150;
     // Amplitud del efecto sinusoidal
     private static final int WAVE_AMPLITUDE = 70;
+
+    // Tiempo que transcurre desde que ha recibido daño hasta que se para a esperar
+    private final float WAIT_TO_STOPS = 1f;
+    // Tiempo en el que el enemigo ni avanza ni retrocede, luego avanza al objetivo
+    private final float WAIT_TO_GO_AGAIN = 1f;
+
+    private float timeToWaitToStops;
+    private float timeWaittingToGoAgain;
+
+    // Punto de inserción de la pantalla donde ya se "tirá" hacia el punto en el que estuviese la nave
+    private static final float INSERTION_POINT=0.15f;
+
+    // Vector de movimiento del enemigo
+    private Vector2 movement;
+
+    // Cambia el movimiento cuando colisiona con un shoot
+    private int movementXDirection;
+
+    // Variable de control para saber si se ha alcanzado el punto de "inserción"
+    // Con punto de inserción nos referimos a: el vector de movimiento no cambiará
+    private boolean positionReached;
+
     // Guardamos hacía donde está girando ahora mismo, si es hacia arriba (true) o hacia abajo (false)
     private boolean waveDirection;
     // Variable para guardar cuantos grados de inclinación va teniendo
@@ -36,7 +49,7 @@ public class YellowEnemy extends Enemy{
     private Ship target;
 
     public YellowEnemy(int x, int y, Ship target) {
-        super("yellow_enemy", x, y, 15, AssetsManager.loadParticleEffect("yellow_enemy_defeated"));
+        super("yellow_enemy", x, y, 30, AssetsManager.loadParticleEffect("yellow_enemy_defeated"));
 
         movement = new Vector2();
 
@@ -48,6 +61,10 @@ public class YellowEnemy extends Enemy{
         waveDirection = MathUtils.randomBoolean();
 
         positionReached = false;
+
+        movementXDirection = 1;
+        timeToWaitToStops = 0;
+        timeWaittingToGoAgain = 0;
 
         this.target = target;
     }
@@ -67,21 +84,40 @@ public class YellowEnemy extends Enemy{
 
                 // Calculamos el vector movimiento que debe de hacer el enemigo
                 // Efecto sinusoidal -> Y = speed * sen(angle+wave)
-                movement.set(SPEED * delta * MathUtils.cosDeg(movement.angle()), SPEED * delta * MathUtils.sinDeg(movement.angle() + waveDegree));
+                movement.set(SPEED * delta * MathUtils.cosDeg(movement.angle()),
+                        SPEED * delta * MathUtils.sinDeg(movement.angle() + waveDegree));
 
                 // Actualizamos el efecto sinusoidal
                 calculateWaveEffect(delta);
 
                 // Actualizamos la posición del enemigo
-                this.setX(this.getX() + movement.x);
+                // Si ha recibido daño el movimiento de dirección X es el invertido y volverá hacía atrás
+                if(movementXDirection == -1){
+                    // Volverá hacía atrás un tiempo hasta que se pare
+                    if(timeToWaitToStops<WAIT_TO_STOPS){
+                        this.setX(this.getX() + (movement.x * movementXDirection));
+                        timeToWaitToStops+=delta;
+                    }
+                }else{
+                    this.setX(this.getX() + (movement.x));
+                }
                 this.setY(this.getY() + movement.y);
 
                 // Comprobamos si el punto de inserción ha sido alcanzado
                 if(getX()/SpaceGame.width < INSERTION_POINT)
                     positionReached=true;
+
+                // Si ya se ha esperado el tiempo de espera para lanzarse, lo hacemos reseteando los campos de control
+                if(timeToWaitToStops>=WAIT_TO_STOPS && timeWaittingToGoAgain>=WAIT_TO_GO_AGAIN){
+                    timeToWaitToStops = 0;
+                    timeWaittingToGoAgain = 0;
+                    movementXDirection=1;
+                }else
+                    timeWaittingToGoAgain+=delta;
             }else{
                 // Añadimos un plus del 20% de velocidad a la nave para el movimiento de inserción
-                movement.set(SPEED*1.2f * delta * MathUtils.cosDeg(movement.angle()), SPEED*1.2f * delta * MathUtils.sinDeg(movement.angle()));
+                movement.set(SPEED*1.2f * delta * MathUtils.cosDeg(movement.angle()),
+                        SPEED*1.2f * delta * MathUtils.sinDeg(movement.angle()));
                 this.setX(this.getX() + movement.x);
                 this.setY(this.getY() + movement.y);
             }
@@ -102,13 +138,14 @@ public class YellowEnemy extends Enemy{
     }
 
     public void collideWithShip(){
-        this.damage(15);
+        this.damage(this.getVitality());
     }
 
     public void collideWithShoot(Shoot shoot){
-        if(shoot instanceof Yellow)
+        if(shoot instanceof Yellow){
             this.damage(3);
-
+            movementXDirection=-1;
+        }
         if(shoot instanceof Basic)
             this.damage(1);
     }

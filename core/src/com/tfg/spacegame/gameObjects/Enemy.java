@@ -97,6 +97,27 @@ public class Enemy extends GameObject {
         }
     }
 
+    public void renderRotate(float n) {
+        if (!this.isDefeated()) {
+            //El enemigo se pintará si se ha acabado el tiempo de parpadeo o no es momento de estar invisible
+            if (timeToFlick <= 0 || timeForInvisible > 0) {
+                super.renderRotate(n);
+
+                // Si el enemigo es objetivo de un arma, pintamos el efecto de localización
+                if(targettedByShip){
+
+                    float radius = getWidth();
+                    if(getHeight() > radius)
+                        radius = getHeight();
+
+                    ShapeRendererManager.renderCircle(getX()+getWidth()/2, getY()+getHeight()/2,radius, Color.RED);
+                }
+            }
+        } else {
+            destroyEffect.draw(SpaceGame.batch);
+        }
+    }
+
     //Daña al enemigo con la cantidad indicada por parámetro
     public void damage(int damage) {
         vitality -= damage;
