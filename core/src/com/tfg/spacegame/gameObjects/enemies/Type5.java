@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.shoots.BigShoot;
+import com.tfg.spacegame.gameObjects.shoots.Fire;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.gameObjects.Shoot;
@@ -26,7 +27,7 @@ public class Type5 extends Enemy{
     private ParticleEffect shootEffectWarning;
 
     public Type5(int x, int y) {
-        super("enemigo_basico_tipo5", x, y, 15, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
+        super("enemigo_basico_tipo5", x, y, 350, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
         timeToShoot = FREQUENCY_OF_SHOOTING;
         hasShooted = false;
 
@@ -95,7 +96,7 @@ public class Type5 extends Enemy{
     }
 
     public void collideWithShoot(Shoot shoot) {
-        if (!(shoot instanceof BigShoot)){
+        if (shoot instanceof Fire){
             this.damage(1);
         }
     }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.shoots.Fire;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
@@ -38,7 +39,7 @@ public class Type4 extends Enemy{
     private boolean hasShooted;
 
     public Type4(int x, int y) {
-        super("type4", x, y, 7, AssetsManager.loadParticleEffect("basic_destroyed"));
+        super("type4", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
         shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false);
         body = new PartOfEnemy("type4_body", x + 35, y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, true);
 
@@ -130,8 +131,8 @@ public class Type4 extends Enemy{
 
     public void collideWithShoot(Shoot shoot) {
         if (this.isDamagable()) {
-            this.damage(1);
-            this.body.damage(1);
+            if(shoot instanceof Fire)
+                this.damage(1);
         }
     }
 
