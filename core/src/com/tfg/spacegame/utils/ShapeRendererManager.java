@@ -1,5 +1,6 @@
 package com.tfg.spacegame.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
@@ -75,13 +76,20 @@ public class ShapeRendererManager {
     }
 
     public static void renderPolygon(float[] vertices, Color color){
+        float[] auxVertices = new float[vertices.length];
+
+        for(int i=1 ; i< vertices.length ; i+=2){
+            auxVertices[i-1] = (vertices[i-1] * Gdx.graphics.getWidth()) / SpaceGame.width;
+            auxVertices[i]   = (vertices[i]   * Gdx.graphics.getHeight()) / SpaceGame.height;
+        }
+
         SpaceGame.batch.end();
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
 
         renderer.setColor(color);
 
-        renderer.polygon(vertices);
+        renderer.polygon(auxVertices);
 
         renderer.end();
 
