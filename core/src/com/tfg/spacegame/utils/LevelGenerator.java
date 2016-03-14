@@ -75,14 +75,14 @@ public class LevelGenerator {
             if(wrapper.timeToSpawn < 0 && (actualEnemy == null || !wrapper.equals(actualEnemy))){
 
                 //Añadimos el nuevo enemigo y lo eliminamos de la lista a generar
-                this.addEnemy(enemies, wrapper, target);
+                this.addEnemy(enemies, wrapper);
                 enemiesToGenerate.removeValue(wrapper,false);
             }
         }
         return enemies;
     }
 
-    private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper, Ship target) {
+    private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper) {
         switch (wrapper.type){
             case TYPE1:
                 enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));
@@ -118,7 +118,7 @@ public class LevelGenerator {
                 actualEnemy = blue;
                 break;
             case YELLOW:
-                Enemy yellow = new YellowEnemy(wrapper.x,wrapper.y, target);
+                Enemy yellow = new YellowEnemy(wrapper.x,wrapper.y);
                 enemies.add(yellow);
                 break;
             case GREEN:
@@ -131,6 +131,7 @@ public class LevelGenerator {
                 OrangeEnemy orange = new OrangeEnemy(wrapper.x,wrapper.y);
                 enemies.add(orange);
                 enemies.addAll(orange.getPartsOfEnemy());
+                actualEnemy = orange;
                 break;
             case PURPLE:
                 Enemy purple = new PurpleEnemy(wrapper.x, wrapper.y);

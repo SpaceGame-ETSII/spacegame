@@ -16,7 +16,7 @@ public class CampaignScreen extends GameScreen {
     private final SpaceGame game;
 
     //Objetos interactuables de la pantalla
-    private Ship ship;
+    public static Ship ship;
     private Inventary inventary;
     private DialogBox menuExitDialog;
 
@@ -91,7 +91,6 @@ public class CampaignScreen extends GameScreen {
         SpaceGame.batch.draw(background, background.getWidth() + scrollingPosition, 0);
     }
 
-
     @Override
     public void updateEveryState(float delta) {
         //Actualizamos la posición del scrolling
@@ -99,7 +98,6 @@ public class CampaignScreen extends GameScreen {
         if(scrollingPosition <= -background.getWidth())
             scrollingPosition = 0;
     }
-
 
     @Override
     public void renderPause(float delta) {
@@ -125,7 +123,13 @@ public class CampaignScreen extends GameScreen {
             }
         }else{
             menuExitDialog.renderElement("exit");
+        }
+    }
 
+    @Override
+    public void updatePause(float delta) {
+
+        if(!menuExitDialog.isDialogIn()){
             //Se hará una cosa u otra si el inventario está cerrándose o no
             if (inventary.isClosing()) {
                 inventary.updateClosing(delta, ship);
@@ -134,16 +138,13 @@ public class CampaignScreen extends GameScreen {
                 if (!inventary.isClosing())
                     state = GameState.START;
             } else {
-                //Creamos un vector que almacenará las posiciones relativas de la cámara
-                Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-                v = SpaceGame.camera.unproject(v);
-
+                Vector3 v = TouchManager.getFirstTouchPos();
                 inventary.update(delta, ship, v.x, v.y);
             }
         }
 
         //Comprobamos sobre que botón pulsa el usuario y actualizamos las variables del diálgo en consecuencia
-        if (Gdx.input.isTouched()) {
+        if(TouchManager.isTouchedAnyToucher()){
             Vector3 v = TouchManager.getFirstTouchPos();
             if (menuExitDialog.getElementButton("exit").isOverlapingWith(v.x, v.y)) {
                 menuExitDialog.setDialogIn(true);
@@ -155,7 +156,6 @@ public class CampaignScreen extends GameScreen {
             }
             if (menuExitDialog.getElementButton("cancel").isOverlapingWith(v.x, v.y)) {
                 menuExitDialog.getElementButton("cancel").setPressed(true);
-
             }
         }
     }
@@ -170,6 +170,11 @@ public class CampaignScreen extends GameScreen {
     }
 
     @Override
+    public void updateReady(float delta) {
+
+    }
+
+    @Override
     public void renderStart(float delta) {
 
         ship.render();
@@ -179,32 +184,6 @@ public class CampaignScreen extends GameScreen {
 
         if (ship.isDefeated())
             state = GameState.LOSE;
-    }
-
-    @Override
-    public void renderWin(float delta) {
-
-    }
-
-    @Override
-    public void renderLose(float delta) {
-        FontManager.drawText("gameOver",370,240);
-
-        if (Gdx.input.justTouched()) {
-            state = GameState.READY;
-            ship = new Ship();
-        }
-    }
-
-
-    @Override
-    public void updatePause(float delta) {
-
-    }
-
-    @Override
-    public void updateReady(float delta) {
-
     }
 
     @Override
@@ -256,13 +235,26 @@ public class CampaignScreen extends GameScreen {
     }
 
     @Override
+    public void renderWin(float delta) {
+
+    }
+
+    @Override
     public void updateWin(float delta) {
 
     }
 
     @Override
-    public void updateLose(float delta) {
+    public void renderLose(float delta) {
+        FontManager.drawText("gameOver",370,240);
+    }
 
+    @Override
+    public void updateLose(float delta) {
+        if (TouchManager.isTouchedAnyToucher()) {
+            state = GameState.READY;
+            ship = new Ship();
+        }
     }
 
     @Override

@@ -10,12 +10,10 @@ import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
 import com.tfg.spacegame.gameObjects.shoots.*;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.enums.TypeWeapon;
 
 public class ShootsManager {
-
-    //TODO Hay que borrar esto cuando arreglemos el CampaignScreen
-    public static Ship ship;
 
     //Almacenará todos los shoots en pantalla
     public static Array<Shoot> shoots;
@@ -151,8 +149,6 @@ public class ShootsManager {
             }
         }
 
-        ShootsManager.ship = ship;
-
         updateBurst(ship);
     }
 
@@ -235,7 +231,7 @@ public class ShootsManager {
             int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
-            blueShoot = new Blue(shooter, x, y, ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+            blueShoot = new Blue(shooter, x, y, CampaignScreen.ship.getY() + (CampaignScreen.ship.getHeight()/2));
             blueShoot.setX(blueShoot.getX() - blueShoot.getWidth());
 
             shoots.add(blueShoot);
@@ -270,7 +266,7 @@ public class ShootsManager {
             int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
-            purpleShoot = new Purple(shooter,x,y, ShootsManager.ship.getX() + (ShootsManager.ship.getWidth()), ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+            purpleShoot = new Purple(shooter,x,y, CampaignScreen.ship.getX() + (CampaignScreen.ship.getWidth()), CampaignScreen.ship.getY() + (CampaignScreen.ship.getHeight()/2));
 
             shoots.add(purpleShoot);
         }
@@ -321,7 +317,7 @@ public class ShootsManager {
             int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
-            greenShoot = new Green(shooter, x, y, ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+            greenShoot = new Green(shooter, x, y, CampaignScreen.ship.getY() + (CampaignScreen.ship.getHeight()/2));
             greenShoot.setX(greenShoot.getX() - greenShoot.getWidth());
 
             shoots.add(greenShoot);

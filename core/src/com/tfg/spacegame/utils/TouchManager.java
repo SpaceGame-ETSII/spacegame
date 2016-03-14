@@ -119,4 +119,8 @@ public class TouchManager {
         return  result;
     }
 
+    public static boolean isTouchedAnyToucher(){
+        return Gdx.input.isTouched();
+    }
+
 }

@@ -8,7 +8,9 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
 import com.tfg.spacegame.gameObjects.shoots.Yellow;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.ShootsManager;
 
 public class YellowEnemy extends Enemy{
 
@@ -48,8 +50,10 @@ public class YellowEnemy extends Enemy{
 
     private Ship target;
 
-    public YellowEnemy(int x, int y, Ship target) {
+    public YellowEnemy(int x, int y) {
         super("yellow_enemy", x, y, 30, AssetsManager.loadParticleEffect("yellow_enemy_defeated"));
+
+        target = CampaignScreen.ship;
 
         movement = new Vector2();
 
@@ -65,8 +69,6 @@ public class YellowEnemy extends Enemy{
         movementXDirection = 1;
         timeToWaitToStops = 0;
         timeWaittingToGoAgain = 0;
-
-        this.target = target;
     }
 
     public void update(float delta){
