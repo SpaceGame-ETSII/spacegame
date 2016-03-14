@@ -3,7 +3,6 @@ package com.tfg.spacegame.gameObjects.arcadeMode;
 import com.badlogic.gdx.graphics.Color;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.utils.ShapeRendererManager;
 
 public class Obstacle extends GameObject {
 
@@ -11,9 +10,10 @@ public class Obstacle extends GameObject {
 
     private float degrees;
 
-    public Obstacle(String textureName, int x, int y) {
+    public Obstacle(String textureName, int x, int y, float scale) {
         super(textureName, x, y);
 
+        this.setScale(scale, scale);
         degrees = 0;
     }
 

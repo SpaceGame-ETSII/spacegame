@@ -38,13 +38,12 @@ public class ArcadeScreen extends GameScreen {
 	private float timeToBlock;
 
 	//Indica la capa en la que se está, indicando '-1' la capa de abajo y '1' la capa de arriba
-	private int layer;
+	public static int layer;
 
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
 
 		scrollingPosition = 0;
-		ship = new ArcadeShip();
 		background = AssetsManager.loadTexture("background");
 
 		this.initialize();
@@ -54,6 +53,7 @@ public class ArcadeScreen extends GameScreen {
 	}
 
 	private void initialize() {
+		ship = new ArcadeShip();
 		state = GameState.READY;
 		ObstacleManager.load();
 		timeToMeasureY = 0;
