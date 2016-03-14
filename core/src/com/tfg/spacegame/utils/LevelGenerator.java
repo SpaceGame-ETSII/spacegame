@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.*;
+import com.tfg.spacegame.gameObjects.enemies.PurpleEnemy;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {
@@ -133,6 +134,10 @@ public class LevelGenerator {
                 enemies.addAll(orange.getPartsOfEnemy());
                 break;
             case PURPLE:
+                Enemy purple = new PurpleEnemy(wrapper.x, wrapper.y);
+                enemies.addAll(purple.getPartsOfEnemy());
+                enemies.add(purple);
+                actualEnemy = purple;
                 break;
             default:
                 throw new IllegalArgumentException("Se ha tratado de generar un enemigo de tipo inexistente");

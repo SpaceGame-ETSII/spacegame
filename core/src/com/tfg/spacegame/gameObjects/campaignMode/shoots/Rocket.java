@@ -167,10 +167,10 @@ public class Rocket extends Shoot {
         }
     }
 
-    public void render(SpriteBatch batch){
-        super.render(batch);
+    public void render(){
+        super.render();
         if (!this.isShocked()) {
-            propulsionEffect.draw(batch);
+            propulsionEffect.draw(SpaceGame.batch);
         }
     }
 

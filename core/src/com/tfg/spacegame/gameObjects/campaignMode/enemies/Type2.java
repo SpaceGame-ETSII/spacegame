@@ -2,6 +2,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.campaignMode.shoots.Fire;
 import com.tfg.spacegame.utils.AssetsManager;
 
 public class Type2 extends Enemy{
@@ -20,7 +21,7 @@ public class Type2 extends Enemy{
     private float timeToGoFast;
 
     public Type2(int x, int y) {
-        super("enemy", x, y, 3, AssetsManager.loadParticleEffect("basic_destroyed"));
+        super("enemy", x, y, 10, AssetsManager.loadParticleEffect("basic_destroyed"));
         timeToGoFast = 2f;
     }
 
@@ -43,7 +44,8 @@ public class Type2 extends Enemy{
     }
 
     public void collideWithShoot(Shoot shoot) {
-        this.damage(1);
+        if(shoot instanceof Fire)
+            this.damage(1);
     }
 
 }

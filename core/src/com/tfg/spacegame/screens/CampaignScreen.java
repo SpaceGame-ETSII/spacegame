@@ -104,8 +104,8 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void renderPause(float delta) {
-        inventary.render(SpaceGame.batch);
-        ship.render(SpaceGame.batch);
+        inventary.render();
+        ship.render();
 
         //En función de si estamos en el diálogo para salir o no veremos la ventana para salir del modo campaña
         if (menuExitDialog.isDialogIn()){
@@ -195,7 +195,7 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void renderStart(float delta) {
-        ship.render(SpaceGame.batch);
+        ship.render();
 
         EnemiesManager.render();
         ShootsManager.render();

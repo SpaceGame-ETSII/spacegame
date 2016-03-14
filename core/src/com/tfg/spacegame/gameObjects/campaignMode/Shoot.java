@@ -1,9 +1,9 @@
 package com.tfg.spacegame.gameObjects.campaignMode;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Purple;
+import com.tfg.spacegame.SpaceGame;
 
 public class Shoot extends GameObject {
 
@@ -80,8 +80,13 @@ public class Shoot extends GameObject {
         } else if (destroyEffect != null) {
             //Si el disparo ha chocado, el efecto a mostrar es el del shockEffect
             if (this.getShooter() instanceof Enemy) {
-                destroyEffect.getEmitters().first().setPosition(this.getX(), this.getY());
-                // Rotamos el efecto de particulas 180º
+                //Comprobamos si el disparo es o no un disparo morado para actuar en consecuencia
+                if (this instanceof Purple==false)
+                    destroyEffect.getEmitters().first().setPosition(this.getX(), this.getY());
+                else
+                    destroyEffect.getEmitters().first().setPosition(this.getLogicShape().getTransformedVertices()[4], this.getLogicShape().getTransformedVertices()[5]);
+
+                //Rotamos el efecto de particulas 180º
                 destroyEffect.getEmitters().first().getAngle().setHigh(135, 225);
                 destroyEffect.getEmitters().first().getAngle().setLow(160, 200);
             } else {
@@ -90,23 +95,22 @@ public class Shoot extends GameObject {
         }
     }
 
-    public void render(SpriteBatch batch) {
+    public void render() {
         if (!this.isShocked()) {
             //Se comprueba que no sea una instancia del arma morada para pintar la textura del arma, ya que ésta deberá tener otro tipo de render
             if (this instanceof Purple==false)
-
                 //Si el shooter es un enemigo, giramos el arma al contrario
             if (this.getShooter() instanceof Enemy)
-                super.renderRotate(batch, 180);
+                super.renderRotate(180);
             else
 
-                super.render(batch);
+                super.render();
 
             if (shootEffect != null)
-                shootEffect.draw(batch);
+                shootEffect.draw(SpaceGame.batch);
         } else {
             if (destroyEffect != null)
-                destroyEffect.draw(batch);
+                destroyEffect.draw(SpaceGame.batch);
         }
     }
 

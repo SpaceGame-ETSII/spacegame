@@ -2,10 +2,10 @@ package com.tfg.spacegame.gameObjects.campaignMode;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 
@@ -74,11 +74,11 @@ public class Enemy extends GameObject {
         destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
     }
 
-    public void render(SpriteBatch batch) {
+    public void render() {
         if (!this.isDefeated()) {
             //El enemigo se pintará si se ha acabado el tiempo de parpadeo o no es momento de estar invisible
             if (timeToFlick <= 0 || timeForInvisible > 0) {
-                super.render(batch);
+                super.render();
 
                 // Si el enemigo es objetivo de un arma, pintamos el efecto de localización
                 if(targettedByShip){
@@ -91,7 +91,28 @@ public class Enemy extends GameObject {
                 }
             }
         } else {
-            destroyEffect.draw(batch);
+            destroyEffect.draw(SpaceGame.batch);
+        }
+    }
+
+    public void renderRotate(float n) {
+        if (!this.isDefeated()) {
+            //El enemigo se pintará si se ha acabado el tiempo de parpadeo o no es momento de estar invisible
+            if (timeToFlick <= 0 || timeForInvisible > 0) {
+                super.renderRotate(n);
+
+                // Si el enemigo es objetivo de un arma, pintamos el efecto de localización
+                if(targettedByShip){
+
+                    float radius = getWidth();
+                    if(getHeight() > radius)
+                        radius = getHeight();
+
+                    ShapeRendererManager.renderCircle(getX()+getWidth()/2, getY()+getHeight()/2,radius, Color.RED);
+                }
+            }
+        } else {
+            destroyEffect.draw(SpaceGame.batch);
         }
     }
 
@@ -133,8 +154,16 @@ public class Enemy extends GameObject {
 
     public void collideWithShip() {}
 
-    public void collideWithShoot(Shoot shoot) {}
+    public void collideWithShoot(Shoot shoot) {
+    }
 
+    public int getVitality(){
+        return vitality;
+    }
+
+    public void setVitality(int v){
+        vitality = v;
+    }
     //Usado para activar o desactivar el efecto de localización
     public void setTargettedByShip(boolean b){
         targettedByShip = b;

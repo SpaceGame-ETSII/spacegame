@@ -1,7 +1,6 @@
 package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 
@@ -11,7 +10,7 @@ public class PartOfEnemy extends Enemy {
     private Enemy father;
 
     //Indica si esta parte daña al enemigo padre
-    private boolean damageable;
+    public boolean damageable;
 
     public PartOfEnemy(String texture, int x, int y, int vitality, ParticleEffect particleEffect, Enemy father, boolean damageable) {
         super(texture, x, y, vitality, particleEffect);
@@ -19,9 +18,9 @@ public class PartOfEnemy extends Enemy {
         this.damageable = damageable;
     }
 
-    public void render(SpriteBatch batch) {
+    public void render() {
         if (!father.isDefeated()) {
-            super.render(batch);
+            super.render();
         }
     }
 

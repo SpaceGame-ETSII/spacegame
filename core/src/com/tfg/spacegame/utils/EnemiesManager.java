@@ -37,7 +37,7 @@ public class EnemiesManager {
         for(Enemy enemy: enemies)
             //El enemigo se pintará si no está marcado para borrar y no es parte de un enemigo mayor
             if(!enemy.isDeletable())
-                enemy.render(SpaceGame.batch);
+                enemy.render();
     }
 
     //Gestiona la reacción de la colisión del enemigo pasado por parámetro con la nave
@@ -49,7 +49,6 @@ public class EnemiesManager {
     public static void manageCollisionWithShoot(Pair<Shoot, Enemy> shootToEnemy) {
         Shoot shoot = shootToEnemy.getFirst();
         Enemy enemy = shootToEnemy.getSecond();
-
         enemy.collideWithShoot(shoot);
     }
 

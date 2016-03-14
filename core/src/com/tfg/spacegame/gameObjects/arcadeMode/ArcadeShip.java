@@ -36,8 +36,8 @@ public class ArcadeShip extends GameObject {
     }
 
     @Override
-    public void render(SpriteBatch batch){
-        super.render(batch);
+    public void render(){
+        super.render();
 
         fireEffect.draw(SpaceGame.batch);
     }

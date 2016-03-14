@@ -7,10 +7,10 @@
       "entity":"enemy", "vertices":   [ 0,0,  0,40,  40,40,   40,0 ]
     },
     {
-      "entity":"tipo3", "vertices":   [ 45,0,  14,14,  0,45,  14,59,  45,90,  59,59,  90,45,  59,14 ]
+      "entity":"tipo3", "vertices":   [ 45,0,  14,14,  0,45,  14,76,  45,90,  76,76,  90,45,  76,14 ]
     },
     {
-      "entity":"type4_body", "vertices":   [ 45,0,  14,14,  0,45,  14,59,  45,90,  59,59,  90,45,  59,14 ]
+      "entity":"type4_body", "vertices":   [ 45,0,  14,14,  0,45,  14,76,  45,90,  76,76,  90,45,  76,14 ]
     },
     {
       "entity":"type4_shield", "vertices": [ 10,0,  0,35,  0,65,  10,90,  20,45 ]
@@ -25,7 +25,7 @@
       "entity":"yellow_enemy", "vertices": [ 0,20 , 31,40 , 39,26 , 39,15 , 31,0]
     },
     {
-      "entity":"red_enemy", "vertices": [  0,100 , 100,200 , 200,100 , 100,0 ]
+      "entity":"red_enemy", "vertices": [  0,45 , 45,90 , 90,45 , 45,0 ]
     },
     {
       "entity":"blue_enemy", "vertices": [0,49 , 0,92 , 16,140 , 38,140 , 59,94 , 59,47 , 38,0 , 16,0 ]
@@ -34,10 +34,19 @@
       "entity":"green_body", "vertices": [0,66 , 19,110 , 71,132 , 123,110 , 143,66 , 123,22 , 71,0 , 19,22]
     },
     {
-      "entity":"orange_enemy_body", "vertices": [0,67 , 47,20, 115,0 , 178,20 , 220,67 , 235,125 , 220,183 , 178,230 , 115,250 , 47,230, 0,183 , 32,183 , 55,168 , 71,125 , 55,82 , 32,67]
+      "entity":"orange_enemy_body", "vertices": [0,10 , 50,0 , 113,20 , 155,67 , 170,125 , 155,183 , 113,230 , 50,250 , 0,240]
+    },
+    {
+      "entity":"orange_enemy_body_aux_up", "vertices": [6,67 , 64,39 , 64,115]
+    },
+    {
+      "entity":"orange_enemy_body_aux_bottom", "vertices": [6,56 , 64,91 , 64,10]
     },
     {
       "entity":"orange_enemy_shield", "vertices": [0,47 , 12,10, 24,0 , 24,121 , 12,110 , 0,74]
+    },
+    {
+      "entity":"orange_enemy_cannon", "vertices": [20,0 , 0,20 , 20,40 , 40,20]
     },
     {
       "entity":"green_shield", "vertices": [0,100 , 24,173, 49,200 , 67,200 , 67,0 , 49,0 , 24,27]
@@ -47,9 +56,6 @@
     },
     {
       "entity":"bigshoot_shoot", "vertices": [ 0,0 , 0,40 , 155,40 , 155,0]
-    },
-    {
-      "entity":"red_shoot", "vertices": [ 0,0 , 0,5 , 150,5 , 150,0 ]
     },
     {
       "entity":"blue_shoot", "vertices": [ 10,0 , 0,10 , 10,20 , 27,20 , 40,10 , 27,0 ]
@@ -62,6 +68,12 @@
     },
     {
       "entity":"green_shoot", "vertices": [ 10,0 , 0,10 , 10,20 , 27,20 , 32,10 , 27,0 ]
+    }
+    {
+      "entity":"purple_body", "vertices": [ 180,325 , 334,325 , 334,160 , 180,160 ]
+    }
+    {
+      "entity":"purple_shoot", "vertices": [ 0,0 , 0,20 , 200,20 , 200,0 ]
     }
   ]
 }

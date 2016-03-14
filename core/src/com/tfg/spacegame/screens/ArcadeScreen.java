@@ -94,7 +94,7 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderStart(float delta) {
-		ship.render(SpaceGame.batch);
+		ship.render();
 		ObstacleManager.render();
 	}
 

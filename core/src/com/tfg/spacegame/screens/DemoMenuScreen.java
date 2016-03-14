@@ -57,11 +57,11 @@ public class DemoMenuScreen implements Screen {
         FontManager.drawText("titleDemo", 229, 420);
 
         // Delegamos el render de los botones
-        allEnemies.render(SpaceGame.batch);
-        colorEnemies.render(SpaceGame.batch);
-        greenEnemy.render(SpaceGame.batch);
-        orangeEnemy.render(SpaceGame.batch);
-        purpleEnemy.render(SpaceGame.batch);
+        allEnemies.render();
+        colorEnemies.render();
+        greenEnemy.render();
+        orangeEnemy.render();
+        purpleEnemy.render();
 
         SpaceGame.batch.end();
 

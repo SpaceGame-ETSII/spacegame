@@ -134,7 +134,7 @@ public class ShootsManager {
 
     public static void render(){
         for(Shoot shoot : shoots)
-            shoot.render(SpaceGame.batch);
+            shoot.render();
     }
 
     public static void update(float delta, CampaignShip ship){
@@ -166,7 +166,7 @@ public class ShootsManager {
                 if(typeToBurst.equals(TypeWeapon.BASIC))
                     lastShootOfBurst = shootOneBasicWeapon(ship);
                 else if(typeToBurst.equals(TypeWeapon.ORANGE))
-                    lastShootOfBurst = shootOneOrangeWeapon(ship,burstTarget);
+                    lastShootOfBurst = shootOneOrangeWeapon(ship,(int)(ship.getX() + ship.getWidth()),(int) (ship.getY() + ship.getHeight()/2), 45f ,burstTarget);
                 numberOfBasicShoots -= 1;
                 startPoint = lastShootOfBurst.getX();
                 //Si acabamos de lanzar el último disparo de la ráfaga, no lo guardamos
@@ -265,34 +265,40 @@ public class ShootsManager {
 
                 shoots.add(purpleShoot);
             }
+        }else if (shooter instanceof Enemy) {
+            int x = (int) (shooter.getX());
+            int y = (int) (shooter.getY() + shooter.getHeight() / 2);
+
+            purpleShoot = new Purple(shooter,x,y, ShootsManager.ship.getX() + (ShootsManager.ship.getWidth()), ShootsManager.ship.getY() + (ShootsManager.ship.getHeight()/2));
+
+            shoots.add(purpleShoot);
         }
     }
 
 
-    public static void shootBurstOrangeWeapon(GameObject gameObject, float x, float y) {
+    public static void shootBurstOrangeWeapon(GameObject shooter, float x, float y) {
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
-        if(enemy != null && isShipReadyToShoot(TypeWeapon.ORANGE)){
+        if(enemy != null && isShipReadyToShoot(TypeWeapon.ORANGE) && enemy.isDamagable()){
             numberOfBasicShoots = 12;
             startPoint = 0;
             typeToBurst = TypeWeapon.ORANGE;
             burstTarget = enemy;
             aparitionFactor = 1.0;
             enemy.setTargettedByShip(true);
-        }
+        }else if(enemy == null){
 
+        }
     }
 
-    public static Orange shootOneOrangeWeapon(GameObject shooter, GameObject target) {
+    public static Orange shootOneOrangeWeapon(GameObject shooter,int xShoot, int yShoot, float angle,  GameObject target) {
         Orange result = null;
 
-        int xShoot =(int) (shooter.getX() + shooter.getWidth());
-        int yShoot = (int) (shooter.getY() + shooter.getHeight()/2);
+        if(shooter instanceof CampaignShip){
+            angle =  (shoots.size/(float)(numberOfBasicShoots + shoots.size)) * angle;
+            angle =  MathUtils.random(-angle,angle);
+        }
 
-        float angle = (shoots.size/(float)(numberOfBasicShoots + shoots.size)) * 45f;
-
-        float angleOfStart = MathUtils.random(-angle,angle);
-
-        result = new Orange(shooter,xShoot,yShoot, angleOfStart, target);
+        result = new Orange(shooter,xShoot,yShoot, angle, target);
                 shoots.add(result);
 
         return result;

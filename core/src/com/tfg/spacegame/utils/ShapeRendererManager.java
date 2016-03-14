@@ -1,14 +1,11 @@
 package com.tfg.spacegame.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 
-/**
- * Created by gaems-dev on 22/02/16.
- */
 public class ShapeRendererManager {
 
     private static ShapeRenderer renderer;
@@ -76,12 +73,11 @@ public class ShapeRendererManager {
     }
 
     public static void renderPolygon(float[] vertices, Color color){
-
         float[] auxVertices = new float[vertices.length];
-        for(int i=1 ; i<vertices.length ; i+=2){
-            valuesToProjectFromCamera.set(vertices[i-1],vertices[i],0);
-            auxVertices[i-1] = SpaceGame.camera.project(valuesToProjectFromCamera).x;
-            auxVertices[i] = SpaceGame.camera.project(valuesToProjectFromCamera).y;
+
+        for(int i=1 ; i< vertices.length ; i+=2){
+            auxVertices[i-1] = (vertices[i-1] * Gdx.graphics.getWidth()) / SpaceGame.width;
+            auxVertices[i]   = (vertices[i]   * Gdx.graphics.getHeight()) / SpaceGame.height;
         }
 
         SpaceGame.batch.end();
@@ -97,7 +93,17 @@ public class ShapeRendererManager {
         SpaceGame.batch.begin();
     }
 
-    public static void easyRenderPolygon(GameObject g) {
-        renderPolygon(g.getLogicShape().getTransformedVertices(), Color.WHITE);
+    public static void renderLine(float x1, float y1, float x2, float y2, Color color){
+        SpaceGame.batch.end();
+
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+
+        renderer.setColor(Color.WHITE);
+
+        renderer.line(x1,y1,x2,y2);
+
+        renderer.end();
+
+        SpaceGame.batch.begin();
     }
 }

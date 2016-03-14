@@ -1,12 +1,12 @@
 package com.tfg.spacegame.gameObjects.campaignMode.shoots;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.AssetsManager;
 
 public class Red extends Shoot{
@@ -96,17 +96,17 @@ public class Red extends Shoot{
 
     }
 
-    public void render(SpriteBatch batch){
-        super.render(batch);
+    public void render(){
+        super.render();
         if (!this.isShocked()) {
             //Vamos pintando parte por parte del disparo, en lugar de que salga la textura entera
             if(pixelsToDraw<=texture.getRegionWidth()){
                 texture.setRegion(0,0,pixelsToDraw,texture.getRegionHeight());
                 pixelsToDraw += 10;
             }
-            batch.draw(texture, this.getX(), this.getY());
+            SpaceGame.batch.draw(texture, this.getX(), this.getY());
             if(timeToMove < 0) {
-                shoot.draw(batch);
+                shoot.draw(SpaceGame.batch);
             }
         }
     }

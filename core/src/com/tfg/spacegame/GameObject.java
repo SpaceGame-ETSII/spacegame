@@ -1,12 +1,11 @@
 package com.tfg.spacegame;
 
-
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+
 import com.tfg.spacegame.utils.AssetsManager;
 
 public class GameObject {
@@ -32,7 +31,9 @@ public class GameObject {
 
         float[] vertices = SpaceGame.loadShape(textureName);
 
+
         if(vertices == null){
+
             vertices = new float[8];
 
             vertices[0] = 0;
@@ -88,7 +89,9 @@ public class GameObject {
         height = heightGreaterPoint - heightLowestPoint;
     }
 
+
     public void relocateCenter() {
+
         center.set(this.getX() + (this.getWidth() / 2),
                    this.getY() + (this.getHeight() / 2));
     }
@@ -157,21 +160,21 @@ public class GameObject {
         logicShape.setOrigin(x,y);
     }
 
-    public void render(SpriteBatch batch){
+    public void render(){
         if (this.getLogicShape().getScaleX() != 1 || this.getLogicShape().getScaleY() != 1)
-            this.renderScale(batch, this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY());
+            this.renderScale(this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY());
         else
-            batch.draw(texture, getX(), getY());
+            SpaceGame.batch.draw(texture, getX(), getY());
     }
 
     //Método para pintar un objeto rotando N grados su textura
-    public void renderRotate(SpriteBatch batch, float n){
-        batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
+    public void renderRotate(float n){
+        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
     }
 
     //Método para pintar un objeto a razón de su escalado
-    public void renderScale(SpriteBatch batch, float scaleX, float scaleY){
-        batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), scaleX, scaleY, 0);
+    public void renderScale(float scaleX, float scaleY){
+        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), scaleX, scaleY, 0);
     }
 
     public void dispose() {
@@ -186,9 +189,9 @@ public class GameObject {
         float totalRadios = this.getRadio() + g.getRadio();
 
         //Solo se comprueba la colisión si la distancia entre los centros es menor a la suma de los radios
-        if (distance < totalRadios) {
+        if (distance < totalRadios)
             result = Intersector.overlapConvexPolygons(this.getLogicShape(), g.getLogicShape());
-        }
+
         return result;
     }
 

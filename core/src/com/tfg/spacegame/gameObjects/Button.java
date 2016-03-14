@@ -1,9 +1,7 @@
 package com.tfg.spacegame.gameObjects;
 
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.FontManager;
 
 public class Button extends GameObject {
@@ -55,11 +53,11 @@ public class Button extends GameObject {
     }
 
     //Si el botón está pulsado, girará la textura 180 grados
-    public void render(SpriteBatch batch) {
+    public void render() {
         if (!this.isPressed()) {
-            super.render(batch);
+            super.render();
         } else {
-            super.renderRotate(batch, 180);
+            super.renderRotate(180);
         }
 
         if (content != null) {

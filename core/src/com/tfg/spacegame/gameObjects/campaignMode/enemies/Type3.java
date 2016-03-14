@@ -1,13 +1,11 @@
 package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.campaignMode.shoots.Fire;
 import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
 public class Type3 extends Enemy {
@@ -46,7 +44,7 @@ public class Type3 extends Enemy {
     private float aux;
 
     public Type3(int x, int y) {
-        super("tipo3", x, y, 7, AssetsManager.loadParticleEffect("basic_destroyed"));
+        super("tipo3", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
 
         pixelsToMoveSlowly = 150;
         timeToShoot = INITIAL_TIME_TO_SHOOT;
@@ -81,9 +79,8 @@ public class Type3 extends Enemy {
         }
     }
 
-    public void render(SpriteBatch batch){
-        super.render(batch);
-        ShapeRendererManager.renderCircle(this.getX(),this.getY(),this.getWidth(), Color.BLUE);
+    public void render(){
+        super.render();
     }
 
     public void shoot(){
@@ -91,7 +88,8 @@ public class Type3 extends Enemy {
     }
 
     public void collideWithShoot(Shoot shoot) {
-        this.damage(1);
+        if(shoot instanceof Fire)
+            this.damage(1);
     }
 
 }

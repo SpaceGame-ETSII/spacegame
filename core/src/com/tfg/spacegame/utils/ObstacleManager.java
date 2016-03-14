@@ -32,7 +32,7 @@ public class ObstacleManager {
 
     public static void render(){
         for (Obstacle obstacle: obstacles)
-            obstacle.render(SpaceGame.batch);
+            obstacle.render();
     }
 
     public static boolean existsCollision(GameObject gameObject) {

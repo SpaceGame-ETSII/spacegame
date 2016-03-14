@@ -1,9 +1,9 @@
 package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.shoots.BigShoot;
+import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.campaignMode.shoots.Fire;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
@@ -26,43 +26,10 @@ public class Type5 extends Enemy{
     private ParticleEffect shootEffectWarning;
 
     public Type5(int x, int y) {
-        super("enemigo_basico_tipo5", x, y, 15, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
+        super("enemigo_basico_tipo5", x, y, 350, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
         timeToShoot = FREQUENCY_OF_SHOOTING;
         hasShooted = false;
 
-        float[] vertices = new float[20];
-
-        vertices[0] = 0;
-        vertices[1] = 57;
-
-        vertices[2] = 0;
-        vertices[3] = 144;
-
-        vertices[4] = 56;
-        vertices[5] = 200;
-
-        vertices[6] = 223;
-        vertices[7] = 200;
-
-        vertices[8] = 275;
-        vertices[9] = 148;
-
-        vertices[10] = 319;
-        vertices[11] = 148;
-
-        vertices[12] = 319;
-        vertices[13] = 53;
-
-        vertices[14] = 275;
-        vertices[15] = 53;
-
-        vertices[16] = 223;
-        vertices[17] = 0;
-
-        vertices[18] = 56;
-        vertices[19] = 0;
-
-       // this.getLogicShape().setVertices(vertices);
         //Creamos el efecto de particulas
         shootEffectWarning = AssetsManager.loadParticleEffect("warning_shoot_type5_effect");
         this.updateParticleEffect();
@@ -115,11 +82,11 @@ public class Type5 extends Enemy{
         ShootsManager.shootOneType5Weapon(this);
     }
 
-    public void render(SpriteBatch batch){
+    public void render(){
         //Si el enemigo no ha disparado pintamos el efecto de partículas
         if(!this.hasShooted && !this.isDefeated())
-            shootEffectWarning.draw(batch);
-        super.render(batch);
+            shootEffectWarning.draw(SpaceGame.batch);
+        super.render();
     }
 
     public void dispose() {
@@ -128,7 +95,7 @@ public class Type5 extends Enemy{
     }
 
     public void collideWithShoot(Shoot shoot) {
-        if (!(shoot instanceof BigShoot)){
+        if (shoot instanceof Fire){
             this.damage(1);
         }
     }

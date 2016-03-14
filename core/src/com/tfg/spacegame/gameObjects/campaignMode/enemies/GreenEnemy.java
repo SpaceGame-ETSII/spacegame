@@ -1,6 +1,5 @@
 package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
@@ -75,8 +74,8 @@ public class GreenEnemy extends Enemy {
         return partsOfEnemy;
     }
 
-    public void render(SpriteBatch batch){
-        super.render(batch);
+    public void render(){
+        super.render();
     }
 
     public void shoot(){

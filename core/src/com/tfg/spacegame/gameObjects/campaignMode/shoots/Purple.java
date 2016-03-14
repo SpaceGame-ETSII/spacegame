@@ -1,10 +1,10 @@
 package com.tfg.spacegame.gameObjects.campaignMode.shoots;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
@@ -39,10 +39,11 @@ public class Purple extends Shoot{
         textureRegion = new TextureRegion(this.getTexture());
 
         //Creamos el vector para almacenar hacia donde deberá ir el disparo
-        vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() + shooter.getHeight()/2)));
+        vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() +
+                shooter.getHeight()/2)));
 
         //Cambiamos el ángulo
-        //this.getLogicShape().setRotation(vector.angle());
+        this.getLogicShape().setRotation(vector.angle());
 
         //Actualizamos el efecot de partículas
         this.updateParticleEffect();
@@ -53,7 +54,7 @@ public class Purple extends Shoot{
         //Dependiendo de si es la nave o no el shooter, el disparo ira a la derecha o a la izquierda
         if (shooter instanceof CampaignShip) {
             direction = 1;
-        } else {
+        } else if (shooter instanceof Enemy){
             direction = -1;
         }
     }
@@ -70,9 +71,9 @@ public class Purple extends Shoot{
                 //Rotamos el efecto de partículas para hacerlo coincidir con el ángulo del disparo
                 shoot.getEmitters().first().getAngle().setHigh(vector.angle());
             } else if (this.getShooter() instanceof Enemy){
-                shoot.getEmitters().first().setPosition(this.getX(), this.getY());
+                shoot.getEmitters().first().setPosition(this.getX() + (vector.x/SPEED), this.getY() + (vector.y/SPEED));
 
-                //Rotamos el efecto de particulas 180º
+                //Rotamos el efecto de partículas para hacerlo coincidir con el ángulo del disparo
                 shoot.getEmitters().first().getAngle().setHigh(vector.angle());
             }
         }
@@ -80,10 +81,19 @@ public class Purple extends Shoot{
 
     public void update(float delta) {
         if (!this.isShocked()) {
-            //Actualizamos el movimiento del disparo
-            this.setX(this.getX() + ((vector.x/SPEED) * direction));
-            this.setY(this.getY() + ((vector.y/SPEED) * direction));
 
+            if (getShooter() instanceof CampaignShip){
+                //Actualizamos el movimiento del disparo
+                this.setX(this.getX() + ((vector.x/SPEED) * direction));
+                this.setY(this.getY() + ((vector.y/SPEED) * direction));
+            }else {
+                //Actualizamos el movimiento del disparo
+                this.setX(this.getX() - ((vector.x/SPEED) * direction));
+                this.setY(this.getY() - ((vector.y/SPEED) * direction));
+            }
+
+
+            //Actualizamos el ángulo del disparo por si acaso tendría que modificarse
             this.getLogicShape().setRotation(vector.angle());
 
             //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
@@ -99,12 +109,12 @@ public class Purple extends Shoot{
         }
     }
 
-    public void render(SpriteBatch batch){
-        super.render(batch);
+    public void render(){
+        super.render();
         if (!this.isShocked()) {
-            batch.draw(textureRegion, this.getX(), this.getY(), -textureRegion.getRegionX(), textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), 1f, 1f, vector.angle());
+            SpaceGame.batch.draw(textureRegion, this.getX(), this.getY(), -textureRegion.getRegionX(), textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), 1f, 1f, vector.angle());
 
-            shoot.draw(batch);
+            shoot.draw(SpaceGame.batch);
         }
     }
 

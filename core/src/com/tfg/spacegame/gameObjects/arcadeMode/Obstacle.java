@@ -1,10 +1,8 @@
 package com.tfg.spacegame.gameObjects.arcadeMode;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 
 public class Obstacle extends GameObject {
@@ -32,22 +30,22 @@ public class Obstacle extends GameObject {
         }
     }
 
-    public void render(SpriteBatch batch) {
-        this.renderRotate(batch, degrees);
-        ShapeRendererManager.easyRenderPolygon(this);
+    public void render() {
+        this.renderRotate(degrees);
+        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.BLUE);
     }
 
-    public void renderTransparent(SpriteBatch batch) {
-        Color c = batch.getColor();
+    public void renderTransparent() {
+        Color c = SpaceGame.batch.getColor();
         float oldAlpha = c.a;
 
         c.a = 0.3f;
-        batch.setColor(c);
+        SpaceGame.batch.setColor(c);
 
-        this.renderRotate(batch, degrees / 2);
+        this.renderRotate(degrees / 2);
 
         c.a = oldAlpha;
-        batch.setColor(c);
+        SpaceGame.batch.setColor(c);
     }
 
     public void dispose() {

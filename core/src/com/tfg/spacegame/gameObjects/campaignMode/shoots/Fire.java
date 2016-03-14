@@ -2,12 +2,12 @@ package com.tfg.spacegame.gameObjects.campaignMode.shoots;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.utils.TouchManager;
 
@@ -110,8 +110,6 @@ public class Fire extends Shoot {
             ParticleEmitter.ScaledNumericValue angles = this.shoot.getEmitters().first().getAngle();
             angles.setLow(angle);
             angles.setHigh(angle-AMPLITUDE_OF_FIRE,angle+AMPLITUDE_OF_FIRE);
-
-
         }else{
             this.shock();
             shoot.allowCompletion();
@@ -125,8 +123,8 @@ public class Fire extends Shoot {
         return (this.getShooter() instanceof Shoot && ((Shoot) this.getShooter()).getShooter() instanceof Enemy);
     }
 
-    public void render(SpriteBatch batch){
-        shoot.draw(batch);
+    public void render(){
+        shoot.draw(SpaceGame.batch);
     }
 
     public void collideWithEnemy(Enemy enemy) {
