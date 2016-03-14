@@ -96,17 +96,53 @@ public class ArcadeScreen extends GameScreen {
 	public void renderStart(float delta) {
 		ship.render(SpaceGame.batch);
 		ObstacleManager.render();
-
-		FontManager.draw("" + Gdx.input.getAccelerometerY(), 200, 200);
 	}
 
 	@Override
 	public void updateStart(float delta) {
 		ship.update(delta);
 		ObstacleManager.update(delta);
+		this.updateLayers(delta);
 
+		if (ObstacleManager.existsCollision(ship))
+			state = GameState.LOSE;
+	}
+
+	@Override
+	public void renderPause(float delta) {
+
+	}
+
+	@Override
+	public void updatePause(float delta) {
+
+	}
+
+	@Override
+	public void renderWin(float delta) {
+
+	}
+
+	@Override
+	public void updateWin(float delta) {
+
+	}
+
+	@Override
+	public void renderLose(float delta) {
+		FontManager.drawText("gameOver", 80, 100);
+	}
+
+	@Override
+	public void updateLose(float delta) {
+		if (Gdx.input.justTouched()) {
+			this.initialize();
+		}
+	}
+
+	public void updateLayers(float delta) {
 		//Comprobamos si ha pasado el tiempo de bloqueo para poder cambiar de capa
-		//Si no ha pasado el tiempo, significará que estamos en medio de un cambio de capa
+		//Si no ha pasado el tiempo, significará que estamos en la transición de un cambio de capa
 		if (timeToBlock <= 0) {
 
 			//Si la distancia entre la medición actual y la última del acelerómetro Y es mayor a 3
@@ -143,43 +179,8 @@ public class ArcadeScreen extends GameScreen {
 			} else {
 				//Si no ha terminado el tiempo de bloqueo, transicionamos la posición de la nave a la nueva capa
 				ship.setScale(ship.getLogicShape().getScaleX() + (0.5f * delta * layer * -1),
-						      ship.getLogicShape().getScaleY() + (0.5f * delta * layer * -1));
+							  ship.getLogicShape().getScaleY() + (0.5f * delta * layer * -1));
 			}
-		}
-
-		if (ObstacleManager.existsCollision(ship))
-			state = GameState.LOSE;
-	}
-
-	@Override
-	public void renderPause(float delta) {
-
-	}
-
-	@Override
-	public void updatePause(float delta) {
-
-	}
-
-	@Override
-	public void renderWin(float delta) {
-
-	}
-
-	@Override
-	public void updateWin(float delta) {
-
-	}
-
-	@Override
-	public void renderLose(float delta) {
-		FontManager.drawText("gameOver", 80, 100);
-	}
-
-	@Override
-	public void updateLose(float delta) {
-		if (Gdx.input.justTouched()) {
-			this.initialize();
 		}
 	}
 

@@ -14,8 +14,10 @@ public class ArcadeShip extends GameObject {
 
     //Efecto de particulas del fuego de propulsión
     protected ParticleEffect fireEffect;
+    private float fireEffectScale;
+    private float fireEffectLife;
 
-    //Rango de sensibilidad del movimiento
+    //Rango de sensibilidad del movimiento horizontal
     private float sensitiveRange;
 
     public ArcadeShip() {
@@ -24,6 +26,9 @@ public class ArcadeShip extends GameObject {
         this.setX((SpaceGame.width / 2) - this.getWidth());
 
         fireEffect = AssetsManager.loadParticleEffect("propulsion_ship_effect");
+        fireEffectScale = fireEffect.getEmitters().first().getScale().getHighMax();
+        fireEffectLife = fireEffect.getEmitters().first().getLife().getHighMax();
+
         sensitiveRange = 0.5f;
 
         this.updateParticleEffect();
@@ -53,14 +58,21 @@ public class ArcadeShip extends GameObject {
 
         //Actualizamos los efectos de partículas
         this.updateParticleEffect();
-
         fireEffect.update(delta);
     }
 
     public void updateParticleEffect() {
+        //Colocamos el efecto según la posición de la nave, y ajustamos el ángulo, ya que originalmente es horizontal
         fireEffect.getEmitters().first().setPosition(this.getX() + (this.getWidth()/2),
                                                      this.getY() + (this.getHeight() * ((1 - this.getLogicShape().getScaleY()) / 2)));
         fireEffect.getEmitters().first().getAngle().setHigh(270);
+    }
+
+    //Además de escalar el propio objeto, se encarga de escalar el efecto de partículas
+    public void setScale(float x, float y) {
+        super.setScale(x, y);
+        fireEffect.getEmitters().first().getScale().setHigh(fireEffectScale * y);
+        fireEffect.getEmitters().first().getLife().setHigh(fireEffectLife * y);
     }
 
     @Override
