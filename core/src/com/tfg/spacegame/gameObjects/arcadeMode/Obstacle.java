@@ -11,28 +11,20 @@ public class Obstacle extends GameObject {
 
     private float degrees;
 
-    private boolean gira;
-
-    public Obstacle(String textureName, int x, int y, boolean gira) {
+    public Obstacle(String textureName, int x, int y) {
         super(textureName, x, y);
 
         degrees = 0;
-
-        this.gira = gira;
     }
 
     public void update(float delta) {
-        if (gira) {
-            this.setRotation(degrees);
-            degrees += SPEED * delta;
-        } else {
-            this.setY(this.getY() - (SPEED * delta));
-        }
+        this.setRotation(degrees);
+        degrees += SPEED * delta;
+        this.setY(this.getY() - (SPEED * delta));
     }
 
     public void render() {
         this.renderRotate(degrees);
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.BLUE);
     }
 
     public void renderTransparent() {

@@ -17,8 +17,8 @@ public class SpaceGame extends Game {
 	public static Platform platform;
 
 	// Ancho y alto de la pantalla para la camara ortonormal
-	public static int width = 800;
-	public static int height = 480;
+	public static int width;
+	public static int height;
 
 	// Objeto encargado de obtener las shapes
 	private static ShapeLoader shapeLoader;
@@ -29,6 +29,9 @@ public class SpaceGame extends Game {
 
 	@Override
 	public void create () {
+		width = 800;
+		height = 480;
+
 		AssetsManager.load();
 		TouchManager.initialize();
 		ShapeRendererManager.initialize();

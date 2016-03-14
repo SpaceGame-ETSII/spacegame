@@ -106,4 +106,8 @@ public class ShapeRendererManager {
 
         SpaceGame.batch.begin();
     }
+
+    public void dispose() {
+        renderer.dispose();
+    }
 }

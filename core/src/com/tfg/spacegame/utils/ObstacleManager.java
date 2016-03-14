@@ -11,12 +11,9 @@ public class ObstacleManager {
 
     public static void load(){
         obstacles = new Array<Obstacle>();
-        //obstacles.add(new Obstacle("big_obstacle", 200, 1000));
-        //obstacles.add(new Obstacle("medium_obstacle", 100, 1300));
-        //obstacles.add(new Obstacle("small_obstacle", 300, 1600));
-
-        obstacles.add(new Obstacle("medium_obstacle", 300, 600, true));
-        obstacles.add(new Obstacle("medium_obstacle", 100, 400, false));
+        obstacles.add(new Obstacle("big_obstacle", 200, 1000));
+        obstacles.add(new Obstacle("medium_obstacle", 100, 1300));
+        obstacles.add(new Obstacle("small_obstacle", 300, 1600));
     }
 
     public static void update(float delta){

@@ -1,5 +1,6 @@
 package com.tfg.spacegame;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.ShapeRendererManager;
 
 public class GameObject {
 
@@ -165,11 +167,15 @@ public class GameObject {
             this.renderScale(this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY());
         else
             SpaceGame.batch.draw(texture, getX(), getY());
+
+        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.BLUE);
     }
 
     //Método para pintar un objeto rotando N grados su textura
     public void renderRotate(float n){
         SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
+
+        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.BLUE);
     }
 
     //Método para pintar un objeto a razón de su escalado
