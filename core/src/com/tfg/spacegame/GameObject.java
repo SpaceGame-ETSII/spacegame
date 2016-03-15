@@ -167,22 +167,18 @@ public class GameObject {
             this.renderScale(this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY(), 0);
         else
             SpaceGame.batch.draw(texture, getX(), getY());
-
-        //ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.BLUE);
     }
 
     //Método para pintar un objeto rotando N grados su textura
     public void renderRotate(float n){
         SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2,
-                                getWidth(), getHeight(),
+                                texture.getWidth(), texture.getHeight(),
                                 this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY(), n);
-
-        //ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.BLUE);
     }
 
     //Método para pintar un objeto a razón de su escalado, lo llama el render normal si se tiene escalado
     private void renderScale(float scaleX, float scaleY, float n){
-        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), scaleX, scaleY, n);
+        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, texture.getWidth(), texture.getHeight(), scaleX, scaleY, n);
     }
 
     public void dispose() {

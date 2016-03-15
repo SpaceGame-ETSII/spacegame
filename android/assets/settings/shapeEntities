@@ -87,7 +87,7 @@
       "entity":"big_obstacle", "vertices": [ 10,60, 56,25, 93,3, 142,5, 156,35, 153,110, 133,145, 72,155, 24,160, 3,146, 0,87]
     },
     {
-      "entity":"arcadeShip", "vertices": [ 0,40, 24,10, 48,40, 24,80 ]
+      "entity":"arcadeShip", "vertices": [ 0,40, 24,15, 48,40, 24,70 ]
     }
 
   ]

@@ -15,9 +15,16 @@ public class ArcadeScreen extends GameScreen {
 
 	private final SpaceGame game;
 
+	//Velocidad del scrolling del fondo
 	private static final int SCROLLING_SPEED = 120;
+	//Tiempo que bloquearemos el cambio de capa cada vez que se realice un cambio
 	private static final float MAX_TIME_TO_BLOCK = 1;
+	//Tiempo máximo hasta que actualicemos lastMeasureY
 	private static final float TIME_TO_MEASURE_Y = 0.2f;
+	//Mínimo alpha para las transparencias de los obstacles
+	private static final float MIN_ALPHA = 0.3f;
+	//Indica el escalado que tendrán los objetos en la capa baja
+	private static final float BOTTOM_SCALE = 0.5f;
 
 	//Objetos interactuables de la pantalla
 	private ArcadeShip ship;
@@ -63,10 +70,10 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderEveryState(float delta) {
+		//Pintamos el fondo, que necesitará pintarse dos veces para el scrolling
 		SpaceGame.batch.draw(new TextureRegion(background), 0, scrollingPosition,
 								game.width / 2 , background.getHeight() / 2,
 								background.getWidth(), background.getHeight(), 1, 1, 90);
-
 		SpaceGame.batch.draw(new TextureRegion(background), 0, background.getWidth() + scrollingPosition,
 								game.width / 2 , background.getHeight() / 2,
 								background.getWidth(), background.getHeight(), 1, 1, 90);
@@ -82,7 +89,7 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderReady(float delta) {
-		FontManager.drawText("tapToStart", 80, 100);
+		FontManager.drawText("tapToStart", 100, 100);
 	}
 
 	@Override
@@ -94,25 +101,29 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderStart(float delta) {
-		float bottomAlpha = (ship.getLogicShape().getScaleX() - 0.5f) / (1 - 0.5f);
-		bottomAlpha *= (1 - 0.3);
-		bottomAlpha += 0.3;
+		//Primero realizamos el cálculo del alpha según el escalado actual de la nave
+		float alpha = (ship.getLogicShape().getScaleX() - BOTTOM_SCALE) / (1 - BOTTOM_SCALE);
+		alpha *= (1 - MIN_ALPHA);
+		alpha += MIN_ALPHA;
 
-		float topAlpha = bottomAlpha;
-
-		ObstacleManager.renderBottom(1.3f - bottomAlpha);
+		//Pintamos naves y obstáculos según orden y el alpha correspondiente para cada uno
+		ObstacleManager.renderBottom((1 + MIN_ALPHA) - alpha);
 		ship.render();
-		ObstacleManager.renderTop(topAlpha);
+		ObstacleManager.renderTop(alpha);
 	}
 
 	@Override
 	public void updateStart(float delta) {
+		//Actualizamos nave, obstáculos y las capas
 		ship.update(delta);
 		ObstacleManager.update(delta);
 		this.updateLayers(delta);
 
-		if (ObstacleManager.existsCollision(ship, layer))
+		//Por último, comprobamos si hay colisión con la nave
+		if (ObstacleManager.existsCollision(ship, layer)) {
+			ship.defeat();
 			state = GameState.LOSE;
+		}
 	}
 
 	@Override
@@ -137,11 +148,13 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderLose(float delta) {
-		FontManager.drawText("gameOver", 80, 100);
+		renderStart(delta);
+		FontManager.drawText("gameOver", 120, 100);
 	}
 
 	@Override
 	public void updateLose(float delta) {
+		ship.update(delta);
 		if (Gdx.input.justTouched()) {
 			this.initialize();
 		}
@@ -176,7 +189,7 @@ public class ArcadeScreen extends GameScreen {
 
 				//Recolocamos la nave en su posición final dependiendo de la capa destino
 				if (layer == 1)
-					ship.setScale(0.5f, 0.5f);
+					ship.setScale(BOTTOM_SCALE, BOTTOM_SCALE);
 				else
 					ship.setScale(1, 1);
 
@@ -185,8 +198,8 @@ public class ArcadeScreen extends GameScreen {
 				lastMeasureY = Gdx.input.getAccelerometerY();
 			} else {
 				//Si no ha terminado el tiempo de bloqueo, transicionamos la posición de la nave a la nueva capa
-				ship.setScale(ship.getLogicShape().getScaleX() + (0.5f * delta * layer * -1),
-							  ship.getLogicShape().getScaleY() + (0.5f * delta * layer * -1));
+				ship.setScale(ship.getLogicShape().getScaleX() + (BOTTOM_SCALE * delta * layer * -1),
+							  ship.getLogicShape().getScaleY() + (BOTTOM_SCALE * delta * layer * -1));
 			}
 		}
 	}
@@ -194,6 +207,8 @@ public class ArcadeScreen extends GameScreen {
 	@Override
 	public void disposeScreen() {
 		super.dispose();
+		ship.dispose();
+		background.dispose();
 	}
 }
 

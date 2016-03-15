@@ -111,11 +111,6 @@ public class ObstacleManager {
     public static void renderTop(float alpha){
         for (Obstacle obstacle: obstaclesInTop)
             obstacle.renderTransparent(alpha);
-        /*
-            if (ArcadeScreen.layer == 1)
-                obstacle.render();
-            else
-                obstacle.renderTransparent();*/
         FontManager.draw("Top: " + (topProbability) + "%", 50, 250);
         FontManager.draw("Bottom: " + (bottomProbability) + "%", 50, 200);
     }
@@ -124,11 +119,6 @@ public class ObstacleManager {
     public static void renderBottom(float alpha){
         for (Obstacle obstacle: obstaclesInBottom)
             obstacle.renderTransparent(alpha);
-        /*
-            if (ArcadeScreen.layer == 1)
-                obstacle.renderTransparent();
-            else
-                obstacle.render();*/
     }
 
     //Comprueba si hay colisión entre el gameObject y algún obstáculo de la capa que esté activa en ArcadeScreen
