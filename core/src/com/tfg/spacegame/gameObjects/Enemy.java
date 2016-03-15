@@ -153,7 +153,7 @@ public class Enemy extends GameObject {
         return new Array();
     }
 
-    public boolean isDamagable() {
+    public boolean canCollide() {
         return true;
     }
 

@@ -11,11 +11,13 @@ public class PartOfEnemy extends Enemy {
 
     //Indica si esta parte daña al enemigo padre
     public boolean damageable;
+    public boolean collide;
 
-    public PartOfEnemy(String texture, int x, int y, int vitality, ParticleEffect particleEffect, Enemy father, boolean damageable) {
+    public PartOfEnemy(String texture, int x, int y, int vitality, ParticleEffect particleEffect, Enemy father, boolean damageable, boolean collisionable) {
         super(texture, x, y, vitality, particleEffect);
         this.father = father;
         this.damageable = damageable;
+        this.collide = collisionable;
     }
 
     public void render() {
@@ -24,8 +26,8 @@ public class PartOfEnemy extends Enemy {
         }
     }
 
-    public boolean isDamagable() {
-        return damageable;
+    public boolean canCollide() {
+        return collide;
     }
 
     //Si choca con un disparo y es dañable, se resta vitalidad al enemigo padre

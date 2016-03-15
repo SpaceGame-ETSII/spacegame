@@ -94,22 +94,22 @@ public class OrangeEnemy extends Enemy {
         chargeMainCannonEffect = AssetsManager.loadParticleEffect("orange_main_cannon_charging");
 
         // Creación y posicionamiento del cuerpo
-        body = new PartOfEnemy("orange_enemy_body",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false);
+        body = new PartOfEnemy("orange_enemy_body",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false, true);
         body.setX(x + getWidth()/2);
         body.setY((y+getHeight()/2)-body.getHeight()/2);
 
         // Creación y posicionamiento del cuerpo (arriba izquierda)
-        body_aux_up = new PartOfEnemy("orange_enemy_body_aux_up",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false);
+        body_aux_up = new PartOfEnemy("orange_enemy_body_aux_up",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false, true);
         body_aux_up.setX(body.getX()-65);
         body_aux_up.setY(body.getY()+getHeight() + body_aux_up.getHeight() + 10);
 
         // Creación y posicionamiento del cuerpo (abajo izquierda)
-        body_aux_bottom = new PartOfEnemy("orange_enemy_body_aux_bottom",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false);
+        body_aux_bottom = new PartOfEnemy("orange_enemy_body_aux_bottom",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false,true);
         body_aux_bottom.setX(body_aux_up.getX());
         body_aux_bottom.setY(body.getY() - body_aux_up.getHeight()/2 + 40);
 
         // Creación y posicionamiento del escudo
-        shield = new PartOfEnemy("orange_enemy_shield",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, true);
+        shield = new PartOfEnemy("orange_enemy_shield",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false, true);
         shield.setX(body.getX() - 79);
         SHIELD_OFFSET_X = 79;
         shield.setY(body.getY()+body.getHeight()/2 - shield.getHeight()/2 + 1);

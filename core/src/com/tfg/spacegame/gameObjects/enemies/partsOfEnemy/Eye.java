@@ -31,7 +31,7 @@ public class Eye extends PartOfEnemy {
 
     public Eye(String texture, int x, int y, int vitality, ParticleEffect particleEffect, Enemy father, boolean
             damageable, boolean isWaiting) {
-        super(texture, x, y, vitality, particleEffect, father, damageable);
+        super(texture, x, y, vitality, particleEffect, father, damageable, true);
 
         //Inicializamos las variables
         timeToShoot = FREQUENCY_OF_SHOOTING;
@@ -123,12 +123,12 @@ public class Eye extends PartOfEnemy {
 
     }
 
-    public boolean isDamagable(){
+    public boolean canCollide(){
         return !closed;
     }
 
     public void collideWithShoot(Shoot shoot) {
-        if (isDamagable()){
+        if (canCollide()){
             this.damage(0);
             setClosed(true);
         }

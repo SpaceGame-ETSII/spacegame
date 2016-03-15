@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
-import com.tfg.spacegame.gameObjects.shoots.Fire;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
@@ -42,8 +41,8 @@ public class Type4 extends Enemy{
 
     public Type4(int x, int y) {
         super("type4", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
-        shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, true);
-        body = new PartOfEnemy("type4_body", x + 35, y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, true);
+        shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false, true);
+        body = new PartOfEnemy("type4_body", x + 35, y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false, true);
 
         // Establememos el tipo del enemigo
         type = TypeEnemy.TYPE4;
@@ -124,7 +123,7 @@ public class Type4 extends Enemy{
         }
     }
 
-    public boolean isDamagable() {
+    public boolean canCollide() {
         return timeToOpenCannon < 0;
     }
 
@@ -135,7 +134,7 @@ public class Type4 extends Enemy{
     }
 
     public void collideWithShoot(Shoot shoot) {
-        if (this.isDamagable()) {
+        if (this.canCollide()) {
             DamageManager.calculateDamage(shoot,this);
         }
     }

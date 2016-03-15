@@ -11,9 +11,6 @@ import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GreenEnemy extends Enemy {
 
     //Indica la velocidad a la que se moverá el enemigo
@@ -37,7 +34,7 @@ public class GreenEnemy extends Enemy {
     public GreenEnemy(int x, int y) {
         super("green_body", x, y, 600, AssetsManager.loadParticleEffect("green_destroyed"));
         shield = new PartOfEnemy("green_shield", x - 56,y - 33, 15,
-                                    AssetsManager.loadParticleEffect("green_destroyed"), this, true);
+                                    AssetsManager.loadParticleEffect("green_destroyed"), this, false, true);
 
         // Establememos el tipo del enemigo
         type = TypeEnemy.GREEN;
@@ -90,7 +87,7 @@ public class GreenEnemy extends Enemy {
     }
 
     public void collideWithShoot(Shoot shoot) {
-        if (this.isDamagable()) {
+        if (this.canCollide()) {
             if (shoot instanceof Basic){
                 //Si el enemigo es alcanzado por un disparo de tipo básico, sólo recibirá un punto de daño
                 this.damage(1);

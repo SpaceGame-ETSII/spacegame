@@ -274,7 +274,7 @@ public class ShootsManager {
 
     public static void shootBurstOrangeWeapon(GameObject shooter, float x, float y) {
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
-        if(enemy != null && isShipReadyToShoot(TypeShoot.ORANGE) && enemy.isDamagable()){
+        if(enemy != null && isShipReadyToShoot(TypeShoot.ORANGE) && enemy.canCollide()){
             numberOfBasicShoots = 12;
             startPoint = 0;
             typeToBurst = TypeShoot.ORANGE;

@@ -31,7 +31,7 @@ public class Cannon extends PartOfEnemy {
     private boolean disable;
 
     public Cannon(float x, float y, Enemy father, float xShoot, float yShoot, float angle) {
-        super("orange_enemy_cannon", 0, 0, 20, AssetsManager.loadParticleEffect("basic_destroyed"), father, true);
+        super("orange_enemy_cannon", 0, 0, 20, AssetsManager.loadParticleEffect("basic_destroyed"), father, false, true);
 
         this.setX(x);
         this.setY(y);
@@ -95,7 +95,7 @@ public class Cannon extends PartOfEnemy {
             disable = true;
     }
 
-    public boolean isDamagable() {
+    public boolean canCollide() {
         return damageable;
     }
 }

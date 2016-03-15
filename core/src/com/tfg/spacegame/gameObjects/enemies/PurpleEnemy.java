@@ -4,8 +4,6 @@ import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Eye;
-import com.tfg.spacegame.gameObjects.shoots.Basic;
-import com.tfg.spacegame.gameObjects.shoots.Purple;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
@@ -47,7 +45,7 @@ public class PurpleEnemy extends Enemy {
 
         //Creamos las distintas partes que compondrán al enemigo
         body = new PartOfEnemy("purple_body", x, y, 1,
-                AssetsManager.loadParticleEffect("purple_destroyed"), this, false);
+                AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
         eye1 = new Eye("purple_eye_1", x + 35, y + 380, 1,
                 AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
         eye2 = new Eye("purple_eye_2", x + 10, y + 260, 1,
@@ -133,7 +131,7 @@ public class PurpleEnemy extends Enemy {
     public void render(){
         /*El ojo central (enemigo en sí), solo será visible y por lo tanto dañable cuando los cuatro ojos que disparan
           estén abatidos*/
-        if (eye1.getClosed() && eye2.getClosed() && eye3.getClosed() && eye4.getClosed()) {
+        if (isAllEyesClosed()) {
             super.render();
         }
     }
@@ -170,10 +168,13 @@ public class PurpleEnemy extends Enemy {
     }
 
     public void collideWithShoot(Shoot shoot) {
-        System.out.println("asdsad");
-        if (this.isDamagable()) {
+        if (this.canCollide() && isAllEyesClosed()) {
             DamageManager.calculateDamage(shoot,this);
         }
+    }
+
+    private boolean isAllEyesClosed(){
+        return eye1.getClosed() && eye2.getClosed() && eye3.getClosed() && eye4.getClosed();
     }
 
     public void dispose(){
