@@ -43,7 +43,7 @@ public class Fire extends Shoot {
         this.setOrigin(0,this.getHeight()/2);
 
         FULL_WIDTH = getWidth();
-        actualReasonOfScaling = 1.0f;
+        actualReasonOfScaling = 0.0f;
 
         this.shoot = shoot;
         shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY()+this.getHeight()/2);
@@ -60,6 +60,13 @@ public class Fire extends Shoot {
             targetVector.x = xTarget;
             targetVector.y = yTarget;
         }
+
+        recalculateLifeShootEffect();
+    }
+
+    private void recalculateLifeShootEffect(){
+        this.setScale( actualReasonOfScaling , 1.0f);
+        shoot.getEmitters().first().getLife().setHigh(SHOOT_EFFECT_LIFE * actualReasonOfScaling);
     }
 
     public void update(float delta){
@@ -104,10 +111,7 @@ public class Fire extends Shoot {
                 actualReasonOfScaling = 1.0f;
             }
 
-            this.setScale( actualReasonOfScaling , 1.0f);
-
-
-            shoot.getEmitters().first().getLife().setHigh(SHOOT_EFFECT_LIFE * actualReasonOfScaling);
+            recalculateLifeShootEffect();
 
             ParticleEmitter.ScaledNumericValue angles = this.shoot.getEmitters().first().getAngle();
             angles.setLow(angle);
