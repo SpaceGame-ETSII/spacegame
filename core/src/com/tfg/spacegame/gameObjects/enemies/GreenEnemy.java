@@ -9,6 +9,7 @@ import com.tfg.spacegame.gameObjects.shoots.Green;
 import com.tfg.spacegame.gameObjects.shoots.GreenFire;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,12 @@ public class GreenEnemy extends Enemy {
     private float counter;
 
     public GreenEnemy(int x, int y) {
-        super("green_body", x, y, 1500, AssetsManager.loadParticleEffect("green_destroyed"));
+        super("green_body", x, y, 600, AssetsManager.loadParticleEffect("green_destroyed"));
         shield = new PartOfEnemy("green_shield", x - 56,y - 33, 15,
                                     AssetsManager.loadParticleEffect("green_destroyed"), this, false);
+
+        // Establememos el tipo del enemigo
+        type = TypeEnemy.GREEN;
 
         direction = 1;
         isReady = false;

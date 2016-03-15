@@ -6,8 +6,10 @@ import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.shoots.BigShoot;
 import com.tfg.spacegame.gameObjects.shoots.Fire;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class Type5 extends Enemy{
 
@@ -30,6 +32,9 @@ public class Type5 extends Enemy{
         super("enemigo_basico_tipo5", x, y, 350, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
         timeToShoot = FREQUENCY_OF_SHOOTING;
         hasShooted = false;
+
+        // Establememos el tipo del enemigo
+        type = TypeEnemy.TYPE5;
 
         //Creamos el efecto de particulas
         shootEffectWarning = AssetsManager.loadParticleEffect("warning_shoot_type5_effect");
@@ -95,10 +100,7 @@ public class Type5 extends Enemy{
         shootEffectWarning.dispose();
     }
 
-    public void collideWithShoot(Shoot shoot) {
-        if (shoot instanceof Fire){
-            this.damage(1);
-        }
+    public void collideWithShoot(Shoot shoot) {DamageManager.calculateDamage(shoot,this);
     }
 
 }

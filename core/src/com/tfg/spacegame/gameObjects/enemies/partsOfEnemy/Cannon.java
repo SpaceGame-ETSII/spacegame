@@ -6,6 +6,7 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
@@ -47,7 +48,7 @@ public class Cannon extends PartOfEnemy {
 
     public void shoot(){
         // Disparamos
-        ShootsManager.shootOneOrangeWeapon(this, (int)shootingPosition.x, (int)shootingPosition.y, shootAngle, ShootsManager.ship);
+        ShootsManager.shootOneOrangeWeapon(this, (int)shootingPosition.x, (int)shootingPosition.y, shootAngle, CampaignScreen.ship);
     }
     public void move(float speed){
         this.setX(this.getX() + speed);

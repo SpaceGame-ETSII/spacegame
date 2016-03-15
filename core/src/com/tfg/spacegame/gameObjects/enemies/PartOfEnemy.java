@@ -24,6 +24,10 @@ public class PartOfEnemy extends Enemy {
         }
     }
 
+    public boolean isDamagable() {
+        return damageable;
+    }
+
     //Si choca con un disparo y es dañable, se resta vitalidad al enemigo padre
     public void collideWithShoot(Shoot shoot) {
         if (damageable)

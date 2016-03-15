@@ -6,12 +6,11 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
 import com.tfg.spacegame.gameObjects.shoots.*;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.screens.CampaignScreen;
-import com.tfg.spacegame.utils.enums.TypeWeapon;
+import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class ShootsManager {
 
@@ -28,7 +27,7 @@ public class ShootsManager {
     private static float startPoint;
 
     //Tipo de arma a hacer la ráfaga (naranja o basica)
-    private static TypeWeapon typeToBurst;
+    private static TypeShoot typeToBurst;
 
     //Si hubiese un objetivo de la ráfaga, lo guardamos aqui
     private static GameObject burstTarget;
@@ -49,10 +48,10 @@ public class ShootsManager {
      * @param shooter - El shooter que realizó el disparo
      */
     public static void shootBurstBasicWeaponForShip(GameObject shooter){
-        if(isShipReadyToShoot(TypeWeapon.BASIC)){
+        if(isShipReadyToShoot(TypeShoot.BASIC)){
             numberOfBasicShoots = 3;
             startPoint = 0;
-            typeToBurst = TypeWeapon.BASIC;
+            typeToBurst = TypeShoot.BASIC;
             aparitionFactor = 1.3;
         }
     }
@@ -85,7 +84,7 @@ public class ShootsManager {
      * @param type - El tipo de disparo equipado en la nave
      * @return Indica si puede o no disparar la nave
      */
-    private static boolean isShipReadyToShoot(TypeWeapon type) {
+    private static boolean isShipReadyToShoot(TypeShoot type) {
         boolean result = false;
         Array<Shoot> selected = new Array<Shoot>();
 
@@ -160,9 +159,9 @@ public class ShootsManager {
             //último es superior a su punto de inicio más su ancho por 1.3
             if (lastShootOfBurst == null ||
                     lastShootOfBurst.getX() > (startPoint + lastShootOfBurst.getWidth()) * aparitionFactor) {
-                if(typeToBurst.equals(TypeWeapon.BASIC))
+                if(typeToBurst.equals(TypeShoot.BASIC))
                     lastShootOfBurst = shootOneBasicWeapon(ship);
-                else if(typeToBurst.equals(TypeWeapon.ORANGE))
+                else if(typeToBurst.equals(TypeShoot.ORANGE))
                     lastShootOfBurst = shootOneOrangeWeapon(ship,(int)(ship.getX() + ship.getWidth()),(int) (ship.getY() + ship.getHeight()/2), 45f ,burstTarget);
                 numberOfBasicShoots -= 1;
                 startPoint = lastShootOfBurst.getX();
@@ -170,7 +169,7 @@ public class ShootsManager {
                 if (numberOfBasicShoots == 0){
                     lastShootOfBurst = null;
                     // Si el burst era de un tipo naranja, desactivamos el efecto de localización.
-                    if(typeToBurst.equals(TypeWeapon.ORANGE)){
+                    if(typeToBurst.equals(TypeShoot.ORANGE)){
                         Enemy enemy = (Enemy) burstTarget;
                         enemy.setTargettedByShip(false);
                     }
@@ -194,7 +193,7 @@ public class ShootsManager {
     public static void shootRedWeapon(GameObject shooter) {
         Red redShoot = new Red(shooter,0,0);
         if (shooter instanceof Ship){
-            if(isShipReadyToShoot(TypeWeapon.RED)){
+            if(isShipReadyToShoot(TypeShoot.RED)){
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
@@ -219,7 +218,7 @@ public class ShootsManager {
         Blue blueShoot;
 
         if (shooter instanceof Ship) {
-            if (isShipReadyToShoot(TypeWeapon.BLUE)) {
+            if (isShipReadyToShoot(TypeShoot.BLUE)) {
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight() / 3);
 
@@ -242,7 +241,7 @@ public class ShootsManager {
         Yellow yellowShoot = new Yellow(shooter, xTarget, yTarget);
 
         if (shooter instanceof Ship) {
-            if (isShipReadyToShoot(TypeWeapon.YELLOW)) {
+            if (isShipReadyToShoot(TypeShoot.YELLOW)) {
                 shoots.add(yellowShoot);
             }
         } else {
@@ -254,7 +253,7 @@ public class ShootsManager {
         Purple purpleShoot;
 
         if (shooter instanceof Ship) {
-            if (isShipReadyToShoot(TypeWeapon.PURPLE)) {
+            if (isShipReadyToShoot(TypeShoot.PURPLE)) {
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
@@ -275,10 +274,10 @@ public class ShootsManager {
 
     public static void shootBurstOrangeWeapon(GameObject shooter, float x, float y) {
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
-        if(enemy != null && isShipReadyToShoot(TypeWeapon.ORANGE) && enemy.isDamagable()){
+        if(enemy != null && isShipReadyToShoot(TypeShoot.ORANGE) && enemy.isDamagable()){
             numberOfBasicShoots = 12;
             startPoint = 0;
-            typeToBurst = TypeWeapon.ORANGE;
+            typeToBurst = TypeShoot.ORANGE;
             burstTarget = enemy;
             aparitionFactor = 1.0;
             enemy.setTargettedByShip(true);
@@ -305,7 +304,7 @@ public class ShootsManager {
         Green greenShoot;
 
         if (shooter instanceof Ship) {
-            if (isShipReadyToShoot(TypeWeapon.GREEN)) {
+            if (isShipReadyToShoot(TypeShoot.GREEN)) {
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight() / 3);
 

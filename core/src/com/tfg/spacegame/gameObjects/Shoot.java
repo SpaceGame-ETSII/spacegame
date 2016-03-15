@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.shoots.Purple;
+import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class Shoot extends GameObject {
 
@@ -21,6 +22,8 @@ public class Shoot extends GameObject {
 
     // Efecto de partículas cuando el disparo choca
     private ParticleEffect destroyEffect;
+
+    protected TypeShoot type;
 
     public Shoot(String nameTexture, int x, int y, GameObject shooter, ParticleEffect shootEffect, ParticleEffect destroyEffect) {
         super(nameTexture,x,y);
@@ -121,6 +124,10 @@ public class Shoot extends GameObject {
     public void collideWithEnemy(Enemy enemy) {}
 
     public void collideWithShoot(Shoot shoot) {}
+
+    public TypeShoot getType(){
+        return type;
+    }
 
     public void dispose() {
         super.dispose();

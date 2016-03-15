@@ -8,7 +8,7 @@ import com.tfg.spacegame.gameObjects.Shoot;
 public class CollissionsManager {
 
     //Contendrán las colisiones realizadas
-    private static Array<Pair<Shoot, Enemy>> shootsToEnemies;
+    public static Array<Pair<Shoot, Enemy>> shootsToEnemies;
     private static Array<Pair<Shoot, Shoot>> shootsToShoots;
 
     public static void load() {

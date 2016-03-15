@@ -6,7 +6,9 @@ import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
 import com.tfg.spacegame.gameObjects.shoots.Red;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class RedEnemy extends Enemy{
 
@@ -29,7 +31,10 @@ public class RedEnemy extends Enemy{
     private static final float Y_REFERENCE = 200;
 
     public RedEnemy(int x, int y) {
-        super("red_enemy", x, y, 15, AssetsManager.loadParticleEffect("red_destroyed"));
+        super("red_enemy", x, y, 40, AssetsManager.loadParticleEffect("red_destroyed"));
+
+        // Establememos el tipo del enemigo
+        type = TypeEnemy.RED;
     }
 
     public void update(float delta){
@@ -96,13 +101,6 @@ public class RedEnemy extends Enemy{
     }
 
     public void collideWithShoot(Shoot shoot) {
-        //Si el enemigo es alcanzado por un disparo de tipo básico, sólo recibirá un punto de daño
-        if (shoot instanceof Basic){
-            this.damage(1);
-        }else
-        //Si por el contrario, es alcanzado por un disparo de tipo rjo, perderá tres puntos de vida
-        if (shoot instanceof Red){
-            this.damage(3);
-        }
+        DamageManager.calculateDamage(shoot,this);
     }
 }

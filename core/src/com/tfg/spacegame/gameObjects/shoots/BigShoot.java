@@ -6,6 +6,7 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class BigShoot extends Shoot {
 
@@ -21,6 +22,9 @@ public class BigShoot extends Shoot {
 
     public BigShoot(GameObject shooter, int x, int y, float delay) {
         super("bigshoot_shoot", x, y, shooter, AssetsManager.loadParticleEffect("bigshoot_shoot_effect"), null);
+
+        // Establememos el tipo del arma
+        type = TypeShoot.BIGSHOOT;
 
         // Creamos el efecto de particulas
         shoot = AssetsManager.loadParticleEffect("bigshoot_shoot_effect");

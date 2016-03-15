@@ -7,7 +7,9 @@ import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
 import com.tfg.spacegame.gameObjects.shoots.Blue;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class BlueEnemy extends Enemy {
 
@@ -27,7 +29,10 @@ public class BlueEnemy extends Enemy {
     private float counter;
 
     public BlueEnemy(int x, int y) {
-        super("blue_enemy", x, y, 15, AssetsManager.loadParticleEffect("blue_destroyed"));
+        super("blue_enemy", x, y, 200, AssetsManager.loadParticleEffect("blue_destroyed"));
+
+        // Establememos el tipo del enemigo
+        type = TypeEnemy.BLUE;
 
         //Inicialmente lo pondremos que va hacia arriba, sólo por darle un valor válido
         direction = 1;
@@ -69,14 +74,7 @@ public class BlueEnemy extends Enemy {
     }
 
     public void collideWithShoot(Shoot shoot) {
-        //Si el enemigo es alcanzado por un disparo de tipo básico, sólo recibirá un punto de daño
-        if (shoot instanceof Basic){
-            this.damage(1);
-        }else
-            //Si por el contrario, es alcanzado por un disparo de tipo azul, perderá tres puntos de vida
-            if (shoot instanceof Blue){
-                this.damage(3);
-            }
+        DamageManager.calculateDamage(shoot,this);
     }
 
 }

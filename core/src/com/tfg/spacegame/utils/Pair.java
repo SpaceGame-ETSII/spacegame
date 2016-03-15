@@ -24,4 +24,19 @@ public class Pair<F, S> {
     public S getSecond() {
         return second;
     }
+
+    @Override
+    public boolean equals(Object other){
+        boolean result = false;
+
+        if(this == other)
+            result = true;
+
+        if(!result && (other instanceof Pair)){
+            Pair otherPair = (Pair) other;
+            result = this.getFirst().equals(otherPair.getFirst()) && this.getSecond().equals(otherPair.getSecond());
+        }
+
+        return result;
+    }
 }

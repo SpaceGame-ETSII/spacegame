@@ -6,6 +6,7 @@ import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class Basic extends Shoot {
 
@@ -22,7 +23,8 @@ public class Basic extends Shoot {
         super("basic_shoot",x,y,shooter,
                 AssetsManager.loadParticleEffect("basic_effect_shoot"),
                 AssetsManager.loadParticleEffect("basic_effect_shoot"));
-
+        // Establememos el tipo del arma
+        type = TypeShoot.BASIC;
         //Creamos el efecto que hará las veces de textura
         shoot = AssetsManager.loadParticleEffect("basic_shoot_effect");
         this.updateParticleEffect();

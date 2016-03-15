@@ -8,6 +8,7 @@ import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class Red extends Shoot{
 
@@ -39,6 +40,9 @@ public class Red extends Shoot{
 
         //Los iniciamos, pero aunque los iniciemos si no haya un update no avanzarán
         shoot.start();
+
+        // Establememos el tipo del arma
+        type = TypeShoot.RED;
 
         //Inicializamos las variables para pintar el disparo a trozos y no la textura entera
         texture = new TextureRegion(this.getTexture());

@@ -10,7 +10,9 @@ import com.tfg.spacegame.gameObjects.shoots.Basic;
 import com.tfg.spacegame.gameObjects.shoots.Yellow;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class YellowEnemy extends Enemy{
 
@@ -52,6 +54,9 @@ public class YellowEnemy extends Enemy{
 
     public YellowEnemy(int x, int y) {
         super("yellow_enemy", x, y, 30, AssetsManager.loadParticleEffect("yellow_enemy_defeated"));
+
+        // Establememos el tipo del enemigo
+        type = TypeEnemy.YELLOW;
 
         target = CampaignScreen.ship;
 
@@ -145,11 +150,9 @@ public class YellowEnemy extends Enemy{
 
     public void collideWithShoot(Shoot shoot){
         if(shoot instanceof Yellow){
-            this.damage(3);
             movementXDirection=-1;
         }
-        if(shoot instanceof Basic)
-            this.damage(1);
+        DamageManager.calculateDamage(shoot,this);
     }
 
     public void render(){

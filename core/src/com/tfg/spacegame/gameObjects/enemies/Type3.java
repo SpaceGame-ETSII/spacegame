@@ -7,8 +7,10 @@ import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Fire;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class Type3 extends Enemy {
 
@@ -47,6 +49,9 @@ public class Type3 extends Enemy {
 
     public Type3(int x, int y) {
         super("tipo3", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
+
+        // Establememos el tipo del enemigo
+        type = TypeEnemy.TYPE3;
 
         pixelsToMoveSlowly = 150;
         timeToShoot = INITIAL_TIME_TO_SHOOT;
@@ -89,9 +94,7 @@ public class Type3 extends Enemy {
         ShootsManager.shootOneBasicWeapon(this);
     }
 
-    public void collideWithShoot(Shoot shoot) {
-        if(shoot instanceof Fire)
-            this.damage(1);
+    public void collideWithShoot(Shoot shoot) {DamageManager.calculateDamage(shoot,this);
     }
 
 }

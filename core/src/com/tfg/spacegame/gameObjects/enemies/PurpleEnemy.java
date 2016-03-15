@@ -7,6 +7,8 @@ import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Eye;
 import com.tfg.spacegame.gameObjects.shoots.Basic;
 import com.tfg.spacegame.gameObjects.shoots.Purple;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.DamageManager;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class PurpleEnemy extends Enemy {
 
@@ -17,7 +19,7 @@ public class PurpleEnemy extends Enemy {
     public static final int INITIAL_COUNTER = 150;
 
     //Valor inicial que tendrá el contador para indicar cada cuanto se reinicirá en combate con el enemigo
-    public static final int RESTART_COUNTER = 1500;
+    public static final int RESTART_COUNTER = 500;
 
     //Partes referentes a los ojos del enemigo
     private Eye eye1;
@@ -38,7 +40,10 @@ public class PurpleEnemy extends Enemy {
     private float timeToRestart;
 
     public PurpleEnemy(int x, int y) {
-        super("purple_eye_center", x, y, 30, AssetsManager.loadParticleEffect("purple_destroyed"));
+        super("purple_eye_center", x, y, 1100, AssetsManager.loadParticleEffect("purple_destroyed"));
+
+        // Establememos el tipo del enemigo
+        type = TypeEnemy.PURPLE;
 
         //Creamos las distintas partes que compondrán al enemigo
         body = new PartOfEnemy("purple_body", x, y, 1,
@@ -165,14 +170,9 @@ public class PurpleEnemy extends Enemy {
     }
 
     public void collideWithShoot(Shoot shoot) {
+        System.out.println("asdsad");
         if (this.isDamagable()) {
-            if (shoot instanceof Basic){
-                //Si el enemigo es alcanzado por un disparo de tipo básico, sólo recibirá un punto de daño
-                this.damage(1);
-            }else if (shoot instanceof Purple){
-                //Si por el contrario, es alcanzado por un disparo de tipo morado, perderá tres puntos de vida
-                this.damage(3);
-            }
+            DamageManager.calculateDamage(shoot,this);
         }
     }
 

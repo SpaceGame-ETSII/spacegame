@@ -9,6 +9,7 @@ import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.enums.TypeShoot;
 
 
 public class Orange extends Shoot{
@@ -52,6 +53,9 @@ public class Orange extends Shoot{
 
         shoot = AssetsManager.loadParticleEffect("orange_shoot_effect");
         shoot.getEmitters().first().setPosition(this.getX()+this.getWidth()/2,this.getY()+this.getHeight()/2);
+
+        // Establememos el tipo del arma
+        type = TypeShoot.ORANGE;
 
         this.target = target;
 

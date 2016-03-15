@@ -41,6 +41,7 @@ public class CampaignScreen extends GameScreen {
         ShootsManager.load();
         CollissionsManager.load();
         EnemiesManager.load(scriptLevel);
+        DamageManager.load();
 
         state = GameState.READY;
 

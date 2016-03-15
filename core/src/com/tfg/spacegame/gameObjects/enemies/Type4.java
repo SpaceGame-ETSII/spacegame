@@ -7,7 +7,9 @@ import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.shoots.Fire;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class Type4 extends Enemy{
 
@@ -40,8 +42,11 @@ public class Type4 extends Enemy{
 
     public Type4(int x, int y) {
         super("type4", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
-        shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false);
+        shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, true);
         body = new PartOfEnemy("type4_body", x + 35, y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, true);
+
+        // Establememos el tipo del enemigo
+        type = TypeEnemy.TYPE4;
 
         timeToShoot = FREQUENCY_OF_SHOOTING;
         timeToOpenCannon = FREQUENCY_OF_OPEN_CANNON;
@@ -131,8 +136,7 @@ public class Type4 extends Enemy{
 
     public void collideWithShoot(Shoot shoot) {
         if (this.isDamagable()) {
-            if(shoot instanceof Fire)
-                this.damage(1);
+            DamageManager.calculateDamage(shoot,this);
         }
     }
 

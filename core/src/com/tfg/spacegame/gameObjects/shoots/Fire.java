@@ -9,6 +9,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.utils.TouchManager;
 
@@ -67,8 +68,8 @@ public class Fire extends Shoot {
         float newY = this.getShooter().getY() + this.getShooter().getHeight()/2 - this.getHeight() / 2;
 
         if (this.isFromShootOfEnemy()) {
-            targetVector.x = ShootsManager.ship.getX() + ShootsManager.ship.getWidth() / 2;
-            targetVector.y = ShootsManager.ship.getY() + ShootsManager.ship.getHeight() / 2;
+            targetVector.x = CampaignScreen.ship.getX() + CampaignScreen.ship.getWidth() / 2;
+            targetVector.y = CampaignScreen.ship.getY() + CampaignScreen.ship.getHeight() / 2;
             newX = this.getShooter().getX() - this.getShooter().getHeight()/2;
         } else {
             newX = this.getShooter().getX() + this.getShooter().getWidth() - this.getShooter().getHeight()/4;

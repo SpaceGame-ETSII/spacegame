@@ -11,6 +11,7 @@ import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShapeRendererManager;
+import com.tfg.spacegame.utils.enums.TypeShoot;
 
 import java.util.Arrays;
 
@@ -45,6 +46,9 @@ public class Purple extends Shoot{
         //Creamos el vector para almacenar hacia donde deberá ir el disparo
         vector = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() +
                 shooter.getHeight()/2)));
+
+        // Establememos el tipo del arma
+        type = TypeShoot.PURPLE;
 
         //Cambiamos el ángulo
         this.getLogicShape().setRotation(vector.angle());

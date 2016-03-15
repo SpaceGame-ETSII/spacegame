@@ -8,8 +8,11 @@ import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Cannon;
 import com.tfg.spacegame.gameObjects.shoots.Orange;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 
 public class OrangeEnemy extends Enemy {
@@ -34,7 +37,7 @@ public class OrangeEnemy extends Enemy {
     // Número de disparos máximo con los que contaremos en la ráfaga del cañon principal
     private static final int    MAX_OF_SHOOTS_MAIN_CANNON = 30;
     // Cantidad a restar al tiempo de carga cuando un disparo golpee al enemigo
-    private static final double AMOUNT_TO_SUBSTRACT_TIME_CHARGING_MAIN_CANNON = 0.3;
+    private static final double AMOUNT_TO_SUBSTRACT_TIME_CHARGING_MAIN_CANNON = 0.35;
     // Velocidad de aparición
     private static final int    APPEAR_SPEED = 30;
     // Posición limite de aparición relativa a la posición del cañon principal
@@ -83,7 +86,10 @@ public class OrangeEnemy extends Enemy {
     private ParticleEffect chargeMainCannonEffect;
 
     public OrangeEnemy(int x, int y) {
-        super("orange_enemy", x, y, 60, AssetsManager.loadParticleEffect("orange_enemy_defeated"));
+        super("orange_enemy", x, y, 600, AssetsManager.loadParticleEffect("orange_enemy_defeated"));
+
+        // Establememos el tipo del enemigo
+        type = TypeEnemy.ORANGE;
 
         chargeMainCannonEffect = AssetsManager.loadParticleEffect("orange_main_cannon_charging");
 
@@ -103,7 +109,7 @@ public class OrangeEnemy extends Enemy {
         body_aux_bottom.setY(body.getY() - body_aux_up.getHeight()/2 + 40);
 
         // Creación y posicionamiento del escudo
-        shield = new PartOfEnemy("orange_enemy_shield",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false);
+        shield = new PartOfEnemy("orange_enemy_shield",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, true);
         shield.setX(body.getX() - 79);
         SHIELD_OFFSET_X = 79;
         shield.setY(body.getY()+body.getHeight()/2 - shield.getHeight()/2 + 1);
@@ -231,7 +237,7 @@ public class OrangeEnemy extends Enemy {
         // es la quinta parte que la del cañon secundario)
         if(timeToShoot >= FREQUENCY_OF_SHOOTING/5){
             float angle = MathUtils.random(110,250);
-            ShootsManager.shootOneOrangeWeapon(this,(int)(getX() - this.getWidth()/2 +5),(int)(this.getY()+this.getHeight()/2),angle,ShootsManager.ship);
+            ShootsManager.shootOneOrangeWeapon(this,(int)(getX() - this.getWidth()/2 +5),(int)(this.getY()+this.getHeight()/2),angle, CampaignScreen.ship);
             timeToShoot=0;
             shootsFired++;
             // Si hemos disparado ya todas las bolas de fuego
@@ -296,18 +302,16 @@ public class OrangeEnemy extends Enemy {
 
     public void collideWithShoot(Shoot shoot) {
         if(shoot instanceof Orange) {
-            // para cada disparo, independientemente del que sea, quitará 1 de vida
-            // Pero como veremos mas adelante, solo el arma naranja proporciona la supervivencia
-            // de la nave
-            super.damage(1);
             // Con cada golpe del shoot, restamos en un valor el tiempo de carga del cañon principal
             // retrasando así nuestra muerte
             timeChargingMainCannon -= AMOUNT_TO_SUBSTRACT_TIME_CHARGING_MAIN_CANNON;
-            // Si los daños han sido suficientes (20 golpes) directamente cerramos el escudo sin
-            // que se haya disparado el cañon principal
-            if (this.getVitality() % 20 == 0)
-                orangeEnemyState = OrangeEnemyState.CLOSING_SHIELD;
         }
+        DamageManager.calculateDamage(shoot,this);
+
+        if (this.getVitality() % 200 == 0)
+            orangeEnemyState = OrangeEnemyState.CLOSING_SHIELD;
+
+        System.out.println(getVitality());
     }
 
     private void moveEnemyWithAppearSpeed(float delta){

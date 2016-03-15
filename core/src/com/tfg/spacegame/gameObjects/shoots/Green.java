@@ -2,8 +2,10 @@ package com.tfg.spacegame.gameObjects.shoots;
 
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class Green extends Rocket {
 
@@ -21,6 +23,8 @@ public class Green extends Rocket {
 
         counter = 100;
         isShootingFire = false;
+        // Establememos el tipo del arma
+        type = TypeShoot.GREEN;
     }
 
     public void update(float delta) {
@@ -29,7 +33,7 @@ public class Green extends Rocket {
         //Si el shooter es un enemigo, necesitamos actualizar el tiempo para disparar el fuego
         if (this.getShooter() instanceof Enemy && !this.isShootingFire) {
             if (counter < 0) {
-                ShootsManager.shootGreenFireWeapon(this, ShootsManager.ship.getX(), ShootsManager.ship.getY());
+                ShootsManager.shootGreenFireWeapon(this, CampaignScreen.ship.getX(), CampaignScreen.ship.getY());
                 isShootingFire = true;
             } else {
                 counter -= this.speed * delta;
