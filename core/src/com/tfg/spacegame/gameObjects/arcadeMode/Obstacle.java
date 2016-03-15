@@ -27,11 +27,11 @@ public class Obstacle extends GameObject {
         this.renderRotate(degrees);
     }
 
-    public void renderTransparent() {
+    public void renderTransparent(float alpha) {
         Color c = SpaceGame.batch.getColor();
         float oldAlpha = c.a;
 
-        c.a = 0.3f;
+        c.a = alpha;
         SpaceGame.batch.setColor(c);
 
         this.renderRotate(degrees / 2);

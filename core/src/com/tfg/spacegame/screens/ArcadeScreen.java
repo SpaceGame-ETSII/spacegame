@@ -94,8 +94,15 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderStart(float delta) {
+		float bottomAlpha = (ship.getLogicShape().getScaleX() - 0.5f) / (1 - 0.5f);
+		bottomAlpha *= (1 - 0.3);
+		bottomAlpha += 0.3;
+
+		float topAlpha = bottomAlpha;
+
+		ObstacleManager.renderBottom(1.3f - bottomAlpha);
 		ship.render();
-		ObstacleManager.render();
+		ObstacleManager.renderTop(topAlpha);
 	}
 
 	@Override
@@ -104,7 +111,7 @@ public class ArcadeScreen extends GameScreen {
 		ObstacleManager.update(delta);
 		this.updateLayers(delta);
 
-		if (ObstacleManager.existsCollision(ship))
+		if (ObstacleManager.existsCollision(ship, layer))
 			state = GameState.LOSE;
 	}
 

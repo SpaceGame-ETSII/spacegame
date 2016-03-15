@@ -1,7 +1,9 @@
 package com.tfg.spacegame.utils;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.arcadeMode.Obstacle;
 import com.tfg.spacegame.screens.ArcadeScreen;
 
@@ -19,19 +21,74 @@ public class ObstacleManager {
     //Obstáculos de la capa inferior
     public static Array<Obstacle> obstaclesInBottom;
 
+    public static float bottomCounter;
+    public static float topCounter;
+    public static float bottomFrequency;
+    public static float topFrequency;
+    public static float bottomProbability;
+    public static float topProbability;
+
+    public static final float MIN_BOTTOM_PROBABILITY = 1f;
+    public static final float MIN_TOP_PROBABILITY = 0.5f;
+
     public static void load(){
         obstaclesInTop = new Array<Obstacle>();
-        obstaclesInTop.add(new Obstacle("big_obstacle", 200, 1000, TOP_SCALE));
-        obstaclesInTop.add(new Obstacle("medium_obstacle", 100, 1300, TOP_SCALE));
-        obstaclesInTop.add(new Obstacle("small_obstacle", 300, 1600, TOP_SCALE));
-
         obstaclesInBottom = new Array<Obstacle>();
-        obstaclesInBottom.add(new Obstacle("big_obstacle", 300, 1000, BOTTOM_SCALE));
-        obstaclesInBottom.add(new Obstacle("medium_obstacle", 300, 1300, BOTTOM_SCALE));
-        obstaclesInBottom.add(new Obstacle("small_obstacle", 100, 1600, BOTTOM_SCALE));
+
+        bottomCounter = 0;
+        topCounter = 0;
+
+        bottomFrequency = 100;
+        topFrequency = 100;
+
+        bottomProbability = MIN_BOTTOM_PROBABILITY;
+        topProbability = MIN_TOP_PROBABILITY;
     }
 
     public static void update(float delta){
+        createNewObstacles(delta);
+        updateObstacles(delta);
+    }
+
+    private static void createNewObstacles(float delta) {
+        Obstacle obstacle;
+
+        bottomCounter += delta;
+        topCounter += delta;
+
+        if (MathUtils.random(bottomCounter, bottomFrequency) > bottomFrequency - bottomProbability) {
+            obstacle = new Obstacle("small_obstacle", 0, 950, BOTTOM_SCALE);
+            obstacle.setX(MathUtils.random(0, SpaceGame.width - obstacle.getWidth()));
+
+            if (!existsCollision(obstacle, -1)) {
+                obstaclesInBottom.add(obstacle);
+                bottomCounter = 0;
+            }
+        }
+
+        if (MathUtils.random(topCounter, topFrequency) > topFrequency - topProbability) {
+            obstacle = new Obstacle("small_obstacle", 0, 950, TOP_SCALE);
+            obstacle.setX(MathUtils.random(0, SpaceGame.width - obstacle.getWidth()));
+
+            if (!existsCollision(obstacle, 1)) {
+                obstaclesInTop.add(obstacle);
+                topCounter = 0;
+            }
+        }
+
+        if (ArcadeScreen.layer == 1) {
+            topProbability += (delta * 0.05);
+            if (bottomProbability > MIN_BOTTOM_PROBABILITY)
+                bottomProbability -= (delta * 0.025);
+        } else {
+            bottomProbability += (delta * 0.1);
+            if (topProbability > MIN_TOP_PROBABILITY)
+                topProbability -= (delta * 0.013);
+        }
+    }
+
+    //Actualizamos la posición de los obstáculos que están creados
+    private static void updateObstacles(float delta) {
         for (Obstacle obstacle: obstaclesInTop) {
             obstacle.update(delta);
 
@@ -50,32 +107,37 @@ public class ObstacleManager {
         }
     }
 
-    //Pintamos los obstáculos de forma normal o transparente según en la capa que estemos
-    public static void render(){
-
-        //Pintamos primero la capa de abajo
-        for (Obstacle obstacle: obstaclesInBottom)
-            if (ArcadeScreen.layer == 1)
-                obstacle.renderTransparent();
-            else
-                obstacle.render();
-
-        //Pintamos segundo la capa de arriba
+    //Pintamos los obstáculos de arriba forma normal o transparente según en la capa que estemos
+    public static void renderTop(float alpha){
         for (Obstacle obstacle: obstaclesInTop)
+            obstacle.renderTransparent(alpha);
+        /*
             if (ArcadeScreen.layer == 1)
                 obstacle.render();
             else
-                obstacle.renderTransparent();
+                obstacle.renderTransparent();*/
+        FontManager.draw("Top: " + (topProbability) + "%", 50, 250);
+        FontManager.draw("Bottom: " + (bottomProbability) + "%", 50, 200);
+    }
 
+    //Pintamos los obstáculos de abajo forma normal o transparente según en la capa que estemos
+    public static void renderBottom(float alpha){
+        for (Obstacle obstacle: obstaclesInBottom)
+            obstacle.renderTransparent(alpha);
+        /*
+            if (ArcadeScreen.layer == 1)
+                obstacle.renderTransparent();
+            else
+                obstacle.render();*/
     }
 
     //Comprueba si hay colisión entre el gameObject y algún obstáculo de la capa que esté activa en ArcadeScreen
-    public static boolean existsCollision(GameObject gameObject) {
+    public static boolean existsCollision(GameObject gameObject, float layer) {
         boolean res = false;
         Array<Obstacle> obstacles;
 
         //Según la capa donde estemos, se comprobará una lista de obstáculos u otra
-        if (ArcadeScreen.layer == 1)
+        if (layer == 1)
             obstacles = obstaclesInTop;
         else
             obstacles = obstaclesInBottom;
