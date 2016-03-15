@@ -182,13 +182,13 @@ public class CampaignScreen extends GameScreen {
 
         EnemiesManager.render();
         ShootsManager.render();
-
-        if (ship.isDefeated())
-            state = GameState.LOSE;
     }
 
     @Override
     public void updateStart(float delta) {
+
+        if (ship.isDefeated())
+            state = GameState.LOSE;
 
         // Controlamos si algún touch ya ha dejado de ser pulsado
         if((whichControlsTheShip == 0 && !TouchManager.isFirstTouchActive()) || (whichControlsTheShip == 1 && !TouchManager.isSecondTouchActive()))
@@ -248,14 +248,15 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void renderLose(float delta) {
         FontManager.drawText("gameOver",370,240);
+        ship.render();
     }
 
     @Override
     public void updateLose(float delta) {
         if (TouchManager.isTouchedAnyToucher()) {
-            state = GameState.READY;
-            ship = new Ship();
+            game.setScreen(new DemoMenuScreen(game));
         }
+        ship.update(delta,ship.getY(),false);
     }
 
     @Override
