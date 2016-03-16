@@ -18,9 +18,9 @@ public class EnemiesManager {
         level = LevelGenerator.loadLevel(scriptLevel);
     }
 
-    public static void update(float delta, Ship target){
+    public static void update(float delta){
         //Actualizamos los tiempos de espera de aparición de los enemigos
-        enemies = level.update(enemies,delta, target);
+        enemies = level.update(enemies,delta);
 
         for(Enemy enemy: enemies){
 
@@ -61,5 +61,9 @@ public class EnemiesManager {
             }
         }
         return result;
+    }
+
+    public static boolean noMoreEnemiesToGenerateOrToDefeat(){
+        return enemies.size == 0 && level.enemiesToGenerate.size == 0;
     }
 }

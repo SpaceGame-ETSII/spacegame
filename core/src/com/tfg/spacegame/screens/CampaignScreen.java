@@ -189,6 +189,8 @@ public class CampaignScreen extends GameScreen {
 
         if (ship.isDefeated())
             state = GameState.LOSE;
+        if(EnemiesManager.noMoreEnemiesToGenerateOrToDefeat())
+            state = GameState.WIN;
 
         // Controlamos si algún touch ya ha dejado de ser pulsado
         if((whichControlsTheShip == 0 && !TouchManager.isFirstTouchActive()) || (whichControlsTheShip == 1 && !TouchManager.isSecondTouchActive()))
@@ -231,18 +233,20 @@ public class CampaignScreen extends GameScreen {
 
         //Realizamos la lógica de los objetos en juego
         CollissionsManager.update(delta, ship);
-        EnemiesManager.update(delta, ship);
+        EnemiesManager.update(delta);
         ShootsManager.update(delta, ship);
     }
 
     @Override
     public void renderWin(float delta) {
-
+        FontManager.drawText("winGame",240,240);
     }
 
     @Override
     public void updateWin(float delta) {
-
+        if (TouchManager.isTouchedAnyToucher()) {
+            game.setScreen(new DemoMenuScreen(game));
+        }
     }
 
     @Override
