@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.gameObjects.shoots.Green;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
@@ -90,7 +91,6 @@ public class Ship extends GameObject {
 
         //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
         this.updateParticleEffect();
-
 
         if(this.isDefeated())
             destroyEffect.update(delta);

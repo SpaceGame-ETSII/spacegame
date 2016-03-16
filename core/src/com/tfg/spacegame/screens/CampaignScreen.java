@@ -239,14 +239,23 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void renderWin(float delta) {
-        FontManager.drawText("winGame",240,240);
+        if(ship.getX() > SpaceGame.width)
+            FontManager.drawText("winGame",240,240);
+        else
+            ship.render();
     }
 
     @Override
     public void updateWin(float delta) {
-        if (TouchManager.isTouchedAnyToucher()) {
-            game.setScreen(new DemoMenuScreen(game));
+        if(ship.getX() > SpaceGame.width){
+            if (TouchManager.isTouchedAnyToucher())
+                game.setScreen(new DemoMenuScreen(game));
+        }else{
+            ship.setX(ship.getX() + Ship.SPEED*delta*3);
+            ship.update(delta,ship.getY(),false);
         }
+
+
     }
 
     @Override
