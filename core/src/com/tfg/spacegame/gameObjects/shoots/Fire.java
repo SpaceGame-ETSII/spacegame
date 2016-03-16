@@ -48,8 +48,6 @@ public class Fire extends Shoot {
         this.shoot = shoot;
         shoot.getEmitters().first().setPosition(this.getX() - this.getHeight()/2, this.getY()+this.getHeight()/2);
 
-        shoot.start();
-
         vector = new Vector2();
 
         //Si es la nave el shooter, o bien el shooter del shoot que ejecutó el fuego, usamos el touchManager
@@ -62,6 +60,8 @@ public class Fire extends Shoot {
         }
 
         recalculateLifeShootEffect();
+
+        shoot.start();
     }
 
     private void recalculateLifeShootEffect(){
