@@ -1,6 +1,7 @@
 package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -21,6 +22,7 @@ public class AssetsManager {
     private static String levelScriptsFolder = "levelScripts/";
     private static String shipsFolder = "textures/ships/";
     private static String othersFolder = "textures/others/";
+    private static String musicsFolder = "audio/musics/";
     private static String settingsFolder = "settings/";
 
     public static void load() {
@@ -142,6 +144,9 @@ public class AssetsManager {
         assetsReferences.put("orange_secondary_cannon_disabled", particlesFolder + "enemigo_naranja_cannon_secundario_inhabilitado");
         assetsReferences.put("ship_shock_effect", particlesFolder + "nave_arcade_choque");
 
+        //Assets referentes a la música
+        assetsReferences.put("music/arcade", musicsFolder + "arcade.mp3");
+
         //Assets referentes a los scripts de niveles
         assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");
         assetsReferences.put("colorEnemies", levelScriptsFolder + "colorEnemies");
@@ -166,6 +171,10 @@ public class AssetsManager {
         ParticleEffect particle = new ParticleEffect();
         particle.load(Gdx.files.internal(assetsReferences.get(particleName)), Gdx.files.internal(""));
         return particle;
+    }
+
+    public static Music loadMusic(String musicName) {
+        return Gdx.audio.newMusic(Gdx.files.internal(assetsReferences.get("music/" + musicName)));
     }
 
     //Se llamará a este método cada vez que se pretenda cargar script del juego
