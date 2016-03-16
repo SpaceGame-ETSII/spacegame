@@ -2,8 +2,8 @@ Untitled
 - Delay -
 active: false
 - Duration - 
-lowMin: 3000.0
-lowMax: 3000.0
+lowMin: 0.0
+lowMax: 0.0
 - Count - 
 min: 0
 max: 200
@@ -68,7 +68,7 @@ highMin: 50.0
 highMax: 50.0
 relative: false
 scalingCount: 2
-scaling0: 0.71428573
+scaling0: 1.0
 scaling1: 1.0
 timelineCount: 2
 timeline0: 0.0
@@ -77,7 +77,7 @@ timeline1: 0.8356164
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 50.0
+highMin: 30.0
 highMax: 300.0
 relative: false
 scalingCount: 1
@@ -140,4 +140,4 @@ additive: true
 behind: false
 premultipliedAlpha: false
 - Image Path -
-/home/gaems-dev/spacegame/android/assets/particle.png
+/D:/Desarrollo de videojuegos/spacegame/android/assets/particle.png

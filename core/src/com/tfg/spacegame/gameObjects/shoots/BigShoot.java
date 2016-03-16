@@ -12,6 +12,10 @@ public class BigShoot extends Shoot {
 
     //Velocidad de movimiento
     public static final float SPEED = 200;
+    // Máxima velocidad que tendrá el efecto
+    private final int MAXIMUM_VELOCITY = 300;
+    // Velocidad actual máxima que tiene el efecto
+    private int actualVelocity;
 
     /*Tiempo necesario a esperar para que empiece a moverse el disparo
       Se trata de un delay de aparición*/
@@ -33,10 +37,12 @@ public class BigShoot extends Shoot {
         // Lo iniciamos, pero aunque lo iniciemos si no haya un update no avanzará
         shoot.start();
         timeToMove = delay;
+        actualVelocity = 30;
     }
 
     public void updateParticleEffect() {
         shoot.getEmitters().first().setPosition(this.getX(),this.getY()+18);
+        shoot.getEmitters().first().getVelocity().setHighMax(actualVelocity);
     }
 
     public void update(float delta) {
@@ -51,6 +57,10 @@ public class BigShoot extends Shoot {
 
             //Actualizamos el efecto de particulas
             shoot.update(delta);
+            // Aumentamos la velocidad (la high del efecto) para aumentar la cola del disparo
+            // conforme pase el tiempo
+            if(actualVelocity < MAXIMUM_VELOCITY)
+                actualVelocity+=delta*100;
         }
         //Mientras no sea el momento para moverse
         else{
@@ -63,7 +73,7 @@ public class BigShoot extends Shoot {
     }
 
     public void render(){
-        super.render();
+        //super.render();
         //Mientras no sea el momento para disparar, no renderizamos el efecto de particulas
         if(timeToMove < 0)
             shoot.draw(SpaceGame.batch);
