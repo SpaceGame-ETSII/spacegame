@@ -69,7 +69,6 @@ public class Purple extends Shoot{
 
     public void updateParticleEffect() {
         super.updateParticleEffect();
-
         //Comprobamos si el disparo ha chocado
         if (!this.isShocked()) {
             //Se actuará de forma distinta si el shooter es enemigo o no

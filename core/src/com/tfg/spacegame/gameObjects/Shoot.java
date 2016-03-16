@@ -93,7 +93,12 @@ public class Shoot extends GameObject {
                 destroyEffect.getEmitters().first().getAngle().setHigh(135, 225);
                 destroyEffect.getEmitters().first().getAngle().setLow(160, 200);
             } else {
-                destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth(), this.getY());
+
+                if(this instanceof Purple==false){
+                    destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth(), this.getY());
+                }else{
+                    destroyEffect.getEmitters().first().setPosition(this.getLogicShape().getTransformedVertices()[4], this.getLogicShape().getTransformedVertices()[5]);
+                }
             }
         }
     }
