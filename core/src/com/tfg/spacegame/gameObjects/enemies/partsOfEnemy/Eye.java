@@ -21,11 +21,11 @@ public class Eye extends PartOfEnemy {
     private static final float FREQUENCY_OF_SHOOTING = 7f;
 
     //Variable para saber si el ojo está esperando a disparar o no
-    private boolean isWaiting;
+    private boolean waitToShoot;
 
     public Eye(String texture, int x, int y, Enemy father) {
         super(texture, x, y, 100, AssetsManager.loadParticleEffect("purple_destroyed"), father, true, true);
-        this.isWaiting = false;
+        this.waitToShoot = false;
         closed=true;
 
         //Creamos el efecto de particulas
@@ -36,27 +36,35 @@ public class Eye extends PartOfEnemy {
         shootEffectWarning.start();
     }
 
-    public void setClosed(boolean change){
-        closed = change;
+    public void closeEye(){
+        closed = true;
     }
 
-    public boolean getClosed(){
+    public boolean isClosed(){
         return closed;
     }
 
-    public boolean isWaiting() {
-        return isWaiting;
+    public void openEye(){
+        closed = false;
     }
 
-    public void setWaiting(boolean change){
-        isWaiting = change;
+    public boolean isWaitToShoot() {
+        return waitToShoot;
+    }
+
+    public void setWaitToShoot(boolean change){
+        waitToShoot = change;
+    }
+
+    public void waitToShoot(){
+        waitToShoot = true;
     }
 
     public void update(float delta){
         super.update(delta);
 
         //Si está esperando para disparar
-        if (isWaiting()){
+        if (isWaitToShoot()){
             //Actualizamos el efecto de partículas
             this.updateParticleEffect();
             shootEffectWarning.update(delta);
@@ -69,7 +77,7 @@ public class Eye extends PartOfEnemy {
             super.updateParticleEffect();
         }else
         //Si el ojo no está cerrado y está esperando, actualizamos el efecto de partículas
-        if (!getClosed() && isWaiting()){
+        if (!isClosed() && isWaitToShoot()){
             shootEffectWarning.getEmitters().first().setPosition(this.getX() + this.getWidth() / 2, this.getY() +
                     this.getHeight() / 2);
         }
@@ -77,7 +85,7 @@ public class Eye extends PartOfEnemy {
 
     public void shoot(){
         //Para que el ojo pueda disparar debe de estar abierto y esperando para disparar
-        if (!getClosed() && isWaiting())
+        if (!isClosed() && isWaitToShoot())
             ShootsManager.shootPurpleWeapon(this,0,0);
     }
 
@@ -86,7 +94,7 @@ public class Eye extends PartOfEnemy {
         if (!closed) {
             super.render();
             //Si está esperando, pintamos el efecto de partículas
-            if (isWaiting())
+            if (isWaitToShoot())
                 shootEffectWarning.draw(SpaceGame.batch);
         }
 
@@ -99,7 +107,8 @@ public class Eye extends PartOfEnemy {
     public void collideWithShoot(Shoot shoot) {
         if (canCollide()){
             this.damage(0);
-            setClosed(true);
+            closeEye();
+            waitToShoot = false;
         }
     }
 

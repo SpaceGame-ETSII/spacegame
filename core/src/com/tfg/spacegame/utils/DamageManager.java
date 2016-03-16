@@ -22,7 +22,7 @@ public class DamageManager {
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.BASIC,TypeEnemy.TYPE5),19);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.BASIC,TypeEnemy.YELLOW),4);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.BASIC,TypeEnemy.RED),2);
-        typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.BASIC,TypeEnemy.BLUE),2);
+        typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.BASIC,TypeEnemy.BLUE),3);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.BASIC,TypeEnemy.ORANGE),20);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.BASIC,TypeEnemy.PURPLE),3);
 
