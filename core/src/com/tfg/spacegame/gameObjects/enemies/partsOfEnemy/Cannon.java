@@ -94,8 +94,4 @@ public class Cannon extends PartOfEnemy {
         if(getVitality() < 3)
             disable = true;
     }
-
-    public boolean canCollide() {
-        return damageable;
-    }
 }

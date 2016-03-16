@@ -310,8 +310,6 @@ public class OrangeEnemy extends Enemy {
 
         if (this.getVitality() % 200 == 0)
             orangeEnemyState = OrangeEnemyState.CLOSING_SHIELD;
-
-        System.out.println(getVitality());
     }
 
     private void moveEnemyWithAppearSpeed(float delta){
