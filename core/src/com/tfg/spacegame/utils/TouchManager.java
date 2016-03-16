@@ -92,6 +92,9 @@ public class TouchManager {
         return result;
     }
 
+    /**
+     * Método usado para saber si un touch (reconocido por un tipo Vector3) está activo o no
+     */
     public static boolean isTouchActive(Vector3 vector){
         boolean result = false;
         if(vector.equals(getFirstTouchPos()) && isFirstTouchActive())
@@ -101,6 +104,10 @@ public class TouchManager {
         return result;
     }
 
+    /**
+     * Método usado para, de un touch concreto (reconocido por un Vector3 posición del touch) saber si se trata
+     * del primer touch o del segundo.
+     */
     public static int assignWhichTouchCorresponds(Vector3 vector){
         int result = -1;
         if(vector.equals(getFirstTouchPos()))
@@ -110,6 +117,9 @@ public class TouchManager {
         return result;
     }
 
+    /**
+     * Método usado para devolver el touch dependiendo del pointer pasado por parámetro
+     */
     public static Vector3 getTouchFromPointer(int pointer){
         Vector3 result = Vector3.Zero;
         if(pointer == 0)
@@ -119,6 +129,9 @@ public class TouchManager {
         return  result;
     }
 
+    /**
+     * Método usado para saber si hay algún touch activo (ya sea el primero o el segundo)
+     */
     public static boolean isTouchedAnyToucher(){
         return Gdx.input.isTouched();
     }

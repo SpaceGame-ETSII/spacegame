@@ -41,7 +41,7 @@ public class Ship extends GameObject {
     //Efecto de partículas para el fuego de la nave
     private ParticleEffect fireEffect;
 
-    private ParticleEffect destroyEffect;
+    public ParticleEffect destroyEffect;
 
     public Ship() {
         super("ship", 0, 0);

@@ -177,7 +177,6 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void renderStart(float delta) {
-
         ship.render();
 
         EnemiesManager.render();
@@ -254,8 +253,6 @@ public class CampaignScreen extends GameScreen {
             ship.setX(ship.getX() + Ship.SPEED*delta*3);
             ship.update(delta,ship.getY(),false);
         }
-
-
     }
 
     @Override
@@ -266,7 +263,7 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void updateLose(float delta) {
-        if (TouchManager.isTouchedAnyToucher()) {
+        if (TouchManager.isTouchedAnyToucher() && ship.destroyEffect.isComplete()) {
             game.setScreen(new DemoMenuScreen(game));
         }
         ship.update(delta,ship.getY(),false);
