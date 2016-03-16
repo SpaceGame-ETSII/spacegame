@@ -26,7 +26,7 @@ public class DamageManager {
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.BASIC,TypeEnemy.ORANGE),20);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.BASIC,TypeEnemy.PURPLE),3);
 
-        // Arma amarilla con los enemigos a los que dañau
+        // Arma amarilla con los enemigos a los que daña
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.YELLOW,TypeEnemy.TYPE1),1);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.YELLOW,TypeEnemy.TYPE2),1);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.YELLOW,TypeEnemy.YELLOW),3);
@@ -37,7 +37,7 @@ public class DamageManager {
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.GREEN,TypeEnemy.TYPE2),1);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.GREEN,TypeEnemy.TYPE3),1);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.GREEN,TypeEnemy.TYPE4),1);
-        typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.GREEN,TypeEnemy.TYPE5),1);
+        typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.GREEN,TypeEnemy.TYPE5),2);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.GREEN,TypeEnemy.GREEN),1);
         typesOfShootEnemy.put(new Pair<TypeShoot, TypeEnemy>(TypeShoot.GREEN,TypeEnemy.BLUE),1);
 
