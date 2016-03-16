@@ -20,6 +20,7 @@ public class DemoMenuScreen implements Screen {
     private Button greenEnemy;
     private Button orangeEnemy;
     private Button purpleEnemy;
+    private Button back;
 
     //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
     private float timeUntilExit;
@@ -32,11 +33,12 @@ public class DemoMenuScreen implements Screen {
         background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
-        allEnemies = new Button("button", 260, 315, "allEnemies");
-        colorEnemies = new Button("button", 260, 255, "colorEnemies");
-        greenEnemy = new Button("button", 260, 195, "greenEnemy");
-        orangeEnemy = new Button("button", 260, 135, "orangeEnemy");
-        purpleEnemy = new Button("button", 260, 75, "purpleEnemy");
+        allEnemies = new Button("button", 260, 315, "allEnemies", true);
+        colorEnemies = new Button("button", 260, 255, "colorEnemies", true);
+        greenEnemy = new Button("button", 260, 195, "greenEnemy", true);
+        orangeEnemy = new Button("button", 260, 135, "orangeEnemy", true);
+        purpleEnemy = new Button("button", 260, 75, "purpleEnemy", true);
+        back = new Button("arrow_back", 750, 430, null, false);
 
         //Inicializamos el timer de espera para el efecto en los botones
         timeUntilExit = 0.5f;
@@ -62,6 +64,7 @@ public class DemoMenuScreen implements Screen {
         greenEnemy.render();
         orangeEnemy.render();
         purpleEnemy.render();
+        back.render();
 
         SpaceGame.batch.end();
 
@@ -79,7 +82,8 @@ public class DemoMenuScreen implements Screen {
                     colorEnemies.press(v.x, v.y) ||
                     greenEnemy.press(v.x, v.y) ||
                     orangeEnemy.press(v.x, v.y) ||
-                    purpleEnemy.press(v.x, v.y)) {
+                    purpleEnemy.press(v.x, v.y) ||
+                    back.press(v.x, v.y)) {
                 //Reiniciamos el contador en caso de haberse pulsado un botón
                 timeUntilExit=0.5f;
             }
@@ -97,6 +101,8 @@ public class DemoMenuScreen implements Screen {
                 game.setScreen(new CampaignScreen(game, orangeEnemy.getContent()));
             } else if (purpleEnemy.isPressed()) {
                 game.setScreen(new CampaignScreen(game, purpleEnemy.getContent()));
+            } else if (back.isPressed()){
+                game.setScreen(new MainMenuScreen(game));
             }
         } else {
             timeUntilExit -= delta;
@@ -125,5 +131,11 @@ public class DemoMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        allEnemies.dispose();
+        colorEnemies.dispose();
+        greenEnemy.dispose();
+        orangeEnemy.dispose();
+        purpleEnemy.dispose();
+        back.dispose();
     }
 }
