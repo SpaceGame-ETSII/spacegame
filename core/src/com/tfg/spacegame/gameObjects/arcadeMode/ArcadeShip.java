@@ -33,12 +33,13 @@ public class ArcadeShip extends GameObject {
     public ArcadeShip() {
         super("arcadeShip", 0, 25);
 
+        //Colocamos la nave en la mitad de la pantalla
         this.setX((SpaceGame.width / 2) - this.getWidth());
 
+        //Preparamos los efectos de partículas con sus respectivos reescalados
         fireEffect = AssetsManager.loadParticleEffect("propulsion_ship_effect");
         fireEffectScale = fireEffect.getEmitters().first().getScale().getHighMax();
         fireEffectLife = fireEffect.getEmitters().first().getLife().getHighMax();
-
         destroyEffect = AssetsManager.loadParticleEffect("ship_shock_effect");
         destroyEffectScale = destroyEffect.getEmitters().first().getScale().getHighMax();
         destroyEffectLife = destroyEffect.getEmitters().first().getLife().getHighMax();

@@ -16,7 +16,7 @@ public class ArcadeScreen extends GameScreen {
 	private final SpaceGame game;
 
 	//Velocidad del scrolling del fondo
-	private static final int SCROLLING_SPEED = 120;
+	private static final int SCROLLING_SPEED = 100;
 	//Tiempo que bloquearemos el cambio de capa cada vez que se realice un cambio
 	private static final float MAX_TIME_TO_BLOCK = 1;
 	//Tiempo máximo hasta que actualicemos lastMeasureY
