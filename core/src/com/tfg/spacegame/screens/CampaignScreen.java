@@ -53,9 +53,9 @@ public class CampaignScreen extends GameScreen {
         menuExitDialog = new DialogBox();
         //Creamos los objetos para el diálgo de salida del modo campaña
         menuExitDialog.addElement("window", new GameObject("ventana", 200, 120));
-        menuExitDialog.addElement("exit", new Button("buttonExit", 750, 430, null));
-        menuExitDialog.addElement("cancel", new Button("buttonCancel", 425, 200, null));
-        menuExitDialog.addElement("confirm", new Button("buttonConfirm", 325, 200, null));
+        menuExitDialog.addElement("exit", new Button("buttonExit", 750, 430, null,true));
+        menuExitDialog.addElement("cancel", new Button("buttonCancel", 425, 200, null,false));
+        menuExitDialog.addElement("confirm", new Button("buttonConfirm", 325, 200, null,false));
 
         whichTouchIsShooting = -1;
         whichControlsTheShip = -1;

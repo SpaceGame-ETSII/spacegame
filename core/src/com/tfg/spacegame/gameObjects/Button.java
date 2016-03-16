@@ -16,11 +16,15 @@ public class Button extends GameObject {
     private float contentX;
     private float contentY;
 
-    public Button(String texture, int x, int y, String content) {
+    //Indica si el botón una vez pulsado deberá rotar
+    private boolean canRotate;
+
+    public Button(String texture, int x, int y, String content, boolean canRotate) {
         super(texture, x, y);
 
         pressed = false;
         this.content = content;
+        this.canRotate = canRotate;
 
         //Si tenemos un texto para contenido, lo centramos en el botón
         if (content != null) {
@@ -56,7 +60,7 @@ public class Button extends GameObject {
     public void render() {
         if (!this.isPressed()) {
             super.render();
-        } else {
+        } else if (canRotate){
             super.renderRotate(180);
         }
 

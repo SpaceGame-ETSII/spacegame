@@ -63,6 +63,7 @@ public class AssetsManager {
         assetsReferences.put("ventana", othersFolder+"ventana.png");
         assetsReferences.put("arrow", othersFolder+"flecha.png");
         assetsReferences.put("slot", othersFolder+"slot.png");
+        assetsReferences.put("arrow_back", othersFolder+"flecha_atras.png");
 
         //Texturas referentes a ships
         assetsReferences.put("ship", shipsFolder+"nave.png");
