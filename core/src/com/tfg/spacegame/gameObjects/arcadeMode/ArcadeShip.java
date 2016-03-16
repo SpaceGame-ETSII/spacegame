@@ -6,13 +6,14 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.screens.ArcadeScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.FontManager;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 
 public class ArcadeShip extends GameObject {
 
-    private final static float SPEED = 6;
+    private final static float SPEED = 200;
 
     //Efecto de particulas del fuego de propulsión
     private ParticleEffect fireEffect;
@@ -44,7 +45,7 @@ public class ArcadeShip extends GameObject {
         destroyEffectScale = destroyEffect.getEmitters().first().getScale().getHighMax();
         destroyEffectLife = destroyEffect.getEmitters().first().getLife().getHighMax();
 
-        sensitiveRange = 0.5f;
+        sensitiveRange = 0.3f;
         defeated = false;
 
         this.updateParticleEffect();
@@ -64,18 +65,15 @@ public class ArcadeShip extends GameObject {
 
     public void update(float delta) {
         if (!defeated) {
+
             //Nos movemos si hemos salido del rango de sensibilidad
             if (Gdx.input.getAccelerometerX() > sensitiveRange)
-                this.setX(this.getX() - ((Gdx.input.getAccelerometerX() - sensitiveRange) * SPEED));
+                this.setX(this.getX() - (Gdx.input.getAccelerometerX() * SPEED * delta * this.getLogicShape().getScaleX()));
             else if (Gdx.input.getAccelerometerX() < -sensitiveRange)
-                this.setX(this.getX() - ((Gdx.input.getAccelerometerX() + sensitiveRange) * SPEED));
+                this.setX(this.getX() - (Gdx.input.getAccelerometerX() * SPEED * delta * this.getLogicShape().getScaleX()));
 
             //Controlamos que no nos salgamos de la pantalla
-            if (this.getX() < 0) {
-                this.setX(0);
-            } else if (this.getX() > SpaceGame.width - this.getWidth()) {
-                this.setX(SpaceGame.width - this.getWidth());
-            }
+            checkInsideScreen();
 
             //Actualizamos los efectos de partículas
             this.updateParticleEffect();
@@ -84,6 +82,21 @@ public class ArcadeShip extends GameObject {
             this.updateParticleEffect();
             destroyEffect.update(delta);
         }
+    }
+
+    //Controla que la nave no se salga de la pantalla
+    public void checkInsideScreen() {
+
+        //Será necesario para que los valores sean independientes del escalado de la nave
+        float aditive = ((1 - this.getLogicShape().getScaleX()) / 2) * this.getWidth();
+
+        if (this.getX() < -aditive) {
+            this.setX(-aditive);
+        } else if (this.getX() > SpaceGame.width - this.getWidth() + aditive) {
+            this.setX(SpaceGame.width - this.getWidth() + aditive);
+        }
+
+
     }
 
     public void updateParticleEffect() {

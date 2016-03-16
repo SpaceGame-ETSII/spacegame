@@ -32,8 +32,6 @@ public class ObstacleManager {
     public static final float MIN_BOTTOM_PROBABILITY = 1f;
     public static final float MIN_TOP_PROBABILITY = 0.5f;
 
-    public static float time;
-
     public static void load(){
         obstaclesInTop = new Array<Obstacle>();
         obstaclesInBottom = new Array<Obstacle>();
@@ -43,12 +41,9 @@ public class ObstacleManager {
 
         bottomProbability = MIN_BOTTOM_PROBABILITY;
         topProbability = MIN_TOP_PROBABILITY;
-
-        time = 0;
     }
 
     public static void update(float delta){
-        time += delta;
         generateObstacles(delta);
         updateProbabilities(delta);
         updateObstacles(delta, obstaclesInTop);
@@ -148,7 +143,6 @@ public class ObstacleManager {
         //FontManager.draw("Obstacles created: " + (numObstacles), 50, 300);
         //FontManager.draw("Top: " + (topProbability) + "%", 50, 250);
         //FontManager.draw("Bottom: " + (bottomProbability) + "%", 50, 200);
-        FontManager.draw("Time: " + ((int) time), 300, 700);
     }
 
     //Pintamos los obstáculos de abajo forma normal o transparente según en la capa que estemos

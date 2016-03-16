@@ -29,7 +29,7 @@ public class DemoMenuScreen implements Screen {
     public DemoMenuScreen(final SpaceGame game) {
         this.game = game;
 
-        background = AssetsManager.loadTexture("background");
+        background = AssetsManager.loadTexture("background2");
 
         //Creamos los botones para el menú principal
         allEnemies = new Button("button", 260, 315, "allEnemies");

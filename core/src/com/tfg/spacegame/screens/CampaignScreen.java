@@ -49,7 +49,7 @@ public class CampaignScreen extends GameScreen {
         ship = new CampaignShip();
         inventary = new Inventary();
 
-        background = AssetsManager.loadTexture("background");
+        background = AssetsManager.loadTexture("background2");
 
         menuExitDialog = new DialogBox();
         //Creamos los objetos para el diálgo de salida del modo campaña

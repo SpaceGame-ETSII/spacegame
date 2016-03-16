@@ -58,6 +58,7 @@ public class AssetsManager {
 
         //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
+        assetsReferences.put("background2", othersFolder+"fondo2.jpg");
         assetsReferences.put("inventary", othersFolder+"inventario.png");
         assetsReferences.put("red", othersFolder+"rojo.png");
         assetsReferences.put("yellow", othersFolder+"amarillo.png");

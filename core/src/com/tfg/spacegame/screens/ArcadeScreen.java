@@ -47,11 +47,13 @@ public class ArcadeScreen extends GameScreen {
 	//Indica la capa en la que se está, indicando '-1' la capa de abajo y '1' la capa de arriba
 	public static int layer;
 
+	private float time;
+
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
 
 		scrollingPosition = 0;
-		background = AssetsManager.loadTexture("background");
+		background = AssetsManager.loadTexture("background2");
 
 		this.initialize();
 
@@ -65,7 +67,9 @@ public class ArcadeScreen extends GameScreen {
 		ObstacleManager.load();
 		timeToMeasureY = 0;
 		lastMeasureY = Gdx.input.getAccelerometerY();
+		timeToBlock = 0;
 		layer = 1;
+		time = 0;
 	}
 
 	@Override
@@ -110,6 +114,8 @@ public class ArcadeScreen extends GameScreen {
 		ObstacleManager.renderBottom((1 + MIN_ALPHA) - alpha);
 		ship.render();
 		ObstacleManager.renderTop(alpha);
+
+		FontManager.drawText("time", ": " + ((int) time), 10, 790);
 	}
 
 	@Override
@@ -117,12 +123,20 @@ public class ArcadeScreen extends GameScreen {
 		//Actualizamos nave, obstáculos y las capas
 		ship.update(delta);
 		ObstacleManager.update(delta);
-		this.updateLayers(delta);
+
+		//Hasta que no pase un segundo, no podemos pasar de capa
+		if (time > 1) {
+			this.updateLayers(delta);
+		}
+
+		//Actualizamos el tiempo
+		time += delta;
 
 		//Por último, comprobamos si hay colisión con la nave
 		if (ObstacleManager.existsCollision(ship, layer)) {
 			ship.defeat();
 			state = GameState.LOSE;
+			Gdx.input.vibrate(300);
 		}
 	}
 
