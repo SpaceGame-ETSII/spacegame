@@ -88,8 +88,8 @@ public class Orange extends Shoot{
         actualSpeedAngle = HIGHSPEEDANGLE;
     }
     public void update(float delta){
-        super.update(delta);
         super.updateParticleEffect();
+        super.update(delta);
 
         shoot.update(delta);
 
