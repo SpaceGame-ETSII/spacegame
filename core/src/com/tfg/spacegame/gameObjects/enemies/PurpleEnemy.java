@@ -10,14 +10,23 @@ import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class PurpleEnemy extends Enemy {
 
+    private enum PurpleEnemyState{
+        APPEAR,OPEN_EYES,OPEN_MAIN_EYE
+    }
+
     //Indica la velocidad a la que se moverá el enemigo
-    private static final int SPEED = 75;
+    private final int SPEED = 75;
 
     //Valor inicial que tendrá el contador de disparo cada vez que se reinicie
-    public static final int INITIAL_COUNTER = 150;
+    private final int INITIAL_COUNTER = 150;
 
-    //Valor inicial que tendrá el contador para indicar cada cuanto se reinicirá en combate con el enemigo
-    public static final int RESTART_COUNTER = 500;
+    private final float FREQUENCY_MAIN_EYE_OPEN = 3f;
+
+    private float timeMainEyeOpen;
+
+    public final int APPEAR_POSITION_X = 450;
+
+    private PurpleEnemyState state;
 
     //Partes referentes a los ojos del enemigo
     private Eye eye1;
@@ -28,14 +37,8 @@ public class PurpleEnemy extends Enemy {
     //Parte del enemigo correspondiente al cuerpo del enemigo
     private PartOfEnemy body;
 
-    //Indicará cuándo a partir de cuándo puede disparar el enemigo
-    private boolean isReady;
-
     //Contador que usaremos para saber cuándo disparar
     private float counterToShoot;
-
-    //Contador para resetear los ojos del enemigo
-    private float timeToRestart;
 
     public PurpleEnemy(int x, int y) {
         super("purple_eye_center", x, y, 1100, AssetsManager.loadParticleEffect("purple_destroyed"));
@@ -43,77 +46,88 @@ public class PurpleEnemy extends Enemy {
         // Establememos el tipo del enemigo
         type = TypeEnemy.PURPLE;
 
+        state = PurpleEnemyState.APPEAR;
+
         //Creamos las distintas partes que compondrán al enemigo
         body = new PartOfEnemy("purple_body", x, y, 1,
                 AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
-        eye1 = new Eye("purple_eye_1", x + 35, y + 380, 1,
-                AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
-        eye2 = new Eye("purple_eye_2", x + 10, y + 260, 1,
-                AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
-        eye3 = new Eye("purple_eye_3", x + 10, y + 145, 1,
-                AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
-        eye4 = new Eye("purple_eye_4", x + 36, y + 25, 1,
-                AssetsManager.loadParticleEffect("purple_destroyed"), this, true, false);
+        eye1 = new Eye("purple_eye_1", x + 35, y + 380, this);
+        eye2 = new Eye("purple_eye_2", x + 10, y + 260, this);
+        eye3 = new Eye("purple_eye_3", x + 10, y + 145, this);
+        eye4 = new Eye("purple_eye_4", x + 36, y + 25, this);
 
         //Actualizamos el ojo central para hacerlo conincidir con su posición dentro del cuerpo del enemigo
         this.setX(body.getX() + 175);
         this.setY(body.getY() + 165);
 
         //Inicializamos las variables de control
-        isReady = false;
         counterToShoot = INITIAL_COUNTER;
-        timeToRestart = RESTART_COUNTER;
+        timeMainEyeOpen = 0;
+    }
+
+    private void changeClosedStatusAllEyes(boolean b){
+        eye1.setClosed(b);
+        eye2.setClosed(b);
+        eye3.setClosed(b);
+        eye4.setClosed(b);
+    }
+
+    private void changeWaitingStatusAllEyes(boolean b){
+        eye1.setWaiting(b);
+        eye2.setWaiting(b);
+        eye3.setWaiting(b);
+        eye4.setWaiting(b);
     }
 
     public void update(float delta) {
         super.update(delta);
 
         if (!this.isDefeated()) {
-            //El enemigo avanza hasta un punto designado, una vez allí ya estará listo para disparar
-            if (body.getX() >= 450) {
-                this.setX(this.getX() - SPEED * delta);
-                body.setX(body.getX() - SPEED * delta);
-                eye1.setX(eye1.getX() - SPEED * delta);
-                eye2.setX(eye2.getX() - SPEED * delta);
-                eye3.setX(eye3.getX() - SPEED * delta);
-                eye4.setX(eye4.getX() - SPEED * delta);
-            }else {
-                //Antes de preparar al enemigo para disparar, iniciamos el patrón de disparo del mismo
-                if (isReady==false)
-                    eye1.setWaiting(true);
+            switch (state){
+                case APPEAR:
+                    if(body.getX() >= APPEAR_POSITION_X){
+                        this.setX(this.getX() - SPEED * delta);
+                        body.setX(body.getX() - SPEED * delta);
+                        eye1.setX(eye1.getX() - SPEED * delta);
+                        eye2.setX(eye2.getX() - SPEED * delta);
+                        eye3.setX(eye3.getX() - SPEED * delta);
+                        eye4.setX(eye4.getX() - SPEED * delta);
+                    }else{
+                        changeClosedStatusAllEyes(false);
 
-                //Una vez en la posición designada, el enemigo estará listo para empezar a disparar
-                isReady = true;
+                        //Antes de preparar al enemigo para disparar, iniciamos el patrón de disparo del mismo
+                        eye1.setWaiting(true);
+
+                        //Una vez en la posición designada, el enemigo estará listo para empezar a disparar
+                        state = PurpleEnemyState.OPEN_EYES;
+                    }
+                    break;
+                case OPEN_EYES:
+                    //Si el enemigo está listo y ha terminado el contador, disparará y lo reiniciamos
+                    if (counterToShoot <= 0) {
+                        this.shoot();
+                        counterToShoot = INITIAL_COUNTER;
+                    } else
+                        /*Para que el contador que marca el inicio del disparo se reduzca, será necesario que alguno
+                          de los ojos del enemigo este a la espera de disparar*/
+                        if (eye1.isWaiting() || eye2.isWaiting() || eye3.isWaiting() || eye4.isWaiting())
+                            counterToShoot -= delta * SPEED;
+
+                    if(isAllEyesClosed())
+                        state = PurpleEnemyState.OPEN_MAIN_EYE;
+                    break;
+                case OPEN_MAIN_EYE:
+                    if(timeMainEyeOpen >= FREQUENCY_MAIN_EYE_OPEN){
+                        changeClosedStatusAllEyes(false);
+                        changeWaitingStatusAllEyes(false);
+                        eye1.setWaiting(true);
+                        state = PurpleEnemyState.OPEN_EYES;
+                        timeMainEyeOpen = 0;
+                    }else{
+                        timeMainEyeOpen+=delta;
+                    }
+                    break;
             }
-
-            //Si el enemigo está listo y ha terminado el contador, disparará y lo reiniciamos
-            if (isReady && counterToShoot <= 0) {
-                this.shoot();
-                counterToShoot = INITIAL_COUNTER;
-            } else
-            /*Para que el contador que marca el inicio del disparo se reduzca, será necesario que alguno
-              de los ojos del enemigo este a la espera de disparar*/
-            if (eye1.isWaiting() || eye2.isWaiting() || eye3.isWaiting() || eye4.isWaiting()){
-                counterToShoot -= delta * SPEED;
-            }
-
-            /*Si no has derrotado al enemigo en el tiempo designado, los ojos volverán a aparecer y el combate se
-              reiniciará aunque el enmigo no recuperará la vida que el usuario le haya quitado*/
-            if (timeToRestart <= 0){
-                eye1.setClosed(false);
-                //Volvemos a iniciar la secuencia del patrón del disparo del enemigo
-                eye1.setWaiting(true);
-                eye2.setClosed(false);
-                eye3.setClosed(false);
-                eye4.setClosed(false);
-                timeToRestart = RESTART_COUNTER;
-            } else
-            /*Para que el tiempo de reseteo del combate se decremente será necesario tanto que el enemigo este preparado
-              como que alguno de los ojos este cerrado*/
-            if (isReady && (eye1.getClosed() || eye2.getClosed() || eye3.getClosed() || eye4.getClosed())){
-                timeToRestart -= delta * SPEED;
-            }
-
         }
     }
 
@@ -131,7 +145,7 @@ public class PurpleEnemy extends Enemy {
     public void render(){
         /*El ojo central (enemigo en sí), solo será visible y por lo tanto dañable cuando los cuatro ojos que disparan
           estén abatidos*/
-        if (isAllEyesClosed()) {
+        if (isAllEyesClosed() && !state.equals(PurpleEnemyState.APPEAR)) {
             super.render();
         }
     }
@@ -148,7 +162,7 @@ public class PurpleEnemy extends Enemy {
     public void shoot(){
         /*Comenzamos la secuencia del patrón de disparo disparando el primer ojo y después irán disparando en orden
           cada uno de ellos*/
-        if (eye1.isWaiting() && isReady) {
+        if (eye1.isWaiting()) {
             eye1.shoot();
             eye1.setWaiting(false);
             eye2.setWaiting(true);

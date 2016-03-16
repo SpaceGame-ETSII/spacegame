@@ -20,23 +20,13 @@ public class Eye extends PartOfEnemy {
     //Frencuencia de disparo se refiere a cada cuantos segundos va a disparar
     private static final float FREQUENCY_OF_SHOOTING = 7f;
 
-    //Tiempo necesario para que dispare
-    private float timeToShoot;
-
-    //Variable de control para saber si ha disparado o no
-    private boolean hasShooted;
-
     //Variable para saber si el ojo está esperando a disparar o no
     private boolean isWaiting;
 
-    public Eye(String texture, int x, int y, int vitality, ParticleEffect particleEffect, Enemy father, boolean
-            damageable, boolean isWaiting) {
-        super(texture, x, y, vitality, particleEffect, father, damageable, true);
-
-        //Inicializamos las variables
-        timeToShoot = FREQUENCY_OF_SHOOTING;
-        hasShooted = false;
-        this.isWaiting = isWaiting;
+    public Eye(String texture, int x, int y, Enemy father) {
+        super(texture, x, y, 100, AssetsManager.loadParticleEffect("purple_destroyed"), father, true, true);
+        this.isWaiting = false;
+        closed=true;
 
         //Creamos el efecto de particulas
         shootEffectWarning = AssetsManager.loadParticleEffect("purple_eye_warning");
@@ -65,32 +55,11 @@ public class Eye extends PartOfEnemy {
     public void update(float delta){
         super.update(delta);
 
-        if (!getClosed() && isWaiting()) {
-            //Si hemos sobrepasado el tiempo para disparar
-            if (timeToShoot < 0) {
-                //Si no ha disparado aún el enemigo y está esperando para disparar
-                if (!hasShooted && isWaiting) {
-                    //El enemigo dispara y lo hacemos saber a la variable de control
-                    this.shoot();
-                    hasShooted = true;
-
-                } else {
-                    //Reseteamos todos los tiempos y controles
-                    hasShooted = false;
-                    timeToShoot = FREQUENCY_OF_SHOOTING;
-                }
-            } else {
-                //Actualizamos el tiempo para disparar
-                timeToShoot -= delta;
-
-                //Si está esperando para disparar
-                if (isWaiting()){
-                    //Actualizamos el efecto de partículas
-                    this.updateParticleEffect();
-                    shootEffectWarning.update(delta);
-                }
-
-            }
+        //Si está esperando para disparar
+        if (isWaiting()){
+            //Actualizamos el efecto de partículas
+            this.updateParticleEffect();
+            shootEffectWarning.update(delta);
         }
 
     }
