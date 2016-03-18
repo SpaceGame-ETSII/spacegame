@@ -8,7 +8,7 @@ import com.tfg.spacegame.SpaceGame;
 public class ShakeEffect {
 
     // Propiedad para determinar lo que es una vibracion normal
-    public static final float NORMAL_SHAKE = 3f;
+    public static final float NORMAL_SHAKE = 7f;
 
     // Tiempo total que estará vibrando la pantalla
     private final float TOTAL_TIME;

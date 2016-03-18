@@ -69,7 +69,7 @@ public class Ship extends GameObject {
         fireEffect.start();
         destroyEffect.start();
 
-        shakeEffect = new ShakeEffect(2f,ShakeEffect.NORMAL_SHAKE);
+        shakeEffect = new ShakeEffect(1f,ShakeEffect.NORMAL_SHAKE);
     }
 
     private void updateParticleEffect() {
