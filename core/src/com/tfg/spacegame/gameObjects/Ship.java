@@ -43,6 +43,8 @@ public class Ship extends GameObject {
 
     public ParticleEffect destroyEffect;
 
+    private ShakeEffect shakeEffect;
+
     public Ship() {
         super("ship", 0, 0);
 
@@ -66,6 +68,8 @@ public class Ship extends GameObject {
         //Lo iniciamos, pero aunque lo iniciemos si no hay un update no avanzará
         fireEffect.start();
         destroyEffect.start();
+
+        shakeEffect = new ShakeEffect(2f,ShakeEffect.NORMAL_SHAKE);
     }
 
     private void updateParticleEffect() {
@@ -97,6 +101,8 @@ public class Ship extends GameObject {
         else{
             //Actualizamos el efecto de particulas
             fireEffect.update(delta);
+
+            shakeEffect.shake(delta);
 
             //Movimiento de la nave
             if (canShipMove) {
@@ -181,6 +187,7 @@ public class Ship extends GameObject {
         if (!undamagable) {
             damageReceived++;
             if (damageReceived < VITALITY) {
+                shakeEffect.start();
                 cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
                 undamagable = true;
             }
