@@ -7,16 +7,23 @@ import com.tfg.spacegame.SpaceGame;
 
 public class ShakeEffect {
 
+    // Propiedad para determinar lo que es una vibracion normal
     public static final float NORMAL_SHAKE = 3f;
 
+    // Tiempo total que estará vibrando la pantalla
     private final float TOTAL_TIME;
+    // Máxima potencia de vibracion
     private final float MAX_POWER;
 
+    // Posición inicial de la cámara antes de iniciar la vibración
     private final Vector3 INITIAL_POSITION;
 
+    // Potencia actual
     private float currentPower;
+    // Tiempo actual
     private float currentTime;
 
+    // Sabremos si tenemos que empezar el efecto o no con esta propiedad
     private boolean startEffect;
 
     public ShakeEffect(float total_time, float max_power){
@@ -59,10 +66,12 @@ public class ShakeEffect {
         }
     }
 
+    // Con este método sabremos si hemos acabado el efecto de vibración o no
     public boolean isDone(){
         return currentTime >= TOTAL_TIME;
     }
 
+    // Con este método iniciaremos el efecto de vibración
     public void start(){
         startEffect = true;
     }
