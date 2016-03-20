@@ -211,7 +211,7 @@ public class WarpController {
     /**
      * Método para desconectarse del servidor correctamente
      */
-    private void disconnect(){
+    public void disconnect(){
         warpClient.removeConnectionRequestListener(new ConnectionListener(this));
         warpClient.removeChatRequestListener(new ChatListener());
         warpClient.removeZoneRequestListener(new ZoneListener(this));

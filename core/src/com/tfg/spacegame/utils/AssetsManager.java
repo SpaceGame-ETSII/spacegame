@@ -151,6 +151,7 @@ public class AssetsManager {
 
         //Assets referentes a los archivos de configuracón
         assetsReferences.put("shapeEntities", settingsFolder + "shapeEntities");
+        assetsReferences.put("multiplayerSettings", settingsFolder + "multiplayerSettings");
     }
 
     //Se llamará a este método cada vez que se pretenda cargar una textura
