@@ -92,7 +92,6 @@ public class WarpController {
     public void startConnection(String userName, String roomName){
         this.roomName = roomName;
         this.userName = userName;
-        System.out.println("UserName: "+userName+" , roomName: "+roomName);
         warpClient.connectWithUserName(userName);
     }
 

@@ -15,9 +15,6 @@ public class NotificationListener implements NotifyListener {
         callback = warpController;
     }
 
-
-
-
     @Override
     public void onRoomCreated(RoomData roomData) {
 
@@ -35,7 +32,6 @@ public class NotificationListener implements NotifyListener {
 
     @Override
     public void onUserJoinedRoom(RoomData roomData, String s) {
-        System.out.println("asdsa");
         callback.onUserJoinedRoom(roomData.getId(),s);
     }
 

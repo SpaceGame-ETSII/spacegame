@@ -16,7 +16,6 @@ public class ConnectionListener implements ConnectionRequestListener {
 
     @Override
     public void onConnectDone(ConnectEvent connectEvent) {
-        System.out.println("onConnectDone: "+connectEvent.getResult());
         if(connectEvent.getResult() == WarpResponseResultCode.SUCCESS){
             callBack.onConnectDone(true);
         }else{

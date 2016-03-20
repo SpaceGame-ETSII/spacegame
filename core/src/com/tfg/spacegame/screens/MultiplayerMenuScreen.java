@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
+import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.FontManager;
 import com.tfg.spacegame.utils.TextInput;
 
@@ -25,8 +27,12 @@ public class MultiplayerMenuScreen implements Screen{
 
 	private TextInput gameNameInput;
 
+	public Texture background;
+
     public MultiplayerMenuScreen(final SpaceGame gam) {
         game = gam;
+
+		background = AssetsManager.loadTexture("background");
 
 		quickGame = new Button("button", 260, 315, "quickGame", true);
 		createGame = new Button("button", 260, 255, "createGame", true);
@@ -47,6 +53,8 @@ public class MultiplayerMenuScreen implements Screen{
 		SpaceGame.batch.setProjectionMatrix(SpaceGame.camera.combined);
 
 		SpaceGame.batch.begin();
+
+		SpaceGame.batch.draw(background, 0,0);
 
 		quickGame.render();
 		createGame.render();

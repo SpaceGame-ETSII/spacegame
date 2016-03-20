@@ -1,10 +1,12 @@
 package com.tfg.spacegame.screens;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
+import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.appwarp.WarpController;
 import com.tfg.spacegame.utils.appwarp.WarpListener;
 import com.tfg.spacegame.utils.enums.GameState;
@@ -15,8 +17,12 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     private PlayerShip  playerShip;
     private EnemyShip   enemyShip;
 
+    private Texture background;
+
     public MultiplayerScreen(final SpaceGame game, String roomId, boolean createRoom){
         this.game = game;
+
+        background = AssetsManager.loadTexture("background");
 
         state = GameState.PAUSE;
 
@@ -49,7 +55,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     @Override
     public void renderEveryState(float delta) {
-
+        SpaceGame.batch.draw(background, 0,0);
     }
 
     @Override
