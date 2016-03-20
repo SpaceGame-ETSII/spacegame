@@ -2,12 +2,17 @@ package com.tfg.spacegame.utils.appwarp;
 
 import com.shephertz.app42.gaming.multiplayer.client.WarpClient;
 import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultCode;
+import com.shephertz.app42.gaming.multiplayer.client.events.RoomData;
 import com.shephertz.app42.gaming.multiplayer.client.events.RoomEvent;
 import com.tfg.spacegame.utils.appwarp.listeners.*;
 
 import java.util.HashMap;
 
 public class WarpController {
+
+    public enum MultiplayerOptions {
+        QUICK_GAME, CREATE_GAME, JOIN_GAME;
+    }
 
     // Vamos a usar esta clase siempre como un SINGLETON
     private static WarpController instance;
@@ -18,6 +23,8 @@ public class WarpController {
     // Clase encargada de realizar la conexión al servidor y obtener las respuestas
     private WarpClient warpClient;
 
+    private MultiplayerOptions option;
+
     // Nuestra clave de la aplicación para realizar la conexión
     private final String apiKey = "b37a939e659fef7201e30bf7e032ebd9207e4f711de3764142505602b2b75907";
     // Nuestra clave secreta para aceptar la entrada y salid de datos al realizar la conexión
@@ -27,12 +34,18 @@ public class WarpController {
     // Número de usuarios por habitación como mínimo
     private final int MIN_NUMBER_OF_PLAYERS = 1;
 
+    private final String DEFAULT_ROOM_NAME = "quickPlay";
+
     // Número de la habitación, este número será único y sólo tendra capacidad para 2 personas
+    private String roomName;
+
     private String roomId;
+
+
     // Nombre del jugador a mostrar en pantalla
     private String userName;
 
-    public WarpController(){
+    public WarpController(MultiplayerOptions option){
         // Al llamar al constructor lo que hacemos es inicializar el cliente y obtener la instancia
         // al singleton
         try {
@@ -41,7 +54,7 @@ public class WarpController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        this.option = option;
         // Añadimos todos los listeners necesarios
         warpClient.addConnectionRequestListener(new ConnectionListener(this));
         warpClient.addLobbyRequestListener(new LobbyListener());
@@ -56,10 +69,15 @@ public class WarpController {
      * Método usado para devolver el singleton de esta clase. Si no estaba creado, lo creamos
      * @return El Singleton de esta clase
      */
+    public static void createInstance(MultiplayerOptions options){
+        instance = new WarpController(options);
+    }
+
+    /**
+     * Método usado para devolver el singleton de esta clase. Si no estaba creado, lo creamos
+     * @return El Singleton de esta clase
+     */
     public static WarpController getInstance(){
-        if(instance == null){
-            instance = new WarpController();
-        }
         return instance;
     }
 
@@ -71,8 +89,10 @@ public class WarpController {
      * Método usado para iniciar la conexión al servidor
      * @param userName - Nombre de usuario con el que se conectará al servidor
      */
-    public void startConnection(String userName){
+    public void startConnection(String userName, String roomName){
+        this.roomName = roomName;
         this.userName = userName;
+        System.out.println("UserName: "+userName+" , roomName: "+roomName);
         warpClient.connectWithUserName(userName);
     }
 
@@ -86,7 +106,14 @@ public class WarpController {
         if(status){
             warpListener.onConnectedWithServer("Connected to the server");
             warpClient.initUDP();
-            warpClient.joinRoomInRange(MIN_NUMBER_OF_PLAYERS, MAX_NUMBER_OF_PLAYERS,false);
+            if(option.equals(MultiplayerOptions.QUICK_GAME)) {
+                warpClient.getRoomInRange(MIN_NUMBER_OF_PLAYERS,MAX_NUMBER_OF_PLAYERS);
+            }else if (option.equals(MultiplayerOptions.CREATE_GAME))
+                warpClient.createRoom(roomName,userName,MAX_NUMBER_OF_PLAYERS,new HashMap<String, Object>());
+            else if (option.equals(MultiplayerOptions.JOIN_GAME)){
+                warpClient.getRoomInRange(MIN_NUMBER_OF_PLAYERS,MAX_NUMBER_OF_PLAYERS);
+            }
+
         }else{
             warpListener.onError("Failed to connect to the server");
         }
@@ -100,12 +127,11 @@ public class WarpController {
      */
     public void onJoinRoomDone(RoomEvent event){
         if(event.getResult() == WarpResponseResultCode.SUCCESS){
-            roomId = event.getData().getId();
-            warpClient.subscribeRoom(roomId);
+            warpClient.subscribeRoom(event.getData().getId());
         }else if (event.getResult() == WarpResponseResultCode.RESOURCE_NOT_FOUND){
             HashMap<String, Object> data = new HashMap<String, Object>();
             data.put("result", "");
-            warpClient.createRoom("tutorial","tfg", MAX_NUMBER_OF_PLAYERS,data);
+            warpClient.createRoom(DEFAULT_ROOM_NAME,userName, MAX_NUMBER_OF_PLAYERS,data);
         }else{
             handleError();
         }
@@ -177,12 +203,30 @@ public class WarpController {
         }
     }
 
+    public void onGetMatchedRoomsDone(RoomData[] roomsData){
+        boolean roomFound = false;
+        for(int i=0; i< roomsData.length; i++){
+            if(!roomName.equals("") && roomName.equals(roomsData[i].getName())){
+                roomId = roomsData[i].getId();
+                warpClient.joinRoom(roomId);
+                roomFound = true;
+                break;
+            }else if(option.equals(MultiplayerOptions.QUICK_GAME) && roomsData[i].getName().equals(DEFAULT_ROOM_NAME)){
+                roomId = roomsData[i].getId();
+                warpClient.joinRoom(roomId);
+                roomFound = true;
+            }
+        }
+        if(!roomFound)
+            warpClient.createRoom(DEFAULT_ROOM_NAME,userName, MAX_NUMBER_OF_PLAYERS,new HashMap<String, Object>());
+    }
+
 
     /**
      * Método para actuar en caso de error -> Elimina la habitación y se desconecta del servidor.
      */
     private void handleError(){
-        if(roomId!=null && roomId.length()>0){
+        if(roomName !=null && roomName.length()>0){
             warpClient.deleteRoom(roomId);
         }
         disconnect();

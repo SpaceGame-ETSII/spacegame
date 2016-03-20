@@ -3,6 +3,7 @@ package com.tfg.spacegame.utils.appwarp.listeners;
 import com.shephertz.app42.gaming.multiplayer.client.command.WarpResponseResultCode;
 import com.shephertz.app42.gaming.multiplayer.client.events.*;
 import com.shephertz.app42.gaming.multiplayer.client.listener.ZoneRequestListener;
+import com.shephertz.app42.gaming.multiplayer.client.message.WarpResponseMessage;
 import com.tfg.spacegame.utils.appwarp.WarpController;
 
 public class ZoneListener implements ZoneRequestListener{
@@ -20,7 +21,6 @@ public class ZoneListener implements ZoneRequestListener{
 
     @Override
     public void onGetAllRoomsDone(AllRoomsEvent allRoomsEvent) {
-
     }
 
     @Override
@@ -49,6 +49,8 @@ public class ZoneListener implements ZoneRequestListener{
 
     @Override
     public void onGetMatchedRoomsDone(MatchedRoomsEvent matchedRoomsEvent) {
+        callback.onGetMatchedRoomsDone(matchedRoomsEvent.getRoomsData());
+
 
     }
 

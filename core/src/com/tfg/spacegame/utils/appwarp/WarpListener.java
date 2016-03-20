@@ -3,21 +3,23 @@ package com.tfg.spacegame.utils.appwarp;
 
 public interface WarpListener {
 
-    public void onWaitingStarted(String message);
+    void onWaitingStarted(String message);
 
-    public void onError(String message);
+    void onError(String message);
 
-    public void onGameStarted(String message);
+    void onDidntFoundRoom(String message);
 
-    public void onConnectedWithServer(String message);
+    void onGameStarted(String message);
 
-    public void onJoinedToRoom(String message);
+    void onConnectedWithServer(String message);
 
-    public void onGetLiveRoomInfoDone(String message);
+    void onJoinedToRoom(String message);
 
-    public void onUserJoinedRoom(String message);
+    void onGetLiveRoomInfoDone(String message);
 
-    public void onGameFinished(int code, boolean isRemote);
+    void onUserJoinedRoom(String message);
 
-    public void onGameUpdateReceived(String message);
+    void onGameFinished(int code, boolean isRemote);
+
+    void onGameUpdateReceived(String message);
 }
