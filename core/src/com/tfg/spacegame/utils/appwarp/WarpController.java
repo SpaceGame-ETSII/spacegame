@@ -128,9 +128,7 @@ public class WarpController {
         if(event.getResult() == WarpResponseResultCode.SUCCESS){
             warpClient.subscribeRoom(event.getData().getId());
         }else if (event.getResult() == WarpResponseResultCode.RESOURCE_NOT_FOUND){
-            HashMap<String, Object> data = new HashMap<String, Object>();
-            data.put("result", "");
-            warpClient.createRoom(DEFAULT_ROOM_NAME,userName, MAX_NUMBER_OF_PLAYERS,data);
+            warpClient.createRoom(DEFAULT_ROOM_NAME,userName, MAX_NUMBER_OF_PLAYERS, new HashMap<String, Object>());
         }else{
             handleError();
         }

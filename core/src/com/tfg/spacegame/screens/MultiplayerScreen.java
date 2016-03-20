@@ -2,11 +2,14 @@ package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.utils.TouchManager;
 import com.tfg.spacegame.utils.appwarp.WarpController;
 import com.tfg.spacegame.utils.appwarp.WarpListener;
 import com.tfg.spacegame.utils.enums.GameState;
@@ -16,6 +19,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     private PlayerShip  playerShip;
     private EnemyShip   enemyShip;
+    private float       enemyYposition;
 
     private Texture background;
 
@@ -28,6 +32,8 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
         playerShip  = new PlayerShip();
         enemyShip   = new EnemyShip();
+
+        enemyYposition = enemyShip.getY();
 
         if(roomId.equals(""))
             WarpController.createInstance(WarpController.MultiplayerOptions.QUICK_GAME);
@@ -56,6 +62,8 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void renderEveryState(float delta) {
         SpaceGame.batch.draw(background, 0,0);
+
+        FontManager.text.draw(SpaceGame.batch,state.toString(),100,100);
     }
 
     @Override
@@ -75,12 +83,20 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     @Override
     public void renderStart(float delta) {
+        playerShip.render();
 
+        enemyShip.render();
     }
 
     @Override
     public void updateStart(float delta) {
+        if(TouchManager.isTouchedAnyToucher()){
+            Vector3 v = TouchManager.getAnyXTouchLowerThan(playerShip.getX()+playerShip.getWidth());
+            playerShip.update(delta, v.y );
+            WarpController.getInstance().sendGameUpdate(v.y+"");
+        }
 
+        enemyShip.update(delta, enemyYposition);
     }
 
     @Override
@@ -121,6 +137,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void onWaitingStarted(String message) {
         System.out.println(message);
+        state = GameState.READY;
     }
 
     @Override
@@ -136,6 +153,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void onGameStarted(String message) {
         System.out.println(message);
+        state = GameState.START;
     }
 
     @Override
@@ -165,5 +183,6 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void onGameUpdateReceived(String message) {
         System.out.println(message);
+        enemyYposition = Float.parseFloat(message);
     }
 }
