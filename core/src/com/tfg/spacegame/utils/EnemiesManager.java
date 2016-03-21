@@ -18,6 +18,12 @@ public class EnemiesManager {
         level = LevelGenerator.loadLevel(scriptLevel);
     }
 
+    public static void loadMultiplayerEnemies(Enemy enemy){
+        enemies = new Array<Enemy>();
+
+        enemies.add(enemy);
+    }
+
     public static void update(float delta){
         //Actualizamos los tiempos de espera de aparición de los enemigos
         enemies = level.update(enemies,delta);

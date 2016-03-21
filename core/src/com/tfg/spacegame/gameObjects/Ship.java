@@ -45,8 +45,8 @@ public class Ship extends GameObject {
 
     private ShakeEffect shakeEffect;
 
-    public Ship() {
-        super("ship", 0, 0);
+    public Ship(String textureName) {
+        super(textureName, 0, 0);
 
         timeForInvisible = RANGE_INVISIBLE_TIMER;
         damageReceived = 0;
