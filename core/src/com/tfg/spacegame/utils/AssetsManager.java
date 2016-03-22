@@ -20,6 +20,7 @@ public class AssetsManager {
     private static String levelScriptsFolder = "levelScripts/";
     private static String shipsFolder = "textures/ships/";
     private static String othersFolder = "textures/others/";
+    private static String powerUpsFolder = "textures/powerUps/";
     private static String settingsFolder = "settings/";
 
     public static void load() {
@@ -81,7 +82,13 @@ public class AssetsManager {
         assetsReferences.put("playerShip", shipsFolder+"nave_multi_p1.png");
         assetsReferences.put("enemyShip", shipsFolder+"nave_multi_p2.png");
 
-
+        // Texturas referentes a powerUps
+        assetsReferences.put("shieldEnemy", powerUpsFolder+"shieldEnemy.png");
+        assetsReferences.put("shieldPlayer", powerUpsFolder+"shieldPlayer.png");
+        assetsReferences.put("regLifeEnemy", powerUpsFolder+"lifeEnemy.png");
+        assetsReferences.put("regLifePlayer", powerUpsFolder+"lifePlayer.png");
+        assetsReferences.put("burstEnemy", powerUpsFolder+"burstEnemy.png");
+        assetsReferences.put("burstPlayer", powerUpsFolder+"burstPlayer.png");
 
         //Texturas referentes a weapons
         assetsReferences.put("basic_shoot", weaponsFolder+"disparo.png");
