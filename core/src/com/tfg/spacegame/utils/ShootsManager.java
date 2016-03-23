@@ -32,6 +32,8 @@ public class ShootsManager {
     //Si hubiese un objetivo de la ráfaga, lo guardamos aqui
     private static GameObject burstTarget;
 
+    private static GameObject burstShooter;
+
     //Dentro del efecto ráfaga existe un factor de aparición que definiremos
     //en el método burst. A mayor número mayor tiempo entre disparos
     //Menos de 1.0 los disparos se soperponen
@@ -49,6 +51,7 @@ public class ShootsManager {
      */
     public static void shootBurstBasicWeaponForShip(GameObject shooter){
         if(isShipReadyToShoot(TypeShoot.BASIC)){
+            burstShooter = shooter;
             numberOfBasicShoots = 3;
             startPoint = 0;
             typeToBurst = TypeShoot.BASIC;
@@ -160,7 +163,7 @@ public class ShootsManager {
             if (lastShootOfBurst == null ||
                     lastShootOfBurst.getX() > (startPoint + lastShootOfBurst.getWidth()) * aparitionFactor) {
                 if(typeToBurst.equals(TypeShoot.BASIC))
-                    lastShootOfBurst = shootOneBasicWeapon(ship);
+                    lastShootOfBurst = shootOneBasicWeapon(burstShooter);
                 else if(typeToBurst.equals(TypeShoot.ORANGE))
                     lastShootOfBurst = shootOneOrangeWeapon(ship,(int)(ship.getX() + ship.getWidth()),(int) (ship.getY() + ship.getHeight()/2), 45f ,burstTarget);
                 numberOfBasicShoots -= 1;

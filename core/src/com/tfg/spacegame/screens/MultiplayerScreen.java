@@ -12,6 +12,7 @@ import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.appwarp.WarpController;
 import com.tfg.spacegame.utils.appwarp.WarpListener;
 import com.tfg.spacegame.utils.enums.GameState;
+import com.tfg.spacegame.utils.enums.TypePowerUp;
 
 public class MultiplayerScreen extends GameScreen implements WarpListener{
     final SpaceGame game;
@@ -21,14 +22,6 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     public static float enemyYposition;
 
     private Texture background;
-
-    // Vamos a controlar que touch está disparando y cual está controlando la nave
-    // Seguiremos el siguiente modelo:
-    // -1 para ningún touch asignado
-    //  0 para el primer touch
-    //  1 para el segundo touch
-    public static int whichTouchIsShooting;
-    public static int whichControlsTheShip;
 
     public MultiplayerScreen(final SpaceGame game, String roomId, boolean createRoom){
         this.game = game;
@@ -60,9 +53,6 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         String username = randomUserName();
 
         WarpController.getInstance().startConnection(username,roomId);
-
-        whichTouchIsShooting = -1;
-        whichControlsTheShip = -1;
     }
 
     private String randomUserName(){
@@ -109,46 +99,34 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         CollissionsManager.update(delta, playerShip);
         ShootsManager.update(delta, playerShip);
 
-        // Controlamos si algún touch ya ha dejado de ser pulsado
-        if((whichControlsTheShip == 0 && !TouchManager.isFirstTouchActive()) || (whichControlsTheShip == 1 && !TouchManager.isSecondTouchActive()))
-            whichControlsTheShip = -1;
-
-        if((whichTouchIsShooting == 0 && !TouchManager.isFirstTouchActive()) || (whichTouchIsShooting == 1 && !TouchManager.isSecondTouchActive()))
-            whichTouchIsShooting = -1;
-
         // Obtenemos un vector de coordenadas si está en la zona de movimiento de la nave
         Vector3 coordinates = TouchManager.getAnyXTouchLowerThan(playerShip.getX() + playerShip.getWidth());
 
-        // A priori la nave no puede moverse
         boolean canShipMove = false;
-        // Obtenemos a priori un touch que pudiera controlar la nave
-        int whoCouldControlTheShip = TouchManager.assignWhichTouchCorresponds(coordinates);
-
-        // Controlamos si la nave puede moverse, esto es:
-        // Si las coordenadas pertenecen a algún touch
-        // Si es la primera vez que los asignadores estan en el estado inicial
-        // Si el posible controlador de la nave no es el mismo touch que uno que esté disparando
-        if(coordinates.y != 0 && (whoCouldControlTheShip != whichTouchIsShooting || whoCouldControlTheShip == -1 && whichTouchIsShooting == -1)) {
+        if(!coordinates.equals(Vector3.Zero))
             canShipMove = true;
-            whichControlsTheShip = TouchManager.assignWhichTouchCorresponds(coordinates);
-        }
-        // Actualizamos la nave pasando la posible coordenada de movimiento y el resultado
-        // de preguntar la condicion de movimiento
+
         playerShip.update(delta, coordinates.y, canShipMove);
 
-        // Si tocamos la pantalla disparamos
-        // Obtenemos un vector de coordenadas. Este vector puede ser cualquier touch que cumpla
-        // con la condición de que la posición X sea superior a la dada
         coordinates = TouchManager.getAnyXTouchGreaterThan(playerShip.getX() + playerShip.getWidth());
-        // Preguntamos si el vector de coordenadas no es un vector de 0's. Si lo fuese es que el jugador
-        // no ha tocado la pantalla. Además preguntamos si el toque ha sido solo de una sola vez
-        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched() && whichTouchIsShooting == -1) {
-            // Disparamos, pasando por parámetro las coordenadas del touch correspondiente
-            playerShip.shoot(coordinates.x,coordinates.y);
-            whichTouchIsShooting = TouchManager.assignWhichTouchCorresponds(coordinates);
+
+        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched()){
+            if(playerShip.shieldPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerShip.shieldPowerUp.isTouched()){
+                playerShip.shieldPowerUp.setTouched();
+                WarpController.getInstance().sendGameUpdate(TypePowerUp.SHIELD.toString());
+            }else if(playerShip.burstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerShip.burstPowerUp.isTouched()){
+                playerShip.burstPowerUp.setTouched();
+                WarpController.getInstance().sendGameUpdate(TypePowerUp.BURST.toString());
+            }else if(playerShip.regLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerShip.regLifePowerUp.isTouched()){
+                playerShip.regLifePowerUp.setTouched();
+                WarpController.getInstance().sendGameUpdate(TypePowerUp.REGLIFE.toString());
+            }else {
+                playerShip.shoot(coordinates.x, coordinates.y);
+                WarpController.getInstance().sendGameUpdate("SHOOT");
+            }
         }
 
-        WarpController.getInstance().sendGameUpdate(playerShip.getY()+"");
+        WarpController.getInstance().sendGameUpdate(""+playerShip.getY());
     }
 
     @Override
@@ -235,6 +213,18 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     @Override
     public void onGameUpdateReceived(String message) {
-        enemyYposition = Float.parseFloat(message);
+        System.out.println(message);
+
+        if(message.equals(TypePowerUp.SHIELD.toString())){
+            enemyShip.shieldPowerUp.setTouched();
+        }else if(message.equals(TypePowerUp.REGLIFE.toString())){
+            enemyShip.regLifePowerUp.setTouched();
+        }else if(message.equals(TypePowerUp.BURST.toString())){
+            enemyShip.burstPowerUp.setTouched();
+        }else if (message.equals("SHOOT")){
+            enemyShip.shoot();
+        }else{
+            enemyYposition = Float.parseFloat(message);
+        }
     }
 }

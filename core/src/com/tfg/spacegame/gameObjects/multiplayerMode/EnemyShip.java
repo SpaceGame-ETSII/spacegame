@@ -9,15 +9,16 @@ import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.RegLifePowerUp;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.ShieldPowerUp;
 import com.tfg.spacegame.screens.MultiplayerScreen;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.ShootsManager;
 
 public class EnemyShip extends Enemy{
 
     //Indica la velocidad para el movimiento de la nave
     private  final float SPEED = 50;
 
-    private ShieldPowerUp   shieldPowerUp;
-    private BurstPowerUp    burstPowerUp;
-    private RegLifePowerUp  regLifePowerUp;
+    public ShieldPowerUp   shieldPowerUp;
+    public BurstPowerUp    burstPowerUp;
+    public RegLifePowerUp  regLifePowerUp;
 
     public EnemyShip() {
         super("enemyShip", SpaceGame.width - (80+100), SpaceGame.height/2, 5, AssetsManager.loadParticleEffect("ship_defeated"));
@@ -37,13 +38,17 @@ public class EnemyShip extends Enemy{
         }
 
         if(burstPowerUp.isTouched())
-            burstPowerUp.act();
+            burstPowerUp.act(delta, this);
 
         if(regLifePowerUp.isTouched())
-            regLifePowerUp.act();
+            regLifePowerUp.act(delta, this);
 
         if(shieldPowerUp.isTouched())
-            shieldPowerUp.act();
+            shieldPowerUp.act(delta, this);
+    }
+
+    public void shoot(){
+        ShootsManager.shootBurstBasicWeaponForShip(this);
     }
 
     public void render(){

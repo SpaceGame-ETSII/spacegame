@@ -1,7 +1,9 @@
 package com.tfg.spacegame.gameObjects.multiplayerMode.powerUps;
 
 
+import com.badlogic.gdx.graphics.Color;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.SpaceGame;
 
 public abstract class PowerUp extends GameObject{
 
@@ -12,7 +14,7 @@ public abstract class PowerUp extends GameObject{
         touched = false;
     }
 
-    public abstract void act();
+    public abstract void act(float delta, GameObject g);
 
     public boolean isTouched(){
         return touched;
@@ -20,5 +22,18 @@ public abstract class PowerUp extends GameObject{
 
     public void setTouched(){
         touched = true;
+    }
+
+    public void render(){
+        if(isTouched()){
+            Color c = SpaceGame.batch.getColor();
+            c.a = 0.2f;
+            SpaceGame.batch.setColor(c);
+            super.render();
+            c.a = 1.0f;
+            SpaceGame.batch.setColor(c);
+        }else{
+            super.render();
+        }
     }
 }

@@ -10,7 +10,7 @@ public class RegLifePowerUp extends PowerUp{
     }
 
     @Override
-    public void act() {
+    public void act(float delta, GameObject g) {
 
     }
 }

@@ -13,9 +13,9 @@ import com.tfg.spacegame.utils.ShootsManager;
 
 public class PlayerShip extends Ship {
 
-    private BurstPowerUp    burstPowerUp;
-    private RegLifePowerUp  regLifePowerUp;
-    private ShieldPowerUp   shieldPowerUp;
+    public BurstPowerUp    burstPowerUp;
+    public RegLifePowerUp  regLifePowerUp;
+    public ShieldPowerUp   shieldPowerUp;
 
     public PlayerShip() {
         super("playerShip");
@@ -29,14 +29,15 @@ public class PlayerShip extends Ship {
         super.update(delta, y, canShipMove);
 
         if(burstPowerUp.isTouched())
-            burstPowerUp.act();
+            burstPowerUp.act(delta, this);
 
         if(regLifePowerUp.isTouched())
-            regLifePowerUp.act();
+            regLifePowerUp.act(delta, this);
 
         if(shieldPowerUp.isTouched())
-            shieldPowerUp.act();
+            shieldPowerUp.act(delta, this);
     }
+
 
     public void render(){
         super.render();
