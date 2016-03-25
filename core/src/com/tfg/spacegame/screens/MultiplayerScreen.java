@@ -111,8 +111,8 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         coordinates = TouchManager.getAnyXTouchGreaterThan(playerShip.getX() + playerShip.getWidth());
 
         if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched()){
-            if(playerShip.shieldPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerShip.shieldPowerUp.isTouched()){
-                playerShip.shieldPowerUp.setTouched();
+            if(playerShip.ShieldPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerShip.ShieldPowerUp.isTouched()){
+                playerShip.ShieldPowerUp.setTouched();
                 WarpController.getInstance().sendGameUpdate(TypePowerUp.SHIELD.toString());
             }else if(playerShip.burstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerShip.burstPowerUp.isTouched()){
                 playerShip.burstPowerUp.setTouched();
@@ -214,7 +214,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void onGameUpdateReceived(String message) {
         if(message.equals(TypePowerUp.SHIELD.toString())){
-            enemyShip.shieldPowerUp.setTouched();
+            enemyShip.ShieldPowerUp.setTouched();
         }else if(message.equals(TypePowerUp.REGLIFE.toString())){
             enemyShip.regLifePowerUp.setTouched();
         }else if(message.equals(TypePowerUp.BURST.toString())){

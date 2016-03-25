@@ -7,6 +7,10 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.*;
+import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
+import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
+import com.tfg.spacegame.gameObjects.campaignMode.Inventary;
+import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
 
@@ -16,7 +20,7 @@ public class CampaignScreen extends GameScreen {
     private final SpaceGame game;
 
     //Objetos interactuables de la pantalla
-    public static Ship ship;
+    public static CampaignShip ship;
     private Inventary inventary;
     private DialogBox menuExitDialog;
 
@@ -46,7 +50,7 @@ public class CampaignScreen extends GameScreen {
         state = GameState.READY;
 
         //Creamos los objetos de juego
-        ship = new Ship("ship");
+        ship = new CampaignShip("ship");
         inventary = new Inventary();
 
         background = AssetsManager.loadTexture("background");
@@ -250,7 +254,7 @@ public class CampaignScreen extends GameScreen {
             if (TouchManager.isTouchedAnyToucher())
                 game.setScreen(new DemoMenuScreen(game));
         }else{
-            ship.setX(ship.getX() + Ship.SPEED*delta*3);
+            ship.setX(ship.getX() + CampaignShip.SPEED*delta*3);
             ship.update(delta,ship.getY(),false);
         }
     }

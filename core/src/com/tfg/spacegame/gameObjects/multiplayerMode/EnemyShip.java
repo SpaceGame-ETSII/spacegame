@@ -1,9 +1,8 @@
 package com.tfg.spacegame.gameObjects.multiplayerMode;
 
 
-import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.gameObjects.Enemy;
+import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.BurstPowerUp;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.RegLifePowerUp;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.ShieldPowerUp;
@@ -11,14 +10,14 @@ import com.tfg.spacegame.screens.MultiplayerScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
-public class EnemyShip extends Enemy{
+public class EnemyShip extends Enemy {
 
     //Indica la velocidad para el movimiento de la nave
     private  final float SPEED = 50;
 
     private final int MAX_VITALITY = 5;
 
-    public ShieldPowerUp   shieldPowerUp;
+    public ShieldPowerUp ShieldPowerUp;
     public BurstPowerUp    burstPowerUp;
     public RegLifePowerUp  regLifePowerUp;
 
@@ -27,7 +26,7 @@ public class EnemyShip extends Enemy{
 
         burstPowerUp    = new BurstPowerUp("burstEnemy",SpaceGame.width/3,SpaceGame.height - 55);
         regLifePowerUp  = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2,SpaceGame.height-55);
-        shieldPowerUp   = new ShieldPowerUp("shieldEnemy",(SpaceGame.width*2)/3,SpaceGame.height-55);
+        ShieldPowerUp = new ShieldPowerUp("shieldEnemy",(SpaceGame.width*2)/3,SpaceGame.height-55);
     }
 
     public void update(float delta){
@@ -45,8 +44,8 @@ public class EnemyShip extends Enemy{
         if(regLifePowerUp.isTouched())
             regLifePowerUp.act(delta, this);
 
-        if(shieldPowerUp.isTouched())
-            shieldPowerUp.act(delta, this);
+        if(ShieldPowerUp.isTouched())
+            ShieldPowerUp.act(delta, this);
     }
 
     public void healHalfLife(){
@@ -64,6 +63,6 @@ public class EnemyShip extends Enemy{
 
         burstPowerUp.render();
         regLifePowerUp.render();
-        shieldPowerUp.render();
+        ShieldPowerUp.render();
     }
 }

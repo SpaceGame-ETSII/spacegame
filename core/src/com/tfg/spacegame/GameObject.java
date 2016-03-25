@@ -1,21 +1,14 @@
 package com.tfg.spacegame;
 
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
-import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Shoot;
-import com.tfg.spacegame.gameObjects.enemies.*;
+
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShapeRendererManager;
-
-import java.util.Arrays;
 
 public class GameObject {
 
@@ -64,6 +57,9 @@ public class GameObject {
         this.loadWidthAndHeight();
         this.relocateCenter();
         this.calculateRadio();
+
+        //Recolocamos el origen del logic shape para cuando se realice un giro con setRotation
+        this.getLogicShape().setOrigin(this.getWidth() / 2, this.getHeight() / 2);
     }
 
     private void loadWidthAndHeight(){
@@ -167,12 +163,22 @@ public class GameObject {
     }
 
     public void render(){
-        SpaceGame.batch.draw(texture, getX(), getY());
+        if (this.getLogicShape().getScaleX() != 1 || this.getLogicShape().getScaleY() != 1)
+            this.renderScale(this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY(), 0);
+        else
+            SpaceGame.batch.draw(texture, getX(), getY());
     }
 
-    //Método para printar un objeto rotando N grados su textura
+    //Método para pintar un objeto rotando N grados su textura
     public void renderRotate(float n){
-        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, getWidth(), getHeight(), 1, 1, n);
+        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2,
+                                texture.getWidth(), texture.getHeight(),
+                                this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY(), n);
+    }
+
+    //Método para pintar un objeto a razón de su escalado, lo llama el render normal si se tiene escalado
+    private void renderScale(float scaleX, float scaleY, float n){
+        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, texture.getWidth(), texture.getHeight(), scaleX, scaleY, n);
     }
 
     public void dispose() {

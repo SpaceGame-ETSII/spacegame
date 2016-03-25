@@ -3,9 +3,9 @@ package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
+import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
+import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 
 public class EnemiesManager {
 
