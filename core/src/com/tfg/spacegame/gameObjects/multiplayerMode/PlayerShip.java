@@ -42,6 +42,7 @@ public class PlayerShip extends Ship {
         this.damageReceived-=damageReceived/2;
         if(damageReceived<0)
             damageReceived=0;
+        cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
     }
 
 

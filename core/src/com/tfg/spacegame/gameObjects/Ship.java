@@ -32,7 +32,7 @@ public class Ship extends GameObject {
     //Se usará como contador para volver la nave vulnerable
     private float timeToUndamagable;
     //Imagen de la cabina que irá sobre la nave y que se actualizará con los daños
-    private Texture cockpit;
+    protected Texture cockpit;
     //Sirve para indicar los tiempos en los que la nave parpadeará a ser invulnerable
     private int timeForInvisible;
     //Indica el color de la nave
