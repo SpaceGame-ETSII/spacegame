@@ -1,9 +1,11 @@
 package com.tfg.spacegame.gameObjects.shoots;
 
+import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Ship;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.utils.enums.TypeShoot;
 
@@ -51,9 +53,10 @@ public class Burst {
         //Si estamos en medio de una ráfaga de la nave, continuamos disparando si es el momento
         if (numberOfBasicShoots > 0) {
             //Disparamos un nuevo shoot en la ráfaga si no hubo un último, o bien la distancia recorrida por el
-            //último es superior a su punto de inicio más su ancho por 1.3
+            //último es superior a su punto de inicio más su ancho por 1.3)
+
             if (lastShootOfBurst == null ||
-                    lastShootOfBurst.getX() > (startPoint + lastShootOfBurst.getWidth()) * aparitionFactor) {
+                    lastShootOfBurst.getX() > startPoint + (lastShootOfBurst.getWidth() * aparitionFactor) || (burstShooter instanceof Enemy && lastShootOfBurst.getX() < (startPoint - (lastShootOfBurst.getWidth()*aparitionFactor)))) {
                 if(typeToBurst.equals(TypeShoot.BASIC))
                     lastShootOfBurst = ShootsManager.shootOneBasicWeapon(burstShooter);
                 else if(typeToBurst.equals(TypeShoot.ORANGE))

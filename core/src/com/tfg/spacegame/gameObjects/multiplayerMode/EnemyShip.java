@@ -16,6 +16,8 @@ public class EnemyShip extends Enemy{
     //Indica la velocidad para el movimiento de la nave
     private  final float SPEED = 50;
 
+    private final int MAX_VITALITY = 5;
+
     public ShieldPowerUp   shieldPowerUp;
     public BurstPowerUp    burstPowerUp;
     public RegLifePowerUp  regLifePowerUp;
@@ -45,6 +47,12 @@ public class EnemyShip extends Enemy{
 
         if(shieldPowerUp.isTouched())
             shieldPowerUp.act(delta, this);
+    }
+
+    public void healHalfLife(){
+        this.setVitality(this.getVitality()+this.getVitality()/2);
+        if(this.getVitality()>MAX_VITALITY)
+            this.setVitality(MAX_VITALITY);
     }
 
     public void shoot(){

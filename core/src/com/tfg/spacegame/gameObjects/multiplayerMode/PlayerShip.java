@@ -38,6 +38,12 @@ public class PlayerShip extends Ship {
             shieldPowerUp.act(delta, this);
     }
 
+    public void healHalfLife(){
+        this.damageReceived-=damageReceived/2;
+        if(damageReceived<0)
+            damageReceived=0;
+    }
+
 
     public void render(){
         super.render();

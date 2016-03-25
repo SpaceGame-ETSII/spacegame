@@ -30,7 +30,7 @@ public class ShootsManager {
      */
     public static void shootBurstBasicWeaponForShip(GameObject shooter){
         if(isShipReadyToShoot(TypeShoot.BASIC)){
-            bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,1.3));
+            bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
         }
     }
 
@@ -40,7 +40,6 @@ public class ShootsManager {
      */
     public static Basic shootOneBasicWeapon(GameObject shooter) {
         Basic basic = new Basic(shooter,0,0);
-
         int x = (int) (shooter.getX() - basic.getWidth());
         int y = (int) (shooter.getY() + shooter.getHeight()/2);
 

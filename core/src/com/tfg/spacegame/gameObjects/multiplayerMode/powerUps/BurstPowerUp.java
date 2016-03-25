@@ -28,8 +28,6 @@ public class BurstPowerUp extends PowerUp{
                 shootTime+=delta;
             }
             burstTime+=delta;
-        }else{
-
         }
     }
 }

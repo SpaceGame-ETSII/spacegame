@@ -26,7 +26,7 @@ public class Ship extends GameObject {
     private static final float X_POSITION = 80;
 
     //Indica la cantidad de golpes recibidos
-    private int damageReceived;
+    protected int damageReceived;
     //Variable usada para hacer la nave invulnerable cuando es golpeada
     private boolean undamagable;
     //Se usará como contador para volver la nave vulnerable
