@@ -13,6 +13,7 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.gameObjects.arcadeMode.ArcadeShip;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.FontManager;
 import com.tfg.spacegame.utils.ObstacleManager;
 import com.tfg.spacegame.utils.enums.GameState;
@@ -53,9 +54,8 @@ public class ArcadeScreen extends GameScreen {
 	//Indica la capa en la que se está, indicando '-1' la capa de abajo y '1' la capa de arriba
 	public static int layer;
 
-	private float time;
-
-	private Music music;
+	//Acumula el tiempo que está vivo el jugador en la partida
+	private float timeAlive;
 
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
@@ -67,10 +67,6 @@ public class ArcadeScreen extends GameScreen {
 
 		//Convertimos la pantalla en modo portrait
 		SpaceGame.changeToPortrait();
-
-		music = AssetsManager.loadMusic("arcade");
-
-		music.play();
 	}
 
 	private void initialize() {
@@ -81,7 +77,7 @@ public class ArcadeScreen extends GameScreen {
 		lastMeasureY = Gdx.input.getAccelerometerY();
 		timeToBlock = 0;
 		layer = 1;
-		time = 0;
+		timeAlive = 0;
 	}
 
 	@Override
@@ -112,6 +108,7 @@ public class ArcadeScreen extends GameScreen {
 	public void updateReady(float delta) {
 		if (Gdx.input.justTouched()) {
 			state = GameState.START;
+			AudioManager.playMusic("arcade", true);
 		}
 	}
 
@@ -127,7 +124,7 @@ public class ArcadeScreen extends GameScreen {
 		ship.render();
 		ObstacleManager.renderTop(alpha);
 
-		FontManager.drawText("time", ": " + ((int) time), 10, 790);
+		FontManager.drawText("time", ": " + ((int) timeAlive), 10, 790);
 	}
 
 	@Override
@@ -137,18 +134,19 @@ public class ArcadeScreen extends GameScreen {
 		ObstacleManager.update(delta);
 
 		//Hasta que no pase un segundo, no podemos pasar de capa
-		if (time > 1) {
+		if (timeAlive > 1) {
 			this.updateLayers(delta);
 		}
 
 		//Actualizamos el tiempo
-		time += delta;
+		timeAlive += delta;
 
 		//Por último, comprobamos si hay colisión con la nave
 		if (ObstacleManager.existsCollision(ship, layer)) {
 			ship.defeat();
 			state = GameState.LOSE;
 			Gdx.input.vibrate(300);
+			AudioManager.stopMusic();
 		}
 	}
 
@@ -181,6 +179,8 @@ public class ArcadeScreen extends GameScreen {
 	@Override
 	public void updateLose(float delta) {
 		ship.update(delta);
+
+		//Deberemos volver a tocar la pantalla para reiniciar la partida
 		if (Gdx.input.justTouched()) {
 			this.initialize();
 		}

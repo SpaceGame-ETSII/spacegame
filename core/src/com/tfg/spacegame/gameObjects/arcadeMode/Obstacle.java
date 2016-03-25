@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.utils.FontManager;
 import com.tfg.spacegame.utils.enums.TypeObstacle;
 
 public class Obstacle extends GameObject {
@@ -33,7 +34,7 @@ public class Obstacle extends GameObject {
 
         this.type = type;
         speed = INITIAL_SPEED;
-        degrees = 0;
+        this.resetDegrees();
     }
 
     public void update(float delta) {
@@ -63,6 +64,7 @@ public class Obstacle extends GameObject {
 
     public void render() {
         this.renderRotate(degrees);
+        FontManager.draw("" + degrees, this.getX(), this.getY());
     }
 
     public void renderTransparent(float alpha) {
@@ -85,6 +87,10 @@ public class Obstacle extends GameObject {
 
     public TypeObstacle getType() {
         return type;
+    }
+
+    public void resetDegrees() {
+        this.degrees = 0;
     }
 
     public void dispose() {

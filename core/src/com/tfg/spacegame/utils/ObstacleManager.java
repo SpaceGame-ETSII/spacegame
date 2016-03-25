@@ -124,7 +124,13 @@ public class ObstacleManager {
 
     //Borra un obstáculo de la lista pasada por parámetro y lo incluye en su correspondiente lista de borrados
     private static void removeObstacle(Obstacle obstacle, Array<Obstacle> obstacles) {
+        //Lo quitamos de la lista que pasamos por parámetro
         obstacles.removeValue(obstacle,false);
+
+        //Reiniciamos sus grados para que cuando vuelva a recuperarse valga de nuevo 0
+        obstacle.resetDegrees();
+
+        //Por último, según el obstáculo que sea, lo metemos en la lista de borrados correspondiente
         if (obstacle.getType().equals(TypeObstacle.BIG)) {
             deletedBigObstacles.add(obstacle);
         } else if (obstacle.getType().equals(TypeObstacle.MEDIUM)) {

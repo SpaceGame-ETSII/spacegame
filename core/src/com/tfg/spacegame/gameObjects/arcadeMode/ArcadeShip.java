@@ -106,7 +106,8 @@ public class ArcadeShip extends GameObject {
                     this.getY() + (this.getHeight() * ((1 - this.getLogicShape().getScaleY()) / 2)));
             fireEffect.getEmitters().first().getAngle().setHigh(270);
         } else {
-            destroyEffect.getEmitters().first().setPosition(this.getX(), this.getY() + (this.getHeight() / 4));
+            //destroyEffect.getEmitters().first().setPosition(this.getX(), this.getY() + (this.getHeight() / 4));
+            destroyEffect.getEmitters().first().setPosition(this.getCenter().x, this.getCenter().y);
         }
     }
 
