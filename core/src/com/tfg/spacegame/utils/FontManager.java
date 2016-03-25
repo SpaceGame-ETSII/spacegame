@@ -2,6 +2,7 @@ package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Matrix4;
@@ -38,20 +39,50 @@ public class FontManager {
         bundle = AssetsManager.loadBundle();
     }
 
+    //Pinta un texto con formato text en la posición dada
     public static void drawText(String string, float x, float y){
         text.draw(SpaceGame.batch,bundle.get(string),x,y);
     }
 
+    //Pinta un texto con formato text seguido de otro sin formato en la posición dada
     public static void drawText(String stringToText, String stringWithoutCode, float x, float y) {
         text.draw(SpaceGame.batch,bundle.get(stringToText) + stringWithoutCode,x,y);
     }
 
+    //Pinta un texto con formato text centrado en el ancho de la pantalla
+    public static void drawText(String string, float y) {
+        drawCentered(new GlyphLayout(text, bundle.get(string)), y);
+    }
+
+    //Pinta un texto con formato text seguido de otro sin formato centrado en el ancho de la pantalla
+    public static void drawText(String stringToText, String stringWithoutCode, float y) {
+        drawCentered(new GlyphLayout(text, bundle.get(stringToText) + stringWithoutCode), y);
+    }
+
+    //Pinta un texto con formato title en la posición dada
     public static void drawTitle(String string, float x, float y){
         title.draw(SpaceGame.batch,bundle.get(string),x,y);
     }
 
+    //Pinta un texto con formato title en el ancho de la pantalla
+    public static void drawTitle(String string, float y) {
+        drawCentered(new GlyphLayout(title, bundle.get(string)), y);
+    }
+
+    //Pinta un texto sin formato en la posición dada
     public static void draw(String string, float x, float y) {
         text.draw(SpaceGame.batch,string,x,y);
+    }
+
+    //Pinta un texto sin formato en el ancho de la pantalla
+    public static void draw(String string, float y) {
+        drawCentered(new GlyphLayout(text, string), y);
+    }
+
+    private static void drawCentered(GlyphLayout layout, float y) {
+        float fontX = (SpaceGame.width / 2) - (layout.width / 2);
+
+        text.draw(SpaceGame.batch, layout, fontX, y);
     }
 
     public static String getFromBundle(String string) {

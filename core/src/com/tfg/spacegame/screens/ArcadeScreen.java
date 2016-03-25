@@ -93,10 +93,13 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void updateEveryState(float delta) {
-		//Actualizamos la posición del scrolling
-		scrollingPosition -= delta * SCROLLING_SPEED;
-		if(scrollingPosition <= -background.getWidth())
-			scrollingPosition = 0;
+		//Si el estado no está en pausa, avanzamos el fondo
+		if (!state.equals(GameState.PAUSE)) {
+			//Actualizamos la posición del scrolling
+			scrollingPosition -= delta * SCROLLING_SPEED;
+			if (scrollingPosition <= -background.getWidth())
+				scrollingPosition = 0;
+		}
 	}
 
 	@Override
@@ -124,7 +127,7 @@ public class ArcadeScreen extends GameScreen {
 		ship.render();
 		ObstacleManager.renderTop(alpha);
 
-		FontManager.drawText("time", ": " + ((int) timeAlive), 10, 790);
+		this.renderTime();
 	}
 
 	@Override
@@ -142,22 +145,31 @@ public class ArcadeScreen extends GameScreen {
 		timeAlive += delta;
 
 		//Por último, comprobamos si hay colisión con la nave
+		//Si no hay colisión, comprobamos si se ha tocado la pantalla para entrar en pause
 		if (ObstacleManager.existsCollision(ship, layer)) {
 			ship.defeat();
 			state = GameState.LOSE;
 			Gdx.input.vibrate(300);
 			AudioManager.stopMusic();
+		} else if (Gdx.input.justTouched()) {
+			state = GameState.PAUSE;
+			AudioManager.pauseMusic();
 		}
 	}
 
 	@Override
 	public void renderPause(float delta) {
-
+		FontManager.drawText("pause", SpaceGame.height / 2);
+		ship.render();
+		this.renderTime();
 	}
 
 	@Override
 	public void updatePause(float delta) {
-
+		if (Gdx.input.justTouched()) {
+			state = GameState.START;
+			AudioManager.playMusic();
+		}
 	}
 
 	@Override
@@ -228,6 +240,10 @@ public class ArcadeScreen extends GameScreen {
 							  ship.getLogicShape().getScaleY() + (BOTTOM_SCALE * delta * layer * -1));
 			}
 		}
+	}
+
+	private void renderTime() {
+		FontManager.drawText("time", ": " + ((int) timeAlive), 10, 790);
 	}
 
 	@Override

@@ -12,6 +12,16 @@ public class AudioManager {
         music.setLooping(isLooping);
     }
 
+    public static void playMusic() {
+        if (music != null)
+            music.play();
+    }
+
+    public static void pauseMusic() {
+        if (music.isPlaying())
+            music.pause();
+    }
+
     public static void stopMusic() {
         music.stop();
     }
