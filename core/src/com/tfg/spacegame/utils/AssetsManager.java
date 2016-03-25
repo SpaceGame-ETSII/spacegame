@@ -2,6 +2,7 @@ package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -23,6 +24,7 @@ public class AssetsManager {
     private static String shipsFolder = "textures/ships/";
     private static String othersFolder = "textures/others/";
     private static String musicsFolder = "audio/musics/";
+    private static String soundsFolder = "audio/sounds/";
     private static String settingsFolder = "settings/";
 
     public static void load() {
@@ -149,6 +151,9 @@ public class AssetsManager {
         //Assets referentes a la música
         assetsReferences.put("music/arcade", musicsFolder + "arcade.mp3");
 
+        //Assets referentes a sonidos
+        assetsReferences.put("sound/arcade_shock_effect", soundsFolder + "arcade_shock_effect.wav");
+
         //Assets referentes a los scripts de niveles
         assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");
         assetsReferences.put("colorEnemies", levelScriptsFolder + "colorEnemies");
@@ -177,6 +182,10 @@ public class AssetsManager {
 
     public static Music loadMusic(String musicName) {
         return Gdx.audio.newMusic(Gdx.files.internal(assetsReferences.get("music/" + musicName)));
+    }
+
+    public static Music loadSound(String soundName) {
+        return Gdx.audio.newMusic(Gdx.files.internal(assetsReferences.get("sound/" + soundName)));
     }
 
     //Se llamará a este método cada vez que se pretenda cargar script del juego

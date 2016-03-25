@@ -26,7 +26,7 @@ public class CampaignScreen extends GameScreen {
 
     //Ayudan con la posición de la ventana cuando se abre y se cierra el inventario
     private int scrollingPosition;
-    private static final int SCROLLING_SPEED = 120;
+    private static final int SCROLLING_SPEED = 100;
 
     public Texture background;
 
@@ -53,7 +53,7 @@ public class CampaignScreen extends GameScreen {
         ship = new CampaignShip();
         inventary = new Inventary();
 
-        background = AssetsManager.loadTexture("background");
+        background = AssetsManager.loadTexture("background2");
 
         menuExitDialog = new DialogBox();
         //Creamos los objetos para el diálgo de salida del modo campaña
