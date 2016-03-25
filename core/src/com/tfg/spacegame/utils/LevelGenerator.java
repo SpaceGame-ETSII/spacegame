@@ -62,7 +62,7 @@ public class LevelGenerator {
      * @param delta
      * @return Los enemigos que estaban creados más los recien creados
      */
-    public Array<Enemy> update(Array<Enemy> enemies,float delta, CampaignShip target){
+    public Array<Enemy> update(Array<Enemy> enemies,float delta){
         // Recorro los enemigos a poder generar
         for(EnemyWrapper wrapper: enemiesToGenerate){
 
