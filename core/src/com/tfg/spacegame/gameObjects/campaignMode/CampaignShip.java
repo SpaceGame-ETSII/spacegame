@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Green;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
@@ -41,8 +42,6 @@ public class CampaignShip extends GameObject {
 
     public ParticleEffect destroyEffect;
 
-    private ShakeEffect shakeEffect;
-
     public CampaignShip(String textureName) {
         super(textureName, 0, 0);
 
@@ -67,7 +66,7 @@ public class CampaignShip extends GameObject {
         fireEffect.start();
         destroyEffect.start();
 
-        shakeEffect = new ShakeEffect(1f,ShakeEffect.NORMAL_SHAKE);
+
     }
 
     private void updateParticleEffect() {
@@ -99,8 +98,6 @@ public class CampaignShip extends GameObject {
         else{
             //Actualizamos el efecto de particulas
             fireEffect.update(delta);
-
-            shakeEffect.shake(delta);
 
             //Movimiento de la nave
             if (canShipMove) {
@@ -185,7 +182,7 @@ public class CampaignShip extends GameObject {
         if (!undamagable) {
             damageReceived++;
             if (damageReceived < VITALITY) {
-                shakeEffect.start();
+                CampaignScreen.shakeEffect.start();
                 cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
                 undamagable = true;
             }
