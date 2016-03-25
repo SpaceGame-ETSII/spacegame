@@ -38,7 +38,7 @@ public class DemoMenuScreen implements Screen {
         greenEnemy = new Button("button", 260, 195, "greenEnemy", true);
         orangeEnemy = new Button("button", 260, 135, "orangeEnemy", true);
         purpleEnemy = new Button("button", 260, 75, "purpleEnemy", true);
-        back = new Button("arrow_back", 750, 430, null, false);
+        back = new Button("arrow_back", 750, 430, null, true);
 
         //Inicializamos el timer de espera para el efecto en los botones
         timeUntilExit = 0.5f;

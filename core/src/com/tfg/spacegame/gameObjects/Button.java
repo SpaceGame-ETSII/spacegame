@@ -1,7 +1,9 @@
 package com.tfg.spacegame.gameObjects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.FontManager;
 
 public class Button extends GameObject {
@@ -16,15 +18,15 @@ public class Button extends GameObject {
     private float contentX;
     private float contentY;
 
-    //Indica si el botón una vez pulsado deberá rotar
-    private boolean canRotate;
+    //Indica si el botón una vez pulsado deberá volverse oscuro
+    private boolean haveDarkEffect;
 
-    public Button(String texture, int x, int y, String content, boolean canRotate) {
+    public Button(String texture, int x, int y, String content, boolean haveDarkEffect) {
         super(texture, x, y);
 
         pressed = false;
         this.content = content;
-        this.canRotate = canRotate;
+        this.haveDarkEffect = haveDarkEffect;
 
         //Si tenemos un texto para contenido, lo centramos en el botón
         if (content != null) {
@@ -58,15 +60,35 @@ public class Button extends GameObject {
 
     //Si el botón está pulsado, girará la textura 180 grados
     public void render() {
-        if (!this.isPressed()) {
+        if (this.isPressed() && haveDarkEffect){
+            this.renderDark();
+        } else {
             super.render();
-        } else if (canRotate){
-            super.renderRotate(180);
         }
 
         if (content != null) {
             FontManager.drawText(content,contentX,contentY);
         }
+    }
+
+    //Oscurede el botón dando la impresión de haberse pulsado
+    private void renderDark() {
+        Color c = SpaceGame.batch.getColor();
+        float oldR = c.r;
+        float oldG = c.g;
+        float oldB = c.b;
+
+        c.r += 0.5;
+        c.g += 0.5;
+        c.b += 0.5;
+        SpaceGame.batch.setColor(c);
+
+        super.render();
+
+        c.r = oldR;
+        c.g = oldG;
+        c.b = oldB;
+        SpaceGame.batch.setColor(c);
     }
 
 }

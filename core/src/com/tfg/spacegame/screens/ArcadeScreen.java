@@ -12,10 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.gameObjects.arcadeMode.ArcadeShip;
-import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.AudioManager;
-import com.tfg.spacegame.utils.FontManager;
-import com.tfg.spacegame.utils.ObstacleManager;
+import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
 
 public class ArcadeScreen extends GameScreen {
@@ -57,11 +54,14 @@ public class ArcadeScreen extends GameScreen {
 	//Acumula el tiempo que está vivo el jugador en la partida
 	private float timeAlive;
 
+	private ShakeEffect shakeEffect;
+
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
 
 		scrollingPosition = 0;
 		background = AssetsManager.loadTexture("background2");
+		shakeEffect = new ShakeEffect(1f, ShakeEffect.NORMAL_SHAKE);
 
 		this.initialize();
 
@@ -93,8 +93,10 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void updateEveryState(float delta) {
-		//Si el estado no está en pausa, avanzamos el fondo
+		//Si el estado no está en pausa, avanzamos el fondo y actualizamos la vibración de la pantalla
 		if (!state.equals(GameState.PAUSE)) {
+			shakeEffect.shake(delta);
+
 			//Actualizamos la posición del scrolling
 			scrollingPosition -= delta * SCROLLING_SPEED;
 			if (scrollingPosition <= -background.getWidth())
@@ -150,7 +152,9 @@ public class ArcadeScreen extends GameScreen {
 			ship.defeat();
 			state = GameState.LOSE;
 			Gdx.input.vibrate(300);
+			shakeEffect.start();
 			AudioManager.stopMusic();
+			AudioManager.playSound("arcade_shock_effect");
 		} else if (Gdx.input.justTouched()) {
 			state = GameState.PAUSE;
 			AudioManager.pauseMusic();
