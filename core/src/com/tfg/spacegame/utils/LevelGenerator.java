@@ -4,9 +4,10 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.enemies.*;
+import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
+import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
+import com.tfg.spacegame.gameObjects.campaignMode.enemies.*;
+import com.tfg.spacegame.gameObjects.enemies.PurpleEnemy;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {
@@ -61,7 +62,7 @@ public class LevelGenerator {
      * @param delta
      * @return Los enemigos que estaban creados más los recien creados
      */
-    public Array<Enemy> update(Array<Enemy> enemies,float delta){
+    public Array<Enemy> update(Array<Enemy> enemies,float delta, CampaignShip target){
         // Recorro los enemigos a poder generar
         for(EnemyWrapper wrapper: enemiesToGenerate){
 
@@ -82,6 +83,7 @@ public class LevelGenerator {
     }
 
     private void addEnemy(Array<Enemy> enemies, EnemyWrapper wrapper) {
+
         switch (wrapper.type){
             case TYPE1:
                 enemies.addAll(this.createSquadron(wrapper.x, wrapper.y));

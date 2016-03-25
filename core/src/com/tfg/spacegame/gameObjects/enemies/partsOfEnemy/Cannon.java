@@ -3,10 +3,16 @@ package com.tfg.spacegame.gameObjects.enemies.partsOfEnemy;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.SpaceGame;
+<<<<<<< HEAD
 import com.tfg.spacegame.gameObjects.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.enemies.PartOfEnemy;
 import com.tfg.spacegame.screens.CampaignScreen;
+=======
+import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
+import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
+>>>>>>> 64cc27658f126d04ba90b770a677d21823492213
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 

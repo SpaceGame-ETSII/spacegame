@@ -1,8 +1,11 @@
 package com.tfg.spacegame.gameObjects.enemies;
 
 import com.badlogic.gdx.utils.Array;
-import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
+import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
+import com.tfg.spacegame.gameObjects.campaignMode.shoots.Basic;
+import com.tfg.spacegame.gameObjects.campaignMode.shoots.Purple;
 import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Eye;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;

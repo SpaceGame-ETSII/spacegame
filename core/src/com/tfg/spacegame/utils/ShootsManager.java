@@ -4,15 +4,18 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.gameObjects.Enemy;
-import com.tfg.spacegame.gameObjects.Ship;
-import com.tfg.spacegame.gameObjects.enemies.RedEnemy;
-import com.tfg.spacegame.gameObjects.shoots.*;
-import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.enums.TypeShoot;
+import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
+import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
+import com.tfg.spacegame.gameObjects.campaignMode.enemies.RedEnemy;
+import com.tfg.spacegame.gameObjects.campaignMode.shoots.*;
+import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 
 public class ShootsManager {
+
+    //TODO Hay que borrar esto cuando arreglemos el CampaignScreen
+    public static CampaignShip ship;
 
     //Almacenará todos los shoots en pantalla
     public static Array<Shoot> shoots;
@@ -66,7 +69,7 @@ public class ShootsManager {
         int x = (int) (shooter.getX() - basic.getWidth());
         int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
-        if (shooter instanceof Ship) {
+        if (shooter instanceof CampaignShip) {
             x += shooter.getWidth() + basic.getWidth();
             y -= (shooter.getHeight()/2 - basic.getHeight()/2);
         }
@@ -90,7 +93,7 @@ public class ShootsManager {
 
         //Obtenemos todos los disparos en pantalla que realizó la nave
         for(Shoot shoot: shoots){
-            if(shoot.getShooter() instanceof Ship && !shoot.isShocked())
+            if(shoot.getShooter() instanceof CampaignShip && !shoot.isShocked())
                 selected.add(shoot);
         }
 
@@ -135,7 +138,7 @@ public class ShootsManager {
             shoot.render();
     }
 
-    public static void update(float delta, Ship ship){
+    public static void update(float delta, CampaignShip ship){
         for(Shoot shoot: shoots){
             shoot.update(delta);
 
@@ -152,7 +155,7 @@ public class ShootsManager {
     }
 
     //Actualiza el estado de la ráfaga ee disparo que haya en pantalla
-    public static void updateBurst(Ship ship) {
+    public static void updateBurst(CampaignShip ship) {
         //Si estamos en medio de una ráfaga de la nave, continuamos disparando si es el momento
         if (numberOfBasicShoots > 0) {
             //Disparamos un nuevo shoot en la ráfaga si no hubo un último, o bien la distancia recorrida por el
@@ -192,7 +195,8 @@ public class ShootsManager {
 
     public static void shootRedWeapon(GameObject shooter) {
         Red redShoot = new Red(shooter,0,0);
-        if (shooter instanceof Ship){
+
+        if (shooter instanceof CampaignShip){
             if(isShipReadyToShoot(TypeShoot.RED)){
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight()/2);
@@ -217,7 +221,7 @@ public class ShootsManager {
     public static void shootBlueWeapon(GameObject shooter, float yTarget) {
         Blue blueShoot;
 
-        if (shooter instanceof Ship) {
+        if (shooter instanceof CampaignShip) {
             if (isShipReadyToShoot(TypeShoot.BLUE)) {
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight() / 3);
@@ -240,7 +244,7 @@ public class ShootsManager {
     public static void shootYellowWeapon(GameObject shooter, float xTarget, float yTarget) {
         Yellow yellowShoot = new Yellow(shooter, xTarget, yTarget);
 
-        if (shooter instanceof Ship) {
+        if (shooter instanceof CampaignShip) {
             if (isShipReadyToShoot(TypeShoot.YELLOW)) {
                 shoots.add(yellowShoot);
             }
@@ -252,7 +256,7 @@ public class ShootsManager {
     public static void shootPurpleWeapon(GameObject shooter, float xTarget, float yTarget) {
         Purple purpleShoot;
 
-        if (shooter instanceof Ship) {
+        if (shooter instanceof CampaignShip) {
             if (isShipReadyToShoot(TypeShoot.PURPLE)) {
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight() / 2);
@@ -289,7 +293,7 @@ public class ShootsManager {
     public static Orange shootOneOrangeWeapon(GameObject shooter,int xShoot, int yShoot, float angle,  GameObject target) {
         Orange result = null;
 
-        if(shooter instanceof Ship){
+        if(shooter instanceof CampaignShip){
             angle =  (shoots.size/(float)(numberOfBasicShoots + shoots.size)) * angle;
             angle =  MathUtils.random(-angle,angle);
         }
@@ -303,7 +307,7 @@ public class ShootsManager {
     public static void shootGreenWeapon(GameObject shooter, float yTarget) {
         Green greenShoot;
 
-        if (shooter instanceof Ship) {
+        if (shooter instanceof CampaignShip) {
             if (isShipReadyToShoot(TypeShoot.GREEN)) {
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight() / 3);

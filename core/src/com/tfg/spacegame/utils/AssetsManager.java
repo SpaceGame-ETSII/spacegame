@@ -1,6 +1,7 @@
 package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -16,10 +17,12 @@ public class AssetsManager {
 
     private static String particlesFolder = "particleEffects/";
     private static String enemiesFolder = "textures/enemies/";
+    private static String obstaclesFolder = "textures/obstacles/";
     private static String weaponsFolder = "textures/weapons/";
     private static String levelScriptsFolder = "levelScripts/";
     private static String shipsFolder = "textures/ships/";
     private static String othersFolder = "textures/others/";
+    private static String musicsFolder = "audio/musics/";
     private static String settingsFolder = "settings/";
 
     public static void load() {
@@ -50,8 +53,14 @@ public class AssetsManager {
         assetsReferences.put("purple_eye_4", enemiesFolder+"enemigo_morado_ojo4.png");
         assetsReferences.put("purple_eye_center", enemiesFolder+"enemigo_morado_centro.png");
 
+        //Texturas referentes a obstacles
+        assetsReferences.put("big_obstacle", obstaclesFolder+"meteorito_grande.png");
+        assetsReferences.put("medium_obstacle", obstaclesFolder+"meteorito_mediano.png");
+        assetsReferences.put("small_obstacle", obstaclesFolder+"meteorito_pequeno.png");
+
         //Texturas referentes a others
         assetsReferences.put("background", othersFolder+"fondo.png");
+        assetsReferences.put("background2", othersFolder+"fondo2.jpg");
         assetsReferences.put("inventary", othersFolder+"inventario.png");
         assetsReferences.put("red", othersFolder+"rojo.png");
         assetsReferences.put("yellow", othersFolder+"amarillo.png");
@@ -67,6 +76,7 @@ public class AssetsManager {
 
         //Texturas referentes a ships
         assetsReferences.put("ship", shipsFolder+"nave.png");
+        assetsReferences.put("arcadeShip", shipsFolder+"nave_arcade.png");
         assetsReferences.put("ship_red", shipsFolder+"nave_roja.png");
         assetsReferences.put("ship_blue", shipsFolder+"nave_azul.png");
         assetsReferences.put("ship_yellow", shipsFolder+"nave_amarilla.png");
@@ -134,6 +144,10 @@ public class AssetsManager {
         assetsReferences.put("orange_main_cannon_charging", particlesFolder + "enemigo_naranja_efecto_cannon_principal");
         assetsReferences.put("orange_secondary_cannon_disabled", particlesFolder + "enemigo_naranja_cannon_secundario_inhabilitado");
         assetsReferences.put("ship_defeated", particlesFolder + "nave_derrotada");
+        assetsReferences.put("ship_shock_effect", particlesFolder + "nave_arcade_choque");
+
+        //Assets referentes a la música
+        assetsReferences.put("music/arcade", musicsFolder + "arcade.mp3");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");
@@ -159,6 +173,10 @@ public class AssetsManager {
         ParticleEffect particle = new ParticleEffect();
         particle.load(Gdx.files.internal(assetsReferences.get(particleName)), Gdx.files.internal(""));
         return particle;
+    }
+
+    public static Music loadMusic(String musicName) {
+        return Gdx.audio.newMusic(Gdx.files.internal(assetsReferences.get("music/" + musicName)));
     }
 
     //Se llamará a este método cada vez que se pretenda cargar script del juego

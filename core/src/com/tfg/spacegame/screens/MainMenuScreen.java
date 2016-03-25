@@ -29,7 +29,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final SpaceGame game) {
         this.game = game;
 
-        background = AssetsManager.loadTexture("background");
+        background = AssetsManager.loadTexture("background2");
 
         //Creamos los botones para el menú principal
         campaign = new Button("button", 260, 315, "campaignTitle", true);
