@@ -48,7 +48,7 @@ public class Cannon extends PartOfEnemy {
 
     public void shoot(){
         // Disparamos
-        ShootsManager.shootOneOrangeWeapon(this, (int)shootingPosition.x, (int)shootingPosition.y, shootAngle, CampaignScreen.ship);
+        ShootsManager.shootOneOrangeWeapon(this, (int)shootingPosition.x, (int)shootingPosition.y, shootAngle, CampaignScreen.ship,0);
     }
     public void move(float speed){
         this.setX(this.getX() + speed);

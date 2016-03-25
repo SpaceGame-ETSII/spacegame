@@ -213,8 +213,6 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     @Override
     public void onGameUpdateReceived(String message) {
-        System.out.println(message);
-
         if(message.equals(TypePowerUp.SHIELD.toString())){
             enemyShip.shieldPowerUp.setTouched();
         }else if(message.equals(TypePowerUp.REGLIFE.toString())){

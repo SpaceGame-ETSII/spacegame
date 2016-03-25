@@ -16,33 +16,12 @@ public class ShootsManager {
 
     //Almacenará todos los shoots en pantalla
     public static Array<Shoot> shoots;
+    public static Array<Burst> bursts;
 
-    //Será necesario para hacer una ráfaga de disparos básicos
-    private static int numberOfBasicShoots;
-
-    //Guarda el último disparo realizado en una ráfaga
-    private static Shoot lastShootOfBurst;
-
-    //Guarda el punto de partida del último disparo realizado en una ráfaga
-    private static float startPoint;
-
-    //Tipo de arma a hacer la ráfaga (naranja o basica)
-    private static TypeShoot typeToBurst;
-
-    //Si hubiese un objetivo de la ráfaga, lo guardamos aqui
-    private static GameObject burstTarget;
-
-    private static GameObject burstShooter;
-
-    //Dentro del efecto ráfaga existe un factor de aparición que definiremos
-    //en el método burst. A mayor número mayor tiempo entre disparos
-    //Menos de 1.0 los disparos se soperponen
-    private static double aparitionFactor;
 
     public static void load() {
         shoots = new Array<Shoot>();
-        numberOfBasicShoots = 0;
-        startPoint = 0;
+        bursts = new Array<Burst>();
     }
 
     /**
@@ -51,11 +30,7 @@ public class ShootsManager {
      */
     public static void shootBurstBasicWeaponForShip(GameObject shooter){
         if(isShipReadyToShoot(TypeShoot.BASIC)){
-            burstShooter = shooter;
-            numberOfBasicShoots = 3;
-            startPoint = 0;
-            typeToBurst = TypeShoot.BASIC;
-            aparitionFactor = 1.3;
+            bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,1.3));
         }
     }
 
@@ -151,35 +126,16 @@ public class ShootsManager {
             }
         }
 
-        updateBurst(ship);
-    }
+        for(Burst burst: bursts){
 
-    //Actualiza el estado de la ráfaga ee disparo que haya en pantalla
-    public static void updateBurst(Ship ship) {
-        //Si estamos en medio de una ráfaga de la nave, continuamos disparando si es el momento
-        if (numberOfBasicShoots > 0) {
-            //Disparamos un nuevo shoot en la ráfaga si no hubo un último, o bien la distancia recorrida por el
-            //último es superior a su punto de inicio más su ancho por 1.3
-            if (lastShootOfBurst == null ||
-                    lastShootOfBurst.getX() > (startPoint + lastShootOfBurst.getWidth()) * aparitionFactor) {
-                if(typeToBurst.equals(TypeShoot.BASIC))
-                    lastShootOfBurst = shootOneBasicWeapon(burstShooter);
-                else if(typeToBurst.equals(TypeShoot.ORANGE))
-                    lastShootOfBurst = shootOneOrangeWeapon(ship,(int)(ship.getX() + ship.getWidth()),(int) (ship.getY() + ship.getHeight()/2), 45f ,burstTarget);
-                numberOfBasicShoots -= 1;
-                startPoint = lastShootOfBurst.getX();
-                //Si acabamos de lanzar el último disparo de la ráfaga, no lo guardamos
-                if (numberOfBasicShoots == 0){
-                    lastShootOfBurst = null;
-                    // Si el burst era de un tipo naranja, desactivamos el efecto de localización.
-                    if(typeToBurst.equals(TypeShoot.ORANGE)){
-                        Enemy enemy = (Enemy) burstTarget;
-                        enemy.setTargettedByShip(false);
-                    }
-                }
-            }
+            if(!burst.isEndShooting()){
+                burst.updateBurst(ship);
+            }else
+                bursts.removeValue(burst, false);
         }
     }
+
+
 
     public static void shootOneType5Weapon(GameObject shooter) {
         BigShoot bigShoot = new BigShoot(shooter,0,0,0f);
@@ -278,18 +234,14 @@ public class ShootsManager {
     public static void shootBurstOrangeWeapon(GameObject shooter, float x, float y) {
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
         if(enemy != null && isShipReadyToShoot(TypeShoot.ORANGE) && enemy.canCollide()){
-            numberOfBasicShoots = 12;
-            startPoint = 0;
-            typeToBurst = TypeShoot.ORANGE;
-            burstTarget = enemy;
-            aparitionFactor = 1.0;
+            bursts.add(new Burst(shooter,12,0,TypeShoot.ORANGE, enemy, 1.0));
             enemy.setTargettedByShip(true);
         }else if(enemy == null){
 
         }
     }
 
-    public static Orange shootOneOrangeWeapon(GameObject shooter,int xShoot, int yShoot, float angle,  GameObject target) {
+    public static Orange shootOneOrangeWeapon(GameObject shooter,int xShoot, int yShoot, float angle,  GameObject target, int numberOfBasicShoots) {
         Orange result = null;
 
         if(shooter instanceof Ship){

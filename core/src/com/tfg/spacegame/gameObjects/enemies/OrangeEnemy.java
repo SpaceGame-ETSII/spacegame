@@ -237,7 +237,7 @@ public class OrangeEnemy extends Enemy {
         // es la quinta parte que la del cañon secundario)
         if(timeToShoot >= FREQUENCY_OF_SHOOTING/5){
             float angle = MathUtils.random(110,250);
-            ShootsManager.shootOneOrangeWeapon(this,(int)(getX() - this.getWidth()/2 +5),(int)(this.getY()+this.getHeight()/2),angle, CampaignScreen.ship);
+            ShootsManager.shootOneOrangeWeapon(this,(int)(getX() - this.getWidth()/2 +5),(int)(this.getY()+this.getHeight()/2),angle, CampaignScreen.ship,0);
             timeToShoot=0;
             shootsFired++;
             // Si hemos disparado ya todas las bolas de fuego
