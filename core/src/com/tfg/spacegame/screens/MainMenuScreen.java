@@ -1,5 +1,6 @@
 package com.tfg.spacegame.screens;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.FontManager;
 
 public class MainMenuScreen implements Screen {
@@ -30,6 +32,8 @@ public class MainMenuScreen implements Screen {
         this.game = game;
 
         background = AssetsManager.loadTexture("background2");
+        AudioManager.loadSounds();
+        AudioManager.playMusic("menu", true);
 
         //Creamos los botones para el menú principal
         campaign = new Button("button", 260, 315, "campaignTitle", true);
@@ -82,6 +86,7 @@ public class MainMenuScreen implements Screen {
                     exit.press(v.x, v.y)) {
                 //Reiniciamos el contador en caso de haberse pulsado un botón
                 timeUntilExit=0.5f;
+                AudioManager.stopMusic();
             }
         }
 

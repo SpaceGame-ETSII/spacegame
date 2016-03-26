@@ -1,5 +1,6 @@
 package com.tfg.spacegame.screens;
 
+import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
@@ -54,6 +55,8 @@ public class CampaignScreen extends GameScreen {
         inventary = new Inventary();
 
         background = AssetsManager.loadTexture("background2");
+        if (!AudioManager.isPlaying())
+            AudioManager.playMusic("campaign", true);
 
         menuExitDialog = new DialogBox();
         //Creamos los objetos para el diálgo de salida del modo campaña
@@ -72,6 +75,7 @@ public class CampaignScreen extends GameScreen {
                 if (state.equals(GameState.START)) {
                     inventary.restart();
                     state = GameState.PAUSE;
+                    AudioManager.pauseMusic();
                 }
             }
 
@@ -119,6 +123,7 @@ public class CampaignScreen extends GameScreen {
             if (menuExitDialog.getElementButton("confirm").isPressed()) {
                 menuExitDialog.setDialogIn(false);
                 menuExitDialog.getElementButton("confirm").setPressed(false);
+                AudioManager.stopMusic();
                 game.setScreen(new MainMenuScreen(game));
             }
 
@@ -140,8 +145,10 @@ public class CampaignScreen extends GameScreen {
                 inventary.updateClosing(delta, ship);
 
                 //Si el inventario ya no está cerrándose, volvemos a la partida
-                if (!inventary.isClosing())
+                if (!inventary.isClosing()) {
                     state = GameState.START;
+                    AudioManager.playMusic();
+                }
             } else {
                 Vector3 v = TouchManager.getFirstTouchPos();
                 inventary.update(delta, ship, v.x, v.y);
