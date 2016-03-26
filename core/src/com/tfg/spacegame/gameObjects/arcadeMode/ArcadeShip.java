@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.screens.ArcadeScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.FontManager;
@@ -106,7 +107,6 @@ public class ArcadeShip extends GameObject {
                     this.getY() + (this.getHeight() * ((1 - this.getLogicShape().getScaleY()) / 2)));
             fireEffect.getEmitters().first().getAngle().setHigh(270);
         } else {
-            //destroyEffect.getEmitters().first().setPosition(this.getX(), this.getY() + (this.getHeight() / 4));
             destroyEffect.getEmitters().first().setPosition(this.getCenter().x, this.getCenter().y);
         }
     }

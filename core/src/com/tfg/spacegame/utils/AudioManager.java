@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class AudioManager {
 
+    private final static float VOLUME = 0.5f;
+
     private static Music music;
     private static Map<String, Sound> sounds;
 
@@ -20,6 +22,7 @@ public class AudioManager {
 
     public static void playMusic(String name, boolean isLooping) {
         music = AssetsManager.loadMusic(name);
+        music.setVolume(VOLUME);
         music.play();
         music.setLooping(isLooping);
     }
