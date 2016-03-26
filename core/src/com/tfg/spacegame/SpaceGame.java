@@ -59,7 +59,7 @@ public class SpaceGame extends Game {
 
 	//Convierte la pantalla en modo landscape
 	public static void changeToLandscape() {
-		platform.setOrientation("landscape");
+		//platform.setOrientation("landscape");
 
 		if (height > width)
 			exchangeWidthHeight();
@@ -73,6 +73,7 @@ public class SpaceGame extends Game {
 		width = newWidth;
 		height = newHeight;
 
+		//TODO: Cambia esto antes de que hagas merge con la master
 		//Gdx.graphics.setDisplayMode(newWidth, newHeight, true);
 		Gdx.graphics.setWindowedMode(newWidth,newHeight);
 

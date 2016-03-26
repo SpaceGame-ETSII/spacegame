@@ -27,6 +27,7 @@ public class Purple extends Shoot{
                 AssetsManager.loadParticleEffect("purple_shoot_effect_shoot"),
                 AssetsManager.loadParticleEffect("purple_effect_shock"));
 
+        this.setY(this.getY()-this.getHeight()/2);
         this.getLogicShape().setOrigin(0,this.getHeight()/2);
 
         //Creamos el efecto de particulas
@@ -60,47 +61,35 @@ public class Purple extends Shoot{
 
     public void update(float delta){
         if (!this.isShocked()) {
-
             //Actualizamos el movimiento del disparo
             this.setX(this.getX() + SPEED*MathUtils.cosDeg(angle));
             this.setY(this.getY() + SPEED*MathUtils.sinDeg(angle));
 
             //Actualizamos el ángulo del disparo por si acaso tendría que modificarse
             this.getLogicShape().setRotation(angle);
-
-            //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
-            this.updateParticleEffect();
-
-            //Actualizamos el efecto de particulas
-            super.update(delta);
             shoot.update(delta);
-        }else{
-            //Actualizamos los efectos de partículas
-            this.updateParticleEffect();
-            super.update(delta);
         }
+        this.updateParticleEffect();
+        super.update(delta);
     }
 
 
     public void render(){
+        super.render();
         if (!this.isShocked()) {
-            ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
             shoot.draw(SpaceGame.batch);
         }
     }
 
     public void collideWithShip() {
-        super.collideWithShip();
         this.shock();
     }
 
     public void collideWithEnemy(Enemy enemy) {
-        super.collideWithEnemy(enemy);
         this.shock();
     }
 
     public void collideWithShoot(Shoot shoot) {
-        super.collideWithShoot(shoot);
         this.shock();
     }
 
