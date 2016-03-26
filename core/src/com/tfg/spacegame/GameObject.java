@@ -195,7 +195,6 @@ public class GameObject {
         //Solo se comprueba la colisión si la distancia entre los centros es menor a la suma de los radios
         if (distance < totalRadios)
             result = Intersector.overlapConvexPolygons(this.getLogicShape(), g.getLogicShape());
-
         return result;
     }
 

@@ -2,16 +2,16 @@ Untitled
 - Delay -
 active: false
 - Duration - 
-lowMin: 300.0
-lowMax: 300.0
+lowMin: 0.0
+lowMax: 0.0
 - Count - 
 min: 0
-max: 200
+max: 600
 - Emission - 
-lowMin: 100.0
-lowMax: 100.0
-highMin: 100.0
-highMax: 100.0
+lowMin: 400.0
+lowMax: 400.0
+highMin: 400.0
+highMax: 400.0
 relative: false
 scalingCount: 2
 scaling0: 1.0
@@ -40,12 +40,12 @@ active: false
 - Y Offset - 
 active: false
 - Spawn Shape - 
-shape: line
+shape: point
 - Spawn Width - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -81,8 +81,8 @@ timeline1: 0.8356164
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 1500.0
-highMax: 1500.0
+highMin: 1200.0
+highMax: 1200.0
 relative: false
 scalingCount: 2
 scaling0: 1.0
@@ -158,4 +158,4 @@ additive: false
 behind: false
 premultipliedAlpha: false
 - Image Path -
-/home/gaems-dev/spacegame/android/assets/particle.png
+/D:/Desarrollo de videojuegos/spacegame/android/assets/particle.png

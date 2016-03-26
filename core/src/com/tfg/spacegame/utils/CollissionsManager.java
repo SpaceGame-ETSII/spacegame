@@ -58,7 +58,6 @@ public class CollissionsManager {
                 for (Enemy enemy : enemies) {
                     if (shootDst.isOverlapingWith(enemy) && !shootDst.isShocked() && !enemy.isDefeated() &&
                             enemy.canCollide() && shootDst.getShooter() != enemy) {
-
                         //Añadimos el par colisionado a la lista
                         shootsToEnemies.add(new Pair<Shoot, Enemy>(shootDst, enemy));
 

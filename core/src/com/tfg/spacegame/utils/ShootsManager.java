@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Burst;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.enums.TypeShoot;
@@ -237,10 +238,18 @@ public class ShootsManager {
     public static void shootBurstOrangeWeapon(GameObject shooter, float x, float y) {
         Enemy enemy = EnemiesManager.getEnemyFromPosition(x,y);
         if(enemy != null && isShipReadyToShoot(TypeShoot.ORANGE) && enemy.canCollide()){
-            bursts.add(new Burst(shooter,12,0,TypeShoot.ORANGE, enemy, 1.0));
-            enemy.setTargettedByShip(true);
+            if(enemy instanceof PartOfEnemy){
+                PartOfEnemy partOfEnemy = (PartOfEnemy) enemy;
+                if(partOfEnemy.damageable){
+                    bursts.add(new Burst(shooter,12,0,TypeShoot.ORANGE, enemy, 1.0));
+                    enemy.setTargettedByShip(true);
+                }
+            }else{
+                bursts.add(new Burst(shooter,12,0,TypeShoot.ORANGE, enemy, 1.0));
+                enemy.setTargettedByShip(true);
+            }
         }else if(enemy == null){
-
+            // Posiblemente para que dispare aun si no ha tocado a un enemigo y dispare a la posición seleccionada
         }
     }
 
