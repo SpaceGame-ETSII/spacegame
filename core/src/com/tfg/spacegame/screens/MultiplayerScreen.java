@@ -29,6 +29,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     private String infoMessage;
 
     private float timeToStartGame;
+    private boolean changeToStartGame;
 
     public MultiplayerScreen(final SpaceGame game, String roomId, boolean createRoom){
         this.game = game;
@@ -40,6 +41,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         infoMessage = FontManager.getFromBundle("connectServer");
 
         timeToStartGame = 0;
+        changeToStartGame = false;
 
         playerShip  = new PlayerShip();
         enemyShip   = new EnemyShip();
@@ -92,12 +94,14 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void updateReady(float delta) {
         System.out.println(timeToStartGame);
-        if(timeToStartGame > 0){
-            infoMessage = FontManager.getFromBundle("startGame")+"  "+(int)timeToStartGame;
-            timeToStartGame-=delta;
-        }else{
-            timeToStartGame = 0;
-            state = GameState.START;
+        if(changeToStartGame){
+            if(timeToStartGame > 0){
+                infoMessage = FontManager.getFromBundle("startGame")+"  "+(int)timeToStartGame;
+                timeToStartGame-=delta;
+            }else{
+                timeToStartGame = 0;
+                state = GameState.START;
+            }
         }
     }
 
@@ -201,6 +205,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     public void onGameStarted(String message) {
         System.out.println(message);
         timeToStartGame = MAX_TIME_TO_START_GAME;
+        changeToStartGame = true;
     }
 
     @Override
