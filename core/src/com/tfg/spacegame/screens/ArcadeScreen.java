@@ -9,8 +9,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.GameScreen;
+import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.gameObjects.arcadeMode.ArcadeShip;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
@@ -56,17 +58,22 @@ public class ArcadeScreen extends GameScreen {
 
 	private ShakeEffect shakeEffect;
 
+	//Botón que nos permitirá salir del juego
+	private Button exit;
+
+
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
+
+		//Convertimos la pantalla en modo portrait
+		SpaceGame.changeToPortrait();
 
 		scrollingPosition = 0;
 		background = AssetsManager.loadTexture("background2");
 		shakeEffect = new ShakeEffect(1f, ShakeEffect.NORMAL_SHAKE);
+		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
 
 		this.initialize();
-
-		//Convertimos la pantalla en modo portrait
-		SpaceGame.changeToPortrait();
 	}
 
 	private void initialize() {
@@ -166,13 +173,22 @@ public class ArcadeScreen extends GameScreen {
 		FontManager.drawText("pause", SpaceGame.height / 2);
 		ship.render();
 		this.renderTime();
+		exit.render();
 	}
 
 	@Override
 	public void updatePause(float delta) {
 		if (Gdx.input.justTouched()) {
-			state = GameState.START;
-			AudioManager.playMusic();
+
+			Vector3 v = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+			v = SpaceGame.camera.unproject(v);
+
+			if (exit.press(v.x, v.y)) {
+				game.setScreen(new MainMenuScreen(game));
+			} else {
+				state = GameState.START;
+				AudioManager.playMusic();
+			}
 		}
 	}
 

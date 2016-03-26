@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.FontManager;
 
 public class Button extends GameObject {
@@ -21,10 +22,14 @@ public class Button extends GameObject {
     //Indica si el botón una vez pulsado deberá volverse oscuro
     private boolean haveDarkEffect;
 
+    //Controla si el efecto de sonido al pulsar el botón ya se ejecutó
+    private boolean justSound;
+
     public Button(String texture, int x, int y, String content, boolean haveDarkEffect) {
         super(texture, x, y);
 
         pressed = false;
+        justSound = false;
         this.content = content;
         this.haveDarkEffect = haveDarkEffect;
 
@@ -62,6 +67,10 @@ public class Button extends GameObject {
     public void render() {
         if (this.isPressed() && haveDarkEffect){
             this.renderDark();
+            if (!justSound) {
+                AudioManager.playSound("button_forward");
+                justSound = true;
+            }
         } else {
             super.render();
         }

@@ -160,10 +160,14 @@ public class AssetsManager {
         assetsReferences.put("ship_shock_effect", particlesFolder + "nave_arcade_choque");
 
         //Assets referentes a la música
+        assetsReferences.put("music/menu", musicsFolder + "menu.mp3");
+        assetsReferences.put("music/campaign", musicsFolder + "campaign.mp3");
         assetsReferences.put("music/arcade", musicsFolder + "arcade.mp3");
 
         //Assets referentes a sonidos
         assetsReferences.put("sound/arcade_shock_effect", soundsFolder + "arcade_shock_effect.wav");
+        assetsReferences.put("sound/button_forward", soundsFolder + "button_forward.wav");
+        assetsReferences.put("sound/button_backward", soundsFolder + "button_backward.wav");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");
@@ -196,8 +200,8 @@ public class AssetsManager {
         return Gdx.audio.newMusic(Gdx.files.internal(assetsReferences.get("music/" + musicName)));
     }
 
-    public static Music loadSound(String soundName) {
-        return Gdx.audio.newMusic(Gdx.files.internal(assetsReferences.get("sound/" + soundName)));
+    public static Sound loadSound(String soundName) {
+        return Gdx.audio.newSound(Gdx.files.internal(assetsReferences.get("sound/" + soundName)));
     }
 
     //Se llamará a este método cada vez que se pretenda cargar script del juego

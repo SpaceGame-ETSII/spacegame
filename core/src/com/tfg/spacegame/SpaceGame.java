@@ -53,6 +53,20 @@ public class SpaceGame extends Game {
 	public static void changeToPortrait() {
 		platform.setOrientation("portrait");
 
+		if (width > height)
+			exchangeWidthHeight();
+	}
+
+	//Convierte la pantalla en modo landscape
+	public static void changeToLandscape() {
+		platform.setOrientation("landscape");
+
+		if (height > width)
+			exchangeWidthHeight();
+	}
+
+	//Intercambia el valor de width con height y viceversa
+	private static void exchangeWidthHeight() {
 		int newWidth = height;
 		int newHeight = width;
 
