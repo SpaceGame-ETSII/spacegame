@@ -18,9 +18,7 @@ public class MultiplayerMenuScreen implements Screen{
     private final SpaceGame game;
 
 	private Button createGame;
-
 	private Button quickGame;
-
 	private Button joinGame;
 
 	private float timeUntilExit;

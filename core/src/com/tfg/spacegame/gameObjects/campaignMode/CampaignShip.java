@@ -182,7 +182,7 @@ public class CampaignShip extends GameObject {
         if (!undamagable) {
             damageReceived++;
             if (damageReceived < VITALITY) {
-                CampaignScreen.shakeEffect.start();
+                CameraManager.startShakeEffect();
                 cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
                 undamagable = true;
             }

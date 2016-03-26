@@ -39,8 +39,6 @@ public class CampaignScreen extends GameScreen {
     public static int whichTouchIsShooting;
     public static int whichControlsTheShip;
 
-    public static ShakeEffect shakeEffect;
-
     public CampaignScreen(SpaceGame game, String scriptLevel){
         this.game = game;
         scrollingPosition = 0;
@@ -56,7 +54,7 @@ public class CampaignScreen extends GameScreen {
         ship = new CampaignShip("ship");
         inventary = new Inventary();
 
-        shakeEffect = new ShakeEffect(1f,ShakeEffect.NORMAL_SHAKE);
+        CameraManager.loadShakeEffect(1f);
 
         background = AssetsManager.loadTexture("background2");
         if (!AudioManager.isPlaying())
@@ -201,7 +199,7 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void updateStart(float delta) {
 
-        shakeEffect.shake(delta);
+        CameraManager.updateShakeEffect(delta);
 
         if (ship.isDefeated())
             state = GameState.LOSE;
