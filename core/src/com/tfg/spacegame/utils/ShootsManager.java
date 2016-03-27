@@ -6,6 +6,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Burst;
+import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.enums.TypeShoot;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
@@ -34,9 +35,22 @@ public class ShootsManager {
      * @param shooter - El shooter que realizó el disparo
      */
     public static void shootBurstBasicWeaponForShip(GameObject shooter){
-        if(isShipReadyToShoot(TypeShoot.BASIC)){
-            bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
+        if(shooter instanceof CampaignShip){
+            if(isShipReadyToShoot(TypeShoot.BASIC)){
+                bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
+            }
+        }else if (shooter instanceof EnemyShip){
+            boolean canShootAgain = true;
+            for(Shoot shoot: shoots){
+                if(shoot.getShooter().equals(shooter)) {
+                    canShootAgain = false;
+                    break;
+                }
+            }
+            if(canShootAgain)
+                bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
         }
+
     }
 
     /**

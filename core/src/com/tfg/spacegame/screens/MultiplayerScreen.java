@@ -93,7 +93,6 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     @Override
     public void updateReady(float delta) {
-        System.out.println(timeToStartGame);
         if(changeToStartGame){
             if(timeToStartGame > 0){
                 infoMessage = FontManager.getFromBundle("startGame")+"  "+(int)timeToStartGame;
@@ -147,7 +146,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
             }
         }
 
-        WarpController.getInstance().sendGameUpdate(""+playerShip.getY());
+        WarpController.getInstance().sendGameUpdate(""+playerShip.getCenter().y);
     }
 
     @Override
