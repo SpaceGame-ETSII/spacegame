@@ -53,8 +53,6 @@ public class ArcadeScreen extends GameScreen {
 	//Acumula el tiempo que está vivo el jugador en la partida
 	private float timeAlive;
 
-	//Efecto que hará vibrar la pantalla cuando se produzca un choque con la nave
-	private ShakeEffect shakeEffect;
 
 	//Botón que nos permitirá salir del juego
 	private Button exit;
@@ -74,7 +72,7 @@ public class ArcadeScreen extends GameScreen {
 
 		scrollingPosition = 0;
 		background = AssetsManager.loadTexture("background2");
-		shakeEffect = new ShakeEffect(1f, ShakeEffect.NORMAL_SHAKE);
+		CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
 
 		this.initialize();
@@ -137,7 +135,7 @@ public class ArcadeScreen extends GameScreen {
 	public void updateEveryState(float delta) {
 		//Si el estado no está en pausa, avanzamos el fondo y actualizamos la vibración de la pantalla
 		if (!state.equals(GameState.PAUSE)) {
-			shakeEffect.shake(delta);
+			CameraManager.shake(delta);
 
 			//Actualizamos la posición del scrolling
 			scrollingPosition -= delta * SCROLLING_SPEED;
@@ -198,7 +196,7 @@ public class ArcadeScreen extends GameScreen {
 
 			//Realizamos los efectos visuales y de sonido
 			Gdx.input.vibrate(300);
-			shakeEffect.start();
+			CameraManager.startShake();
 			AudioManager.stopMusic();
 			if (newRecord) {
 				AudioManager.playSound("new_record");

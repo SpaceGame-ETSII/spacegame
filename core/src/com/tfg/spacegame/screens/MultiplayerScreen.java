@@ -54,7 +54,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         EnemiesManager.loadMultiplayerEnemies(enemyShip);
         CollissionsManager.load();
         ShootsManager.load();
-        CameraManager.loadShakeEffect(1f);
+        CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 
         enemyYposition = enemyShip.getY();
 
@@ -125,7 +125,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         EnemiesManager.enemies.first().update(delta);
         CollissionsManager.update(delta, playerShip);
         ShootsManager.update(delta, playerShip);
-        CameraManager.updateShakeEffect(delta);
+        CameraManager.shake(delta);
 
         // Obtenemos un vector de coordenadas si está en la zona de movimiento de la nave
         Vector3 coordinates = TouchManager.getAnyXTouchLowerThan(playerShip.getX() + playerShip.getWidth());

@@ -41,8 +41,6 @@ public class CampaignShip extends GameObject {
 
     public ParticleEffect destroyEffect;
 
-    private ShakeEffect shakeEffect;
-
     public CampaignShip(String textureName) {
         super(textureName, 0, 0);
 
@@ -66,8 +64,6 @@ public class CampaignShip extends GameObject {
         //Lo iniciamos, pero aunque lo iniciemos si no hay un update no avanzará
         fireEffect.start();
         destroyEffect.start();
-
-        shakeEffect = new ShakeEffect(1f,ShakeEffect.NORMAL_SHAKE);
     }
 
     private void updateParticleEffect() {
@@ -99,8 +95,6 @@ public class CampaignShip extends GameObject {
         else{
             //Actualizamos el efecto de particulas
             fireEffect.update(delta);
-
-            shakeEffect.shake(delta);
 
             //Movimiento de la nave
             if (canShipMove) {
@@ -185,7 +179,7 @@ public class CampaignShip extends GameObject {
         if (!undamagable) {
             damageReceived++;
             if (damageReceived < VITALITY) {
-                shakeEffect.start();
+                CameraManager.startShake();
                 cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
                 undamagable = true;
             }

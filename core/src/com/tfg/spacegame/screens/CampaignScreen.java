@@ -47,6 +47,7 @@ public class CampaignScreen extends GameScreen {
         CollissionsManager.load();
         EnemiesManager.load(scriptLevel);
         DamageManager.load();
+        CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 
         state = GameState.READY;
 
@@ -196,6 +197,8 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void updateStart(float delta) {
+
+        CameraManager.shake(delta);
 
         if (ship.isDefeated())
             state = GameState.LOSE;
