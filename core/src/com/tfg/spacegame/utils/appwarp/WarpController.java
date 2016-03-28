@@ -237,6 +237,18 @@ public class WarpController {
         warpClient.sendUpdatePeers((userName+":"+message).getBytes());
     }
 
+    public void leaveRoom(){
+        warpClient.leaveRoom(roomId);
+    }
+
+    public void onLeaveRoomDone(){
+        warpClient.unsubscribeRoom(roomId);
+    }
+
+    public void onUnSubscribeRoomDone() {
+        warpListener.onUserLeaveRoom();
+    }
+
     /**
      * Método para recibir (si ha habido) un mensaje nuevo por parte de otro jugador de la habitación
      * @param message

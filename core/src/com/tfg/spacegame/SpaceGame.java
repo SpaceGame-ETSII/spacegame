@@ -73,9 +73,8 @@ public class SpaceGame extends Game {
 		width = newWidth;
 		height = newHeight;
 
-		//TODO: Cambia esto antes de que hagas merge con la master
-		//Gdx.graphics.setDisplayMode(newWidth, newHeight, true);
-		Gdx.graphics.setWindowedMode(newWidth,newHeight);
+		Gdx.graphics.setDisplayMode(newWidth, newHeight, true);
+		//Gdx.graphics.setWindowedMode(newWidth,newHeight);
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, width, height);

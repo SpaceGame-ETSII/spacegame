@@ -17,9 +17,6 @@ import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 
 public class ShootsManager {
 
-    //TODO Hay que borrar esto cuando arreglemos el CampaignScreen
-    public static CampaignShip ship;
-
     //Almacenará todos los shoots en pantalla
     public static Array<Shoot> shoots;
     public static Array<Burst> bursts;

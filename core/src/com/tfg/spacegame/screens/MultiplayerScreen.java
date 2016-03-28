@@ -1,6 +1,7 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -31,6 +32,8 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     private float timeToStartGame;
     private boolean changeToStartGame;
 
+    private boolean backToMainMenu;
+
     public MultiplayerScreen(final SpaceGame game, String roomId, boolean createRoom){
         this.game = game;
 
@@ -43,6 +46,8 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         timeToStartGame = 0;
         changeToStartGame = false;
 
+        backToMainMenu = false;
+
         playerShip  = new PlayerShip();
         enemyShip   = new EnemyShip();
 
@@ -52,6 +57,9 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         CameraManager.loadShakeEffect(1f);
 
         enemyYposition = enemyShip.getY();
+
+        Gdx.input.setInputProcessor(this);
+        Gdx.input.setCatchBackKey(true);
 
         if(roomId.equals(""))
             WarpController.createInstance(WarpController.MultiplayerOptions.QUICK_GAME);
@@ -147,6 +155,9 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         }
 
         WarpController.getInstance().sendGameUpdate(""+playerShip.getCenter().y);
+
+        if(backToMainMenu)
+            game.setScreen(new MainMenuScreen(game));
     }
 
     @Override
@@ -242,8 +253,30 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
             enemyShip.burstPowerUp.setTouched();
         }else if (message.equals("SHOOT")){
             enemyShip.shoot();
+        }else if (message.equals("LEAVE")){
+            state = GameState.WIN;
         }else{
             enemyYposition = Float.parseFloat(message);
         }
+        System.out.println(message);
+    }
+
+    @Override
+    public void onUserLeaveRoom() {
+        System.out.println("holi");
+        WarpController.getInstance().sendGameUpdate("LEAVE");
+        WarpController.getInstance().disconnect();
+        backToMainMenu=true;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.BACK){
+            WarpController.getInstance().leaveRoom();
+        }
+        if(keycode == Input.Keys.A){
+            WarpController.getInstance().leaveRoom();
+        }
+        return false;
     }
 }

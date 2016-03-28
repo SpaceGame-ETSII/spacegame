@@ -22,4 +22,6 @@ public interface WarpListener {
     void onGameFinished(int code, boolean isRemote);
 
     void onGameUpdateReceived(String message);
+
+    void onUserLeaveRoom();
 }

@@ -26,7 +26,8 @@ public class RoomListener implements RoomRequestListener {
 
     @Override
     public void onUnSubscribeRoomDone(RoomEvent roomEvent) {
-
+        System.out.println("UnsubscrimeRoom");
+        callback.onUnSubscribeRoomDone();
     }
 
     @Override
@@ -37,6 +38,7 @@ public class RoomListener implements RoomRequestListener {
     @Override
     public void onLeaveRoomDone(RoomEvent roomEvent) {
         System.out.println("Leave the room");
+        callback.onLeaveRoomDone();
     }
 
     @Override
