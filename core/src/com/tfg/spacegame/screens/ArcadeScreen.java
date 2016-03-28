@@ -2,6 +2,7 @@ package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.audio.AudioRecorder;
 import com.badlogic.gdx.audio.Music;
@@ -31,6 +32,8 @@ public class ArcadeScreen extends GameScreen {
 	private static final float MIN_ALPHA = 0.3f;
 	//Indica el escalado que tendrán los objetos en la capa baja
 	private static final float BOTTOM_SCALE = 0.5f;
+	//Nombre del archivo donde se guardará el record del usuario
+	private static final String RECORD_FILE = "arcade_record.txt";
 
 	//Objetos interactuables de la pantalla
 	private ArcadeShip ship;
@@ -56,10 +59,17 @@ public class ArcadeScreen extends GameScreen {
 	//Acumula el tiempo que está vivo el jugador en la partida
 	private float timeAlive;
 
+	//Efecto que hará vibrar la pantalla cuando se produzca un choque con la nave
 	private ShakeEffect shakeEffect;
 
 	//Botón que nos permitirá salir del juego
 	private Button exit;
+
+	//Guardará el record del jugador para mostrarlo en pantalla
+	private int record;
+
+	//Indicará si en la partida ha habido nuevo record
+	private boolean newRecord;
 
 
 	public ArcadeScreen(final SpaceGame game) {
@@ -76,6 +86,7 @@ public class ArcadeScreen extends GameScreen {
 		this.initialize();
 	}
 
+	//Inicializa el estado del juego cada vez que se comienza una nueva partida
 	private void initialize() {
 		ship = new ArcadeShip();
 		state = GameState.READY;
@@ -85,6 +96,28 @@ public class ArcadeScreen extends GameScreen {
 		timeToBlock = 0;
 		layer = 1;
 		timeAlive = 0;
+		this.obtainRecord();
+	}
+
+	//Recoge el record, y si no hay ninguno coge un 0 por defecto
+	private void obtainRecord() {
+		Preferences prefs = Gdx.app.getPreferences("My Preferences");
+		record = prefs.getInteger("record", 0);
+	}
+
+	//Guarda el record conseguido si supera el timeAlive, y devuelve true en caso de guardarse
+	private boolean saveRecord() {
+		boolean res = false;
+
+		if (timeAlive > record) {
+			Preferences prefs = Gdx.app.getPreferences("My Preferences");
+			prefs.putInteger("record", (int) timeAlive);
+			prefs.flush();
+
+			res = true;
+		}
+
+		return res;
 	}
 
 	@Override
@@ -156,12 +189,20 @@ public class ArcadeScreen extends GameScreen {
 		//Por último, comprobamos si hay colisión con la nave
 		//Si no hay colisión, comprobamos si se ha tocado la pantalla para entrar en pause
 		if (ObstacleManager.existsCollision(ship, layer)) {
+			//Aplicamos el estado de haber perdido
 			ship.defeat();
 			state = GameState.LOSE;
+			newRecord = this.saveRecord();
+
+			//Realizamos los efectos visuales y de sonido
 			Gdx.input.vibrate(300);
 			shakeEffect.start();
 			AudioManager.stopMusic();
-			AudioManager.playSound("arcade_shock_effect");
+			if (newRecord) {
+				AudioManager.playSound("new_record");
+			} else {
+				AudioManager.playSound("arcade_shock_effect");
+			}
 		} else if (Gdx.input.justTouched()) {
 			state = GameState.PAUSE;
 			AudioManager.pauseMusic();
@@ -171,6 +212,7 @@ public class ArcadeScreen extends GameScreen {
 	@Override
 	public void renderPause(float delta) {
 		FontManager.drawText("pause", SpaceGame.height / 2);
+		FontManager.drawText("record", ": " + record, 10, 760);
 		ship.render();
 		this.renderTime();
 		exit.render();
@@ -205,7 +247,11 @@ public class ArcadeScreen extends GameScreen {
 	@Override
 	public void renderLose(float delta) {
 		renderStart(delta);
-		FontManager.drawText("gameOver", 120, 100);
+
+		if (newRecord)
+			FontManager.drawText("newRecord", 400);
+		else
+			FontManager.drawText("gameOver", 400);
 	}
 
 	@Override
