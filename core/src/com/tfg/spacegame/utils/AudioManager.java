@@ -8,7 +8,8 @@ import java.util.Map;
 
 public class AudioManager {
 
-    private final static float VOLUME = 0.5f;
+    private static float volumeMusic = 0.5f;
+    private static float volumeEffect = 0.7f;
 
     private static Music music;
     private static Map<String, Sound> sounds;
@@ -21,15 +22,34 @@ public class AudioManager {
         sounds.put("new_record", AssetsManager.loadSound("new_record"));
     }
 
+    public static float getVolumeMusic() {
+        return volumeMusic;
+    }
+
+    public static float getVolumeEffect() {
+        return volumeEffect;
+    }
+
+    public static void setVolumeMusic(float volumeMusic) {
+        AudioManager.volumeMusic = volumeMusic;
+    }
+
+    public static void setVolumeEffect(float volumeEffect) {
+        AudioManager.volumeEffect = volumeEffect;
+    }
+
     public static void playMusic(String name, boolean isLooping) {
         music = AssetsManager.loadMusic(name);
-        music.setVolume(VOLUME);
+        music.setVolume(volumeMusic);
         music.play();
         music.setLooping(isLooping);
     }
 
     public static void playSound(String name) {
-        sounds.get(name).play();
+        Sound s = sounds.get(name);
+        long id = s.play();
+
+        s.setVolume(id,volumeEffect);
     }
 
     public static void playMusic() {

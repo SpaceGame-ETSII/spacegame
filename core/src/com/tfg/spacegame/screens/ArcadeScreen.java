@@ -1,13 +1,7 @@
 package com.tfg.spacegame.screens;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.audio.AudioDevice;
-import com.badlogic.gdx.audio.AudioRecorder;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -106,18 +100,26 @@ public class ArcadeScreen extends GameScreen {
 	}
 
 	//Guarda el record conseguido si supera el timeAlive, y devuelve true en caso de guardarse
-	private boolean saveRecord() {
+	private boolean updateRecord() {
 		boolean res = false;
 
 		if (timeAlive > record) {
-			Preferences prefs = Gdx.app.getPreferences("My Preferences");
-			prefs.putInteger("record", (int) timeAlive);
-			prefs.flush();
+			saveRecord((int) timeAlive);
 
 			res = true;
 		}
 
 		return res;
+	}
+
+	public static void resetRecord() {
+		saveRecord(0);
+	}
+
+	private static void saveRecord(int value) {
+		Preferences prefs = Gdx.app.getPreferences("My Preferences");
+		prefs.putInteger("record", value);
+		prefs.flush();
 	}
 
 	@Override
@@ -192,7 +194,7 @@ public class ArcadeScreen extends GameScreen {
 			//Aplicamos el estado de haber perdido
 			ship.defeat();
 			state = GameState.LOSE;
-			newRecord = this.saveRecord();
+			newRecord = this.updateRecord();
 
 			//Realizamos los efectos visuales y de sonido
 			Gdx.input.vibrate(300);
