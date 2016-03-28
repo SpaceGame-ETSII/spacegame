@@ -157,6 +157,7 @@ public class AssetsManager {
         assetsReferences.put("sound/arcade_shock_effect", soundsFolder + "arcade_shock_effect.wav");
         assetsReferences.put("sound/button_forward", soundsFolder + "button_forward.wav");
         assetsReferences.put("sound/button_backward", soundsFolder + "button_backward.wav");
+        assetsReferences.put("sound/new_record", soundsFolder + "new_record.wav");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");
