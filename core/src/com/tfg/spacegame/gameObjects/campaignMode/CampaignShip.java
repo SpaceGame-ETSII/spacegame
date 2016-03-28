@@ -24,13 +24,13 @@ public class CampaignShip extends GameObject {
     private static final float X_POSITION = 80;
 
     //Indica la cantidad de golpes recibidos
-    private int damageReceived;
+    protected int damageReceived;
     //Variable usada para hacer la nave invulnerable cuando es golpeada
     private boolean undamagable;
     //Se usará como contador para volver la nave vulnerable
     private float timeToUndamagable;
     //Imagen de la cabina que irá sobre la nave y que se actualizará con los daños
-    private Texture cockpit;
+    protected Texture cockpit;
     //Sirve para indicar los tiempos en los que la nave parpadeará a ser invulnerable
     private int timeForInvisible;
     //Indica el color de la nave
@@ -43,8 +43,8 @@ public class CampaignShip extends GameObject {
 
     private ShakeEffect shakeEffect;
 
-    public CampaignShip() {
-        super("ship", 0, 0);
+    public CampaignShip(String textureName) {
+        super(textureName, 0, 0);
 
         timeForInvisible = RANGE_INVISIBLE_TIMER;
         damageReceived = 0;

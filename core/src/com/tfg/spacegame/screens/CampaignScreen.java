@@ -51,7 +51,7 @@ public class CampaignScreen extends GameScreen {
         state = GameState.READY;
 
         //Creamos los objetos de juego
-        ship = new CampaignShip();
+        ship = new CampaignShip("ship");
         inventary = new Inventary();
 
         background = AssetsManager.loadTexture("background2");

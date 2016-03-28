@@ -1,17 +1,13 @@
-package com.tfg.spacegame.gameObjects.enemies;
+package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
-import com.tfg.spacegame.gameObjects.campaignMode.shoots.Basic;
-import com.tfg.spacegame.gameObjects.campaignMode.shoots.Purple;
-import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Eye;
+import com.tfg.spacegame.gameObjects.campaignMode.enemies.partsOfEnemy.Eye;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
-
-import java.util.Arrays;
 
 public class PurpleEnemy extends Enemy {
 

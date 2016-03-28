@@ -67,16 +67,23 @@
       "entity":"orange_shoot", "vertices": [ 0,0 , 0,15 , 15,15 , 15,0 ]
     },
     {
-      "entity":"green_shoot", "vertices": [ 10,0 , 0,10 , 10,20 , 27,20 , 32,10 , 27,0 ]
-    }
-    {
       "entity":"purple_body", "vertices": [ 180,325 , 334,325 , 334,160 , 180,160 ]
-    }
+    },
     {
-      "entity":"purple_shoot", "vertices": [ 0,0 , 0,20 , 200,20 , 200,0 ]
-    }
-
-
+      "entity":"purple_shoot", "vertices": [ 0,0 , 0,20 , 160,20 , 160,0 ]
+    },
+    {
+      "entity":"purple_eye_1", "vertices": [ 13,20 , 47,20 , 47,54 , 13,54 ]
+    },
+    {
+      "entity":"purple_eye_2", "vertices": [ 13,20 , 47,20 , 47,54 , 13,54 ]
+    },
+    {
+      "entity":"purple_eye_3", "vertices": [ 13,20 , 47,20 , 47,54 , 13,54 ]
+    },
+    {
+      "entity":"purple_eye_4", "vertices": [ 13,20 , 47,20 , 47,54 , 13,54 ]
+    },
     {
       "entity":"small_obstacle", "vertices": [ 0,16 , 10,8 , 26,0 , 44,0 , 48,6, 50,36, 30,50, 12,50, 6,45, 6,39, 0,34, 0,19]
     },

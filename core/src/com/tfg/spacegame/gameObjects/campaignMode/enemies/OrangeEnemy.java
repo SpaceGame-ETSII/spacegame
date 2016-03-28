@@ -7,7 +7,7 @@ import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Orange;
-import com.tfg.spacegame.gameObjects.enemies.partsOfEnemy.Cannon;
+import com.tfg.spacegame.gameObjects.campaignMode.enemies.partsOfEnemy.Cannon;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
@@ -225,7 +225,7 @@ public class OrangeEnemy extends Enemy {
                 if(this.getX() > APPEAR_POSITION)
                     moveEnemyWithAppearSpeed(delta);
                 else
-                // Si ya hemos alcanzado la posición, el enemigo está listo para actuar
+                    // Si ya hemos alcanzado la posición, el enemigo está listo para actuar
                     orangeEnemyState = OrangeEnemyState.READY;
                 break;
         }
@@ -237,7 +237,7 @@ public class OrangeEnemy extends Enemy {
         // es la quinta parte que la del cañon secundario)
         if(timeToShoot >= FREQUENCY_OF_SHOOTING/5){
             float angle = MathUtils.random(110,250);
-            ShootsManager.shootOneOrangeWeapon(this,(int)(getX() - this.getWidth()/2 +5),(int)(this.getY()+this.getHeight()/2),angle, CampaignScreen.ship);
+            ShootsManager.shootOneOrangeWeapon(this,(int)(getX() - this.getWidth()/2 +5),(int)(this.getY()+this.getHeight()/2),angle, CampaignScreen.ship,0);
             timeToShoot=0;
             shootsFired++;
             // Si hemos disparado ya todas las bolas de fuego

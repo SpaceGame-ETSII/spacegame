@@ -59,7 +59,7 @@ public class SpaceGame extends Game {
 
 	//Convierte la pantalla en modo landscape
 	public static void changeToLandscape() {
-		platform.setOrientation("landscape");
+		//platform.setOrientation("landscape");
 
 		if (height > width)
 			exchangeWidthHeight();

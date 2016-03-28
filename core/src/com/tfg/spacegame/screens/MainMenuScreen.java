@@ -99,7 +99,7 @@ public class MainMenuScreen implements Screen {
             } else if (arcade.isPressed()) {
                 game.setScreen(new ArcadeScreen(game));
             } else if (multiplayer.isPressed()) {
-                game.setScreen(new MultiplayerScreen(game));
+                game.setScreen(new MultiplayerMenuScreen(game));
             } else if (options.isPressed()) {
                 game.setScreen(new OptionsScreen(game));
             } else if (exit.isPressed()) {

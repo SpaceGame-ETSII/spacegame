@@ -1,4 +1,4 @@
-package com.tfg.spacegame.gameObjects.enemies.partsOfEnemy;
+package com.tfg.spacegame.gameObjects.campaignMode.enemies.partsOfEnemy;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.SpaceGame;
@@ -75,11 +75,10 @@ public class Eye extends PartOfEnemy {
         if (this.isDefeated()){
             super.updateParticleEffect();
         }else
-        //Si el ojo no está cerrado y está esperando, actualizamos el efecto de partículas
-        if (!isClosed() && isWaitToShoot()){
-            shootEffectWarning.getEmitters().first().setPosition(this.getX() + this.getWidth() / 2, this.getY() +
-                    this.getHeight() / 2);
-        }
+            //Si el ojo no está cerrado y está esperando, actualizamos el efecto de partículas
+            if (!isClosed() && isWaitToShoot()){
+                shootEffectWarning.getEmitters().first().setPosition(this.getCenter().x+15, this.getCenter().y+15);
+            }
     }
 
     public void shoot(){

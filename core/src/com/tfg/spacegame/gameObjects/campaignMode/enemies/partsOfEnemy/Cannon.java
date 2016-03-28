@@ -1,4 +1,4 @@
-package com.tfg.spacegame.gameObjects.enemies.partsOfEnemy;
+package com.tfg.spacegame.gameObjects.campaignMode.enemies.partsOfEnemy;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.Vector2;
@@ -31,7 +31,7 @@ public class Cannon extends PartOfEnemy {
     private boolean disable;
 
     public Cannon(float x, float y, Enemy father, float xShoot, float yShoot, float angle) {
-        super("orange_enemy_cannon", 0, 0, 20, AssetsManager.loadParticleEffect("basic_destroyed"), father, false, true);
+        super("orange_enemy_cannon", 0, 0, 20, AssetsManager.loadParticleEffect("basic_destroyed"), father, true, true);
 
         this.setX(x);
         this.setY(y);
@@ -48,7 +48,7 @@ public class Cannon extends PartOfEnemy {
 
     public void shoot(){
         // Disparamos
-        ShootsManager.shootOneOrangeWeapon(this, (int)shootingPosition.x, (int)shootingPosition.y, shootAngle, CampaignScreen.ship);
+        ShootsManager.shootOneOrangeWeapon(this, (int)shootingPosition.x, (int)shootingPosition.y, shootAngle, CampaignScreen.ship,0);
     }
     public void move(float speed){
         this.setX(this.getX() + speed);
@@ -72,7 +72,7 @@ public class Cannon extends PartOfEnemy {
                 // Reducimos la cantidad de emisión del efecto
                 disabledEffect.getEmitters().first().getEmission().setHigh((
                         (FREQUENCY_OF_DISABLE_EFFECT - timeDisableEffect )
-                        * MAX_EMISSION_DISABLE_EFFECT)
+                                * MAX_EMISSION_DISABLE_EFFECT)
                         / FREQUENCY_OF_DISABLE_EFFECT);
             }
         }
@@ -88,10 +88,12 @@ public class Cannon extends PartOfEnemy {
         return disable;
     }
     public void collideWithShoot(Shoot shoot) {
-        if(!disable)
-            this.damage(1);
+        if(damageable){
+            if(!disable)
+                this.damage(1);
 
-        if(getVitality() < 3)
-            disable = true;
+            if(getVitality() < 3)
+                disable = true;
+        }
     }
 }
