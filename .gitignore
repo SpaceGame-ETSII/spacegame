@@ -3,6 +3,7 @@
 !README.md
 !LICENSE
 !.gitignore
+!/build.gradle
 !/core/
 !/core/src/
 !/core/src/*
@@ -13,7 +14,11 @@
 !/core/src/com/tfg/spacegame/*/*
 !/core/src/com/tfg/spacegame/*/*/*
 !/core/src/com/tfg/spacegame/*/*/*/*
+!/core/src/com/tfg/spacegame/*/*/*/*/*
+!/core/src/com/tfg/spacegame/*/*/*/*/*/*
+!/core/src/com/tfg/spacegame/*/*/*/*/*/*/*
 !/android/
+!/android/AndroidManifest.xml
 !/android/assets/
 !/android/assets/*
 !/android/assets/*/*
@@ -27,4 +32,3 @@
 !/android/src/com/tfg/spacegame/android/*
 !/libs/
 !/libs/*
-

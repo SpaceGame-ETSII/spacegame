@@ -12,5 +12,7 @@ public class ShieldPowerUp extends PowerUp{
     @Override
     public void act(float delta, GameObject g) {
 
+
+
     }
 }
