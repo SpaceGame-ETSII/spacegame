@@ -25,4 +25,6 @@
 !/android/src/com/tfg/spacegame/
 !/android/src/com/tfg/spacegame/android/
 !/android/src/com/tfg/spacegame/android/*
+!/libs/
+!/libs/*
 
