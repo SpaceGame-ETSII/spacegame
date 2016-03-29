@@ -1,7 +1,9 @@
 package com.tfg.spacegame.gameObjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.AudioManager;
@@ -50,12 +52,13 @@ public class Button extends GameObject {
         return pressed;
     }
 
-    public boolean press(float x, float y) {
-        if (super.isOverlapingWith(x, y)) {
-            this.setPressed(true);
-            return true;
-        } else {
-            return false;
+    public void update() {
+        if (Gdx.input.justTouched()) {
+            Vector3 v = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            v = SpaceGame.camera.unproject(v);
+
+            if (super.isOverlapingWith(v.x, v.y))
+                this.setPressed(true);
         }
     }
 
@@ -63,7 +66,7 @@ public class Button extends GameObject {
         this.pressed = pressed;
     }
 
-    //Si el botón está pulsado, girará la textura 180 grados
+    //Si el botón está pulsado, se oscurecerá
     public void render() {
         if (this.isPressed() && haveDarkEffect){
             this.renderDark();

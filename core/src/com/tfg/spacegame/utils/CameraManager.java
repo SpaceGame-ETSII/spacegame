@@ -41,7 +41,7 @@ public class CameraManager {
         startEffect = false;
     }
 
-    public static void shake(float delta){
+    public static void update(float delta){
         if(startEffect){
             if(!isShakeDone()){
                 // Calculamos la potencia actual a aplicar a la cámara

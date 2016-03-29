@@ -1,6 +1,5 @@
 package com.tfg.spacegame.screens;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -31,7 +30,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final SpaceGame game) {
         this.game = game;
 
-        SpaceGame.changeToLandscape();
+        //SpaceGame.changeToLandscape();
 
         background = AssetsManager.loadTexture("background2");
         AudioManager.loadSounds();
@@ -75,18 +74,19 @@ public class MainMenuScreen implements Screen {
     }
 
     public void update(float delta) {
-        //Si se ha tocado algún botón, lo marcamos como pulsado
+        campaign.update();
+        arcade.update();
+        multiplayer.update();
+        options.update();
+        exit.update();
+
+        //Si se acaba de tocar algún botón, reiniciamos el contador y paramos la música
         if (Gdx.input.justTouched()) {
-
-            Vector3 v = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-            v = SpaceGame.camera.unproject(v);
-
-            if (campaign.press(v.x, v.y) ||
-                    arcade.press(v.x, v.y) ||
-                    multiplayer.press(v.x, v.y) ||
-                    options.press(v.x, v.y) ||
-                    exit.press(v.x, v.y)) {
-                //Reiniciamos el contador en caso de haberse pulsado un botón
+            if (campaign.isPressed() ||
+                    arcade.isPressed() ||
+                    multiplayer.isPressed() ||
+                    options.isPressed() ||
+                    exit.isPressed()) {
                 timeUntilExit=0.5f;
                 AudioManager.stopMusic();
             }

@@ -10,6 +10,7 @@ import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.gameObjects.arcadeMode.ArcadeShip;
 import com.tfg.spacegame.utils.*;
+import com.tfg.spacegame.utils.enums.DialogBoxState;
 import com.tfg.spacegame.utils.enums.GameState;
 
 public class ArcadeScreen extends GameScreen {
@@ -63,6 +64,8 @@ public class ArcadeScreen extends GameScreen {
 	//Indicará si en la partida ha habido nuevo record
 	private boolean newRecord;
 
+	//Cuadro de diálogo que se preguntará confirmación para salir del modo
+	private DialogBox menuExitDialog;
 
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
@@ -74,6 +77,7 @@ public class ArcadeScreen extends GameScreen {
 		background = AssetsManager.loadTexture("background2");
 		CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
+		menuExitDialog = new DialogBox("exitModeQuestion");
 
 		this.initialize();
 	}
@@ -97,23 +101,24 @@ public class ArcadeScreen extends GameScreen {
 		record = prefs.getInteger("record", 0);
 	}
 
-	//Guarda el record conseguido si supera el timeAlive, y devuelve true en caso de guardarse
+	//Guarda el record conseguido si supera el timeAlive, y devuelve true en caso de ser así
 	private boolean updateRecord() {
 		boolean res = false;
 
 		if (timeAlive > record) {
 			saveRecord((int) timeAlive);
-
 			res = true;
 		}
 
 		return res;
 	}
 
+	//Resetea el record a 0
 	public static void resetRecord() {
 		saveRecord(0);
 	}
 
+	//Hace persistente el value del parámetro dentro del record del juego
 	private static void saveRecord(int value) {
 		Preferences prefs = Gdx.app.getPreferences("My Preferences");
 		prefs.putInteger("record", value);
@@ -151,6 +156,7 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void updateReady(float delta) {
+		//Si se toca la pantalla, pasamos a START
 		if (Gdx.input.justTouched()) {
 			state = GameState.START;
 			AudioManager.playMusic("arcade", true);
@@ -198,6 +204,8 @@ public class ArcadeScreen extends GameScreen {
 			Gdx.input.vibrate(300);
 			CameraManager.startShake();
 			AudioManager.stopMusic();
+
+			//Sonará un sonido u otro si hemos superado o no el record
 			if (newRecord) {
 				AudioManager.playSound("new_record");
 			} else {
@@ -215,22 +223,35 @@ public class ArcadeScreen extends GameScreen {
 		FontManager.drawText("record", ": " + record, 10, 760);
 		ship.render();
 		this.renderTime();
-		exit.render();
+
+		if (menuExitDialog.getState().equals(DialogBoxState.HIDDEN))
+			exit.render();
+		else
+			menuExitDialog.render();
 	}
 
 	@Override
 	public void updatePause(float delta) {
-		if (Gdx.input.justTouched()) {
+		//Haremos una cosa u otra dependiendo del estado de menuExitDialog
+		if (menuExitDialog.getState().equals(DialogBoxState.HIDDEN)) {
+			exit.update();
 
-			Vector3 v = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-			v = SpaceGame.camera.unproject(v);
-
-			if (exit.press(v.x, v.y)) {
-				game.setScreen(new MainMenuScreen(game));
-			} else {
-				state = GameState.START;
-				AudioManager.playMusic();
+			//Si se ha tocado la pantalla actuamos según si se ha tocado el botón exit u otro lado
+			if (Gdx.input.justTouched()) {
+				if (exit.isPressed()) {
+					menuExitDialog.setStateToWaiting();
+				} else {
+					state = GameState.START;
+					AudioManager.playMusic();
+				}
 			}
+		} else if (menuExitDialog.getState().equals(DialogBoxState.CONFIRMED)) {
+			game.setScreen(new MainMenuScreen(game));
+		} else if (menuExitDialog.getState().equals(DialogBoxState.CANCELLED)) {
+			menuExitDialog.setStateToHidden();
+			exit.setPressed(false);
+		} else if (menuExitDialog.getState().equals(DialogBoxState.WAITING)) {
+			menuExitDialog.update();
 		}
 	}
 
@@ -248,6 +269,7 @@ public class ArcadeScreen extends GameScreen {
 	public void renderLose(float delta) {
 		renderStart(delta);
 
+		//Se mostrará un mensaje u otro según si se ha hecho un nuevo record o no
 		if (newRecord)
 			FontManager.drawText("newRecord", 400);
 		else
