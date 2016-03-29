@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class AudioManager {
 
-    private static float volumeMusic = 0.5f;
+    private static float volumeMusic = 0.3f;
     private static float volumeEffect = 0.7f;
 
     private static Music music;
@@ -23,7 +23,7 @@ public class AudioManager {
     }
 
     public static float getVolumeMusic() {
-        return volumeMusic;
+        return music.getVolume();
     }
 
     public static float getVolumeEffect() {
@@ -32,6 +32,7 @@ public class AudioManager {
 
     public static void setVolumeMusic(float volumeMusic) {
         AudioManager.volumeMusic = volumeMusic;
+        music.setVolume(volumeMusic);
     }
 
     public static void setVolumeEffect(float volumeEffect) {
