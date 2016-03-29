@@ -40,6 +40,7 @@ public class AudioManager {
 
     public static void playMusic(String name, boolean isLooping) {
         music = AssetsManager.loadMusic(name);
+
         music.setVolume(volumeMusic);
         music.play();
         music.setLooping(isLooping);

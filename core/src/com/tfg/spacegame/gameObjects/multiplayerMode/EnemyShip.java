@@ -33,6 +33,7 @@ public class EnemyShip extends Enemy {
         }
     }
 
+
     public void healHalfLife(){
         this.setVitality(this.getVitality()+this.getVitality()/2);
         if(this.getVitality()>MAX_VITALITY)

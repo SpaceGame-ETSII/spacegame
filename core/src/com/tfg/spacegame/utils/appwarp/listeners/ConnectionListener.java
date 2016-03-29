@@ -25,7 +25,7 @@ public class ConnectionListener implements ConnectionRequestListener {
 
     @Override
     public void onDisconnectDone(ConnectEvent connectEvent) {
-        System.out.println("Desconectado del servidor");
+        callBack.onDisconnectDone();
     }
 
     @Override

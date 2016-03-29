@@ -23,6 +23,10 @@ public class PlayerShip extends CampaignShip {
         cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
     }
 
+    public boolean isDefeated(){
+        return this.damageReceived >= VITALITY;
+    }
+
 
     public void render(){
         super.render();

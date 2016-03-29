@@ -19,7 +19,7 @@ public class CampaignShip extends GameObject {
     //Indica el rango por el que se moverá el timeForInvisible
     private static final int RANGE_INVISIBLE_TIMER = 5;
     //Indica el máximo de golpes que se puede recibir
-    private static final int VITALITY = 5;
+    protected static final int VITALITY = 5;
 
     private static final float X_POSITION = 80;
 

@@ -41,9 +41,11 @@ public class WarpController {
 
     private String roomId;
 
-
     // Nombre del jugador a mostrar en pantalla
     private String userName;
+
+    private boolean meLeaveRoom;
+    private boolean himLeaveRoom;
 
     public WarpController(MultiplayerOptions option){
         // Al llamar al constructor lo que hacemos es inicializar el cliente y obtener la instancia
@@ -63,6 +65,9 @@ public class WarpController {
         warpClient.addRoomRequestListener(new RoomListener(this));
         warpClient.addUpdateRequestListener(new UpdateListener());
         warpClient.addZoneRequestListener(new ZoneListener(this));
+
+        meLeaveRoom = false;
+        himLeaveRoom = false;
     }
 
     /**
@@ -171,7 +176,6 @@ public class WarpController {
     public void onUserJoinedRoom(String roomId, String userName){
         warpListener.onUserJoinedRoom("The player ("+userName+") has joined to the room");
         warpClient.getLiveRoomInfo(this.roomId);
-
     }
 
 
@@ -246,7 +250,10 @@ public class WarpController {
     }
 
     public void onUnSubscribeRoomDone() {
-        warpListener.onUserLeaveRoom();
+        warpClient.disconnect();
+    }
+    public void onDisconnectDone(){
+        warpListener.onDisconnectedWithServer();
     }
 
     /**
@@ -256,9 +263,30 @@ public class WarpController {
     public void onGameUpdateReceived(String message){
         String userName = message.substring(0, message.indexOf(":"));
         String data = message.substring(message.indexOf(":")+1, message.length());
-        if(!this.userName.equals(userName)){
-            warpListener.onGameUpdateReceived(data);
+        if(!data.equals("LEAVE")){
+            if(!this.userName.equals(userName)){
+                warpListener.onGameUpdateReceived(data);
+            }
+        }else{
+            if(this.userName.equals(userName)){
+                meLeaveRoom = true;
+            }else{
+                himLeaveRoom = true;
+                sendGameUpdate("LEAVE");
+                warpListener.onGameUpdateReceived(data);
+            }
         }
+
+        if(meLeaveRoom && himLeaveRoom){
+            leaveRoom();
+        }
+    }
+    public boolean isMeLeaveRoom(){
+        return meLeaveRoom;
+    }
+
+    public boolean isHimLeaveRoom(){
+        return himLeaveRoom;
     }
 
     /**
@@ -270,6 +298,5 @@ public class WarpController {
         warpClient.removeZoneRequestListener(new ZoneListener(this));
         warpClient.removeRoomRequestListener(new RoomListener(this));
         warpClient.removeNotificationListener(new NotificationListener(this));
-        warpClient.disconnect();
     }
 }

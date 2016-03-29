@@ -42,6 +42,9 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     private BurstPowerUp    enemyBurstPowerUp;
     private RegLifePowerUp  enemyRegLifePowerUp;
 
+    private boolean abandonPlayer;
+    private boolean abandonEnemy;
+
     public MultiplayerScreen(final SpaceGame game, String roomId, boolean createRoom){
         this.game = game;
 
@@ -58,6 +61,9 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
         playerShip  = new PlayerShip();
         enemyShip   = new EnemyShip();
+
+        abandonEnemy = false;
+        abandonPlayer = false;
 
         playerBurstPowerUp = new BurstPowerUp("burstPlayer", SpaceGame.width/3, 5);
         playerRegLifePowerUp = new RegLifePowerUp("regLifePlayer", SpaceGame.width/2, 5);
@@ -187,6 +193,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
         if(enemyRegLifePowerUp.isTouched())
             enemyRegLifePowerUp.act(delta, enemyShip);
+
     }
 
     @Override
@@ -201,33 +208,44 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     @Override
     public void renderWin(float delta) {
+        if(abandonEnemy)
+            FontManager.draw(FontManager.getFromBundle("multiplayerGameEnemyAbandon"),SpaceGame.height/2 + 50);
+        FontManager.draw(FontManager.getFromBundle("multiplayerGameWon"),SpaceGame.height/2);
 
+        if(backToMainMenu){
+            FontManager.draw(FontManager.getFromBundle("multiplayerGameExit"),SpaceGame.height/2 - 50);
+        }
     }
 
     @Override
     public void updateWin(float delta) {
-
+        if(Gdx.input.justTouched() && backToMainMenu){
+            game.setScreen(new MainMenuScreen(game));
+        }
     }
 
     @Override
     public void renderLose(float delta) {
+        if(abandonPlayer)
+            FontManager.draw(FontManager.getFromBundle("multiplayerGamePlayerAbandon"),SpaceGame.height/2 - 50);
+        FontManager.draw(FontManager.getFromBundle("multiplayerGameLoose"),SpaceGame.height/2);
 
+        if(backToMainMenu){
+            FontManager.draw(FontManager.getFromBundle("multiplayerGameExit"),SpaceGame.height/2 + 50);
+        }
     }
 
     @Override
     public void updateLose(float delta) {
-
+        if(Gdx.input.justTouched() && backToMainMenu){
+            game.setScreen(new MainMenuScreen(game));
+        }
     }
 
     @Override
     public void disposeScreen() {
         playerShip.dispose();
         enemyShip.dispose();
-    }
-
-    @Override
-    public void onWaitingStarted(String message) {
-
     }
 
     @Override
@@ -254,6 +272,11 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     }
 
     @Override
+    public void onDisconnectedWithServer() {
+        backToMainMenu = true;
+    }
+
+    @Override
     public void onJoinedToRoom(String message) {
         System.out.println(message);
         infoMessage = FontManager.getFromBundle("onWaitPlayer");
@@ -269,10 +292,6 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     }
 
     @Override
-    public void onGameFinished(int code, boolean isRemote) {
-    }
-
-    @Override
     public void onGameUpdateReceived(String message) {
         if(message.equals(TypePowerUp.REGLIFE.toString())){
             enemyRegLifePowerUp.setTouched();
@@ -281,6 +300,9 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         }else if (message.equals("SHOOT")){
             enemyShip.shoot();
         }else if (message.equals("LEAVE")){
+            if(!enemyShip.isDefeated()){
+                abandonEnemy = true;
+            }
             state = GameState.WIN;
         }else{
             enemyYposition = Float.parseFloat(message);
@@ -288,19 +310,16 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     }
 
     @Override
-    public void onUserLeaveRoom() {
-        WarpController.getInstance().sendGameUpdate("LEAVE");
-        WarpController.getInstance().disconnect();
-        backToMainMenu=true;
-    }
-
-    @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK){
-            WarpController.getInstance().leaveRoom();
+            WarpController.getInstance().sendGameUpdate("LEAVE");
+            state = GameState.LOSE;
+            if(!playerShip.isDefeated())
+                abandonPlayer = true;
         }
         if(keycode == Input.Keys.A){
-            WarpController.getInstance().leaveRoom();
+            WarpController.getInstance().sendGameUpdate("LEAVE");
+            state = GameState.LOSE;
         }
         return false;
     }
