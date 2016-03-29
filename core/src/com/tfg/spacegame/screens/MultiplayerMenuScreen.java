@@ -1,11 +1,9 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
@@ -68,10 +66,11 @@ public class MultiplayerMenuScreen implements Screen{
 
 		if (Gdx.input.justTouched()) {
 
-			Vector3 v = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-			v = SpaceGame.camera.unproject(v);
+			createGame.update();
+			quickGame.update();
+			joinGame.update();
 
-			if (createGame.press(v.x, v.y) || quickGame.press(v.x, v.y) || joinGame.press(v.x, v.y)){
+			if (createGame.isPressed() || quickGame.isPressed() || joinGame.isPressed()){
 				timeUntilExit=0.5f;
 			}
 		}
