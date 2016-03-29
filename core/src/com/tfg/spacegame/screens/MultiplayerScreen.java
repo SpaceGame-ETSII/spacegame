@@ -9,6 +9,8 @@ import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.BurstPowerUp;
+import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.RegLifePowerUp;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.appwarp.WarpController;
 import com.tfg.spacegame.utils.appwarp.WarpListener;
@@ -34,6 +36,12 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     private boolean backToMainMenu;
 
+    private BurstPowerUp playerBurstPowerUp;
+    private RegLifePowerUp playerRegLifePowerUp;
+
+    private BurstPowerUp    enemyBurstPowerUp;
+    private RegLifePowerUp  enemyRegLifePowerUp;
+
     public MultiplayerScreen(final SpaceGame game, String roomId, boolean createRoom){
         this.game = game;
 
@@ -50,6 +58,12 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
         playerShip  = new PlayerShip();
         enemyShip   = new EnemyShip();
+
+        playerBurstPowerUp = new BurstPowerUp("burstPlayer", SpaceGame.width/3, 5);
+        playerRegLifePowerUp = new RegLifePowerUp("regLifePlayer", SpaceGame.width/2, 5);
+
+        enemyBurstPowerUp    = new BurstPowerUp("burstEnemy",SpaceGame.width/3,SpaceGame.height - 55);
+        enemyRegLifePowerUp  = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2,SpaceGame.height-55);
 
         EnemiesManager.loadMultiplayerEnemies(enemyShip);
         CollissionsManager.load();
@@ -118,6 +132,12 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
         EnemiesManager.render();
         ShootsManager.render();
+
+        playerBurstPowerUp.render();
+        playerRegLifePowerUp.render();
+
+        enemyBurstPowerUp.render();
+        enemyRegLifePowerUp.render();
     }
 
     @Override
@@ -139,11 +159,11 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         coordinates = TouchManager.getAnyXTouchGreaterThan(playerShip.getX() + playerShip.getWidth());
 
         if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched()){
-            if(playerShip.burstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerShip.burstPowerUp.isTouched()){
-                playerShip.burstPowerUp.setTouched();
+            if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched()){
+                playerBurstPowerUp.setTouched();
                 WarpController.getInstance().sendGameUpdate(TypePowerUp.BURST.toString());
-            }else if(playerShip.regLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerShip.regLifePowerUp.isTouched()){
-                playerShip.regLifePowerUp.setTouched();
+            }else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched()){
+                playerRegLifePowerUp.setTouched();
                 WarpController.getInstance().sendGameUpdate(TypePowerUp.REGLIFE.toString());
             }else {
                 playerShip.shoot(coordinates.x, coordinates.y);
@@ -155,6 +175,18 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
         if(backToMainMenu)
             game.setScreen(new MainMenuScreen(game));
+
+        if(playerBurstPowerUp.isTouched())
+            playerBurstPowerUp.act(delta, playerShip);
+
+        if(playerRegLifePowerUp.isTouched())
+            playerRegLifePowerUp.act(delta, playerShip);
+
+        if(enemyBurstPowerUp.isTouched())
+            enemyBurstPowerUp.act(delta, enemyShip);
+
+        if(enemyRegLifePowerUp.isTouched())
+            enemyRegLifePowerUp.act(delta, enemyShip);
     }
 
     @Override
@@ -243,9 +275,9 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void onGameUpdateReceived(String message) {
         if(message.equals(TypePowerUp.REGLIFE.toString())){
-            enemyShip.regLifePowerUp.setTouched();
+            enemyRegLifePowerUp.setTouched();
         }else if(message.equals(TypePowerUp.BURST.toString())){
-            enemyShip.burstPowerUp.setTouched();
+            enemyBurstPowerUp.setTouched();
         }else if (message.equals("SHOOT")){
             enemyShip.shoot();
         }else if (message.equals("LEAVE")){

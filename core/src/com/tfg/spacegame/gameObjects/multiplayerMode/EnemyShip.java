@@ -12,20 +12,15 @@ import com.tfg.spacegame.utils.ShootsManager;
 public class EnemyShip extends Enemy {
 
     //Indica la velocidad para el movimiento de la nave
-    private final float MAX_SPEED = 10;
+    private final float MAX_SPEED = 20;
 
     private final int MAX_VITALITY = 5;
-
-    public BurstPowerUp    burstPowerUp;
-    public RegLifePowerUp  regLifePowerUp;
 
     public EnemyShip() {
         super("enemyShip", SpaceGame.width - (80+100), SpaceGame.height/2, 5, AssetsManager.loadParticleEffect("ship_defeated"));
 
         this.setY(this.getY() + this.getHeight()/2);
 
-        burstPowerUp    = new BurstPowerUp("burstEnemy",SpaceGame.width/3,SpaceGame.height - 55);
-        regLifePowerUp  = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2,SpaceGame.height-55);
     }
 
     public void update(float delta){
@@ -36,13 +31,6 @@ public class EnemyShip extends Enemy {
             float diffY = MultiplayerScreen.enemyYposition - this.getCenter().y;
             this.setY(this.getY() + diffY*accel);
         }
-
-        if(burstPowerUp.isTouched())
-            burstPowerUp.act(delta, this);
-
-        if(regLifePowerUp.isTouched())
-            regLifePowerUp.act(delta, this);
-
     }
 
     public void healHalfLife(){
@@ -57,8 +45,5 @@ public class EnemyShip extends Enemy {
 
     public void render(){
         super.render();
-
-        burstPowerUp.render();
-        regLifePowerUp.render();
     }
 }

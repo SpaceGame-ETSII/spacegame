@@ -7,7 +7,7 @@ import com.tfg.spacegame.utils.ShootsManager;
 public class BurstPowerUp extends PowerUp{
 
     private final float BURST_TIME = 3f;
-    private final float SHOOT_TIME = 0.3f;
+    private final float SHOOT_TIME = 0.2f;
     private float burstTime;
     private float shootTime;
 
