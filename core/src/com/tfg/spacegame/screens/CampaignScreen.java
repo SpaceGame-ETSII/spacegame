@@ -1,6 +1,5 @@
 package com.tfg.spacegame.screens;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
@@ -13,8 +12,8 @@ import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Inventary;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 import com.tfg.spacegame.utils.*;
+import com.tfg.spacegame.utils.enums.DialogBoxState;
 import com.tfg.spacegame.utils.enums.GameState;
-
 
 public class CampaignScreen extends GameScreen {
 
@@ -24,6 +23,7 @@ public class CampaignScreen extends GameScreen {
     public static CampaignShip ship;
     private Inventary inventary;
     private DialogBox menuExitDialog;
+    private Button exit;
 
     //Ayudan con la posición de la ventana cuando se abre y se cierra el inventario
     private int scrollingPosition;
@@ -58,12 +58,10 @@ public class CampaignScreen extends GameScreen {
         if (!AudioManager.isPlaying())
             AudioManager.playMusic("campaign", true);
 
-        menuExitDialog = new DialogBox();
-        //Creamos los objetos para el diálgo de salida del modo campaña
-        menuExitDialog.addElement("window", new GameObject("ventana", 200, 120));
-        menuExitDialog.addElement("exit", new Button("buttonExit", 750, 430, null,true));
-        menuExitDialog.addElement("cancel", new Button("buttonCancel", 425, 200, null,false));
-        menuExitDialog.addElement("confirm", new Button("buttonConfirm", 325, 200, null,false));
+
+        exit = new Button("buttonExit", 750, 430, null,true);
+
+        menuExitDialog = new DialogBox("exitModeQuestion");
 
         whichTouchIsShooting = -1;
         whichControlsTheShip = -1;
@@ -102,10 +100,7 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void updateEveryState(float delta) {
-        //Actualizamos la posición del scrolling
-        scrollingPosition -= delta * SCROLLING_SPEED;
-        if(scrollingPosition <= -background.getWidth())
-            scrollingPosition = 0;
+
     }
 
     @Override
@@ -113,33 +108,16 @@ public class CampaignScreen extends GameScreen {
         inventary.render();
         ship.render();
 
-        //En función de si estamos en el diálogo para salir o no veremos la ventana para salir del modo campaña
-        if (menuExitDialog.isDialogIn()){
-            menuExitDialog.renderElement("window");
-            FontManager.drawText("exitModeQuestion",206,320);
-            menuExitDialog.renderElement("confirm");
-            menuExitDialog.renderElement("cancel");
-
-            if (menuExitDialog.getElementButton("confirm").isPressed()) {
-                menuExitDialog.setDialogIn(false);
-                menuExitDialog.getElementButton("confirm").setPressed(false);
-                AudioManager.stopMusic();
-                game.setScreen(new MainMenuScreen(game));
-            }
-
-            if (menuExitDialog.getElementButton("cancel").isPressed()) {
-                menuExitDialog.setDialogIn(false);
-                menuExitDialog.getElementButton("cancel").setPressed(false);
-            }
-        }else{
-            menuExitDialog.renderElement("exit");
-        }
+        if (menuExitDialog.getState().equals(DialogBoxState.HIDDEN))
+            exit.render();
+        else
+            menuExitDialog.render();
     }
 
     @Override
     public void updatePause(float delta) {
 
-        if(!menuExitDialog.isDialogIn()){
+        if (menuExitDialog.getState().equals(DialogBoxState.HIDDEN)) {
             //Se hará una cosa u otra si el inventario está cerrándose o no
             if (inventary.isClosing()) {
                 inventary.updateClosing(delta, ship);
@@ -152,23 +130,17 @@ public class CampaignScreen extends GameScreen {
             } else {
                 Vector3 v = TouchManager.getFirstTouchPos();
                 inventary.update(delta, ship, v.x, v.y);
+                exit.update();
+                if (exit.isPressed())
+                    menuExitDialog.setStateToWaiting();
             }
-        }
-
-        //Comprobamos sobre que botón pulsa el usuario y actualizamos las variables del diálgo en consecuencia
-        if(TouchManager.isTouchedAnyToucher()){
-            Vector3 v = TouchManager.getFirstTouchPos();
-            if (menuExitDialog.getElementButton("exit").isOverlapingWith(v.x, v.y)) {
-                menuExitDialog.setDialogIn(true);
-                menuExitDialog.getElementButton("cancel").setPressed(false);
-                menuExitDialog.getElementButton("confirm").setPressed(false);
-            }
-            if (menuExitDialog.getElementButton("confirm").isOverlapingWith(v.x, v.y)) {
-                menuExitDialog.getElementButton("confirm").setPressed(true);
-            }
-            if (menuExitDialog.getElementButton("cancel").isOverlapingWith(v.x, v.y)) {
-                menuExitDialog.getElementButton("cancel").setPressed(true);
-            }
+        } else if (menuExitDialog.getState().equals(DialogBoxState.CONFIRMED)) {
+            game.setScreen(new MainMenuScreen(game));
+        } else if (menuExitDialog.getState().equals(DialogBoxState.CANCELLED)) {
+            menuExitDialog.setStateToHidden();
+            exit.setPressed(false);
+        } else if (menuExitDialog.getState().equals(DialogBoxState.WAITING)) {
+            menuExitDialog.update();
         }
     }
 
@@ -189,14 +161,18 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void renderStart(float delta) {
         ship.render();
-
         EnemiesManager.render();
         ShootsManager.render();
     }
 
     @Override
     public void updateStart(float delta) {
+        //Actualizamos la posición del scrolling
+        scrollingPosition -= delta * SCROLLING_SPEED;
+        if(scrollingPosition <= -background.getWidth())
+            scrollingPosition = 0;
 
+        //Comprobamos si se ha perdido o ganado el juego
         if (ship.isDefeated())
             state = GameState.LOSE;
         if(EnemiesManager.noMoreEnemiesToGenerateOrToDefeat())
