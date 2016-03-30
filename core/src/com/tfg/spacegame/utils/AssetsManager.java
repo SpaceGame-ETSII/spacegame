@@ -163,12 +163,15 @@ public class AssetsManager {
         assetsReferences.put("music/menu", musicsFolder + "menu.mp3");
         assetsReferences.put("music/campaign", musicsFolder + "campaign.mp3");
         assetsReferences.put("music/arcade", musicsFolder + "arcade.mp3");
+        assetsReferences.put("music/campaign_win", musicsFolder + "campaign_win.wav");
 
         //Assets referentes a sonidos
         assetsReferences.put("sound/arcade_shock_effect", soundsFolder + "arcade_shock_effect.wav");
         assetsReferences.put("sound/button_forward", soundsFolder + "button_forward.wav");
         assetsReferences.put("sound/button_backward", soundsFolder + "button_backward.wav");
+        assetsReferences.put("sound/inventary", soundsFolder + "inventary.wav");
         assetsReferences.put("sound/new_record", soundsFolder + "new_record.wav");
+        assetsReferences.put("sound/pause", soundsFolder + "pause.wav");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");

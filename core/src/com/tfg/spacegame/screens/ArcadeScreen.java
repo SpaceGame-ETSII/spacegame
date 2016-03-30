@@ -92,7 +92,6 @@ public class ArcadeScreen extends GameScreen {
 		timeToBlock = 0;
 		layer = 1;
 		timeAlive = 0;
-		this.resetRecord();
 		this.obtainRecord();
 		AudioManager.playMusic("arcade", true);
 	}
@@ -215,6 +214,7 @@ public class ArcadeScreen extends GameScreen {
 		} else if (Gdx.input.justTouched()) {
 			state = GameState.PAUSE;
 			AudioManager.pauseMusic();
+			AudioManager.playSound("pause");
 		}
 	}
 
@@ -244,10 +244,12 @@ public class ArcadeScreen extends GameScreen {
 				} else {
 					state = GameState.START;
 					AudioManager.playMusic();
+					AudioManager.playSound("pause");
 				}
 			}
 		} else if (menuExitDialog.getState().equals(DialogBoxState.CONFIRMED)) {
 			game.setScreen(new MainMenuScreen(game));
+			this.disposeScreen();
 		} else if (menuExitDialog.getState().equals(DialogBoxState.CANCELLED)) {
 			menuExitDialog.setStateToHidden();
 			exit.setPressed(false);

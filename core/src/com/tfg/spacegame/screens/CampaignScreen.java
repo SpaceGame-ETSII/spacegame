@@ -75,12 +75,14 @@ public class CampaignScreen extends GameScreen {
                     inventary.restart();
                     state = GameState.PAUSE;
                     AudioManager.pauseMusic();
+                    AudioManager.playSound("inventary");
                 }
             }
 
             public void onLeft() {
                 if (state.equals(GameState.PAUSE) && !inventary.isClosing()) {
                     inventary.setIsClosing(true);
+                    AudioManager.playSound("inventary");
                 }
             }
 
@@ -137,6 +139,7 @@ public class CampaignScreen extends GameScreen {
             }
         } else if (menuExitDialog.getState().equals(DialogBoxState.CONFIRMED)) {
             game.setScreen(new MainMenuScreen(game));
+            disposeScreen();
         } else if (menuExitDialog.getState().equals(DialogBoxState.CANCELLED)) {
             menuExitDialog.setStateToHidden();
             exit.setPressed(false);
@@ -178,8 +181,10 @@ public class CampaignScreen extends GameScreen {
         //Comprobamos si se ha perdido o ganado el juego
         if (ship.isDefeated())
             state = GameState.LOSE;
-        if(EnemiesManager.noMoreEnemiesToGenerateOrToDefeat())
+        if(EnemiesManager.noMoreEnemiesToGenerateOrToDefeat()) {
+            AudioManager.playMusic("campaign_win", false);
             state = GameState.WIN;
+        }
 
         // Controlamos si algún touch ya ha dejado de ser pulsado
         if((whichControlsTheShip == 0 && !TouchManager.isFirstTouchActive()) || (whichControlsTheShip == 1 && !TouchManager.isSecondTouchActive()))
@@ -237,8 +242,10 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void updateWin(float delta) {
         if(ship.getX() > SpaceGame.width){
-            if (TouchManager.isTouchedAnyToucher())
+            if (TouchManager.isTouchedAnyToucher()) {
                 game.setScreen(new DemoMenuScreen(game));
+                disposeScreen();
+            }
         }else{
             ship.setX(ship.getX() + CampaignShip.SPEED*delta*3);
             ship.update(delta,ship.getY(),false);
@@ -255,6 +262,7 @@ public class CampaignScreen extends GameScreen {
     public void updateLose(float delta) {
         if (TouchManager.isTouchedAnyToucher() && ship.destroyEffect.isComplete()) {
             game.setScreen(new DemoMenuScreen(game));
+            disposeScreen();
         }
         ship.update(delta,ship.getY(),false);
     }
@@ -268,6 +276,7 @@ public class CampaignScreen extends GameScreen {
             shoot.dispose();
         inventary.dispose();
         menuExitDialog.dispose();
+        Gdx.input.setInputProcessor(null);
         super.dispose();
     }
 }

@@ -19,7 +19,9 @@ public class AudioManager {
         sounds.put("arcade_shock_effect", AssetsManager.loadSound("arcade_shock_effect"));
         sounds.put("button_backward", AssetsManager.loadSound("button_backward"));
         sounds.put("button_forward", AssetsManager.loadSound("button_forward"));
+        sounds.put("inventary", AssetsManager.loadSound("inventary"));
         sounds.put("new_record", AssetsManager.loadSound("new_record"));
+        sounds.put("pause", AssetsManager.loadSound("pause"));
     }
 
     public static float getVolumeMusic() {
