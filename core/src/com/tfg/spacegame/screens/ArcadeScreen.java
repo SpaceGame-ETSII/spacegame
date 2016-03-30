@@ -92,7 +92,9 @@ public class ArcadeScreen extends GameScreen {
 		timeToBlock = 0;
 		layer = 1;
 		timeAlive = 0;
+		this.resetRecord();
 		this.obtainRecord();
+		AudioManager.playMusic("arcade", true);
 	}
 
 	//Recoge el record, y si no hay ninguno coge un 0 por defecto
@@ -138,14 +140,9 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void updateEveryState(float delta) {
-		//Si el estado no está en pausa, avanzamos el fondo y actualizamos la vibración de la pantalla
+		//Si el estado no está en pausa, actualizamos la vibración de la pantalla
 		if (!state.equals(GameState.PAUSE)) {
 			CameraManager.update(delta);
-
-			//Actualizamos la posición del scrolling
-			scrollingPosition -= delta * SCROLLING_SPEED;
-			if (scrollingPosition <= -background.getWidth())
-				scrollingPosition = 0;
 		}
 	}
 
@@ -159,12 +156,16 @@ public class ArcadeScreen extends GameScreen {
 		//Si se toca la pantalla, pasamos a START
 		if (Gdx.input.justTouched()) {
 			state = GameState.START;
-			AudioManager.playMusic("arcade", true);
 		}
 	}
 
 	@Override
 	public void renderStart(float delta) {
+		//Actualizamos la posición del scrolling para el fondo
+		scrollingPosition -= delta * SCROLLING_SPEED;
+		if (scrollingPosition <= -background.getWidth())
+			scrollingPosition = 0;
+
 		//Primero realizamos el cálculo del alpha según el escalado actual de la nave
 		float alpha = (ship.getLogicShape().getScaleX() - BOTTOM_SCALE) / (1 - BOTTOM_SCALE);
 		alpha *= (1 - MIN_ALPHA);

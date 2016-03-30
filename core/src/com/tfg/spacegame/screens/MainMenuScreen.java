@@ -34,7 +34,8 @@ public class MainMenuScreen implements Screen {
 
         background = AssetsManager.loadTexture("background2");
         AudioManager.loadSounds();
-        AudioManager.playMusic("menu", true);
+        if (!AudioManager.isPlaying())
+            AudioManager.playMusic("menu", true);
 
         //Creamos los botones para el menú principal
         campaign = new Button("button", 260, 315, "campaignTitle", true);
@@ -88,7 +89,9 @@ public class MainMenuScreen implements Screen {
                     options.isPressed() ||
                     exit.isPressed()) {
                 timeUntilExit=0.5f;
-                AudioManager.stopMusic();
+
+                if (!campaign.isPressed())
+                    AudioManager.stopMusic();
             }
         }
 

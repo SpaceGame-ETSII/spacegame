@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.FontManager;
 
 public class DemoMenuScreen implements Screen {
@@ -88,6 +89,8 @@ public class DemoMenuScreen implements Screen {
                     purpleEnemy.isPressed() ||
                     back.isPressed()) {
                 timeUntilExit=0.5f;
+                if (!back.isPressed())
+                    AudioManager.stopMusic();
             }
         }
 
