@@ -17,8 +17,6 @@ import com.tfg.spacegame.utils.appwarp.WarpListener;
 import com.tfg.spacegame.utils.enums.GameState;
 import com.tfg.spacegame.utils.enums.TypePowerUp;
 
-import java.awt.*;
-
 public class MultiplayerScreen extends GameScreen implements WarpListener{
     final SpaceGame game;
 

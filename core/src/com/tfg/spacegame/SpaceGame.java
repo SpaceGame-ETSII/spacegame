@@ -51,7 +51,8 @@ public class SpaceGame extends Game {
 
 	//Convierte la pantalla en modo portrait
 	public static void changeToPortrait() {
-		platform.setOrientation("portrait");
+		if (platform != null)
+			platform.setOrientation("portrait");
 
 		if (width > height)
 			exchangeWidthHeight();
@@ -59,7 +60,8 @@ public class SpaceGame extends Game {
 
 	//Convierte la pantalla en modo landscape
 	public static void changeToLandscape() {
-		//platform.setOrientation("landscape");
+		if (platform != null)
+			platform.setOrientation("sensorLandscape");
 
 		if (height > width)
 			exchangeWidthHeight();
