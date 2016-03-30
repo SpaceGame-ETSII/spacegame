@@ -17,8 +17,6 @@ import com.tfg.spacegame.utils.appwarp.WarpListener;
 import com.tfg.spacegame.utils.enums.GameState;
 import com.tfg.spacegame.utils.enums.TypePowerUp;
 
-import java.awt.*;
-
 public class MultiplayerScreen extends GameScreen implements WarpListener{
     final SpaceGame game;
 
@@ -151,7 +149,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         EnemiesManager.enemies.first().update(delta);
         CollissionsManager.update(delta, playerShip);
         ShootsManager.update(delta, playerShip);
-        CameraManager.shake(delta);
+        CameraManager.update(delta);
 
         // Obtenemos un vector de coordenadas si está en la zona de movimiento de la nave
         Vector3 coordinates = TouchManager.getAnyXTouchLowerThan(playerShip.getX() + playerShip.getWidth());
