@@ -62,8 +62,9 @@ public class AssetsManager {
         assetsReferences.put("small_obstacle", obstaclesFolder+"meteorito_pequeno.png");
 
         //Texturas referentes a others
-        assetsReferences.put("background", othersFolder+"fondo.png");
-        assetsReferences.put("background2", othersFolder+"fondo2.jpg");
+        assetsReferences.put("background", othersFolder+"fondo.jpg");
+        assetsReferences.put("background2", othersFolder+"fondo2.png");
+        assetsReferences.put("background3", othersFolder+"fondo3.png");
         assetsReferences.put("inventary", othersFolder+"inventario.png");
         assetsReferences.put("red", othersFolder+"rojo.png");
         assetsReferences.put("yellow", othersFolder+"amarillo.png");

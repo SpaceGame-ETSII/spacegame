@@ -19,6 +19,8 @@ public class ArcadeScreen extends GameScreen {
 
 	//Velocidad del scrolling del fondo
 	private static final int SCROLLING_SPEED = 100;
+	private static final int SCROLLING_SPEED_2 = 250;
+	private static final int SCROLLING_SPEED_3 = 600;
 	//Tiempo que bloquearemos el cambio de capa cada vez que se realice un cambio
 	private static final float MAX_TIME_TO_BLOCK = 1;
 	//Tiempo máximo hasta que actualicemos lastMeasureY
@@ -27,17 +29,19 @@ public class ArcadeScreen extends GameScreen {
 	private static final float MIN_ALPHA = 0.3f;
 	//Indica el escalado que tendrán los objetos en la capa baja
 	private static final float BOTTOM_SCALE = 0.5f;
-	//Nombre del archivo donde se guardará el record del usuario
-	private static final String RECORD_FILE = "arcade_record.txt";
 
 	//Objetos interactuables de la pantalla
 	private ArcadeShip ship;
 
 	//Fondo que se mostrará
 	private Texture background;
+	private Texture background2;
+	private Texture background3;
 
 	//Permiten la posición del fondo para realizar el scrolling
 	private int scrollingPosition;
+	private int scrollingPosition2;
+	private int scrollingPosition3;
 
 	//Guarda la última medición del acelerómetro Y, en intervalos de MAX_TIME_TO_MEASURE_Y
 	private float lastMeasureY;
@@ -53,7 +57,6 @@ public class ArcadeScreen extends GameScreen {
 
 	//Acumula el tiempo que está vivo el jugador en la partida
 	private float timeAlive;
-
 
 	//Botón que nos permitirá salir del juego
 	private Button exit;
@@ -74,7 +77,11 @@ public class ArcadeScreen extends GameScreen {
 		SpaceGame.changeToPortrait();
 
 		scrollingPosition = 0;
-		background = AssetsManager.loadTexture("background2");
+		scrollingPosition2 = 0;
+		scrollingPosition3 = 0;
+		background = AssetsManager.loadTexture("background");
+		background2 = AssetsManager.loadTexture("background2");
+		background3 = AssetsManager.loadTexture("background3");
 		CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
 		menuExitDialog = new DialogBox("exitModeQuestion");
@@ -135,6 +142,20 @@ public class ArcadeScreen extends GameScreen {
 		SpaceGame.batch.draw(new TextureRegion(background), 0, background.getWidth() + scrollingPosition,
 								game.width / 2 , background.getHeight() / 2,
 								background.getWidth(), background.getHeight(), 1, 1, 90);
+
+		SpaceGame.batch.draw(new TextureRegion(background2), 0, scrollingPosition2,
+								game.width / 2 , background2.getHeight() / 2,
+								background2.getWidth(), background2.getHeight(), 1, 1, 90);
+		SpaceGame.batch.draw(new TextureRegion(background2), 0, background2.getWidth() + scrollingPosition2,
+								game.width / 2 , background2.getHeight() / 2,
+								background2.getWidth(), background2.getHeight(), 1, 1, 90);
+
+		SpaceGame.batch.draw(new TextureRegion(background3), 0, scrollingPosition3,
+								game.width / 2 , background3.getHeight() / 2,
+								background3.getWidth(), background3.getHeight(), 1, 1, 90);
+		SpaceGame.batch.draw(new TextureRegion(background3), 0, background3.getWidth() + scrollingPosition3,
+								game.width / 2 , background3.getHeight() / 2,
+								background3.getWidth(), background3.getHeight(), 1, 1, 90);
 	}
 
 	@Override
@@ -164,6 +185,14 @@ public class ArcadeScreen extends GameScreen {
 		scrollingPosition -= delta * SCROLLING_SPEED;
 		if (scrollingPosition <= -background.getWidth())
 			scrollingPosition = 0;
+
+		scrollingPosition2 -= delta * SCROLLING_SPEED_2;
+		if (scrollingPosition2 <= -background2.getWidth())
+			scrollingPosition2 = 0;
+
+		scrollingPosition3 -= delta * SCROLLING_SPEED_3;
+		if (scrollingPosition3 <= -background3.getWidth())
+			scrollingPosition3 = 0;
 
 		//Primero realizamos el cálculo del alpha según el escalado actual de la nave
 		float alpha = (ship.getLogicShape().getScaleX() - BOTTOM_SCALE) / (1 - BOTTOM_SCALE);

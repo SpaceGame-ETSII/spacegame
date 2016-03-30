@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
@@ -32,7 +31,7 @@ public class MainMenuScreen implements Screen {
 
         SpaceGame.changeToLandscape();
 
-        background = AssetsManager.loadTexture("background2");
+        background = AssetsManager.loadTexture("background");
         AudioManager.loadSounds();
         if (!AudioManager.isPlaying())
             AudioManager.playMusic("menu", true);

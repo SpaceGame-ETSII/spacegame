@@ -55,7 +55,7 @@ public class CampaignScreen extends GameScreen {
         ship = new CampaignShip("ship");
         inventary = new Inventary();
 
-        background = AssetsManager.loadTexture("background2");
+        background = AssetsManager.loadTexture("background");
         if (!AudioManager.isPlaying())
             AudioManager.playMusic("campaign", true);
 
