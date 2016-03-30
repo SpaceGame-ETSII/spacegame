@@ -35,6 +35,7 @@
 !/libs/
 !/libs/*
 !/BaseGameUtils/
+!/BaseGameUtils/*
 !/BaseGameUtils/src/
 !/BaseGameUtils/src/main/
 !/BaseGameUtils/src/main/*
@@ -46,4 +47,6 @@
 !/BaseGameUtils/src/main/*/*/*/*/*/*/*
 !/libraries/
 !/libraries/*
+!/libraries/*/*
+!/libraries/*/*/*
 
