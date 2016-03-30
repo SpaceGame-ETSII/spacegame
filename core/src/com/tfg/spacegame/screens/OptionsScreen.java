@@ -10,16 +10,19 @@ import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.gameObjects.OptionButton;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.AudioManager;
+import com.tfg.spacegame.utils.DialogBox;
 import com.tfg.spacegame.utils.FontManager;
 
 public class OptionsScreen implements Screen {
 
     private final SpaceGame game;
 
-    //Variables para almacenar los botones de la pantalla
+    //Objetos interactuables de la pantalla
     private OptionButton music;
     private OptionButton effect;
     private Button back;
+    private Button resetArcadePuntuation;
+    private DialogBox menuResetDialog;
 
     //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
     private float timeUntilExit;
@@ -36,6 +39,7 @@ public class OptionsScreen implements Screen {
         music = new OptionButton("buttonMusic", "buttonMusicCancel",200, 265);
         effect = new OptionButton("buttonEffect", "buttonEffectCancel",260, 265);
         back = new Button("arrow_back", 750, 430, null, true);
+        resetArcadePuntuation = new Button("button", 100, 200, "resetArcadePuntuation",true);
 
         if (AudioManager.getVolumeMusic()==0.0f){
             music.setDesactivated(true);
@@ -79,6 +83,7 @@ public class OptionsScreen implements Screen {
         music.render();
         effect.render();
         back.render();
+        resetArcadePuntuation.render();
 
         SpaceGame.batch.end();
 
@@ -100,12 +105,16 @@ public class OptionsScreen implements Screen {
 
         //Si el contador es cero, comprobamos si hay algún botón pulsado y actuamos en consecuencia
         if (timeUntilExit <= 0) {
+            /*Si el botón para la música ha sido pulsado y estaba desactivado, muteamos la música; en caso contario
+              volvemos a poner el volumen en su estado natural*/
             if (music.isPressed() && music.isDesactivated()) {
                 AudioManager.setVolumeMusic(0.0f);
             } else if (music.isPressed() && !music.isDesactivated()){
                 AudioManager.setVolumeMusic(0.3f);
             }
 
+            /*Si el botón para los efectos de sonido ha sido pulsado y estaba desactivado, muteamos los efectos de
+              sonido; en caso contario volvemos a poner el volumen en su estado natural*/
             if (effect.isPressed() && effect.isDesactivated()) {
                 AudioManager.setVolumeEffect(0.0f);
             } else if (effect.isPressed() && !effect.isDesactivated()){
@@ -145,5 +154,6 @@ public class OptionsScreen implements Screen {
         music.dispose();
         effect.dispose();
         back.dispose();
+        resetArcadePuntuation.dispose();
 	}
 }
