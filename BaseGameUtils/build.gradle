@@ -34,7 +34,7 @@ android {
         ext.android_compile_version = 20
     }
     if (!project.hasProperty('android_version')) {
-        ext.android_version = '20'
+        ext.android_version = '23.0.1'
     }
 
     compileSdkVersion android_compile_version

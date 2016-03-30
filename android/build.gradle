@@ -14,11 +14,6 @@ android {
 
         instrumentTest.setRoot('tests')
     }
-    dexOptions {
-        incremental = true;
-        preDexLibraries = false
-        javaMaxHeapSize "4g" // 2g should be also OK
-    }
 }
 
 
