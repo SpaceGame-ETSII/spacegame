@@ -140,7 +140,7 @@ public class ArcadeScreen extends GameScreen {
 	public void updateEveryState(float delta) {
 		//Si el estado no está en pausa, avanzamos el fondo y actualizamos la vibración de la pantalla
 		if (!state.equals(GameState.PAUSE)) {
-			CameraManager.shake(delta);
+			CameraManager.update(delta);
 
 			//Actualizamos la posición del scrolling
 			scrollingPosition -= delta * SCROLLING_SPEED;

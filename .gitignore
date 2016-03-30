@@ -19,6 +19,7 @@
 !/core/src/com/tfg/spacegame/*/*/*/*/*/*/*
 !/android/
 !/android/AndroidManifest.xml
+!/android/build.gradle
 !/android/assets/
 !/android/assets/*
 !/android/assets/*/*
@@ -32,4 +33,16 @@
 !/android/src/com/tfg/spacegame/android/*
 !/libs/
 !/libs/*
+!/BaseGameUtils/
+!/BaseGameUtils/src/
+!/BaseGameUtils/src/main/
+!/BaseGameUtils/src/main/*
+!/BaseGameUtils/src/main/*/*
+!/BaseGameUtils/src/main/*/*/*
+!/BaseGameUtils/src/main/*/*/*/*
+!/BaseGameUtils/src/main/*/*/*/*/*
+!/BaseGameUtils/src/main/*/*/*/*/*/*
+!/BaseGameUtils/src/main/*/*/*/*/*/*/*
+!/libraries/
+!/libraries/*
 
