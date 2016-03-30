@@ -5,9 +5,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.*;
-import com.tfg.spacegame.gameObjects.enemies.PurpleEnemy;
+import com.tfg.spacegame.gameObjects.campaignMode.enemies.PurpleEnemy;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class LevelGenerator {

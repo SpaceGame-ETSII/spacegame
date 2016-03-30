@@ -19,18 +19,18 @@ public class CampaignShip extends GameObject {
     //Indica el rango por el que se moverá el timeForInvisible
     private static final int RANGE_INVISIBLE_TIMER = 5;
     //Indica el máximo de golpes que se puede recibir
-    private static final int VITALITY = 5;
+    protected static final int VITALITY = 5;
 
     private static final float X_POSITION = 80;
 
     //Indica la cantidad de golpes recibidos
-    private int damageReceived;
+    protected int damageReceived;
     //Variable usada para hacer la nave invulnerable cuando es golpeada
     private boolean undamagable;
     //Se usará como contador para volver la nave vulnerable
     private float timeToUndamagable;
     //Imagen de la cabina que irá sobre la nave y que se actualizará con los daños
-    private Texture cockpit;
+    protected Texture cockpit;
     //Sirve para indicar los tiempos en los que la nave parpadeará a ser invulnerable
     private int timeForInvisible;
     //Indica el color de la nave
@@ -41,10 +41,8 @@ public class CampaignShip extends GameObject {
 
     public ParticleEffect destroyEffect;
 
-    private ShakeEffect shakeEffect;
-
-    public CampaignShip() {
-        super("ship", 0, 0);
+    public CampaignShip(String textureName) {
+        super(textureName, 0, 0);
 
         timeForInvisible = RANGE_INVISIBLE_TIMER;
         damageReceived = 0;
@@ -66,8 +64,6 @@ public class CampaignShip extends GameObject {
         //Lo iniciamos, pero aunque lo iniciemos si no hay un update no avanzará
         fireEffect.start();
         destroyEffect.start();
-
-        shakeEffect = new ShakeEffect(1f,ShakeEffect.NORMAL_SHAKE);
     }
 
     private void updateParticleEffect() {
@@ -99,8 +95,6 @@ public class CampaignShip extends GameObject {
         else{
             //Actualizamos el efecto de particulas
             fireEffect.update(delta);
-
-            shakeEffect.shake(delta);
 
             //Movimiento de la nave
             if (canShipMove) {
@@ -185,7 +179,7 @@ public class CampaignShip extends GameObject {
         if (!undamagable) {
             damageReceived++;
             if (damageReceived < VITALITY) {
-                shakeEffect.start();
+                CameraManager.startShake();
                 cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
                 undamagable = true;
             }

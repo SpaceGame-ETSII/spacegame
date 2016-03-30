@@ -4,6 +4,7 @@
 !LICENSE
 !.gitignore
 !/build.gradle
+!/settings.gradle
 !/core/
 !/core/src/
 !/core/src/*
@@ -19,6 +20,7 @@
 !/core/src/com/tfg/spacegame/*/*/*/*/*/*/*
 !/android/
 !/android/AndroidManifest.xml
+!/android/build.gradle
 !/android/assets/
 !/android/assets/*
 !/android/assets/*/*
@@ -30,4 +32,6 @@
 !/android/src/com/tfg/spacegame/
 !/android/src/com/tfg/spacegame/android/
 !/android/src/com/tfg/spacegame/android/*
+!/libs/
+!/libs/*
 

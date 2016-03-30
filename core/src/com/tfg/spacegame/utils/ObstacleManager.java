@@ -12,9 +12,14 @@ public class ObstacleManager {
 
     //Escala de los obstáculos en la capa superior
     public static final float TOP_SCALE = 1;
-
     //Escala de los obstáculos en la capa inferior
     public static final float BOTTOM_SCALE = 0.5f;
+    //Valor mínimo que podrá tener bottomProbability
+    public static final float MIN_BOTTOM_PROBABILITY = 1f;
+    //Valor mínimo que podrá tener topProbability
+    public static final float MIN_TOP_PROBABILITY = 0.5f;
+    //Velocidad inicial a la que se moverán los obstáculos
+    public final static int INITIAL_SPEED = 150;
 
     //Obstáculos de la capa superior
     public static Array<Obstacle> obstaclesInTop;
@@ -22,16 +27,19 @@ public class ObstacleManager {
     //Obstáculos de la capa inferior
     public static Array<Obstacle> obstaclesInBottom;
 
+    //Listas que almacenan los obstáculos que se salen de la pantalla para ser reutilizados
     public static Array<Obstacle> deletedSmallObstacles;
     public static Array<Obstacle> deletedMediumObstacles;
     public static Array<Obstacle> deletedBigObstacles;
 
+    //Indica las probabilidades de aparecer un meteorito en cada capa
     public static float bottomProbability;
     public static float topProbability;
 
-    public static final float MIN_BOTTOM_PROBABILITY = 1f;
-    public static final float MIN_TOP_PROBABILITY = 0.5f;
+    //Velocidad a la que se moverán los obstáculos
+    public static float speed;
 
+    //Carga inicial del gestor necesario para ponerse en marcha
     public static void load(){
         obstaclesInTop = new Array<Obstacle>();
         obstaclesInBottom = new Array<Obstacle>();
@@ -41,26 +49,34 @@ public class ObstacleManager {
 
         bottomProbability = MIN_BOTTOM_PROBABILITY;
         topProbability = MIN_TOP_PROBABILITY;
+        speed = INITIAL_SPEED;
     }
 
     public static void update(float delta){
-        generateObstacles(delta);
+        generateObstacles();
         updateProbabilities(delta);
         updateObstacles(delta, obstaclesInTop);
         updateObstacles(delta, obstaclesInBottom);
     }
 
-    private static void generateObstacles(float delta) {
+    //
+    private static void generateObstacles() {
         createObstacle(obstaclesInBottom, BOTTOM_SCALE, bottomProbability);
         createObstacle(obstaclesInTop, TOP_SCALE, topProbability);
     }
 
+    //Crea un obstáculo según una lista, una escala y una probabilidad que indicará si finalmente se crea
     private static void createObstacle(Array<Obstacle> obstacles, float scale, float probability) {
         if (MathUtils.random(0, 100) <= probability) {
             Obstacle obstacle;
-
             float probabilityType = MathUtils.random(0, 100);
 
+            /* Hay diferentes probabilidades de que se creen obstáculos:
+             * - Obstáculo pequeño: 90%
+             * - Obstáculo mediano: 8%
+             * - Obstáculo grande: 2%
+             * Antes de crearlo, comprobamos que si hay alguno guardado en la lista de borrados para ser reutilizado
+             */
             if (probabilityType >= 98) {
                 if (deletedBigObstacles.size != 0) {
                     obstacle = deletedBigObstacles.get(0);
@@ -84,16 +100,25 @@ public class ObstacleManager {
                 }
             }
 
+            //Colocamos el obstáculo en una posición 'X' aleatoria
             obstacle.setX(MathUtils.random(0, SpaceGame.width - obstacle.getWidth()));
-            obstacle.setY(950);
+            //Colocamos el obstáculo en una posición 'Y' arriba de la pantalla y fuera de ésta
+            obstacle.setY(SpaceGame.height + obstacle.getHeight());
+            //Escalamos el objeto según la escala dada
             obstacle.setScale(scale, scale);
 
+            //Finalmente añadimos el obstáculo a la lista, siempre y cuando no choque con algún otro obstáculo
             if (!existsCollision(obstacle, ArcadeScreen.layer)) {
                 obstacles.add(obstacle);
             }
         }
     }
 
+    /* Actualiza las probabilidades de aparición de obstáculos según el siguiente criterio:
+     * - Aumenta si la nave se encuentra en esa capa
+     * - Disminuye si no se encuentra en ella
+     * - La variación de probabilidad es mayor en la capa de abajo al haber mayor espacio de movimiento
+     */
     private static void updateProbabilities(float delta) {
         if (ArcadeScreen.layer == 1) {
             topProbability += (delta * 0.05);
@@ -112,8 +137,8 @@ public class ObstacleManager {
             //Actualizamos el obstáculo concreto
             obstacle.update(delta);
 
-            //Aumentamos la velocidad del obstáculo
-            obstacle.changeSpeed(delta);
+            //Aumentamos la velocidad de los obstáculos
+            speed = INITIAL_SPEED + delta;
 
             //Eliminamos el obstáculo si se ha salido de la pantalla
             if(obstacle.getY() < -obstacle.getHeight()){
@@ -143,18 +168,13 @@ public class ObstacleManager {
     //Pintamos los obstáculos de arriba forma normal o transparente según en la capa que estemos
     public static void renderTop(float alpha){
         for (Obstacle obstacle: obstaclesInTop)
-            obstacle.renderTransparent(alpha);
-        //FontManager.draw("Obstacles ingame: " + (obstaclesInBottom.size + obstaclesInTop.size) , 50, 400);
-        //FontManager.draw("Obstacles deleted: " + (deletedSmallObstacles.size), 50, 350);
-        //FontManager.draw("Obstacles created: " + (numObstacles), 50, 300);
-        //FontManager.draw("Top: " + (topProbability) + "%", 50, 250);
-        //FontManager.draw("Bottom: " + (bottomProbability) + "%", 50, 200);
+            obstacle.render(alpha);
     }
 
     //Pintamos los obstáculos de abajo forma normal o transparente según en la capa que estemos
     public static void renderBottom(float alpha){
         for (Obstacle obstacle: obstaclesInBottom)
-            obstacle.renderTransparent(alpha);
+            obstacle.render(alpha);
     }
 
     //Comprueba si hay colisión entre el gameObject y algún obstáculo de la capa que esté activa en ArcadeScreen

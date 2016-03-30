@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.utils.ObstacleManager;
+import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.enums.TypeObstacle;
 
 public class Obstacle extends GameObject {
@@ -17,24 +19,21 @@ public class Obstacle extends GameObject {
     //Rango en el que puede variar la velocidad de rotación
     private final static int RANGE_FOR_ADITIVE_SPEED_ROTATION = 20;
 
-    //Velocidad a la que se moverá el obstáculo
-    private final static int INITIAL_SPEED = 150;
-
-    //Velocidad a la que se moverá el obstáculo
-    private float speed;
-
     //Tipo de obstáculo según constitución
     private TypeObstacle type;
 
     //Grados en los que girará el obstáculo
     private float degrees;
 
+    //Dirección de giro
+    private int direction;
+
     public Obstacle(String textureName, int x, int y, TypeObstacle type) {
         super(textureName, x, y);
 
         this.type = type;
-        speed = INITIAL_SPEED;
         this.resetDegrees();
+        direction = (MathUtils.random(-1, 1) >= 0) ? 1 : -1;
     }
 
     public void update(float delta) {
@@ -45,7 +44,7 @@ public class Obstacle extends GameObject {
         this.updateDegrees(delta);
 
         //Actualizamos la posición del obstáculo
-        this.setY(this.getY() - (speed * delta));
+        this.setY(this.getY() - (ObstacleManager.speed * delta));
     }
 
     private void updateDegrees(float delta) {
@@ -54,20 +53,16 @@ public class Obstacle extends GameObject {
 
         //Según el tipo de obstáculo usaremos una velocidad de rotación u otra
         if (type.equals(TypeObstacle.BIG)) {
-            degrees += (BIG_ROTATION_SPEED + aditiveSpeed) * delta;
+            degrees += (BIG_ROTATION_SPEED + aditiveSpeed) * delta * direction;
         } else if (type.equals(TypeObstacle.MEDIUM)) {
-            degrees += (MEDIUM_ROTATION_SPEED + aditiveSpeed) * delta;
+            degrees += (MEDIUM_ROTATION_SPEED + aditiveSpeed) * delta * direction;
         } else if (type.equals(TypeObstacle.SMALL)) {
-            degrees += (SMALL_ROTATION_SPEED + aditiveSpeed) * delta;
+            degrees += (SMALL_ROTATION_SPEED + aditiveSpeed) * delta * direction;
         }
     }
 
-    public void render() {
-        this.renderRotate(degrees);
-        FontManager.draw("" + degrees, this.getX(), this.getY());
-    }
-
-    public void renderTransparent(float alpha) {
+    //Pinta aplicando una transparencia dada
+    public void render(float alpha) {
         Color c = SpaceGame.batch.getColor();
         float oldAlpha = c.a;
 
@@ -78,11 +73,8 @@ public class Obstacle extends GameObject {
 
         c.a = oldAlpha;
         SpaceGame.batch.setColor(c);
-    }
 
-    public void changeSpeed(float aditiveSpeed) {
-        //this.speed += aditiveSpeed;
-        this.speed = INITIAL_SPEED + aditiveSpeed;
+        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.BLUE);
     }
 
     public TypeObstacle getType() {

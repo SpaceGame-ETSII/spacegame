@@ -1,59 +1,85 @@
 package com.tfg.spacegame.utils;
 
-import com.badlogic.gdx.utils.ArrayMap;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
+import com.tfg.spacegame.utils.enums.DialogBoxState;
 
-public class DialogBox {
+public class DialogBox extends GameObject {
 
-    // Los elementos del cuadro de dialogo
-    private ArrayMap<String, GameObject> dialogElements;
+    //Botón que convierte el estado en CANCELLED
+    private Button cancel;
 
-    // Indica el estado del cuadro de dialogo, si se tiene que ver o no
-    private boolean dialogIn =false;
+    //Botón que convierte el estado en CONFIRMED
+    private Button confirm;
 
-    public DialogBox(){
-        dialogElements = new ArrayMap<String, GameObject>();
-    }
+    //Será el texto que se muestre como pregunta del cuadro
+    private String question;
 
-    /**
-     * Añade un elemento de tipo GameObject (También vale Button) al mapa de elementos
-     * @param key
-     * @param gameObject
+    /*Estado que tendrá la venta de diálogo
+     * HIDDEN: La ventana no se muestra
+     * WAITING: La venta se muestra y está a la espera de que se seleccione una opción
+     * CANCELLED: Se ha seleccionado la opción cancel
+     * CONFIRMED: Se ha seleccionado la opción confirm
      */
-    public void addElement(String key, GameObject gameObject){
-        dialogElements.put(key,gameObject);
+    private DialogBoxState state;
+
+    public DialogBox(String question){
+        super("ventana", 0, 0);
+
+        //Inicializamos los objetos en la pantalla en estado HIDDEN
+        cancel = new Button("buttonCancel", 0, 0, null,false);
+        confirm = new Button("buttonConfirm", 0, 0, null,false);
+        this.question = question;
+        state = DialogBoxState.HIDDEN;
+
+        //Centramos los elementos en la pantalla
+        this.setX((SpaceGame.width / 2) - (this.getWidth() / 2));
+        this.setY((SpaceGame.height / 2) - (this.getHeight() / 2));
+        cancel.setX((SpaceGame.width / 2) + cancel.getWidth());
+        cancel.setY((SpaceGame.height / 2) - cancel.getHeight());
+        confirm.setX((SpaceGame.width / 2) - (confirm.getWidth() * 2));
+        confirm.setY((SpaceGame.height / 2) - confirm.getHeight());
     }
 
-    /**
-     * Obtiene un elemento de tipo GameObject
-     * @param key
-     * @return
-     */
-    public GameObject getElement(String key){
-        return dialogElements.get(key);
+    public void render() {
+        //Se mostrarán los elementos si no están en estado HIDDEN
+        if (!state.equals(DialogBoxState.HIDDEN)) {
+            super.render();
+            cancel.render();
+            confirm.render();
+            FontManager.drawText(question, this.getY() + this.getHeight() - 50);
+        }
     }
 
-    public Button getElementButton(String key){
-        return (Button) dialogElements.get(key);
+    public void update() {
+        cancel.update();
+        confirm.update();
+
+        //Si se ha seleccionado una opción, cambiamos el estado
+        if (cancel.isPressed()) {
+            state = DialogBoxState.CANCELLED;
+            cancel.setPressed(false);
+        } else if (confirm.isPressed()) {
+            state = DialogBoxState.CONFIRMED;
+        }
     }
 
-    public void renderElement(String key){
-        dialogElements.get(key).render();
+    public DialogBoxState getState() {
+        return state;
     }
 
-    public void setDialogIn(boolean b){
-        dialogIn=b;
+    public void setStateToWaiting() {
+        state = DialogBoxState.WAITING;
     }
 
-    public boolean isDialogIn(){
-        return dialogIn;
+    public void setStateToHidden() {
+        state = DialogBoxState.HIDDEN;
     }
 
     public void dispose(){
-        for(GameObject g: dialogElements.values){
-            g.dispose();
-        }
+        super.dispose();
+        cancel.dispose();
+        confirm.dispose();
     }
 }

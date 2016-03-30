@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.FontManager;
 
 public class DemoMenuScreen implements Screen {
@@ -30,7 +31,7 @@ public class DemoMenuScreen implements Screen {
     public DemoMenuScreen(final SpaceGame game) {
         this.game = game;
 
-        background = AssetsManager.loadTexture("background2");
+        background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
         allEnemies = new Button("button", 260, 315, "allEnemies", true);
@@ -72,20 +73,24 @@ public class DemoMenuScreen implements Screen {
     }
 
     public void update(float delta) {
-        //Si se ha tocado algún botón, lo marcamos como pulsado
+        allEnemies.update();
+        colorEnemies.update();
+        greenEnemy.update();
+        orangeEnemy.update();
+        purpleEnemy.update();
+        back.update();
+
+        //Si se acaba de tocar algún botón, reiniciamos el contador
         if (Gdx.input.justTouched()) {
-
-            Vector3 v = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            v = SpaceGame.camera.unproject(v);
-
-            if (allEnemies.press(v.x, v.y) ||
-                    colorEnemies.press(v.x, v.y) ||
-                    greenEnemy.press(v.x, v.y) ||
-                    orangeEnemy.press(v.x, v.y) ||
-                    purpleEnemy.press(v.x, v.y) ||
-                    back.press(v.x, v.y)) {
-                //Reiniciamos el contador en caso de haberse pulsado un botón
+            if (allEnemies.isPressed() ||
+                    colorEnemies.isPressed() ||
+                    greenEnemy.isPressed() ||
+                    orangeEnemy.isPressed() ||
+                    purpleEnemy.isPressed() ||
+                    back.isPressed()) {
                 timeUntilExit=0.5f;
+                if (!back.isPressed())
+                    AudioManager.stopMusic();
             }
         }
 

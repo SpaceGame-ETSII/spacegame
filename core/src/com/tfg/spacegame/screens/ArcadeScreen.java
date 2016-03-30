@@ -10,6 +10,7 @@ import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.gameObjects.arcadeMode.ArcadeShip;
 import com.tfg.spacegame.utils.*;
+import com.tfg.spacegame.utils.enums.DialogBoxState;
 import com.tfg.spacegame.utils.enums.GameState;
 
 public class ArcadeScreen extends GameScreen {
@@ -18,6 +19,8 @@ public class ArcadeScreen extends GameScreen {
 
 	//Velocidad del scrolling del fondo
 	private static final int SCROLLING_SPEED = 100;
+	private static final int SCROLLING_SPEED_2 = 250;
+	private static final int SCROLLING_SPEED_3 = 600;
 	//Tiempo que bloquearemos el cambio de capa cada vez que se realice un cambio
 	private static final float MAX_TIME_TO_BLOCK = 1;
 	//Tiempo máximo hasta que actualicemos lastMeasureY
@@ -26,17 +29,19 @@ public class ArcadeScreen extends GameScreen {
 	private static final float MIN_ALPHA = 0.3f;
 	//Indica el escalado que tendrán los objetos en la capa baja
 	private static final float BOTTOM_SCALE = 0.5f;
-	//Nombre del archivo donde se guardará el record del usuario
-	private static final String RECORD_FILE = "arcade_record.txt";
 
 	//Objetos interactuables de la pantalla
 	private ArcadeShip ship;
 
 	//Fondo que se mostrará
 	private Texture background;
+	private Texture background2;
+	private Texture background3;
 
 	//Permiten la posición del fondo para realizar el scrolling
 	private int scrollingPosition;
+	private int scrollingPosition2;
+	private int scrollingPosition3;
 
 	//Guarda la última medición del acelerómetro Y, en intervalos de MAX_TIME_TO_MEASURE_Y
 	private float lastMeasureY;
@@ -53,9 +58,6 @@ public class ArcadeScreen extends GameScreen {
 	//Acumula el tiempo que está vivo el jugador en la partida
 	private float timeAlive;
 
-	//Efecto que hará vibrar la pantalla cuando se produzca un choque con la nave
-	private ShakeEffect shakeEffect;
-
 	//Botón que nos permitirá salir del juego
 	private Button exit;
 
@@ -65,6 +67,8 @@ public class ArcadeScreen extends GameScreen {
 	//Indicará si en la partida ha habido nuevo record
 	private boolean newRecord;
 
+	//Cuadro de diálogo que se preguntará confirmación para salir del modo
+	private DialogBox menuExitDialog;
 
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
@@ -73,9 +77,14 @@ public class ArcadeScreen extends GameScreen {
 		SpaceGame.changeToPortrait();
 
 		scrollingPosition = 0;
-		background = AssetsManager.loadTexture("background2");
-		shakeEffect = new ShakeEffect(1f, ShakeEffect.NORMAL_SHAKE);
+		scrollingPosition2 = 0;
+		scrollingPosition3 = 0;
+		background = AssetsManager.loadTexture("background");
+		background2 = AssetsManager.loadTexture("background2");
+		background3 = AssetsManager.loadTexture("background3");
+		CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
+		menuExitDialog = new DialogBox("exitModeQuestion");
 
 		this.initialize();
 	}
@@ -91,6 +100,7 @@ public class ArcadeScreen extends GameScreen {
 		layer = 1;
 		timeAlive = 0;
 		this.obtainRecord();
+		AudioManager.playMusic("arcade", true);
 	}
 
 	//Recoge el record, y si no hay ninguno coge un 0 por defecto
@@ -99,23 +109,24 @@ public class ArcadeScreen extends GameScreen {
 		record = prefs.getInteger("record", 0);
 	}
 
-	//Guarda el record conseguido si supera el timeAlive, y devuelve true en caso de guardarse
+	//Guarda el record conseguido si supera el timeAlive, y devuelve true en caso de ser así
 	private boolean updateRecord() {
 		boolean res = false;
 
 		if (timeAlive > record) {
 			saveRecord((int) timeAlive);
-
 			res = true;
 		}
 
 		return res;
 	}
 
+	//Resetea el record a 0
 	public static void resetRecord() {
 		saveRecord(0);
 	}
 
+	//Hace persistente el value del parámetro dentro del record del juego
 	private static void saveRecord(int value) {
 		Preferences prefs = Gdx.app.getPreferences("My Preferences");
 		prefs.putInteger("record", value);
@@ -131,18 +142,27 @@ public class ArcadeScreen extends GameScreen {
 		SpaceGame.batch.draw(new TextureRegion(background), 0, background.getWidth() + scrollingPosition,
 								game.width / 2 , background.getHeight() / 2,
 								background.getWidth(), background.getHeight(), 1, 1, 90);
+
+		SpaceGame.batch.draw(new TextureRegion(background2), 0, scrollingPosition2,
+								game.width / 2 , background2.getHeight() / 2,
+								background2.getWidth(), background2.getHeight(), 1, 1, 90);
+		SpaceGame.batch.draw(new TextureRegion(background2), 0, background2.getWidth() + scrollingPosition2,
+								game.width / 2 , background2.getHeight() / 2,
+								background2.getWidth(), background2.getHeight(), 1, 1, 90);
+
+		SpaceGame.batch.draw(new TextureRegion(background3), 0, scrollingPosition3,
+								game.width / 2 , background3.getHeight() / 2,
+								background3.getWidth(), background3.getHeight(), 1, 1, 90);
+		SpaceGame.batch.draw(new TextureRegion(background3), 0, background3.getWidth() + scrollingPosition3,
+								game.width / 2 , background3.getHeight() / 2,
+								background3.getWidth(), background3.getHeight(), 1, 1, 90);
 	}
 
 	@Override
 	public void updateEveryState(float delta) {
-		//Si el estado no está en pausa, avanzamos el fondo y actualizamos la vibración de la pantalla
+		//Si el estado no está en pausa, actualizamos la vibración de la pantalla
 		if (!state.equals(GameState.PAUSE)) {
-			shakeEffect.shake(delta);
-
-			//Actualizamos la posición del scrolling
-			scrollingPosition -= delta * SCROLLING_SPEED;
-			if (scrollingPosition <= -background.getWidth())
-				scrollingPosition = 0;
+			CameraManager.update(delta);
 		}
 	}
 
@@ -153,14 +173,27 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void updateReady(float delta) {
+		//Si se toca la pantalla, pasamos a START
 		if (Gdx.input.justTouched()) {
 			state = GameState.START;
-			AudioManager.playMusic("arcade", true);
 		}
 	}
 
 	@Override
 	public void renderStart(float delta) {
+		//Actualizamos la posición del scrolling para el fondo
+		scrollingPosition -= delta * SCROLLING_SPEED;
+		if (scrollingPosition <= -background.getWidth())
+			scrollingPosition = 0;
+
+		scrollingPosition2 -= delta * SCROLLING_SPEED_2;
+		if (scrollingPosition2 <= -background2.getWidth())
+			scrollingPosition2 = 0;
+
+		scrollingPosition3 -= delta * SCROLLING_SPEED_3;
+		if (scrollingPosition3 <= -background3.getWidth())
+			scrollingPosition3 = 0;
+
 		//Primero realizamos el cálculo del alpha según el escalado actual de la nave
 		float alpha = (ship.getLogicShape().getScaleX() - BOTTOM_SCALE) / (1 - BOTTOM_SCALE);
 		alpha *= (1 - MIN_ALPHA);
@@ -198,8 +231,10 @@ public class ArcadeScreen extends GameScreen {
 
 			//Realizamos los efectos visuales y de sonido
 			Gdx.input.vibrate(300);
-			shakeEffect.start();
+			CameraManager.startShake();
 			AudioManager.stopMusic();
+
+			//Sonará un sonido u otro si hemos superado o no el record
 			if (newRecord) {
 				AudioManager.playSound("new_record");
 			} else {
@@ -208,6 +243,7 @@ public class ArcadeScreen extends GameScreen {
 		} else if (Gdx.input.justTouched()) {
 			state = GameState.PAUSE;
 			AudioManager.pauseMusic();
+			AudioManager.playSound("pause");
 		}
 	}
 
@@ -217,22 +253,37 @@ public class ArcadeScreen extends GameScreen {
 		FontManager.drawText("record", ": " + record, 10, 760);
 		ship.render();
 		this.renderTime();
-		exit.render();
+
+		if (menuExitDialog.getState().equals(DialogBoxState.HIDDEN))
+			exit.render();
+		else
+			menuExitDialog.render();
 	}
 
 	@Override
 	public void updatePause(float delta) {
-		if (Gdx.input.justTouched()) {
+		//Haremos una cosa u otra dependiendo del estado de menuExitDialog
+		if (menuExitDialog.getState().equals(DialogBoxState.HIDDEN)) {
+			exit.update();
 
-			Vector3 v = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-			v = SpaceGame.camera.unproject(v);
-
-			if (exit.press(v.x, v.y)) {
-				game.setScreen(new MainMenuScreen(game));
-			} else {
-				state = GameState.START;
-				AudioManager.playMusic();
+			//Si se ha tocado la pantalla actuamos según si se ha tocado el botón exit u otro lado
+			if (Gdx.input.justTouched()) {
+				if (exit.isPressed()) {
+					menuExitDialog.setStateToWaiting();
+				} else {
+					state = GameState.START;
+					AudioManager.playMusic();
+					AudioManager.playSound("pause");
+				}
 			}
+		} else if (menuExitDialog.getState().equals(DialogBoxState.CONFIRMED)) {
+			game.setScreen(new MainMenuScreen(game));
+			this.disposeScreen();
+		} else if (menuExitDialog.getState().equals(DialogBoxState.CANCELLED)) {
+			menuExitDialog.setStateToHidden();
+			exit.setPressed(false);
+		} else if (menuExitDialog.getState().equals(DialogBoxState.WAITING)) {
+			menuExitDialog.update();
 		}
 	}
 
@@ -250,6 +301,7 @@ public class ArcadeScreen extends GameScreen {
 	public void renderLose(float delta) {
 		renderStart(delta);
 
+		//Se mostrará un mensaje u otro según si se ha hecho un nuevo record o no
 		if (newRecord)
 			FontManager.drawText("newRecord", 400);
 		else
