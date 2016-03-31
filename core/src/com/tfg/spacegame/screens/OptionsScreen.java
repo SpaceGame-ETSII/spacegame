@@ -42,14 +42,19 @@ public class OptionsScreen implements Screen {
         back = new Button("arrow_back", 750, 430, null, false);
         resetArcadePuntuation = new Button("button", 100, 180, "resetArcadePuntuation", true);
 
+        //Creamos el cuadro de diálogo para borrar la puntuación del modo arcade
         menuResetDialog = new DialogBox("resetArcadePuntuationQuestion");
 
+        /*Comprobamos el estado del volumen de la música para saber si es necesario cambiar el estado por defecto del
+          botón*/
         if (AudioManager.getVolumeMusic()==0.0f){
             music.setDesactivated(true);
         }else {
             music.setDesactivated(false);
         }
 
+        /*Comprobamos el estado del volumen de los efectos de sonido para saber si es necesario cambiar el estado por
+        defecto del botón*/
         if (AudioManager.getVolumeEffect()==0.0f){
             effect.setDesactivated(true);
         }else {
@@ -90,6 +95,7 @@ public class OptionsScreen implements Screen {
         //Pintamos la puntuación del usuario en el modo arcade
         FontManager.drawText("record", ": " + ArcadeScreen.obtainRecord(), 100,150);
 
+        //En función de si oculto o no, pintamos el cuadro de diálogo para borrar la puntuación del modo arcade
         if (menuResetDialog.getState().equals(DialogBoxState.HIDDEN))
             resetArcadePuntuation.render();
         else
@@ -101,7 +107,9 @@ public class OptionsScreen implements Screen {
 	}
 
     public void update(float delta) {
+        //Actualizamos los botones del menú de opciones
         back.update();
+        resetArcadePuntuation.update();
 
         //Si se ha tocado algún botón, lo marcamos como pulsado
         if (Gdx.input.justTouched()) {
@@ -133,6 +141,7 @@ public class OptionsScreen implements Screen {
                 AudioManager.setVolumeEffect(0.7f);
             }
 
+            //Si el botón de atrás es pulsado, volvermos al menú principal
             if (back.isPressed()){
                game.setScreen(new MainMenuScreen(game));
             }
@@ -140,12 +149,14 @@ public class OptionsScreen implements Screen {
             timeUntilExit -= delta;
         }
 
+        //Realizamos las comprobaciones para tratar el cuadro de diálogo para borrar el record del modo arcade
         if (menuResetDialog.getState().equals(DialogBoxState.HIDDEN)) {
             if (resetArcadePuntuation.isPressed()){
                 menuResetDialog.setStateToWaiting();
             }
         } else if (menuResetDialog.getState().equals(DialogBoxState.CONFIRMED)) {
             ArcadeScreen.resetRecord();
+            this.game.setScreen(new OptionsScreen(game));
         } else if (menuResetDialog.getState().equals(DialogBoxState.CANCELLED)) {
             menuResetDialog.setStateToHidden();
             resetArcadePuntuation.setPressed(false);
