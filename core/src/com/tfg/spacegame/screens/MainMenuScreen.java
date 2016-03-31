@@ -8,6 +8,7 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.AudioManager;
+import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.FontManager;
 
 public class MainMenuScreen implements Screen {
@@ -24,14 +25,11 @@ public class MainMenuScreen implements Screen {
     //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
     private float timeUntilExit;
 
-    public Texture background;
-
     public MainMenuScreen(final SpaceGame game) {
         this.game = game;
 
         //SpaceGame.changeToLandscape();
 
-        background = AssetsManager.loadTexture("background");
         AudioManager.loadSounds();
         if (!AudioManager.isPlaying())
             AudioManager.playMusic("menu", true);
@@ -58,7 +56,7 @@ public class MainMenuScreen implements Screen {
         SpaceGame.batch.begin();
 
         // Pintamos el fondo y el título del juego
-        SpaceGame.batch.draw(background, 0,0);
+        BackgroundManager.render();
         FontManager.drawTitle("titleGame", 229, 420);
 
         // Delegamos el render de los botones
@@ -79,6 +77,8 @@ public class MainMenuScreen implements Screen {
         multiplayer.update();
         options.update();
         exit.update();
+
+        BackgroundManager.update(delta, true);
 
         //Si se acaba de tocar algún botón, reiniciamos el contador y paramos la música
         if (Gdx.input.justTouched()) {

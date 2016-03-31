@@ -42,6 +42,9 @@ public class AudioManager {
     }
 
     public static void playMusic(String name, boolean isLooping) {
+        if (music != null)
+            stopMusic();
+
         music = AssetsManager.loadMusic(name);
 
         music.setVolume(volumeMusic);

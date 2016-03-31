@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.AudioManager;
+import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.FontManager;
 
 public class DemoMenuScreen implements Screen {
@@ -26,12 +26,8 @@ public class DemoMenuScreen implements Screen {
     //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
     private float timeUntilExit;
 
-    public Texture background;
-
     public DemoMenuScreen(final SpaceGame game) {
         this.game = game;
-
-        background = AssetsManager.loadTexture("background");
 
         //Creamos los botones para el menú principal
         allEnemies = new Button("button", 260, 315, "allEnemies", true);
@@ -56,7 +52,7 @@ public class DemoMenuScreen implements Screen {
         SpaceGame.batch.begin();
 
         // Pintamos el fondo y el título del juego
-        SpaceGame.batch.draw(background, 0,0);
+        BackgroundManager.render();
         FontManager.drawText("titleDemo", 229, 420);
 
         // Delegamos el render de los botones
@@ -79,6 +75,8 @@ public class DemoMenuScreen implements Screen {
         orangeEnemy.update();
         purpleEnemy.update();
         back.update();
+
+        BackgroundManager.update(delta, true);
 
         //Si se acaba de tocar algún botón, reiniciamos el contador
         if (Gdx.input.justTouched()) {

@@ -22,6 +22,7 @@ public class AssetsManager {
     private static String weaponsFolder = "textures/weapons/";
     private static String levelScriptsFolder = "levelScripts/";
     private static String shipsFolder = "textures/ships/";
+    private static String backgroundsFolder = "textures/backgrounds/";
     private static String othersFolder = "textures/others/";
     private static String powerUpsFolder = "textures/powerUps/";
     private static String musicsFolder = "audio/musics/";
@@ -61,10 +62,12 @@ public class AssetsManager {
         assetsReferences.put("medium_obstacle", obstaclesFolder+"meteorito_mediano.png");
         assetsReferences.put("small_obstacle", obstaclesFolder+"meteorito_pequeno.png");
 
+        //Texturas referentes a backgrounds
+        assetsReferences.put("background", backgroundsFolder+"fondo.jpg");
+        assetsReferences.put("background2", backgroundsFolder+"fondo2.png");
+        assetsReferences.put("background3", backgroundsFolder+"fondo3.png");
+
         //Texturas referentes a others
-        assetsReferences.put("background", othersFolder+"fondo.jpg");
-        assetsReferences.put("background2", othersFolder+"fondo2.png");
-        assetsReferences.put("background3", othersFolder+"fondo3.png");
         assetsReferences.put("inventary", othersFolder+"inventario.png");
         assetsReferences.put("red", othersFolder+"rojo.png");
         assetsReferences.put("yellow", othersFolder+"amarillo.png");
