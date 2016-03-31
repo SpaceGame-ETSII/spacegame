@@ -20,6 +20,9 @@ public class SpaceGame extends Game {
 	public static int width;
 	public static int height;
 
+	//Orientación del dispositivo
+	public static String orientation;
+
 	// Objeto encargado de obtener las shapes
 	private static ShapeLoader shapeLoader;
 
@@ -31,8 +34,10 @@ public class SpaceGame extends Game {
 	public void create () {
 		width = 800;
 		height = 480;
+		orientation = "sensorLandscape";
 
 		AssetsManager.load();
+		BackgroundManager.load();
 		TouchManager.initialize();
 		ShapeRendererManager.initialize();
 		FontManager.initialize(width);
@@ -51,20 +56,26 @@ public class SpaceGame extends Game {
 
 	//Convierte la pantalla en modo portrait
 	public static void changeToPortrait() {
-		if (platform != null)
-			platform.setOrientation("portrait");
+		if (!orientation.equals("portrait")) {
+			orientation = "portrait";
+			if (platform != null)
+				platform.setOrientation("portrait");
 
-		if (width > height)
-			exchangeWidthHeight();
+			if (width > height)
+				exchangeWidthHeight();
+		}
 	}
 
 	//Convierte la pantalla en modo landscape
 	public static void changeToLandscape() {
-		if (platform != null)
-			platform.setOrientation("sensorLandscape");
+		if (!orientation.equals("sensorLandscape")) {
+			orientation = "sensorLandscape";
+			if (platform != null)
+				platform.setOrientation("sensorLandscape");
 
-		if (height > width)
-			exchangeWidthHeight();
+			if (height > width)
+				exchangeWidthHeight();
+		}
 	}
 
 	//Intercambia el valor de width con height y viceversa
