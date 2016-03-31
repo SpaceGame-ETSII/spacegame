@@ -8,10 +8,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.gameObjects.OptionButton;
-import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.AudioManager;
-import com.tfg.spacegame.utils.DialogBox;
-import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.utils.*;
+import com.tfg.spacegame.utils.enums.DialogBoxState;
+import com.tfg.spacegame.utils.enums.GameState;
+
+import java.awt.*;
 
 public class OptionsScreen implements Screen {
 
@@ -38,8 +39,10 @@ public class OptionsScreen implements Screen {
         //Creamos los botones para la pantalla de opciones
         music = new OptionButton("buttonMusic", "buttonMusicCancel",200, 265);
         effect = new OptionButton("buttonEffect", "buttonEffectCancel",260, 265);
-        back = new Button("arrow_back", 750, 430, null, true);
-        resetArcadePuntuation = new Button("button", 100, 200, "resetArcadePuntuation",true);
+        back = new Button("arrow_back", 750, 430, null, false);
+        resetArcadePuntuation = new Button("button", 100, 180, "resetArcadePuntuation", true);
+
+        menuResetDialog = new DialogBox("resetArcadePuntuationQuestion");
 
         if (AudioManager.getVolumeMusic()==0.0f){
             music.setDesactivated(true);
@@ -83,7 +86,14 @@ public class OptionsScreen implements Screen {
         music.render();
         effect.render();
         back.render();
-        resetArcadePuntuation.render();
+
+        //Pintamos la puntuación del usuario en el modo arcade
+        FontManager.drawText("record", ": " + ArcadeScreen.obtainRecord(), 100,150);
+
+        if (menuResetDialog.getState().equals(DialogBoxState.HIDDEN))
+            resetArcadePuntuation.render();
+        else
+            menuResetDialog.render();
 
         SpaceGame.batch.end();
 
@@ -91,13 +101,15 @@ public class OptionsScreen implements Screen {
 	}
 
     public void update(float delta) {
+        back.update();
+
         //Si se ha tocado algún botón, lo marcamos como pulsado
         if (Gdx.input.justTouched()) {
 
             Vector3 v = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             v = SpaceGame.camera.unproject(v);
 
-            if (music.press(v.x, v.y) || effect.press(v.x, v.y) || back.press(v.x, v.y)) {
+            if (music.press(v.x, v.y) || effect.press(v.x, v.y)) {
                 //Reiniciamos el contador en caso de haberse pulsado un botón
                 timeUntilExit=0.5f;
             }
@@ -127,6 +139,19 @@ public class OptionsScreen implements Screen {
         } else {
             timeUntilExit -= delta;
         }
+
+        if (menuResetDialog.getState().equals(DialogBoxState.HIDDEN)) {
+            if (resetArcadePuntuation.isPressed()){
+                menuResetDialog.setStateToWaiting();
+            }
+        } else if (menuResetDialog.getState().equals(DialogBoxState.CONFIRMED)) {
+            ArcadeScreen.resetRecord();
+        } else if (menuResetDialog.getState().equals(DialogBoxState.CANCELLED)) {
+            menuResetDialog.setStateToHidden();
+            resetArcadePuntuation.setPressed(false);
+        } else if (menuResetDialog.getState().equals(DialogBoxState.WAITING)) {
+            menuResetDialog.update();
+        }
     }
 
 	@Override
@@ -155,5 +180,6 @@ public class OptionsScreen implements Screen {
         effect.dispose();
         back.dispose();
         resetArcadePuntuation.dispose();
+        menuResetDialog.dispose();
 	}
 }

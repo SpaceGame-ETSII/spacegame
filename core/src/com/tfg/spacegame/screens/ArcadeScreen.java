@@ -99,14 +99,14 @@ public class ArcadeScreen extends GameScreen {
 		timeToBlock = 0;
 		layer = 1;
 		timeAlive = 0;
-		this.obtainRecord();
+		record = ArcadeScreen.obtainRecord();
 		AudioManager.playMusic("arcade", true);
 	}
 
 	//Recoge el record, y si no hay ninguno coge un 0 por defecto
-	private void obtainRecord() {
+	public static int obtainRecord() {
 		Preferences prefs = Gdx.app.getPreferences("My Preferences");
-		record = prefs.getInteger("record", 0);
+		return prefs.getInteger("record", 0);
 	}
 
 	//Guarda el record conseguido si supera el timeAlive, y devuelve true en caso de ser así
