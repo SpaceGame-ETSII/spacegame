@@ -73,8 +73,6 @@ public class Obstacle extends GameObject {
 
         c.a = oldAlpha;
         SpaceGame.batch.setColor(c);
-
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.BLUE);
     }
 
     public TypeObstacle getType() {

@@ -2,9 +2,6 @@ package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.gameObjects.Button;
@@ -17,10 +14,6 @@ public class ArcadeScreen extends GameScreen {
 
 	private final SpaceGame game;
 
-	//Velocidad del scrolling del fondo
-	private static final int SCROLLING_SPEED = 100;
-	private static final int SCROLLING_SPEED_2 = 250;
-	private static final int SCROLLING_SPEED_3 = 600;
 	//Tiempo que bloquearemos el cambio de capa cada vez que se realice un cambio
 	private static final float MAX_TIME_TO_BLOCK = 1;
 	//Tiempo máximo hasta que actualicemos lastMeasureY
@@ -32,16 +25,6 @@ public class ArcadeScreen extends GameScreen {
 
 	//Objetos interactuables de la pantalla
 	private ArcadeShip ship;
-
-	//Fondo que se mostrará
-	private Texture background;
-	private Texture background2;
-	private Texture background3;
-
-	//Permiten la posición del fondo para realizar el scrolling
-	private int scrollingPosition;
-	private int scrollingPosition2;
-	private int scrollingPosition3;
 
 	//Guarda la última medición del acelerómetro Y, en intervalos de MAX_TIME_TO_MEASURE_Y
 	private float lastMeasureY;
@@ -70,18 +53,18 @@ public class ArcadeScreen extends GameScreen {
 	//Cuadro de diálogo que se preguntará confirmación para salir del modo
 	private DialogBox menuExitDialog;
 
+	private float contador;
+	private int total1;
+	private int total2;
+	private int total3;
+	private int fps;
+
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
 
 		//Convertimos la pantalla en modo portrait
 		SpaceGame.changeToPortrait();
 
-		scrollingPosition = 0;
-		scrollingPosition2 = 0;
-		scrollingPosition3 = 0;
-		background = AssetsManager.loadTexture("background");
-		background2 = AssetsManager.loadTexture("background2");
-		background3 = AssetsManager.loadTexture("background3");
 		CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
 		menuExitDialog = new DialogBox("exitModeQuestion");
@@ -99,14 +82,20 @@ public class ArcadeScreen extends GameScreen {
 		timeToBlock = 0;
 		layer = 1;
 		timeAlive = 0;
-		this.obtainRecord();
+		record = ArcadeScreen.obtainRecord();
 		AudioManager.playMusic("arcade", true);
+
+		contador = 1;
+		total1 = 0;
+		total2 = 0;
+		total3 = 0;
+		fps = 0;
 	}
 
 	//Recoge el record, y si no hay ninguno coge un 0 por defecto
-	private void obtainRecord() {
+	public static int obtainRecord() {
 		Preferences prefs = Gdx.app.getPreferences("My Preferences");
-		record = prefs.getInteger("record", 0);
+		return prefs.getInteger("record", 0);
 	}
 
 	//Guarda el record conseguido si supera el timeAlive, y devuelve true en caso de ser así
@@ -135,27 +124,28 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderEveryState(float delta) {
-		//Pintamos el fondo, que necesitará pintarse dos veces para el scrolling
-		SpaceGame.batch.draw(new TextureRegion(background), 0, scrollingPosition,
-								game.width / 2 , background.getHeight() / 2,
-								background.getWidth(), background.getHeight(), 1, 1, 90);
-		SpaceGame.batch.draw(new TextureRegion(background), 0, background.getWidth() + scrollingPosition,
-								game.width / 2 , background.getHeight() / 2,
-								background.getWidth(), background.getHeight(), 1, 1, 90);
+		if (!state.equals(GameState.START))
+			BackgroundManager.render();
 
-		SpaceGame.batch.draw(new TextureRegion(background2), 0, scrollingPosition2,
-								game.width / 2 , background2.getHeight() / 2,
-								background2.getWidth(), background2.getHeight(), 1, 1, 90);
-		SpaceGame.batch.draw(new TextureRegion(background2), 0, background2.getWidth() + scrollingPosition2,
-								game.width / 2 , background2.getHeight() / 2,
-								background2.getWidth(), background2.getHeight(), 1, 1, 90);
+		/*
+		total1 = ObstacleManager.obstaclesInTop.size + ObstacleManager.obstaclesInBottom.size;
+		total2 = ObstacleManager.deletedSmallObstacles.size +
+						ObstacleManager.deletedMediumObstacles.size +
+						ObstacleManager.deletedSmallObstacles.size;
+		total3 = total1 + total2;
 
-		SpaceGame.batch.draw(new TextureRegion(background3), 0, scrollingPosition3,
-								game.width / 2 , background3.getHeight() / 2,
-								background3.getWidth(), background3.getHeight(), 1, 1, 90);
-		SpaceGame.batch.draw(new TextureRegion(background3), 0, background3.getWidth() + scrollingPosition3,
-								game.width / 2 , background3.getHeight() / 2,
-								background3.getWidth(), background3.getHeight(), 1, 1, 90);
+		if (contador > 0.5) {
+			contador = 0;
+			fps = (int) (1/delta);
+		} else {
+			contador += delta;
+		}
+
+		FontManager.draw("FPS: " + fps, 100, 600);
+		FontManager.draw("Total: " + total3, 100, 550);
+		FontManager.draw("Total en pantalla: " + total1, 100, 500);
+		FontManager.draw("Total borrados: " + total2, 100, 450);
+		*/
 	}
 
 	@Override
@@ -164,6 +154,8 @@ public class ArcadeScreen extends GameScreen {
 		if (!state.equals(GameState.PAUSE)) {
 			CameraManager.update(delta);
 		}
+
+		BackgroundManager.update(delta, !state.equals(GameState.START));
 	}
 
 	@Override
@@ -181,28 +173,25 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderStart(float delta) {
-		//Actualizamos la posición del scrolling para el fondo
-		scrollingPosition -= delta * SCROLLING_SPEED;
-		if (scrollingPosition <= -background.getWidth())
-			scrollingPosition = 0;
-
-		scrollingPosition2 -= delta * SCROLLING_SPEED_2;
-		if (scrollingPosition2 <= -background2.getWidth())
-			scrollingPosition2 = 0;
-
-		scrollingPosition3 -= delta * SCROLLING_SPEED_3;
-		if (scrollingPosition3 <= -background3.getWidth())
-			scrollingPosition3 = 0;
-
 		//Primero realizamos el cálculo del alpha según el escalado actual de la nave
 		float alpha = (ship.getLogicShape().getScaleX() - BOTTOM_SCALE) / (1 - BOTTOM_SCALE);
 		alpha *= (1 - MIN_ALPHA);
 		alpha += MIN_ALPHA;
 
 		//Pintamos naves y obstáculos según orden y el alpha correspondiente para cada uno
+		BackgroundManager.render(0);
+		BackgroundManager.render(1);
 		ObstacleManager.renderBottom((1 + MIN_ALPHA) - alpha);
-		ship.render();
-		ObstacleManager.renderTop(alpha);
+		if (ship.getLogicShape().getScaleX() > 0.75) {
+			BackgroundManager.render(2);
+			ObstacleManager.renderTop(alpha);
+			ship.render();
+		} else {
+			ship.render();
+			BackgroundManager.render(2);
+			ObstacleManager.renderTop(alpha);
+		}
+
 
 		this.renderTime();
 	}
@@ -370,7 +359,6 @@ public class ArcadeScreen extends GameScreen {
 	public void disposeScreen() {
 		super.dispose();
 		ship.dispose();
-		background.dispose();
 	}
 }
 

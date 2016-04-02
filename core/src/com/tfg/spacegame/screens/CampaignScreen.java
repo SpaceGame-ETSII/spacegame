@@ -28,8 +28,6 @@ public class CampaignScreen extends GameScreen {
     private int scrollingPosition;
     private static final int SCROLLING_SPEED = 100;
 
-    public Texture background;
-
     // Vamos a controlar que touch está disparando y cual está controlando la nave
     // Seguiremos el siguiente modelo:
     // -1 para ningún touch asignado
@@ -54,7 +52,6 @@ public class CampaignScreen extends GameScreen {
         ship = new CampaignShip();
         inventary = new Inventary();
 
-        background = AssetsManager.loadTexture("background");
         if (!AudioManager.isPlaying())
             AudioManager.playMusic("campaign", true);
 
@@ -96,13 +93,15 @@ public class CampaignScreen extends GameScreen {
 
     @Override
     public void renderEveryState(float delta) {
-        SpaceGame.batch.draw(background, scrollingPosition, 0);
-        SpaceGame.batch.draw(background, background.getWidth() + scrollingPosition, 0);
+        BackgroundManager.render();
     }
 
     @Override
     public void updateEveryState(float delta) {
-
+        if (state.equals(GameState.START))
+            BackgroundManager.update(delta, false);
+        else
+            BackgroundManager.update(delta, true);
     }
 
     @Override
@@ -171,11 +170,6 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void updateStart(float delta) {
         CameraManager.update(delta);
-
-        //Actualizamos la posición del scrolling
-        scrollingPosition -= delta * SCROLLING_SPEED;
-        if(scrollingPosition <= -background.getWidth())
-            scrollingPosition = 0;
 
         //Comprobamos si se ha perdido o ganado el juego
         if (ship.isDefeated())
