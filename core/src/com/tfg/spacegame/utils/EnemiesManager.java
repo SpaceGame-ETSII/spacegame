@@ -2,9 +2,7 @@ package com.tfg.spacegame.utils;
 
 
 import com.badlogic.gdx.utils.Array;
-import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 
 public class EnemiesManager {
@@ -16,12 +14,6 @@ public class EnemiesManager {
         enemies = new Array<Enemy>();
 
         level = LevelGenerator.loadLevel(scriptLevel);
-    }
-
-    public static void loadMultiplayerEnemies(Enemy enemy){
-        enemies = new Array<Enemy>();
-
-        enemies.add(enemy);
     }
 
     public static void update(float delta){

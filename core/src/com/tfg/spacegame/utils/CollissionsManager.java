@@ -1,9 +1,13 @@
 package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.utils.Array;
+import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
+import com.tfg.spacegame.screens.CampaignScreen;
+import com.tfg.spacegame.screens.MultiplayerScreen;
 
 public class CollissionsManager {
 
@@ -11,12 +15,26 @@ public class CollissionsManager {
     public static Array<Pair<Shoot, Enemy>> shootsToEnemies;
     private static Array<Pair<Shoot, Shoot>> shootsToShoots;
 
+    // Contendrán las colisiones del modo multijugador
+    private static Pair<PlayerShip,Shoot> playerShootCollision;
+    private static Pair<EnemyShip,Shoot>  enemyShootCollision;
+
     public static void load() {
-        shootsToEnemies = new Array<Pair<Shoot, Enemy>>();
+        if(ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class)){
+            shootsToEnemies = new Array<Pair<Shoot, Enemy>>();
+        }
         shootsToShoots = new Array<Pair<Shoot, Shoot>>();
     }
 
-    public static void update(float delta, CampaignShip ship) {
+    public static void update(){
+        if(ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class)){
+            updateCampaign();
+        }else if(ScreenManager.isCurrentScreenEqualsTo(MultiplayerScreen.class)){
+            updateMultiplayer();
+        }
+    }
+
+    private static void updateCampaign() {
         //Arrays que harán de auxiliares para no sobreescribir las originales
         Array<Enemy> enemies = new Array<Enemy>(EnemiesManager.enemies);
         Array<Shoot> shoots = new Array<Shoot>(ShootsManager.shoots);
@@ -31,7 +49,7 @@ public class CollissionsManager {
 
         //Primero comprobamos si algún enemigo ha dado a la nave
         for (Enemy enemy: enemies) {
-            if (enemy.isOverlapingWith(ship) && !ship.isUndamagable()) {
+            if (enemy.isOverlapingWith(CampaignScreen.ship) && !CampaignScreen.ship.isUndamagable()) {
                 //Si un enemigo ha dado a la nave la almacenamos en la variable
                 enemyOverlapsShip = enemy;
 
@@ -46,8 +64,8 @@ public class CollissionsManager {
             shootIsOverlapped = false;
 
             //En primer lugar comprobamos si el shoot dió a la nave, siempre y cuando no hubiese sido golpeada antes
-            if (enemyOverlapsShip == null && shootOverlapsShip == null && shootDst.getShooter() != ship &&
-                    shootDst.isOverlapingWith(ship) && !shootDst.isShocked() && !ship.isUndamagable()) {
+            if (enemyOverlapsShip == null && shootOverlapsShip == null && shootDst.getShooter() != CampaignScreen.ship &&
+                    shootDst.isOverlapingWith(CampaignScreen.ship) && !shootDst.isShocked() && !CampaignScreen.ship.isUndamagable()) {
 
                 //Almacenamos el shoot y lo eliminamos de la lista a comprobar
                 shootOverlapsShip = shootDst;
@@ -97,23 +115,86 @@ public class CollissionsManager {
 
         //Ahora delegamos el tratamiento de las colisiones a otros métodos
         if (enemyOverlapsShip != null) {
-            manageEnemyToShip(enemyOverlapsShip, ship);
+            manageEnemyToShip(enemyOverlapsShip, CampaignScreen.ship);
         } else if (shootOverlapsShip != null) {
-            manageShootToShip(shootOverlapsShip, ship);
+            manageShootToShip(shootOverlapsShip, CampaignScreen.ship);
         }
         manageShootsToEnemies();
         manageShootsToShoots();
     }
 
+    private static void updateMultiplayer(){
+        Array<Shoot> shoots = new Array<Shoot>(ShootsManager.shoots);
+        Array<Shoot> shootsSource = new Array<Shoot>(ShootsManager.shoots);
+
+        boolean shootOverlapped;
+
+        // Comprobamos las colisiones entre los shoots y el jugador y el enemigo
+        for(Shoot shoot: shoots){
+            shootOverlapped = false;
+            // Intento de colision con el enemigo
+            if(shoot.getShooter() instanceof PlayerShip &&
+                    shoot.isOverlapingWith(MultiplayerScreen.enemyShip) &&
+                    !shoot.isShocked() &&
+                    !MultiplayerScreen.enemyShip.isUndamagable() ){
+                // Colisión con el enemigo
+                enemyShootCollision = new Pair<EnemyShip, Shoot>(MultiplayerScreen.enemyShip,shoot);
+                shootOverlapped = true;
+            }
+            // Intento de colision con el player
+            if(shoot.getShooter() instanceof EnemyShip &&
+                    shoot.isOverlapingWith(MultiplayerScreen.playerShip) &&
+                    !shoot.isShocked() &&
+                    !MultiplayerScreen.playerShip.isUndamagable()){
+                // Colisión con el player
+                playerShootCollision = new Pair<PlayerShip, Shoot>(MultiplayerScreen.playerShip,shoot);
+                shootOverlapped = true;
+            }
+
+            if(!shootOverlapped){
+                for (Shoot shootSrc : shootsSource) {
+                    if (!shoot.equals(shootSrc) && shoot.isOverlapingWith(shootSrc)
+                            && !shoot.isShocked() && !shootSrc.isShocked()
+                            && !shoot.getShooter().equals(shootSrc) && !shootSrc.getShooter().equals(shoot)
+                            && !shoot.getShooter().equals(shootSrc.getShooter()) && !shootSrc.getShooter().equals(shoot.getShooter())) {
+                        //Añadimos el par colisionado a la lista
+                        shootsToShoots.add(new Pair<Shoot, Shoot>(shoot, shootSrc));
+                        //Borramos los elementos de la colisión para que no se comprueben más
+                        shoots.removeValue(shoot, false);
+                        shootsSource.removeValue(shootSrc, false);
+
+                        //Si la bala ya ha chocado, salimos del for
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(playerShootCollision != null){
+            managesPlayerShootCollision();
+        }
+        if(enemyShootCollision != null){
+            managesEnemyShootCollision();
+        }
+        manageShootsToShoots();
+    }
+
+    private static void managesPlayerShootCollision(){
+        playerShootCollision.getFirst().receiveDamage();
+    }
+    private static void managesEnemyShootCollision(){
+        enemyShootCollision.getFirst().receiveDamage();
+    }
+
     //Gestiona una colisión de enemigo a la nave
-    private static void manageEnemyToShip(Enemy enemy, CampaignShip ship) {
-        ship.receiveDamage();
+    private static void manageEnemyToShip(Enemy enemy, LandscapeShip landscapeShip) {
+        landscapeShip.receiveDamage();
         EnemiesManager.manageCollisionWithShip(enemy);
     }
 
     //Gestiona una colisión de shoot a la nave
-    private static void manageShootToShip(Shoot shoot, CampaignShip ship) {
-        ship.receiveDamage();
+    private static void manageShootToShip(Shoot shoot, LandscapeShip landscapeShip) {
+        landscapeShip.receiveDamage();
         ShootsManager.manageCollisionWithShip(shoot);
     }
 
@@ -131,6 +212,7 @@ public class CollissionsManager {
         for (Pair<Shoot, Shoot> shootToShoot: shootsToShoots) {
             ShootsManager.manageCollisionWithShoot(shootToShoot);
         }
+        shootsToShoots.clear();
         shootsToShoots = new Array<Pair<Shoot, Shoot>>();
     }
 

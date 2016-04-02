@@ -20,8 +20,8 @@ import com.tfg.spacegame.utils.enums.TypePowerUp;
 public class MultiplayerScreen extends GameScreen implements WarpListener{
     final SpaceGame game;
 
-    private PlayerShip  playerShip;
-    private EnemyShip   enemyShip;
+    public static PlayerShip playerShip;
+    public static EnemyShip   enemyShip;
     public static float enemyYposition;
     private final float MAX_TIME_TO_START_GAME = 5f;
 
@@ -43,7 +43,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     private boolean abandonPlayer;
     private boolean abandonEnemy;
 
-    public MultiplayerScreen(final SpaceGame game, String roomId, boolean createRoom){
+    public MultiplayerScreen(final SpaceGame game, String roomId, Boolean createRoom){
         this.game = game;
 
         background = AssetsManager.loadTexture("background");
@@ -69,7 +69,6 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         enemyBurstPowerUp    = new BurstPowerUp("burstEnemy",SpaceGame.width/3,SpaceGame.height - 55);
         enemyRegLifePowerUp  = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2,SpaceGame.height-55);
 
-        EnemiesManager.loadMultiplayerEnemies(enemyShip);
         CollissionsManager.load();
         ShootsManager.load();
         CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
@@ -133,8 +132,8 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void renderStart(float delta) {
         playerShip.render();
+        enemyShip.render();
 
-        EnemiesManager.render();
         ShootsManager.render();
 
         playerBurstPowerUp.render();
@@ -146,8 +145,9 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     @Override
     public void updateStart(float delta) {
-        EnemiesManager.enemies.first().update(delta);
-        CollissionsManager.update(delta, playerShip);
+        enemyShip.update(delta);
+
+        CollissionsManager.update();
         ShootsManager.update(delta, playerShip);
         CameraManager.update(delta);
 
@@ -170,7 +170,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
                 playerRegLifePowerUp.setTouched();
                 WarpController.getInstance().sendGameUpdate(TypePowerUp.REGLIFE.toString());
             }else {
-                playerShip.shoot(coordinates.x, coordinates.y);
+                playerShip.shoot();
                 WarpController.getInstance().sendGameUpdate("SHOOT");
             }
         }
@@ -178,7 +178,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         WarpController.getInstance().sendGameUpdate(""+playerShip.getCenter().y);
 
         if(backToMainMenu)
-            game.setScreen(new MainMenuScreen(game));
+            ScreenManager.changeScreen(game, MainMenuScreen.class);
 
         if(playerBurstPowerUp.isTouched())
             playerBurstPowerUp.act(delta, playerShip);
@@ -218,7 +218,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void updateWin(float delta) {
         if(Gdx.input.justTouched() && backToMainMenu){
-            game.setScreen(new MainMenuScreen(game));
+            ScreenManager.changeScreen(game, MainMenuScreen.class);
         }
     }
 
@@ -236,7 +236,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     @Override
     public void updateLose(float delta) {
         if(Gdx.input.justTouched() && backToMainMenu){
-            game.setScreen(new MainMenuScreen(game));
+            ScreenManager.changeScreen(game,MainMenuScreen.class);
         }
     }
 
@@ -253,7 +253,7 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
     @Override
     public void onDidntFoundRoom(String message) {
-        game.setScreen(new MultiplayerMenuScreen(game));
+        ScreenManager.changeScreen(game, MultiplayerMenuScreen.class);
     }
 
     @Override

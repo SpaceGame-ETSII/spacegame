@@ -4,13 +4,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.LandscapeShip;
+import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Burst;
 import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.enums.TypeShoot;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.RedEnemy;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.*;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
@@ -128,7 +129,7 @@ public class ShootsManager {
             shoot.render();
     }
 
-    public static void update(float delta, CampaignShip ship){
+    public static void update(float delta, LandscapeShip landscapeShip){
         for(Shoot shoot: shoots){
             shoot.update(delta);
 
@@ -143,7 +144,7 @@ public class ShootsManager {
 
         for(Burst burst: bursts){
             if(!burst.isEndShooting()){
-                burst.updateBurst(ship);
+                burst.updateBurst(landscapeShip);
             }else
                 bursts.removeValue(burst, false);
         }

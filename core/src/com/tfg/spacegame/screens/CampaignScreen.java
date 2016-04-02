@@ -3,7 +3,6 @@ package com.tfg.spacegame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
-import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.*;
@@ -52,7 +51,7 @@ public class CampaignScreen extends GameScreen {
         state = GameState.READY;
 
         //Creamos los objetos de juego
-        ship = new CampaignShip("ship");
+        ship = new CampaignShip();
         inventary = new Inventary();
 
         background = AssetsManager.loadTexture("background");
@@ -138,7 +137,7 @@ public class CampaignScreen extends GameScreen {
                     menuExitDialog.setStateToWaiting();
             }
         } else if (menuExitDialog.getState().equals(DialogBoxState.CONFIRMED)) {
-            game.setScreen(new MainMenuScreen(game));
+            ScreenManager.changeScreen(game, MainMenuScreen.class);
             disposeScreen();
         } else if (menuExitDialog.getState().equals(DialogBoxState.CANCELLED)) {
             menuExitDialog.setStateToHidden();
@@ -226,7 +225,7 @@ public class CampaignScreen extends GameScreen {
         }
 
         //Realizamos la lógica de los objetos en juego
-        CollissionsManager.update(delta, ship);
+        CollissionsManager.update();
         EnemiesManager.update(delta);
         ShootsManager.update(delta, ship);
     }
@@ -243,7 +242,7 @@ public class CampaignScreen extends GameScreen {
     public void updateWin(float delta) {
         if(ship.getX() > SpaceGame.width){
             if (TouchManager.isTouchedAnyToucher()) {
-                game.setScreen(new DemoMenuScreen(game));
+                ScreenManager.changeScreen(game, DemoMenuScreen.class);
                 disposeScreen();
             }
         }else{
@@ -261,7 +260,7 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void updateLose(float delta) {
         if (TouchManager.isTouchedAnyToucher() && ship.destroyEffect.isComplete()) {
-            game.setScreen(new DemoMenuScreen(game));
+            ScreenManager.changeScreen(game, DemoMenuScreen.class);
             disposeScreen();
         }
         ship.update(delta,ship.getY(),false);
