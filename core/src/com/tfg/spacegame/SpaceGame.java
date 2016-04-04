@@ -49,7 +49,6 @@ public class SpaceGame extends Game {
 		camera.setToOrtho(false, SpaceGame.width, SpaceGame.height);
 
 		ScreenManager.changeScreen(this, MainMenuScreen.class);
-		System.out.println(ScreenManager.isCurrentScreenEqualsTo(MultiplayerScreen.class));
 	}
 
 	public void render() {

@@ -29,7 +29,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final SpaceGame game) {
         this.game = game;
 
-        SpaceGame.changeToLandscape();
+        //SpaceGame.changeToLandscape();
 
         AudioManager.loadSounds();
         if (!AudioManager.isPlaying())

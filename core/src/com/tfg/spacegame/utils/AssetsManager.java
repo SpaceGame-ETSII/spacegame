@@ -80,6 +80,10 @@ public class AssetsManager {
         assetsReferences.put("arrow", othersFolder+"flecha.png");
         assetsReferences.put("slot", othersFolder+"slot.png");
         assetsReferences.put("arrow_back", othersFolder+"flecha_atras.png");
+        assetsReferences.put("buttonMusic", othersFolder+"boton_musica.png");
+        assetsReferences.put("buttonMusicCancel", othersFolder+"boton_musica_cancelado.png");
+        assetsReferences.put("buttonEffect", othersFolder+"boton_efecto.png");
+        assetsReferences.put("buttonEffectCancel", othersFolder+"boton_efecto_cancelado.png");
 
         //Texturas referentes a ships
         assetsReferences.put("ship", shipsFolder+"nave.png");
