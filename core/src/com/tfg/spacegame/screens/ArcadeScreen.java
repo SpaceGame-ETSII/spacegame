@@ -53,12 +53,6 @@ public class ArcadeScreen extends GameScreen {
 	//Cuadro de diálogo que se preguntará confirmación para salir del modo
 	private DialogBox menuExitDialog;
 
-	private float contador;
-	private int total1;
-	private int total2;
-	private int total3;
-	private int fps;
-
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
 
@@ -84,12 +78,6 @@ public class ArcadeScreen extends GameScreen {
 		timeAlive = 0;
 		record = ArcadeScreen.obtainRecord();
 		AudioManager.playMusic("arcade", true);
-
-		contador = 1;
-		total1 = 0;
-		total2 = 0;
-		total3 = 0;
-		fps = 0;
 	}
 
 	//Recoge el record, y si no hay ninguno coge un 0 por defecto
@@ -126,26 +114,6 @@ public class ArcadeScreen extends GameScreen {
 	public void renderEveryState(float delta) {
 		if (!state.equals(GameState.START))
 			BackgroundManager.render();
-
-		/*
-		total1 = ObstacleManager.obstaclesInTop.size + ObstacleManager.obstaclesInBottom.size;
-		total2 = ObstacleManager.deletedSmallObstacles.size +
-						ObstacleManager.deletedMediumObstacles.size +
-						ObstacleManager.deletedSmallObstacles.size;
-		total3 = total1 + total2;
-
-		if (contador > 0.5) {
-			contador = 0;
-			fps = (int) (1/delta);
-		} else {
-			contador += delta;
-		}
-
-		FontManager.draw("FPS: " + fps, 100, 600);
-		FontManager.draw("Total: " + total3, 100, 550);
-		FontManager.draw("Total en pantalla: " + total1, 100, 500);
-		FontManager.draw("Total borrados: " + total2, 100, 450);
-		*/
 	}
 
 	@Override
@@ -166,9 +134,8 @@ public class ArcadeScreen extends GameScreen {
 	@Override
 	public void updateReady(float delta) {
 		//Si se toca la pantalla, pasamos a START
-		if (Gdx.input.justTouched()) {
+		if (Gdx.input.justTouched())
 			state = GameState.START;
-		}
 	}
 
 	@Override
