@@ -2,8 +2,10 @@ package com.tfg.spacegame.gameObjects.multiplayerMode.powerUps;
 
 
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
+import com.tfg.spacegame.utils.AssetsManager;
 
 public class RegLifePowerUp extends PowerUp{
 
@@ -12,13 +14,12 @@ public class RegLifePowerUp extends PowerUp{
     }
 
     @Override
-    public void act(float delta, GameObject g) {
-        if(g instanceof PlayerShip){
-            PlayerShip playerShip = (PlayerShip)g;
-            playerShip.healHalfLife();
-        }else if(g instanceof EnemyShip){
-            EnemyShip enemyShip = (EnemyShip)g;
-            enemyShip.healHalfLife();
-        }
+    public void act(float delta, LandscapeShip ship) {
+        int damRec = ship.getDamageReceived();
+        damRec-=damRec/2;
+        if(damRec<0)
+            damRec=0;
+
+        ship.setDamageReceived(damRec);
     }
 }

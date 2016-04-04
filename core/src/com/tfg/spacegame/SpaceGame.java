@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.screens.MainMenuScreen;
+import com.tfg.spacegame.screens.MultiplayerScreen;
 import com.tfg.spacegame.utils.*;
 
 public class SpaceGame extends Game {
@@ -47,7 +48,8 @@ public class SpaceGame extends Game {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, SpaceGame.width, SpaceGame.height);
 
-		this.setScreen(new MainMenuScreen(this));
+		ScreenManager.changeScreen(this, MainMenuScreen.class);
+		System.out.println(ScreenManager.isCurrentScreenEqualsTo(MultiplayerScreen.class));
 	}
 
 	public void render() {

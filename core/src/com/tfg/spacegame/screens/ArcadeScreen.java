@@ -266,7 +266,7 @@ public class ArcadeScreen extends GameScreen {
 				}
 			}
 		} else if (menuExitDialog.getState().equals(DialogBoxState.CONFIRMED)) {
-			game.setScreen(new MainMenuScreen(game));
+			ScreenManager.changeScreen(game, MainMenuScreen.class);
 			this.disposeScreen();
 		} else if (menuExitDialog.getState().equals(DialogBoxState.CANCELLED)) {
 			menuExitDialog.setStateToHidden();

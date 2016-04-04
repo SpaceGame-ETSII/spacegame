@@ -10,6 +10,7 @@ import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.utils.ScreenManager;
 
 public class DemoMenuScreen implements Screen {
 
@@ -95,17 +96,17 @@ public class DemoMenuScreen implements Screen {
         //Si el contador es cero, comprobamos si hay algún botón pulsado y actuamos en consecuencia
         if (timeUntilExit <= 0) {
             if (allEnemies.isPressed()) {
-                game.setScreen(new CampaignScreen(game, allEnemies.getContent()));
+                ScreenManager.changeScreen(game, CampaignScreen.class, allEnemies.getContent());
             } else if (colorEnemies.isPressed()) {
-                game.setScreen(new CampaignScreen(game, colorEnemies.getContent()));
+                ScreenManager.changeScreen(game, CampaignScreen.class, colorEnemies.getContent());
             } else if (greenEnemy.isPressed()) {
-                game.setScreen(new CampaignScreen(game, greenEnemy.getContent()));
+                ScreenManager.changeScreen(game, CampaignScreen.class, greenEnemy.getContent());
             } else if (orangeEnemy.isPressed()) {
-                game.setScreen(new CampaignScreen(game, orangeEnemy.getContent()));
+                ScreenManager.changeScreen(game, CampaignScreen.class, orangeEnemy.getContent());
             } else if (purpleEnemy.isPressed()) {
-                game.setScreen(new CampaignScreen(game, purpleEnemy.getContent()));
+                ScreenManager.changeScreen(game, CampaignScreen.class, purpleEnemy.getContent());
             } else if (back.isPressed()){
-                game.setScreen(new MainMenuScreen(game));
+                ScreenManager.changeScreen(game, MainMenuScreen.class);
             }
         } else {
             timeUntilExit -= delta;
