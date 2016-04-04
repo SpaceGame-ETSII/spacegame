@@ -28,19 +28,18 @@ public class OptionsScreen implements Screen {
     //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
     private float timeUntilExit;
 
-    public Texture background;
-
     public OptionsScreen(final SpaceGame game) {
         this.game = game;
 
-        background = AssetsManager.loadTexture("background2");
         AudioManager.playMusic("menu", true);
 
         //Creamos los botones para la pantalla de opciones
         music = new OptionButton("buttonMusic", "buttonMusicCancel",200, 265);
         effect = new OptionButton("buttonEffect", "buttonEffectCancel",260, 265);
         back = new Button("arrow_back", 750, 430, null, false);
-        resetArcadePuntuation = new Button("button", 100, 180, "resetArcadePuntuation", true);
+        resetArcadePuntuation = new Button("button", 200, 180, "resetArcadePuntuation", true);
+        //Cambiamos la escala botón para resetear la puntuación para hacerlo más adecuado al texto
+        resetArcadePuntuation.setScale(0.6f,0.6f);
 
         //Creamos el cuadro de diálogo para borrar la puntuación del modo arcade
         menuResetDialog = new DialogBox("resetArcadePuntuationQuestion");
@@ -81,7 +80,7 @@ public class OptionsScreen implements Screen {
         SpaceGame.batch.begin();
 
         //Pintamos el fondo y el título de la pantalla
-        SpaceGame.batch.draw(background, 0,0);
+        BackgroundManager.render();
         FontManager.drawTitle("optionsTitle", 280, 420);
 
         //Pintamos las opciones para el audio del juego
@@ -93,7 +92,7 @@ public class OptionsScreen implements Screen {
         back.render();
 
         //Pintamos la puntuación del usuario en el modo arcade
-        FontManager.drawText("record", ": " + ArcadeScreen.obtainRecord(), 100,150);
+        FontManager.drawText("record", ": " + ArcadeScreen.obtainRecord() + " - ", 100, 211);
 
         //En función de si oculto o no, pintamos el cuadro de diálogo para borrar la puntuación del modo arcade
         if (menuResetDialog.getState().equals(DialogBoxState.HIDDEN))
@@ -107,6 +106,9 @@ public class OptionsScreen implements Screen {
 	}
 
     public void update(float delta) {
+        //Actualizamos el background
+        BackgroundManager.update(delta,true);
+
         //Actualizamos los botones del menú de opciones
         back.update();
         resetArcadePuntuation.update();
