@@ -112,8 +112,6 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderEveryState(float delta) {
-		if (!state.equals(GameState.START))
-			BackgroundManager.render();
 	}
 
 	@Override
@@ -122,8 +120,6 @@ public class ArcadeScreen extends GameScreen {
 		if (!state.equals(GameState.PAUSE)) {
 			CameraManager.update(delta);
 		}
-
-		BackgroundManager.update(delta, !state.equals(GameState.START));
 	}
 
 	@Override

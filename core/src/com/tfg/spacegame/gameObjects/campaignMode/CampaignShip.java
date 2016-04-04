@@ -11,6 +11,7 @@ public class CampaignShip extends LandscapeShip {
     //Indica la velocidad para el movimiento de la nave
     public static final float SPEED = 50;
 
+    //Indica la posición que tendrá la nave con respecto al eje X
     private static final float X_POSITION = 80;
 
     //Indica el color de la nave

@@ -92,17 +92,10 @@ public class CampaignScreen extends GameScreen {
     }
 
     @Override
-    public void renderEveryState(float delta) {
-        BackgroundManager.render();
-    }
+    public void renderEveryState(float delta) { }
 
     @Override
-    public void updateEveryState(float delta) {
-        if (state.equals(GameState.START))
-            BackgroundManager.update(delta, false);
-        else
-            BackgroundManager.update(delta, true);
-    }
+    public void updateEveryState(float delta) { }
 
     @Override
     public void renderPause(float delta) {
@@ -131,7 +124,6 @@ public class CampaignScreen extends GameScreen {
             } else {
                 Vector3 v = TouchManager.getFirstTouchPos();
                 inventary.update(delta, ship, v.x, v.y);
-                ship.updateUndamagable(delta);
                 exit.update();
                 if (exit.isPressed())
                     menuExitDialog.setStateToWaiting();

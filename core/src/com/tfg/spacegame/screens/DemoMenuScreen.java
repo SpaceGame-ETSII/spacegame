@@ -52,8 +52,7 @@ public class DemoMenuScreen implements Screen {
 
         SpaceGame.batch.begin();
 
-        // Pintamos el fondo y el título del juego
-        BackgroundManager.render();
+        // Pintamos el título del juego
         FontManager.drawText("titleDemo", 229, 420);
 
         // Delegamos el render de los botones
@@ -76,8 +75,6 @@ public class DemoMenuScreen implements Screen {
         orangeEnemy.update();
         purpleEnemy.update();
         back.update();
-
-        BackgroundManager.update(delta, true);
 
         //Si se acaba de tocar algún botón, reiniciamos el contador
         if (Gdx.input.justTouched()) {

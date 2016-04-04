@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.CameraManager;
+import com.tfg.spacegame.utils.ScreenManager;
+import com.tfg.spacegame.utils.enums.GameState;
 
 public class LandscapeShip extends GameObject {
 
@@ -72,31 +75,34 @@ public class LandscapeShip extends GameObject {
             //Actualizamos el efecto de particulas
             fireEffect.update(delta);
 
-            updateUndamagable(delta);
-        }
-    }
-
-    public void updateUndamagable(float delta) {
-        //Si la nave está en estado invulnerable, el contador se reduce y actualizamos el valor de timeForInvisible
-        if (this.isUndamagable()) {
-            //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
-            if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
-                timeForInvisible = -RANGE_INVISIBLE_TIMER;
+            //Si la nave está en estado invulnerable, el contador se reduce y actualizamos el valor de timeForInvisible
+            if (this.isUndamagable()) {
+                //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
+                if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
+                    timeForInvisible = -RANGE_INVISIBLE_TIMER;
+                }
+                timeForInvisible++;
+                timeToUndamagable -= delta;
             }
-            timeForInvisible++;
-            timeToUndamagable -= delta;
-        }
 
-        if (timeToUndamagable <= 0)
-            this.changeToDamagable();
+            if (timeToUndamagable <= 0)
+                this.changeToDamagable();
+        }
     }
 
     public void render(){
         if(isDefeated())
             destroyEffect.draw(SpaceGame.batch);
         else{
-            //Si la nave no está en modo invulnerable o lo está y timeForInvisible es positivo, mostramos la nave
-            if (!this.isUndamagable() || (this.isUndamagable() && timeForInvisible > 0)) {
+            /* Mostramos la nave si:
+             * -> La nave no está en modo invulnerable
+             * -> La nave está en modo invulnerable y timeForInvisible es positivo
+             * -> Estamos en el modo campaña y el estado está en pause
+             */
+            if (!this.isUndamagable() ||
+                    (this.isUndamagable() && timeForInvisible > 0) ||
+                    (ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class) &&
+                            ScreenManager.getCurrentGameState().equals(GameState.PAUSE))) {
                 super.render();
                 SpaceGame.batch.draw(cockpit, this.getX() + 45, this.getY() + 22);
             }

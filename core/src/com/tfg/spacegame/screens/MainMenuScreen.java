@@ -56,8 +56,7 @@ public class MainMenuScreen implements Screen {
 
         SpaceGame.batch.begin();
 
-        // Pintamos el fondo y el título del juego
-        BackgroundManager.render();
+        // Pintamos el título del juego
         FontManager.drawTitle("titleGame", 229, 420);
 
         // Delegamos el render de los botones
@@ -78,8 +77,6 @@ public class MainMenuScreen implements Screen {
         multiplayer.update();
         options.update();
         exit.update();
-
-        BackgroundManager.update(delta, true);
 
         //Si se acaba de tocar algún botón, reiniciamos el contador y paramos la música
         if (Gdx.input.justTouched()) {

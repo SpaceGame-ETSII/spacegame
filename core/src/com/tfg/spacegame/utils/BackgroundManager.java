@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.screens.ArcadeScreen;
+import com.tfg.spacegame.utils.enums.GameState;
 
 public class BackgroundManager {
 
@@ -38,13 +40,13 @@ public class BackgroundManager {
         isLoaded = true;
     }
 
-    public static void update(float delta, boolean stopped) {
+    public static void update(float delta) {
         //Si no se han cargado los fondos, lo hacemos
         if (!isLoaded)
             BackgroundManager.load();
 
-        //Si no avanzamos el fondo, restamos sólo el valor del primero
-        int decrease = (stopped) ? 3 : 1;
+        //El fondo tendrá un decremento de velocidad si el estado del juego no es START
+        int decrease = (!ScreenManager.getCurrentGameState().equals(GameState.START)) ? 3 : 1;
 
         //Recalculamos las posiciones de los fondos
         for (int i=0; i<backgrounds.size; i++) {
@@ -59,9 +61,13 @@ public class BackgroundManager {
         if (!isLoaded)
             BackgroundManager.load();
 
-        //Pintamos los fondos
-        for (int i=0; i<backgrounds.size; i++)
-            render(i);
+        //Pintamos el fondo únicamente si no estamos en el START del arcade, ya que ahí pinta de forma excepcional
+        if (!(ScreenManager.isCurrentScreenEqualsTo(ArcadeScreen.class) &&
+                ScreenManager.getCurrentGameState().equals(GameState.START))) {
+            //Pintamos los fondos
+            for (int i = 0; i < backgrounds.size; i++)
+                render(i);
+        }
     }
 
     //Pinta el fondo concreto que le indiquemos según su posición en el Array
