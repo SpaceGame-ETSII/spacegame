@@ -27,15 +27,16 @@ public abstract class BasicScreen implements Screen, InputProcessor {
         BackgroundManager.update(delta);
 
         //Actualizamos el contenido general del juego
-        this.update1(delta);
+        this.mainRender(delta);
 
         // Terminamos el proceso de renderizado
         SpaceGame.batch.end();
+
+        this.update(delta);
     }
 
-    protected void update1(float delta) {
-
-    }
+    protected void mainRender(float delta) {}
+    protected void update(float delta) {}
 
     @Override
     public boolean keyDown(int keycode) {

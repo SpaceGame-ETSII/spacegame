@@ -46,7 +46,7 @@ public class BackgroundManager {
             BackgroundManager.load();
 
         //El fondo tendrá un decremento de velocidad si el estado del juego no es START
-        int decrease = (!ScreenManager.getCurrentGameState().equals(GameState.START)) ? 3 : 1;
+        int decrease = (!ScreenManager.isCurrentStateEqualsTo(GameState.START)) ? 3 : 1;
 
         //Recalculamos las posiciones de los fondos
         for (int i=0; i<backgrounds.size; i++) {
@@ -63,7 +63,7 @@ public class BackgroundManager {
 
         //Pintamos el fondo únicamente si no estamos en el START del arcade, ya que ahí pinta de forma excepcional
         if (!(ScreenManager.isCurrentScreenEqualsTo(ArcadeScreen.class) &&
-                ScreenManager.getCurrentGameState().equals(GameState.START))) {
+                ScreenManager.isCurrentStateEqualsTo(GameState.START))) {
             //Pintamos los fondos
             for (int i = 0; i < backgrounds.size; i++)
                 render(i);

@@ -71,16 +71,7 @@ public class OptionsScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        SpaceGame.camera.update();
-        SpaceGame.batch.setProjectionMatrix(SpaceGame.camera.combined);
-
-        SpaceGame.batch.begin();
-
-        //Pintamos el fondo y el título de la pantalla
-        BackgroundManager.render();
+        //Pintamos el título de la pantalla
         FontManager.drawTitle("optionsTitle", 280, 420);
 
         //Pintamos las opciones para el audio del juego
@@ -99,16 +90,9 @@ public class OptionsScreen implements Screen {
             resetArcadePuntuation.render();
         else
             menuResetDialog.render();
-
-        SpaceGame.batch.end();
-
-        this.update(delta);
 	}
 
     public void update(float delta) {
-        //Actualizamos el background
-        BackgroundManager.update(delta,true);
-
         //Actualizamos los botones del menú de opciones
         back.update();
         resetArcadePuntuation.update();

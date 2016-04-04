@@ -102,7 +102,7 @@ public class LandscapeShip extends GameObject {
             if (!this.isUndamagable() ||
                     (this.isUndamagable() && timeForInvisible > 0) ||
                     (ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class) &&
-                            ScreenManager.getCurrentGameState().equals(GameState.PAUSE))) {
+                            ScreenManager.isCurrentStateEqualsTo(GameState.PAUSE))) {
                 super.render();
                 SpaceGame.batch.draw(cockpit, this.getX() + 45, this.getY() + 22);
             }

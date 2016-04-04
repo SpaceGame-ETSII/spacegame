@@ -74,12 +74,16 @@ public class ScreenManager {
         return result;
     }
 
-    public static GameState getCurrentGameState(){
-        GameState result = null;
+    // Devuelve true si el estado actual del juego es el mismo que el pasado por parámetro
+    public static boolean isCurrentStateEqualsTo(GameState state){
+        boolean result = false;
+
         if(currentScreen instanceof GameScreen){
             GameScreen screen = (GameScreen) currentScreen;
-            result = screen.state;
+            if (screen.state != null && screen.state.equals(state))
+                result = true;
         }
+
         return result;
     }
 

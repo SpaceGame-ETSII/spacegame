@@ -78,7 +78,7 @@ public abstract class GameScreen extends BasicScreen {
     public abstract void disposeScreen();
 
     @Override
-    public void update1(float delta) {
+    public void mainRender(float delta) {
         // Hacemos lo que se tenga que hacer en cada estado del juego
         renderEveryState(delta);
         updateEveryState(delta);

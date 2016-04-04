@@ -1,18 +1,15 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.tfg.spacegame.BasicScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
-import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.AudioManager;
-import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.FontManager;
 import com.tfg.spacegame.utils.ScreenManager;
 
-public class DemoMenuScreen implements Screen {
+public class DemoMenuScreen extends BasicScreen {
 
     private final SpaceGame game;
 
@@ -43,15 +40,7 @@ public class DemoMenuScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        SpaceGame.camera.update();
-        SpaceGame.batch.setProjectionMatrix(SpaceGame.camera.combined);
-
-        SpaceGame.batch.begin();
-
+    public void mainRender(float delta) {
         // Pintamos el título del juego
         FontManager.drawText("titleDemo", 229, 420);
 
@@ -62,10 +51,6 @@ public class DemoMenuScreen implements Screen {
         orangeEnemy.render();
         purpleEnemy.render();
         back.render();
-
-        SpaceGame.batch.end();
-
-        this.update(delta);
     }
 
     public void update(float delta) {
@@ -108,26 +93,6 @@ public class DemoMenuScreen implements Screen {
         } else {
             timeUntilExit -= delta;
         }
-    }
-
-    @Override
-    public void show() {
-    }
-
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
     }
 
     @Override
