@@ -76,7 +76,7 @@ public class LandscapeShip extends GameObject {
         }
     }
 
-    private void updateUndamagable(float delta) {
+    public void updateUndamagable(float delta) {
         //Si la nave está en estado invulnerable, el contador se reduce y actualizamos el valor de timeForInvisible
         if (this.isUndamagable()) {
             //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
