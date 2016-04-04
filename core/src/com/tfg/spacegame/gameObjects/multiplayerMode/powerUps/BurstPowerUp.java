@@ -2,6 +2,7 @@ package com.tfg.spacegame.gameObjects.multiplayerMode.powerUps;
 
 
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.utils.ShootsManager;
 
 public class BurstPowerUp extends PowerUp{
@@ -18,7 +19,7 @@ public class BurstPowerUp extends PowerUp{
     }
 
     @Override
-    public void act(float delta, GameObject g) {
+    public void act(float delta, LandscapeShip g) {
         // Disparamos una ráfaga continuada de 3 segundos
         if(burstTime < BURST_TIME){
             if(shootTime >= SHOOT_TIME){

@@ -1,8 +1,7 @@
 package com.tfg.spacegame.gameObjects.campaignMode.shoots;
 
-import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
+import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
 import com.tfg.spacegame.utils.ShootsManager;
@@ -48,7 +47,7 @@ public class Burst {
     }
 
     //Actualiza el estado de la ráfaga ee disparo que haya en pantalla
-    public void updateBurst(CampaignShip ship) {
+    public void updateBurst(LandscapeShip landscapeShip) {
         //Si estamos en medio de una ráfaga de la nave, continuamos disparando si es el momento
         if (numberOfBasicShoots > 0) {
             //Disparamos un nuevo shoot en la ráfaga si no hubo un último, o bien la distancia recorrida por el
@@ -59,7 +58,7 @@ public class Burst {
                 if(typeToBurst.equals(TypeShoot.BASIC))
                     lastShootOfBurst = ShootsManager.shootOneBasicWeapon(burstShooter);
                 else if(typeToBurst.equals(TypeShoot.ORANGE))
-                    lastShootOfBurst = ShootsManager.shootOneOrangeWeapon(ship,(int)(ship.getX() + ship.getWidth()),(int) (ship.getY() + ship.getHeight()/2), 45f ,burstTarget, numberOfBasicShoots);
+                    lastShootOfBurst = ShootsManager.shootOneOrangeWeapon(landscapeShip,(int)(landscapeShip.getX() + landscapeShip.getWidth()),(int) (landscapeShip.getY() + landscapeShip.getHeight()/2), 45f ,burstTarget, numberOfBasicShoots);
                 numberOfBasicShoots -= 1;
                 startPoint = lastShootOfBurst.getX();
                 //Si acabamos de lanzar el último disparo de la ráfaga, no lo guardamos

@@ -67,7 +67,7 @@ public class Orange extends Shoot{
 
         timeGoingFast = 0;
 
-        // Dependiendo si es el Ship o si es el Enemy
+        // Dependiendo si es el LandscapeShip o si es el Enemy
         // tendrá una configuración distinta
         // ya que el enemy tendrá que girar mas rápidamente al inicio.
         if(getShooter() instanceof CampaignShip){

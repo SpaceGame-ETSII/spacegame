@@ -8,6 +8,7 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.utils.ScreenManager;
 import com.tfg.spacegame.utils.TextInput;
 
 public class MultiplayerMenuScreen implements Screen{
@@ -79,17 +80,17 @@ public class MultiplayerMenuScreen implements Screen{
 			if(createGame.isPressed()){
 				gameNameInput.show();
 				if(gameNameInput.acceptInputDialog()){
-					game.setScreen(new MultiplayerScreen(game,gameNameInput.getText(),true));
+					ScreenManager.changeScreen(game,MultiplayerScreen.class, gameNameInput.getText(), false);
 				}
 
 			}
 			else if(quickGame.isPressed()){
-				game.setScreen(new MultiplayerScreen(game,"",false));
+				ScreenManager.changeScreen(game,MultiplayerScreen.class, "", false);
 			}
 			else if(joinGame.isPressed()){
 				gameNameInput.show();
 				if(gameNameInput.acceptInputDialog()){
-					game.setScreen(new MultiplayerScreen(game,gameNameInput.getText(),false));
+					ScreenManager.changeScreen(game, MultiplayerScreen.class ,gameNameInput.getText(),false);
 				}
 			}
 		}else{

@@ -10,6 +10,7 @@ import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.utils.ScreenManager;
 
 public class MainMenuScreen implements Screen {
 
@@ -97,13 +98,13 @@ public class MainMenuScreen implements Screen {
         //Si el contador es cero, comprobamos si hay algún botón pulsado y actuamos en consecuencia
         if (timeUntilExit <= 0) {
             if (campaign.isPressed()) {
-                game.setScreen(new DemoMenuScreen(game));
+                ScreenManager.changeScreen(game,DemoMenuScreen.class);
             } else if (arcade.isPressed()) {
-                game.setScreen(new ArcadeScreen(game));
+                ScreenManager.changeScreen(game,ArcadeScreen.class);
             } else if (multiplayer.isPressed()) {
-                game.setScreen(new MultiplayerMenuScreen(game));
+                ScreenManager.changeScreen(game,MultiplayerMenuScreen.class);
             } else if (options.isPressed()) {
-                game.setScreen(new OptionsScreen(game));
+                ScreenManager.changeScreen(game,OptionsScreen.class);
             } else if (exit.isPressed()) {
                 Gdx.app.exit();
             }
