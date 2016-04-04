@@ -132,6 +132,7 @@ public class CampaignScreen extends GameScreen {
             } else {
                 Vector3 v = TouchManager.getFirstTouchPos();
                 inventary.update(delta, ship, v.x, v.y);
+                ship.updateUndamagable(delta);
                 exit.update();
                 if (exit.isPressed())
                     menuExitDialog.setStateToWaiting();

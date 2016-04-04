@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Green;
+import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.enums.ColorShip;
 import com.tfg.spacegame.utils.ShootsManager;
+import com.tfg.spacegame.utils.enums.GameState;
 
 public class CampaignShip extends GameObject {
 
@@ -110,20 +112,24 @@ public class CampaignShip extends GameObject {
             if (this.getY() > SpaceGame.height - getHeight())
                 this.setY(SpaceGame.height - getHeight());
 
-            //Si la nave está en estado invulnerable, el contador se reduce y actualizamos el valor de timeForInvisible
-            if (this.isUndamagable()) {
-                //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
-                if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
-                    timeForInvisible = -RANGE_INVISIBLE_TIMER;
-                }
-                timeForInvisible++;
-                timeToUndamagable -= delta;
-            }
-
-            if (timeToUndamagable <= 0)
-                this.changeToDamagable();
+            this.updateUndamagable(delta);
         }
 
+    }
+
+    public void updateUndamagable(float delta) {
+        //Si la nave está en estado invulnerable, el contador se reduce y actualizamos el valor de timeForInvisible
+        if (this.isUndamagable()) {
+            //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
+            if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
+                timeForInvisible = -RANGE_INVISIBLE_TIMER;
+            }
+            timeForInvisible++;
+            timeToUndamagable -= delta;
+        }
+
+        if (timeToUndamagable <= 0)
+            this.changeToDamagable();
     }
 
     public void setX(float x, float delta){
