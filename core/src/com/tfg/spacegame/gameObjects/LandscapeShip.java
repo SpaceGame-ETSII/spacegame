@@ -62,7 +62,6 @@ public class LandscapeShip extends GameObject {
         destroyEffect.getEmitters().first().setPosition(this.getCenter().x,this.getCenter().y);
     }
 
-
     public void update(float delta){
         //Actualizamos la posición del efecto de particulas de acuerdo con la posición del shooter
         this.updateParticleEffect();
@@ -73,19 +72,23 @@ public class LandscapeShip extends GameObject {
             //Actualizamos el efecto de particulas
             fireEffect.update(delta);
 
-            //Si la nave está en estado invulnerable, el contador se reduce y actualizamos el valor de timeForInvisible
-            if (this.isUndamagable()) {
-                //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
-                if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
-                    timeForInvisible = -RANGE_INVISIBLE_TIMER;
-                }
-                timeForInvisible++;
-                timeToUndamagable -= delta;
-            }
-
-            if (timeToUndamagable <= 0)
-                this.changeToDamagable();
+            updateUndamagable(delta);
         }
+    }
+
+    private void updateUndamagable(float delta) {
+        //Si la nave está en estado invulnerable, el contador se reduce y actualizamos el valor de timeForInvisible
+        if (this.isUndamagable()) {
+            //timeForInvisible irá saltando de uno en uno de un valor negativo a positivo según el rango, y vuelta a empezar
+            if (timeForInvisible >= RANGE_INVISIBLE_TIMER) {
+                timeForInvisible = -RANGE_INVISIBLE_TIMER;
+            }
+            timeForInvisible++;
+            timeToUndamagable -= delta;
+        }
+
+        if (timeToUndamagable <= 0)
+            this.changeToDamagable();
     }
 
     public void render(){

@@ -49,6 +49,7 @@ public class CampaignShip extends LandscapeShip {
             if (this.getY() > SpaceGame.height - getHeight())
                 this.setY(SpaceGame.height - getHeight());
         }
+
     }
 
     public void setX(float x, float delta){
