@@ -1,7 +1,9 @@
 package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.Screen;
+import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.utils.enums.GameState;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -9,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 public class ScreenManager {
 
     private static Class<?> currentClass;
+    private static Screen currentScreen;
 
     public static void changeScreen(SpaceGame game, Class<?> screenClass, Object ... moreParameters){
         Constructor<?> cons = null;
@@ -55,7 +58,7 @@ public class ScreenManager {
         }catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
-
+        currentScreen = newScreen;
         game.setScreen(newScreen);
     }
 
@@ -67,6 +70,15 @@ public class ScreenManager {
             }else if(moreParameters[i] instanceof Boolean){
                 result[i] = Boolean.class;
             }
+        }
+        return result;
+    }
+
+    public static GameState getCurrentGameState(){
+        GameState result = null;
+        if(currentScreen instanceof GameScreen){
+            GameScreen screen = (GameScreen) currentScreen;
+            result = screen.state;
         }
         return result;
     }
