@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class AudioManager {
 
-    private static float volumeMusic = 0.5f;
+    private static float volumeMusic = 0.3f;
     private static float volumeEffect = 0.7f;
 
     private static Music music;
@@ -19,11 +19,13 @@ public class AudioManager {
         sounds.put("arcade_shock_effect", AssetsManager.loadSound("arcade_shock_effect"));
         sounds.put("button_backward", AssetsManager.loadSound("button_backward"));
         sounds.put("button_forward", AssetsManager.loadSound("button_forward"));
-        //sounds.put("new_record", AssetsManager.loadSound("new_record"));
+        sounds.put("inventary", AssetsManager.loadSound("inventary"));
+        sounds.put("new_record", AssetsManager.loadSound("new_record"));
+        sounds.put("pause", AssetsManager.loadSound("pause"));
     }
 
     public static float getVolumeMusic() {
-        return volumeMusic;
+        return music.getVolume();
     }
 
     public static float getVolumeEffect() {
@@ -32,6 +34,7 @@ public class AudioManager {
 
     public static void setVolumeMusic(float volumeMusic) {
         AudioManager.volumeMusic = volumeMusic;
+        music.setVolume(volumeMusic);
     }
 
     public static void setVolumeEffect(float volumeEffect) {
@@ -39,6 +42,9 @@ public class AudioManager {
     }
 
     public static void playMusic(String name, boolean isLooping) {
+        if (music != null)
+            stopMusic();
+
         music = AssetsManager.loadMusic(name);
 
         music.setVolume(volumeMusic);
@@ -59,7 +65,10 @@ public class AudioManager {
     }
 
     public static boolean isPlaying() {
-        return music.isPlaying();
+        boolean res = false;
+        if (music != null)
+            res = music.isPlaying();
+        return res;
     }
 
     public static void pauseMusic() {

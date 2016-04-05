@@ -1,35 +1,41 @@
 package com.tfg.spacegame.gameObjects.multiplayerMode;
 
 
-import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
+import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.ShootsManager;
 
-public class PlayerShip extends CampaignShip {
+public class PlayerShip extends LandscapeShip {
 
-
+    public final float SPEED = 50;
 
     public PlayerShip() {
-        super("playerShip");
+        super("playerShip",0,0,5);
     }
 
-    public void update(float delta, float y, boolean canShipMove){
-        super.update(delta, y, canShipMove);
+    public void update(float delta, float y, boolean canShipMove) {
+        super.update(delta);
+        if(!this.isDefeated()){
+            //Movimiento de la nave
+            if (canShipMove) {
+                if (y < (this.getY() + this.getHeight() / 2))
+                    this.setY(this.getY() - (Math.abs(y - (this.getY() + this.getHeight() / 2)) * SPEED * delta));
+                if (y > (this.getY() + this.getHeight() / 2))
+                    this.setY(this.getY() + (Math.abs(y - (this.getY() + this.getHeight() / 2)) * SPEED * delta));
+            }
+            //Controlamos si la nave se sale de la pantalla
+            if (this.getY() < 0)
+                this.setY(0);
+            if (this.getY() > SpaceGame.height - getHeight())
+                this.setY(SpaceGame.height - getHeight());
+        }
+    }
+    public void shoot() {
+        ShootsManager.shootBurstBasicWeaponForShip(this);
     }
 
     public void healHalfLife(){
-        this.damageReceived-=damageReceived/2;
-        if(damageReceived<0)
-            damageReceived=0;
-        cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
+
     }
-
-    public boolean isDefeated(){
-        return this.damageReceived >= VITALITY;
-    }
-
-
-    public void render(){
-        super.render();
-    }
-
 }

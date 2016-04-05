@@ -2,6 +2,7 @@ package com.tfg.spacegame.gameObjects.multiplayerMode;
 
 
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.BurstPowerUp;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.RegLifePowerUp;
@@ -9,7 +10,7 @@ import com.tfg.spacegame.screens.MultiplayerScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
-public class EnemyShip extends Enemy {
+public class EnemyShip extends LandscapeShip {
 
     //Indica la velocidad para el movimiento de la nave
     private final float MAX_SPEED = 20;
@@ -17,10 +18,8 @@ public class EnemyShip extends Enemy {
     private final int MAX_VITALITY = 5;
 
     public EnemyShip() {
-        super("enemyShip", SpaceGame.width - (80+100), SpaceGame.height/2, 5, AssetsManager.loadParticleEffect("ship_defeated"));
-
+        super("enemyShip", SpaceGame.width - (80+100), SpaceGame.height/2, 5);
         this.setY(this.getY() + this.getHeight()/2);
-
     }
 
     public void update(float delta){
@@ -35,9 +34,10 @@ public class EnemyShip extends Enemy {
 
 
     public void healHalfLife(){
-        this.setVitality(this.getVitality()+this.getVitality()/2);
-        if(this.getVitality()>MAX_VITALITY)
-            this.setVitality(MAX_VITALITY);
+        this.damageReceived-=damageReceived/2;
+        if(damageReceived<0)
+            damageReceived=0;
+        cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
     }
 
     public void shoot(){

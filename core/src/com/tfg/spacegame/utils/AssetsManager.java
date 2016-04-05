@@ -22,6 +22,7 @@ public class AssetsManager {
     private static String weaponsFolder = "textures/weapons/";
     private static String levelScriptsFolder = "levelScripts/";
     private static String shipsFolder = "textures/ships/";
+    private static String backgroundsFolder = "textures/backgrounds/";
     private static String othersFolder = "textures/others/";
     private static String powerUpsFolder = "textures/powerUps/";
     private static String musicsFolder = "audio/musics/";
@@ -61,9 +62,12 @@ public class AssetsManager {
         assetsReferences.put("medium_obstacle", obstaclesFolder+"meteorito_mediano.png");
         assetsReferences.put("small_obstacle", obstaclesFolder+"meteorito_pequeno.png");
 
+        //Texturas referentes a backgrounds
+        assetsReferences.put("background", backgroundsFolder+"fondo.jpg");
+        assetsReferences.put("background2", backgroundsFolder+"fondo2.png");
+        assetsReferences.put("background3", backgroundsFolder+"fondo3.png");
+
         //Texturas referentes a others
-        assetsReferences.put("background", othersFolder+"fondo.png");
-        assetsReferences.put("background2", othersFolder+"fondo2.jpg");
         assetsReferences.put("inventary", othersFolder+"inventario.png");
         assetsReferences.put("red", othersFolder+"rojo.png");
         assetsReferences.put("yellow", othersFolder+"amarillo.png");
@@ -76,6 +80,10 @@ public class AssetsManager {
         assetsReferences.put("arrow", othersFolder+"flecha.png");
         assetsReferences.put("slot", othersFolder+"slot.png");
         assetsReferences.put("arrow_back", othersFolder+"flecha_atras.png");
+        assetsReferences.put("buttonMusic", othersFolder+"boton_musica.png");
+        assetsReferences.put("buttonMusicCancel", othersFolder+"boton_musica_cancelado.png");
+        assetsReferences.put("buttonEffect", othersFolder+"boton_efecto.png");
+        assetsReferences.put("buttonEffectCancel", othersFolder+"boton_efecto_cancelado.png");
 
         //Texturas referentes a ships
         assetsReferences.put("ship", shipsFolder+"nave.png");
@@ -163,12 +171,15 @@ public class AssetsManager {
         assetsReferences.put("music/menu", musicsFolder + "menu.mp3");
         assetsReferences.put("music/campaign", musicsFolder + "campaign.mp3");
         assetsReferences.put("music/arcade", musicsFolder + "arcade.mp3");
+        assetsReferences.put("music/campaign_win", musicsFolder + "campaign_win.wav");
 
         //Assets referentes a sonidos
         assetsReferences.put("sound/arcade_shock_effect", soundsFolder + "arcade_shock_effect.wav");
         assetsReferences.put("sound/button_forward", soundsFolder + "button_forward.wav");
         assetsReferences.put("sound/button_backward", soundsFolder + "button_backward.wav");
+        assetsReferences.put("sound/inventary", soundsFolder + "inventary.wav");
         assetsReferences.put("sound/new_record", soundsFolder + "new_record.wav");
+        assetsReferences.put("sound/pause", soundsFolder + "pause.wav");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("allEnemies", levelScriptsFolder + "allEnemies");

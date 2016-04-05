@@ -1,7 +1,7 @@
 {
   "shapeEntities":[
     {
-      "entity":"ship", "vertices":   [ 0,13 , 0,25 , 61,33 , 99,22 , 99,13, 42,0 ]
+      "entity":"landscapeShip", "vertices":   [ 0,13 , 0,25 , 61,33 , 99,22 , 99,13, 42,0 ]
     },
     {
       "entity":"enemy", "vertices":   [ 0,0,  0,40,  40,40,   40,0 ]
@@ -85,13 +85,13 @@
       "entity":"purple_eye_4", "vertices": [ 13,20 , 47,20 , 47,54 , 13,54 ]
     },
     {
-      "entity":"small_obstacle", "vertices": [ 0,16 , 10,8 , 26,0 , 44,0 , 48,6, 50,36, 30,50, 12,50, 6,45, 6,39, 0,34, 0,19]
+      "entity":"small_obstacle", "vertices": [ 0,25 , 20,2 , 45,13 , 41,42 , 21,49 ]
     },
     {
-      "entity":"medium_obstacle", "vertices": [ 5,4, 81,3, 88,15, 85,50, 77,80, 50,65, 43,90, 11,84, 0,60, 13,40, 3,8 ]
+      "entity":"medium_obstacle", "vertices": [ 3,26 , 37,4 , 80,33 , 72,80 , 32,85 , 6,55 ]
     },
     {
-      "entity":"big_obstacle", "vertices": [ 10,60, 56,25, 93,3, 142,5, 156,35, 153,110, 133,145, 72,155, 24,160, 3,146, 0,87]
+      "entity":"big_obstacle", "vertices": [ 9,62 , 78,7 , 144,30 , 150,100 , 103,152 , 44,152]
     },
     {
       "entity":"arcadeShip", "vertices": [ 0,40, 24,15, 48,40, 24,70 ]

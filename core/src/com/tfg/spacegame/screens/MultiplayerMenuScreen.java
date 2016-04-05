@@ -1,17 +1,17 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.tfg.spacegame.BasicScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.utils.ScreenManager;
 import com.tfg.spacegame.utils.TextInput;
 
-public class MultiplayerMenuScreen implements Screen{
-
+public class MultiplayerMenuScreen extends BasicScreen {
 
     private final SpaceGame game;
 
@@ -40,29 +40,13 @@ public class MultiplayerMenuScreen implements Screen{
     }
 
 	@Override
-	public void render(float delta) {
-
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		SpaceGame.camera.update();
-		SpaceGame.batch.setProjectionMatrix(SpaceGame.camera.combined);
-
-		SpaceGame.batch.begin();
-
-		SpaceGame.batch.draw(background, 0,0);
-
+	public void mainRender(float delta) {
 		quickGame.render();
 		createGame.render();
 		joinGame.render();
-
-		SpaceGame.batch.end();
-
-		this.update(delta);
-
 	}
 
-	private void update(float delta) {
+	public void update(float delta) {
 
 		if (Gdx.input.justTouched()) {
 
@@ -79,49 +63,22 @@ public class MultiplayerMenuScreen implements Screen{
 			if(createGame.isPressed()){
 				gameNameInput.show();
 				if(gameNameInput.acceptInputDialog()){
-					game.setScreen(new MultiplayerScreen(game,gameNameInput.getText(),true));
+					ScreenManager.changeScreen(game,MultiplayerScreen.class, gameNameInput.getText(), false);
 				}
 
 			}
 			else if(quickGame.isPressed()){
-				game.setScreen(new MultiplayerScreen(game,"",false));
+				ScreenManager.changeScreen(game,MultiplayerScreen.class, "", false);
 			}
 			else if(joinGame.isPressed()){
 				gameNameInput.show();
 				if(gameNameInput.acceptInputDialog()){
-					game.setScreen(new MultiplayerScreen(game,gameNameInput.getText(),false));
+					ScreenManager.changeScreen(game, MultiplayerScreen.class ,gameNameInput.getText(),false);
 				}
 			}
 		}else{
 			timeUntilExit-=delta;
 		}
-	}
-
-
-
-	@Override
-	public void show() {
-
-	}
-
-	@Override
-	public void resize(int width, int height) {
-
-	}
-
-	@Override
-	public void pause() {
-
-	}
-
-	@Override
-	public void resume() {
-
-	}
-
-	@Override
-	public void hide() {
-
 	}
 
 	@Override

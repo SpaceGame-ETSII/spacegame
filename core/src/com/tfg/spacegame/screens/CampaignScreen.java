@@ -3,7 +3,6 @@ package com.tfg.spacegame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
-import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.*;
@@ -29,8 +28,6 @@ public class CampaignScreen extends GameScreen {
     private int scrollingPosition;
     private static final int SCROLLING_SPEED = 100;
 
-    public Texture background;
-
     // Vamos a controlar que touch está disparando y cual está controlando la nave
     // Seguiremos el siguiente modelo:
     // -1 para ningún touch asignado
@@ -52,10 +49,9 @@ public class CampaignScreen extends GameScreen {
         state = GameState.READY;
 
         //Creamos los objetos de juego
-        ship = new CampaignShip("ship");
+        ship = new CampaignShip();
         inventary = new Inventary();
 
-        background = AssetsManager.loadTexture("background2");
         if (!AudioManager.isPlaying())
             AudioManager.playMusic("campaign", true);
 
@@ -75,12 +71,14 @@ public class CampaignScreen extends GameScreen {
                     inventary.restart();
                     state = GameState.PAUSE;
                     AudioManager.pauseMusic();
+                    AudioManager.playSound("inventary");
                 }
             }
 
             public void onLeft() {
                 if (state.equals(GameState.PAUSE) && !inventary.isClosing()) {
                     inventary.setIsClosing(true);
+                    AudioManager.playSound("inventary");
                 }
             }
 
@@ -94,15 +92,10 @@ public class CampaignScreen extends GameScreen {
     }
 
     @Override
-    public void renderEveryState(float delta) {
-        SpaceGame.batch.draw(background, scrollingPosition, 0);
-        SpaceGame.batch.draw(background, background.getWidth() + scrollingPosition, 0);
-    }
+    public void renderEveryState(float delta) { }
 
     @Override
-    public void updateEveryState(float delta) {
-
-    }
+    public void updateEveryState(float delta) { }
 
     @Override
     public void renderPause(float delta) {
@@ -136,7 +129,8 @@ public class CampaignScreen extends GameScreen {
                     menuExitDialog.setStateToWaiting();
             }
         } else if (menuExitDialog.getState().equals(DialogBoxState.CONFIRMED)) {
-            game.setScreen(new MainMenuScreen(game));
+            ScreenManager.changeScreen(game, MainMenuScreen.class);
+            disposeScreen();
         } else if (menuExitDialog.getState().equals(DialogBoxState.CANCELLED)) {
             menuExitDialog.setStateToHidden();
             exit.setPressed(false);
@@ -170,16 +164,13 @@ public class CampaignScreen extends GameScreen {
     public void updateStart(float delta) {
         CameraManager.update(delta);
 
-        //Actualizamos la posición del scrolling
-        scrollingPosition -= delta * SCROLLING_SPEED;
-        if(scrollingPosition <= -background.getWidth())
-            scrollingPosition = 0;
-
         //Comprobamos si se ha perdido o ganado el juego
         if (ship.isDefeated())
             state = GameState.LOSE;
-        if(EnemiesManager.noMoreEnemiesToGenerateOrToDefeat())
+        if(EnemiesManager.noMoreEnemiesToGenerateOrToDefeat()) {
+            AudioManager.playMusic("campaign_win", false);
             state = GameState.WIN;
+        }
 
         // Controlamos si algún touch ya ha dejado de ser pulsado
         if((whichControlsTheShip == 0 && !TouchManager.isFirstTouchActive()) || (whichControlsTheShip == 1 && !TouchManager.isSecondTouchActive()))
@@ -221,7 +212,7 @@ public class CampaignScreen extends GameScreen {
         }
 
         //Realizamos la lógica de los objetos en juego
-        CollissionsManager.update(delta, ship);
+        CollissionsManager.update();
         EnemiesManager.update(delta);
         ShootsManager.update(delta, ship);
     }
@@ -237,8 +228,10 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void updateWin(float delta) {
         if(ship.getX() > SpaceGame.width){
-            if (TouchManager.isTouchedAnyToucher())
-                game.setScreen(new DemoMenuScreen(game));
+            if (TouchManager.isTouchedAnyToucher()) {
+                ScreenManager.changeScreen(game, DemoMenuScreen.class);
+                disposeScreen();
+            }
         }else{
             ship.setX(ship.getX() + CampaignShip.SPEED*delta*3);
             ship.update(delta,ship.getY(),false);
@@ -254,7 +247,8 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void updateLose(float delta) {
         if (TouchManager.isTouchedAnyToucher() && ship.destroyEffect.isComplete()) {
-            game.setScreen(new DemoMenuScreen(game));
+            ScreenManager.changeScreen(game, DemoMenuScreen.class);
+            disposeScreen();
         }
         ship.update(delta,ship.getY(),false);
     }
@@ -268,6 +262,7 @@ public class CampaignScreen extends GameScreen {
             shoot.dispose();
         inventary.dispose();
         menuExitDialog.dispose();
+        Gdx.input.setInputProcessor(null);
         super.dispose();
     }
 }

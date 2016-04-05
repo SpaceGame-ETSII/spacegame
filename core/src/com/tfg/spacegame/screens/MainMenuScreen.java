@@ -1,17 +1,15 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
+import com.tfg.spacegame.BasicScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
-import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.FontManager;
+import com.tfg.spacegame.utils.ScreenManager;
 
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen extends BasicScreen {
 
     private final SpaceGame game;
 
@@ -25,16 +23,14 @@ public class MainMenuScreen implements Screen {
     //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
     private float timeUntilExit;
 
-    public Texture background;
-
     public MainMenuScreen(final SpaceGame game) {
         this.game = game;
 
-        SpaceGame.changeToLandscape();
+        //SpaceGame.changeToLandscape();
 
-        background = AssetsManager.loadTexture("background2");
         AudioManager.loadSounds();
-        AudioManager.playMusic("menu", true);
+        if (!AudioManager.isPlaying())
+            AudioManager.playMusic("menu", true);
 
         //Creamos los botones para el menú principal
         campaign = new Button("button", 260, 315, "campaignTitle", true);
@@ -48,17 +44,8 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        SpaceGame.camera.update();
-        SpaceGame.batch.setProjectionMatrix(SpaceGame.camera.combined);
-
-        SpaceGame.batch.begin();
-
-        // Pintamos el fondo y el título del juego
-        SpaceGame.batch.draw(background, 0,0);
+    public void mainRender(float delta) {
+        // Pintamos el título del juego
         FontManager.drawTitle("titleGame", 229, 420);
 
         // Delegamos el render de los botones
@@ -67,10 +54,6 @@ public class MainMenuScreen implements Screen {
         multiplayer.render();
         options.render();
         exit.render();
-
-        SpaceGame.batch.end();
-
-        this.update(delta);
     }
 
     public void update(float delta) {
@@ -88,20 +71,22 @@ public class MainMenuScreen implements Screen {
                     options.isPressed() ||
                     exit.isPressed()) {
                 timeUntilExit=0.5f;
-                AudioManager.stopMusic();
+
+                if (!campaign.isPressed())
+                    AudioManager.stopMusic();
             }
         }
 
         //Si el contador es cero, comprobamos si hay algún botón pulsado y actuamos en consecuencia
         if (timeUntilExit <= 0) {
             if (campaign.isPressed()) {
-                game.setScreen(new DemoMenuScreen(game));
+                ScreenManager.changeScreen(game,DemoMenuScreen.class);
             } else if (arcade.isPressed()) {
-                game.setScreen(new ArcadeScreen(game));
+                ScreenManager.changeScreen(game,ArcadeScreen.class);
             } else if (multiplayer.isPressed()) {
-                game.setScreen(new MultiplayerMenuScreen(game));
+                ScreenManager.changeScreen(game,MultiplayerMenuScreen.class);
             } else if (options.isPressed()) {
-                game.setScreen(new OptionsScreen(game));
+                ScreenManager.changeScreen(game,OptionsScreen.class);
             } else if (exit.isPressed()) {
                 Gdx.app.exit();
             }
@@ -109,34 +94,6 @@ public class MainMenuScreen implements Screen {
             timeUntilExit -= delta;
         }
     }
-
-    @Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resize(int width, int height) {
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void dispose() {

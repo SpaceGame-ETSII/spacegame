@@ -1,13 +1,11 @@
 package com.tfg.spacegame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.enums.GameState;
 
-public abstract class GameScreen implements Screen, InputProcessor{
+public abstract class GameScreen extends BasicScreen {
 
     //Estado en el que se encuentra el juego
     public GameState state;
@@ -80,24 +78,12 @@ public abstract class GameScreen implements Screen, InputProcessor{
     public abstract void disposeScreen();
 
     @Override
-    public void render(float delta) {
-        // Limpiamos la pantalla con un color negro no transparente
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        // Además limpiamos el buffer de la pantalla
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Actualizamos la camara y actualizamos la matriz de proyección del sprite batch
-        SpaceGame.camera.update();
-        SpaceGame.batch.setProjectionMatrix(SpaceGame.camera.combined);
-
-        // Iniciamos el proceso de renderización del spritebatch
-        SpaceGame.batch.begin();
-
-        // Lo que haya que hacer sin importar los estados lo hacemos
+    public void mainRender(float delta) {
+        // Hacemos lo que se tenga que hacer en cada estado del juego
         renderEveryState(delta);
         updateEveryState(delta);
 
-        // Ahora dependiendo de cada estado se hace llamar a su render y update correspiente
+        // Ahora dependiendo de cada estado se hace llamar a su render y update correspondiente
         switch (state) {
             case LOSE:
                 renderLose(delta);
@@ -122,9 +108,6 @@ public abstract class GameScreen implements Screen, InputProcessor{
             default:
                 throw new IllegalArgumentException("Estado de juego no válido");
         }
-
-        // Terminamos el proceso de renderizado
-        SpaceGame.batch.end();
     }
 
     @Override
