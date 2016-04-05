@@ -1,15 +1,13 @@
 package com.tfg.spacegame.gameObjects.campaignMode.shoots;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class Purple extends Shoot{

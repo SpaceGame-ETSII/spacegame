@@ -2,7 +2,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.enums.TypeEnemy;

@@ -3,7 +3,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Basic;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Green;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.GreenFire;

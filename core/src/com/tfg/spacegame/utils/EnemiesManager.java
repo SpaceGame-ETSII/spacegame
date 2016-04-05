@@ -3,7 +3,7 @@ package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class EnemiesManager {
 

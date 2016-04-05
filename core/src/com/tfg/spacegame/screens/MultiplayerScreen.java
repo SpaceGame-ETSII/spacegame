@@ -312,8 +312,6 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         if(keycode == Input.Keys.BACK){
             WarpController.getInstance().sendGameUpdate("LEAVE");
             state = GameState.LOSE;
-            if(!playerShip.isDefeated())
-                abandonPlayer = true;
         }
         if(keycode == Input.Keys.A){
             WarpController.getInstance().sendGameUpdate("LEAVE");

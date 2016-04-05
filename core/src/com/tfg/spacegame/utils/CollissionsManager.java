@@ -3,7 +3,7 @@ package com.tfg.spacegame.utils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.screens.CampaignScreen;
@@ -139,6 +139,7 @@ public class CollissionsManager {
                     !MultiplayerScreen.enemyShip.isUndamagable() ){
                 // Colisión con el enemigo
                 enemyShootCollision = new Pair<EnemyShip, Shoot>(MultiplayerScreen.enemyShip,shoot);
+                shoots.removeValue(shoot,false);
                 shootOverlapped = true;
             }
             // Intento de colision con el player
@@ -148,6 +149,7 @@ public class CollissionsManager {
                     !MultiplayerScreen.playerShip.isUndamagable()){
                 // Colisión con el player
                 playerShootCollision = new Pair<PlayerShip, Shoot>(MultiplayerScreen.playerShip,shoot);
+                shoots.removeValue(shoot,false);
                 shootOverlapped = true;
             }
 
@@ -181,9 +183,11 @@ public class CollissionsManager {
 
     private static void managesPlayerShootCollision(){
         playerShootCollision.getFirst().receiveDamage();
+        playerShootCollision = null;
     }
     private static void managesEnemyShootCollision(){
         enemyShootCollision.getFirst().receiveDamage();
+        enemyShootCollision = null;
     }
 
     //Gestiona una colisión de enemigo a la nave

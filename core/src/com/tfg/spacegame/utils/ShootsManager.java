@@ -7,7 +7,8 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
-import com.tfg.spacegame.gameObjects.campaignMode.shoots.Burst;
+import com.tfg.spacegame.gameObjects.Burst;
+import com.tfg.spacegame.gameObjects.multiplayerMode.BasicShootMultiplayer;
 import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.screens.CampaignScreen;
@@ -16,7 +17,7 @@ import com.tfg.spacegame.utils.enums.TypeShoot;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.RedEnemy;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.*;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class ShootsManager {
 
@@ -42,30 +43,19 @@ public class ShootsManager {
         }else if(ScreenManager.isCurrentScreenEqualsTo(MultiplayerScreen.class)){
             if(isMultiplayerShipReadyToShoot() && shooter instanceof PlayerShip){
                 bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
-            }else if(shooter instanceof EnemyShip){
-                boolean canShootAgain = true;
-                for(Shoot shoot: shoots){
-                    if(shoot.getShooter().equals(shooter)) {
-                        canShootAgain = false;
-                        break;
-                    }
-                }
-                if(canShootAgain)
-                    bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
+            }else if(shooter instanceof EnemyShip && isMultiplayerEnemyShipReadyToShoot()){
+                bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
             }
         }
     }
 
-    /**
-     * Lanza un único disparo básico
-     * @param shooter - El shooter que realizó el disparo
-     */
-    public static Basic shootOneBasicWeapon(GameObject shooter) {
-        Basic basic = new Basic(shooter,0,0);
+    public static BasicShootMultiplayer shootOneBasicMultiplayerWeapon(GameObject shooter){
+        BasicShootMultiplayer basic = new BasicShootMultiplayer(shooter, 0,0);
+
         int x = (int) (shooter.getX() - basic.getWidth());
         int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
-        if (shooter instanceof CampaignShip) {
+        if(shooter instanceof PlayerShip){
             x += shooter.getWidth() + basic.getWidth();
             y -= (shooter.getHeight()/2 - basic.getHeight()/2);
         }
@@ -76,6 +66,39 @@ public class ShootsManager {
         shoots.add(basic);
 
         return basic;
+    }
+
+    /**
+     * Lanza un único disparo básico
+     * @param shooter - El shooter que realizó el disparo
+     */
+    public static Basic shootOneBasicWeapon(GameObject shooter) {
+        Basic basic = new Basic(shooter,0,0);
+
+        int x = (int) (shooter.getX() - basic.getWidth());
+        int y = (int) (shooter.getY() + shooter.getHeight()/2);
+
+        if (shooter instanceof CampaignShip) {
+            x += shooter.getWidth() + basic.getWidth();
+            y -= (shooter.getHeight()/2 - basic.getHeight()/2);
+        }
+        basic.setX(x);
+        basic.setY(y);
+
+        shoots.add(basic);
+
+        return basic;
+    }
+
+    private static boolean isMultiplayerEnemyShipReadyToShoot(){
+        boolean canShootAgain = true;
+        for(Shoot shoot: shoots){
+            if(shoot.getShooter() instanceof EnemyShip && !shoot.isShocked()) {
+                canShootAgain = false;
+                break;
+            }
+        }
+        return canShootAgain;
     }
 
     private static boolean isMultiplayerShipReadyToShoot(){

@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;

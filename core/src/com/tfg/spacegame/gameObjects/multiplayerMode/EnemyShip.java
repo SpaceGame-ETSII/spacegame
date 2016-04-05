@@ -15,29 +15,27 @@ public class EnemyShip extends LandscapeShip {
     //Indica la velocidad para el movimiento de la nave
     private final float MAX_SPEED = 20;
 
-    private final int MAX_VITALITY = 5;
-
     public EnemyShip() {
         super("enemyShip", SpaceGame.width - (80+100), SpaceGame.height/2, 5);
         this.setY(this.getY() + this.getHeight()/2);
+        cockpitOffsetX=18;
+        cockpitOffsetY=22;
+        fireEffect.getEmitters().first().getAngle().setHigh(0);
+    }
+
+    protected void updateParticleEffect() {
+        fireEffect.getEmitters().first().setPosition(this.getX()+this.getWidth(),this.getY() + this.getHeight()/2 + 2);
+        destroyEffect.getEmitters().first().setPosition(this.getCenter().x,this.getCenter().y);
     }
 
     public void update(float delta){
-
+        super.update(delta);
         float accel = MAX_SPEED *delta;
 
         if(Math.abs(MultiplayerScreen.enemyYposition - this.getCenter().y) > accel ){
             float diffY = MultiplayerScreen.enemyYposition - this.getCenter().y;
             this.setY(this.getY() + diffY*accel);
         }
-    }
-
-
-    public void healHalfLife(){
-        this.damageReceived-=damageReceived/2;
-        if(damageReceived<0)
-            damageReceived=0;
-        cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
     }
 
     public void shoot(){
