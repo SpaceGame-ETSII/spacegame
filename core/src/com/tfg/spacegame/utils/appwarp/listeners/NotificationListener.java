@@ -9,15 +9,9 @@ import java.util.HashMap;
 
 public class NotificationListener implements NotifyListener {
 
-    private WarpController callback;
-
-    public NotificationListener(WarpController warpController){
-        callback = warpController;
-    }
-
     @Override
     public void onRoomCreated(RoomData roomData) {
-
+        System.out.println(roomData.getId());
     }
 
     @Override
@@ -27,12 +21,12 @@ public class NotificationListener implements NotifyListener {
 
     @Override
     public void onUserLeftRoom(RoomData roomData, String s) {
-
+        WarpController.userLeftRoom(roomData.getId(), s);
     }
 
     @Override
     public void onUserJoinedRoom(RoomData roomData, String s) {
-        callback.onUserJoinedRoom(roomData.getId(),s);
+        WarpController.warpClient.getLiveRoomInfo(WarpController.roomId);
     }
 
     @Override
@@ -62,7 +56,7 @@ public class NotificationListener implements NotifyListener {
 
     @Override
     public void onUpdatePeersReceived(UpdateEvent updateEvent) {
-        callback.onGameUpdateReceived(new String(updateEvent.getUpdate()));
+        WarpController.messageReceived(new String(updateEvent.getUpdate()));
     }
 
     @Override

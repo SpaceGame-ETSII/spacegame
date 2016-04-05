@@ -7,17 +7,15 @@ public interface WarpListener {
 
     void onDidntFoundRoom(String message);
 
-    void onGameStarted(String message);
+    void onGameStarted();
 
     void onConnectedWithServer(String message);
 
     void onDisconnectedWithServer();
 
-    void onJoinedToRoom(String message);
-
-    void onGetLiveRoomInfoDone(String message);
-
-    void onUserJoinedRoom(String message);
-
     void onGameUpdateReceived(String message);
+
+    void wonTheGame();
+
+    void onWaitOtherPlayer();
 }

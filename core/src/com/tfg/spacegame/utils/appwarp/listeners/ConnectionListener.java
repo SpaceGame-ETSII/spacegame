@@ -8,24 +8,19 @@ import com.tfg.spacegame.utils.appwarp.WarpController;
 
 public class ConnectionListener implements ConnectionRequestListener {
 
-    private WarpController callBack;
-
-    public ConnectionListener(WarpController warpController){
-        callBack = warpController;
-    }
-
     @Override
     public void onConnectDone(ConnectEvent connectEvent) {
         if(connectEvent.getResult() == WarpResponseResultCode.SUCCESS){
-            callBack.onConnectDone(true);
+            WarpController.connectDone(true);
         }else{
-            callBack.onConnectDone(false);
+            System.out.println("Error en onConnectDone : "+connectEvent.getResult());
+            WarpController.connectDone(false);
         }
     }
 
     @Override
     public void onDisconnectDone(ConnectEvent connectEvent) {
-        callBack.onDisconnectDone();
+        WarpController.disconnectDone();
     }
 
     @Override

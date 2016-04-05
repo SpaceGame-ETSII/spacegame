@@ -79,19 +79,19 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         Gdx.input.setCatchBackKey(true);
 
         if(roomId.equals(""))
-            WarpController.createInstance(WarpController.MultiplayerOptions.QUICK_GAME);
+            WarpController.load(WarpController.MultiplayerOptions.QUICK_GAME);
         else{
             if(createRoom)
-                WarpController.createInstance(WarpController.MultiplayerOptions.CREATE_GAME);
+                WarpController.load(WarpController.MultiplayerOptions.CREATE_GAME);
             else
-                WarpController.createInstance(WarpController.MultiplayerOptions.JOIN_GAME);
+                WarpController.load(WarpController.MultiplayerOptions.JOIN_GAME);
         }
 
-        WarpController.getInstance().setListener(this);
+        WarpController.setWarpListener(this);
 
         String username = randomUserName();
 
-        WarpController.getInstance().startConnection(username,roomId);
+        WarpController.start(username, roomId);
     }
 
     private String randomUserName(){
@@ -165,17 +165,17 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
         if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched()){
             if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched()){
                 playerBurstPowerUp.setTouched();
-                WarpController.getInstance().sendGameUpdate(TypePowerUp.BURST.toString());
+                WarpController.sendGameUpdate(TypePowerUp.BURST.toString());
             }else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched()){
                 playerRegLifePowerUp.setTouched();
-                WarpController.getInstance().sendGameUpdate(TypePowerUp.REGLIFE.toString());
+                WarpController.sendGameUpdate(TypePowerUp.REGLIFE.toString());
             }else {
                 playerShip.shoot();
-                WarpController.getInstance().sendGameUpdate("SHOOT");
+                WarpController.sendGameUpdate("SHOOT");
             }
         }
 
-        WarpController.getInstance().sendGameUpdate(""+playerShip.getCenter().y);
+        WarpController.sendGameUpdate("" + playerShip.getCenter().y);
 
         if(backToMainMenu)
             ScreenManager.changeScreen(game, MainMenuScreen.class);
@@ -191,6 +191,12 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
 
         if(enemyRegLifePowerUp.isTouched())
             enemyRegLifePowerUp.act(delta, enemyShip);
+
+
+        if(playerShip.isDefeated()){
+            WarpController.leaveRoom();
+            state = GameState.LOSE;
+        }
 
     }
 
@@ -257,36 +263,20 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
     }
 
     @Override
-    public void onGameStarted(String message) {
-        System.out.println(message);
+    public void onGameStarted() {
         timeToStartGame = MAX_TIME_TO_START_GAME;
         changeToStartGame = true;
     }
 
+
     @Override
     public void onConnectedWithServer(String message) {
-        System.out.println(message);
         infoMessage = FontManager.getFromBundle("onConnectDone");
     }
 
     @Override
     public void onDisconnectedWithServer() {
         backToMainMenu = true;
-    }
-
-    @Override
-    public void onJoinedToRoom(String message) {
-        System.out.println(message);
-        infoMessage = FontManager.getFromBundle("onWaitPlayer");
-    }
-
-    @Override
-    public void onGetLiveRoomInfoDone(String message) {
-    }
-
-    @Override
-    public void onUserJoinedRoom(String message) {
-        infoMessage = FontManager.getFromBundle("onPlayerConnected");
     }
 
     @Override
@@ -297,24 +287,32 @@ public class MultiplayerScreen extends GameScreen implements WarpListener{
             enemyBurstPowerUp.setTouched();
         }else if (message.equals("SHOOT")){
             enemyShip.shoot();
-        }else if (message.equals("LEAVE")){
-            if(!enemyShip.isDefeated()){
-                abandonEnemy = true;
-            }
-            state = GameState.WIN;
         }else{
             enemyYposition = Float.parseFloat(message);
         }
     }
 
     @Override
+    public void wonTheGame() {
+        if(!enemyShip.isDefeated()){
+            abandonEnemy = true;
+        }
+        state = GameState.WIN;
+    }
+
+    @Override
+    public void onWaitOtherPlayer() {
+        infoMessage = FontManager.getFromBundle("onWaitPlayer");
+    }
+
+    @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK){
-            WarpController.getInstance().sendGameUpdate("LEAVE");
+            WarpController.leaveRoom();
             state = GameState.LOSE;
         }
         if(keycode == Input.Keys.A){
-            WarpController.getInstance().sendGameUpdate("LEAVE");
+            WarpController.leaveRoom();
             state = GameState.LOSE;
         }
         return false;

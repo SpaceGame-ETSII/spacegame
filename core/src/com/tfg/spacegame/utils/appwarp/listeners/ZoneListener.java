@@ -7,12 +7,6 @@ import com.tfg.spacegame.utils.appwarp.WarpController;
 
 public class ZoneListener implements ZoneRequestListener{
 
-    private WarpController callback;
-
-    public ZoneListener(WarpController warpController){
-        callback = warpController;
-    }
-
     @Override
     public void onDeleteRoomDone(RoomEvent roomEvent) {
 
@@ -25,7 +19,8 @@ public class ZoneListener implements ZoneRequestListener{
     @Override
     public void onCreateRoomDone(RoomEvent roomEvent) {
         if(roomEvent.getResult()== WarpResponseResultCode.SUCCESS){
-            callback.onRoomCreated(roomEvent.getData().getId());
+            WarpController.roomId = roomEvent.getData().getId();
+            WarpController.warpClient.joinRoom(WarpController.roomId);
         }else{
             System.out.println("Error al crear room");
         }
@@ -48,19 +43,20 @@ public class ZoneListener implements ZoneRequestListener{
 
     @Override
     public void onGetMatchedRoomsDone(MatchedRoomsEvent matchedRoomsEvent) {
-        callback.onGetMatchedRoomsDone(matchedRoomsEvent.getRoomsData());
-
-
+        if(matchedRoomsEvent.getResult() == WarpResponseResultCode.SUCCESS)
+            WarpController.getRoomInRangeDone(matchedRoomsEvent.getRoomsData());
+        else
+            System.out.println("Error en onGetMatchedRoomsDone : "+matchedRoomsEvent.getResult());
     }
 
     @Override
     public void onGetAllRoomsCountDone(AllRoomsEvent allRoomsEvent) {
-
+        System.out.println();
     }
 
     @Override
     public void onGetOnlineUsersCountDone(AllUsersEvent allUsersEvent) {
-
+        System.out.println("Users Online: "+allUsersEvent.getUsersCount());
     }
 
     @Override

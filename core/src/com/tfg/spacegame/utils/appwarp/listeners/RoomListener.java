@@ -9,44 +9,46 @@ import com.tfg.spacegame.utils.appwarp.WarpController;
 
 public class RoomListener implements RoomRequestListener {
 
-    WarpController callback;
-
-    public RoomListener(WarpController warpController){
-        callback = warpController;
-    }
-
     @Override
     public void onSubscribeRoomDone(RoomEvent roomEvent) {
         if(roomEvent.getResult()== WarpResponseResultCode.SUCCESS){
-            callback.onRoomSubscribed(roomEvent.getData().getId());
+            WarpController.warpClient.getLiveRoomInfo(WarpController.roomId);
         }else{
-            callback.onRoomSubscribed(null);
+            System.out.println("Error en: onSubscribeRoomDone - " + roomEvent.getResult());
         }
     }
 
     @Override
     public void onUnSubscribeRoomDone(RoomEvent roomEvent) {
-        System.out.println("UnsubscrimeRoom");
-        callback.onUnSubscribeRoomDone();
+        if(roomEvent.getResult() == WarpResponseResultCode.SUCCESS)
+            WarpController.warpClient.disconnect();
+        else
+            System.out.println("Error en: onJoinRoomDone - " + roomEvent.getResult());
     }
 
     @Override
     public void onJoinRoomDone(RoomEvent roomEvent) {
-        callback.onJoinRoomDone(roomEvent);
+        if(roomEvent.getResult() == WarpResponseResultCode.SUCCESS)
+            WarpController.joinedToRoom(roomEvent.getData().getId());
+        else if(roomEvent.getResult() == WarpResponseResultCode.RESOURCE_NOT_FOUND){
+            WarpController.createNewRoom();
+        }
     }
 
     @Override
     public void onLeaveRoomDone(RoomEvent roomEvent) {
-        System.out.println("Leave the room");
-        callback.onLeaveRoomDone();
+        if(roomEvent.getResult() == WarpResponseResultCode.SUCCESS)
+            WarpController.warpClient.unsubscribeRoom(WarpController.roomId);
+        else
+            System.out.println("Error en: onLeaveRoomDone - "+roomEvent.getResult());
     }
 
     @Override
     public void onGetLiveRoomInfoDone(LiveRoomInfoEvent liveRoomInfoEvent) {
         if(liveRoomInfoEvent.getResult()==WarpResponseResultCode.SUCCESS){
-            callback.onGetLiveRoomInfo(liveRoomInfoEvent.getJoinedUsers());
+            WarpController.liveRoomInfoDone(liveRoomInfoEvent.getJoinedUsers());
         }else{
-            callback.onGetLiveRoomInfo(null);
+            System.out.println("Error en: onJoinRoomDone - " + liveRoomInfoEvent.getResult());
         }
     }
 
