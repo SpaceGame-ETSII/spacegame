@@ -5,6 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
+import com.tfg.spacegame.BasicScreen;
+import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.gameObjects.OptionButton;
@@ -14,7 +16,7 @@ import com.tfg.spacegame.utils.enums.GameState;
 
 import java.awt.*;
 
-public class OptionsScreen implements Screen {
+public class OptionsScreen extends BasicScreen {
 
     private final SpaceGame game;
 
@@ -70,7 +72,7 @@ public class OptionsScreen implements Screen {
 	}
 
 	@Override
-	public void render(float delta) {
+	public void mainRender(float delta) {
         //Pintamos el título de la pantalla
         FontManager.drawTitle("optionsTitle", 280, 420);
 
