@@ -62,6 +62,7 @@ public class DialogBox extends GameObject {
             cancel.setPressed(false);
         } else if (confirm.isPressed()) {
             state = DialogBoxState.CONFIRMED;
+            confirm.setPressed(false);
         }
     }
 

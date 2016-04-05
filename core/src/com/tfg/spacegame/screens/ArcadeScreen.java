@@ -268,7 +268,7 @@ public class ArcadeScreen extends GameScreen {
 		} else if (menuSubmitRecord.getState().equals(DialogBoxState.CONFIRMED)) {
 			//Si confirmamos escondemos la ventana, subimos el record, lo mostramos y volvemos a READY
 			menuSubmitRecord.setStateToHidden();
-			SpaceGame.googleServices.submitScore(record);
+			SpaceGame.googleServices.submitScore((long) timeAlive);
 			SpaceGame.googleServices.showScores();
 			this.initialize();
 		} else if (menuSubmitRecord.getState().equals(DialogBoxState.CANCELLED)) {
