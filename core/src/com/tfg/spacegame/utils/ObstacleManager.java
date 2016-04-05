@@ -61,12 +61,12 @@ public class ObstacleManager {
 
     //
     private static void generateObstacles() {
-        createObstacle(obstaclesInBottom, BOTTOM_SCALE, bottomProbability);
-        createObstacle(obstaclesInTop, TOP_SCALE, topProbability);
+        createObstacle(obstaclesInBottom, -1, bottomProbability);
+        createObstacle(obstaclesInTop, 1, topProbability);
     }
 
     //Crea un obstáculo según una lista, una escala y una probabilidad que indicará si finalmente se crea
-    private static void createObstacle(Array<Obstacle> obstacles, float scale, float probability) {
+    private static void createObstacle(Array<Obstacle> obstacles, float layer, float probability) {
         if (MathUtils.random(0, 100) <= probability) {
             Obstacle obstacle;
             float probabilityType = MathUtils.random(0, 100);
@@ -105,6 +105,7 @@ public class ObstacleManager {
             //Colocamos el obstáculo en una posición 'Y' arriba de la pantalla y fuera de ésta
             obstacle.setY(SpaceGame.height + obstacle.getHeight());
             //Escalamos el objeto según la escala dada
+            float scale = (layer == 1) ? 1 : 0.5f;
             obstacle.setScale(scale, scale);
 
             //Finalmente añadimos el obstáculo a la lista, siempre y cuando no choque con algún otro obstáculo

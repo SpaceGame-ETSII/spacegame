@@ -17,43 +17,6 @@ import com.tfg.spacegame.SpaceGame;
 
 public class AndroidLauncher extends AndroidApplication implements IGoogleServices {
 
-	/*
-	private GoogleApiClient googleApiClient;
-
-	@Override
-	protected void onCreate (Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		googleApiClient = new GoogleApiClient.Builder(this)
-								.addConnectionCallbacks(this)
-								.addOnConnectionFailedListener(this)
-								.addApi(Games.API)
-								.addScope(Games.SCOPE_GAMES)
-								.build();
-
-		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-
-		PlatformAndroid platform = new PlatformAndroid();
-		platform.setActivity(this);
-
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-		initialize(new SpaceGame(platform), config);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		googleApiClient.connect();
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		googleApiClient.disconnect();
-	}
-	*/
-
 	private final static int REQUEST_CODE_UNUSED = 9002;
 	private GameHelper _gameHelper;
 

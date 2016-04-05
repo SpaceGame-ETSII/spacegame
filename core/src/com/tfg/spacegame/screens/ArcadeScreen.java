@@ -53,6 +53,9 @@ public class ArcadeScreen extends GameScreen {
 	//Cuadro de diálogo que se preguntará confirmación para salir del modo
 	private DialogBox menuExitDialog;
 
+	//Cuadro de diálogo que se preguntará confirmación para salir del modo
+	private DialogBox menuSubmitRecord;
+
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
 
@@ -62,6 +65,7 @@ public class ArcadeScreen extends GameScreen {
 		CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
 		menuExitDialog = new DialogBox("exitModeQuestion");
+		menuSubmitRecord = new DialogBox("submitRecordQuestion");
 
 		this.initialize();
 	}
@@ -130,8 +134,9 @@ public class ArcadeScreen extends GameScreen {
 	@Override
 	public void updateReady(float delta) {
 		//Si se toca la pantalla, pasamos a START
-		if (Gdx.input.justTouched())
+		if (Gdx.input.justTouched()) {
 			state = GameState.START;
+		}
 	}
 
 	@Override
@@ -176,9 +181,8 @@ public class ArcadeScreen extends GameScreen {
 		//Por último, comprobamos si hay colisión con la nave
 		//Si no hay colisión, comprobamos si se ha tocado la pantalla para entrar en pause
 		if (ObstacleManager.existsCollision(ship, layer)) {
-			//Aplicamos el estado de haber perdido
+			//Aplicamos el estado de haber terminado la partida
 			ship.defeat();
-			state = GameState.LOSE;
 			newRecord = this.updateRecord();
 
 			//Realizamos los efectos visuales y de sonido
@@ -186,10 +190,12 @@ public class ArcadeScreen extends GameScreen {
 			CameraManager.startShake();
 			AudioManager.stopMusic();
 
-			//Sonará un sonido u otro si hemos superado o no el record
+			//Si hemos conseguido nuevo record se considerará victoria, en caso contrario, derrota
 			if (newRecord) {
+				state = GameState.WIN;
 				AudioManager.playSound("new_record");
 			} else {
+				state = GameState.LOSE;
 				AudioManager.playSound("arcade_shock_effect");
 			}
 		} else if (Gdx.input.justTouched()) {
@@ -241,23 +247,42 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderWin(float delta) {
-
+		renderStart(delta);
+		if (menuSubmitRecord.getState().equals(DialogBoxState.HIDDEN))
+			FontManager.drawText("newRecord", 400);
+		else
+			menuSubmitRecord.render();
 	}
 
 	@Override
 	public void updateWin(float delta) {
+		ship.update(delta);
 
+		//Haremos una cosa u otra dependiendo del estado de menuExitDialog
+		if (menuSubmitRecord.getState().equals(DialogBoxState.HIDDEN)) {
+
+			//Si tocamos la pantalla, mostramos el cuadro de diálogo
+			if (Gdx.input.justTouched()) {
+				menuSubmitRecord.setStateToWaiting();
+			}
+		} else if (menuSubmitRecord.getState().equals(DialogBoxState.CONFIRMED)) {
+			//Si confirmamos escondemos la ventana, subimos el record, lo mostramos y volvemos a READY
+			menuSubmitRecord.setStateToHidden();
+			SpaceGame.googleServices.submitScore(record);
+			SpaceGame.googleServices.showScores();
+			this.initialize();
+		} else if (menuSubmitRecord.getState().equals(DialogBoxState.CANCELLED)) {
+			menuSubmitRecord.setStateToHidden();
+			this.initialize();
+		} else if (menuSubmitRecord.getState().equals(DialogBoxState.WAITING)) {
+			menuSubmitRecord.update();
+		}
 	}
 
 	@Override
 	public void renderLose(float delta) {
 		renderStart(delta);
-
-		//Se mostrará un mensaje u otro según si se ha hecho un nuevo record o no
-		if (newRecord)
-			FontManager.drawText("newRecord", 400);
-		else
-			FontManager.drawText("gameOver", 400);
+		FontManager.drawText("gameOver", 400);
 	}
 
 	@Override
@@ -324,4 +349,3 @@ public class ArcadeScreen extends GameScreen {
 		ship.dispose();
 	}
 }
-

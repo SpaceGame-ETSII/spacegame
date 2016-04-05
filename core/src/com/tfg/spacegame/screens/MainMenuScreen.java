@@ -55,8 +55,6 @@ public class MainMenuScreen extends BasicScreen {
         multiplayer.render();
         options.render();
         exit.render();
-
-        Gdx.app.log("MainActivity", "Probando log");
     }
 
     public void update(float delta) {
