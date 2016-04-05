@@ -230,7 +230,6 @@ public class ArcadeScreen extends GameScreen {
 			}
 		} else if (menuExitDialog.getState().equals(DialogBoxState.CONFIRMED)) {
 			ScreenManager.changeScreen(game, MainMenuScreen.class);
-			SpaceGame.changeToLandscape();
 			this.disposeScreen();
 		} else if (menuExitDialog.getState().equals(DialogBoxState.CANCELLED)) {
 			menuExitDialog.setStateToHidden();

@@ -27,8 +27,11 @@ public class SpaceGame extends Game {
 	// Objeto encargado de obtener las shapes
 	private static ShapeLoader shapeLoader;
 
-	public SpaceGame(Platform platform) {
+	public static IGoogleServices googleServices;
+
+	public SpaceGame(Platform platform, IGoogleServices googleServices) {
 		this.platform = platform;
+		SpaceGame.googleServices = googleServices;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.tfg.spacegame.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.tfg.spacegame.BasicScreen;
@@ -26,7 +27,7 @@ public class MainMenuScreen extends BasicScreen {
     public MainMenuScreen(final SpaceGame game) {
         this.game = game;
 
-        //SpaceGame.changeToLandscape();
+        SpaceGame.changeToLandscape();
 
         AudioManager.loadSounds();
         if (!AudioManager.isPlaying())
@@ -54,6 +55,8 @@ public class MainMenuScreen extends BasicScreen {
         multiplayer.render();
         options.render();
         exit.render();
+
+        Gdx.app.log("MainActivity", "Probando log");
     }
 
     public void update(float delta) {

@@ -26,6 +26,9 @@
 !/android/assets/*/*
 !/android/assets/*/*/*
 !/android/assets/*/*/*/*
+!/android/res/
+!/android/res/values/
+!/android/res/values/ids.xml
 !/android/src/
 !/android/src/com/
 !/android/src/com/tfg/
