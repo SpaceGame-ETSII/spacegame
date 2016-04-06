@@ -2,4 +2,9 @@
 <resources>
     <string name="app_id">646819309109</string>
     <string name="leaderboard_id">CgkItcy9y-kSEAIQBg</string>
+    <string name="achievement_finalized_campaign_id">CgkItcy9y-kSEAIQAQ</string>
+    <string name="achievement_denizen_deep_id">CgkItcy9y-kSEAIQAg</string>
+    <string name="achievement_denizen_heights_id">CgkItcy9y-kSEAIQAw</string>
+    <string name="achievement_reflexes_id">CgkItcy9y-kSEAIQBA</string>
+    <string name="achievement_master_id">CgkItcy9y-kSEAIQBQ</string>
 </resources>

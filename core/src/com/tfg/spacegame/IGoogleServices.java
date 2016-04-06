@@ -1,5 +1,6 @@
 package com.tfg.spacegame;
 
+//Se usará para conectarnos a Google Services
 public interface IGoogleServices
 {
     void signIn();
@@ -8,4 +9,6 @@ public interface IGoogleServices
     void submitScore(long score);
     void showScores();
     boolean isSignedIn();
+    void unlockAchievement();
+    void showAchievements();
 }

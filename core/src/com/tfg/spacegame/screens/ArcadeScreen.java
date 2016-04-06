@@ -56,6 +56,8 @@ public class ArcadeScreen extends GameScreen {
 	//Cuadro de diálogo que se preguntará confirmación para salir del modo
 	private DialogBox menuSubmitRecord;
 
+	private boolean unlocked;
+
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
 
@@ -66,6 +68,8 @@ public class ArcadeScreen extends GameScreen {
 		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
 		menuExitDialog = new DialogBox("exitModeQuestion");
 		menuSubmitRecord = new DialogBox("submitRecordQuestion");
+
+		unlocked = false;
 
 		this.initialize();
 	}
@@ -175,6 +179,11 @@ public class ArcadeScreen extends GameScreen {
 			this.updateLayers(delta);
 		}
 
+		if (timeAlive > 10 && !unlocked) {
+			SpaceGame.googleServices.unlockAchievement();
+			unlocked = true;
+		}
+
 		//Actualizamos el tiempo
 		timeAlive += delta;
 
@@ -269,7 +278,7 @@ public class ArcadeScreen extends GameScreen {
 			//Si confirmamos escondemos la ventana, subimos el record, lo mostramos y volvemos a READY
 			menuSubmitRecord.setStateToHidden();
 			SpaceGame.googleServices.submitScore((long) timeAlive);
-			SpaceGame.googleServices.showScores();
+			//SpaceGame.googleServices.showScores();
 			this.initialize();
 		} else if (menuSubmitRecord.getState().equals(DialogBoxState.CANCELLED)) {
 			menuSubmitRecord.setStateToHidden();

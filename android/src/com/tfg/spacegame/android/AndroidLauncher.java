@@ -125,13 +125,10 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	@Override
 	public void submitScore(long score)
 	{
-		if (isSignedIn() == true)
-		{
+		if (isSignedIn() == true) {
 			Games.Leaderboards.submitScore(_gameHelper.getApiClient(), getString(R.string.leaderboard_id), score);
 			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(_gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
-		}
-		else
-		{
+		} else {
 			// Maybe sign in here then redirect to submitting score?
 		}
 	}
@@ -141,8 +138,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	{
 		if (isSignedIn() == true)
 			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(_gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
-		else
-		{
+		else {
 			// Maybe sign in here then redirect to showing scores?
 		}
 	}
@@ -152,4 +148,24 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	{
 		return _gameHelper.isSignedIn();
 	}
+
+	@Override
+	public void unlockAchievement() {
+		if (isSignedIn() == true) {
+			Games.Achievements.unlock(_gameHelper.getApiClient(), getString(R.string.achievement_reflexes_id));
+		} else {
+
+		}
+	}
+
+	@Override
+	public void showAchievements() {
+		if (isSignedIn() == true) {
+			startActivityForResult(Games.Achievements.getAchievementsIntent(_gameHelper.getApiClient()),
+					REQUEST_CODE_UNUSED);
+		} else {
+
+		}
+	}
+
 }
