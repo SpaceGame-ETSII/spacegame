@@ -35,6 +35,13 @@
 !/android/src/com/tfg/spacegame/
 !/android/src/com/tfg/spacegame/android/
 !/android/src/com/tfg/spacegame/android/*
+!/desktop/
+!/desktop/src/
+!/desktop/src/com/
+!/desktop/src/com/tfg/
+!/desktop/src/com/tfg/spacegame/
+!/desktop/src/com/tfg/spacegame/desktop/
+!/desktop/src/com/tfg/spacegame/desktop/*
 !/libs/
 !/libs/*
 !/BaseGameUtils/
