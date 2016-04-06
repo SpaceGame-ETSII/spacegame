@@ -134,9 +134,8 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	}
 
 	@Override
-	public void showScores()
-	{
-		if (isSignedIn() == true)
+	public void showScores() {
+		if (isSignedIn())
 			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(_gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
 		else {
 			// Maybe sign in here then redirect to showing scores?
@@ -150,9 +149,9 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	}
 
 	@Override
-	public void unlockAchievement() {
-		if (isSignedIn() == true) {
-			Games.Achievements.unlock(_gameHelper.getApiClient(), getString(R.string.achievement_reflexes_id));
+	public void unlockAchievement(String achievementId) {
+		if (isSignedIn()) {
+			Games.Achievements.unlock(_gameHelper.getApiClient(), achievementId);
 		} else {
 
 		}
@@ -160,7 +159,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 	@Override
 	public void showAchievements() {
-		if (isSignedIn() == true) {
+		if (isSignedIn()) {
 			startActivityForResult(Games.Achievements.getAchievementsIntent(_gameHelper.getApiClient()),
 					REQUEST_CODE_UNUSED);
 		} else {

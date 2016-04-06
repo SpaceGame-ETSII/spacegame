@@ -87,6 +87,10 @@ public class ScreenManager {
         return result;
     }
 
+    public static Screen getCurrentScreen() {
+        return currentScreen;
+    }
+
     public static boolean isCurrentScreenEqualsTo(Class screenClass){
         return currentClass.getName().equals(screenClass.getName());
     }

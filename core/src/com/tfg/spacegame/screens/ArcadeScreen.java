@@ -56,8 +56,6 @@ public class ArcadeScreen extends GameScreen {
 	//Cuadro de diálogo que se preguntará confirmación para salir del modo
 	private DialogBox menuSubmitRecord;
 
-	private boolean unlocked;
-
 	public ArcadeScreen(final SpaceGame game) {
 		this.game = game;
 
@@ -68,8 +66,6 @@ public class ArcadeScreen extends GameScreen {
 		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
 		menuExitDialog = new DialogBox("exitModeQuestion");
 		menuSubmitRecord = new DialogBox("submitRecordQuestion");
-
-		unlocked = false;
 
 		this.initialize();
 	}
@@ -116,6 +112,10 @@ public class ArcadeScreen extends GameScreen {
 		Preferences prefs = Gdx.app.getPreferences("My Preferences");
 		prefs.putInteger("record", value);
 		prefs.flush();
+	}
+
+	public float getTimeAlive() {
+		return timeAlive;
 	}
 
 	@Override
@@ -179,11 +179,6 @@ public class ArcadeScreen extends GameScreen {
 			this.updateLayers(delta);
 		}
 
-		if (timeAlive > 10 && !unlocked) {
-			SpaceGame.googleServices.unlockAchievement();
-			unlocked = true;
-		}
-
 		//Actualizamos el tiempo
 		timeAlive += delta;
 
@@ -216,11 +211,13 @@ public class ArcadeScreen extends GameScreen {
 
 	@Override
 	public void renderPause(float delta) {
+		//Mostramos lo que queremos
 		FontManager.drawText("pause", SpaceGame.height / 2);
 		FontManager.drawText("record", ": " + record, 10, 760);
 		ship.render();
 		this.renderTime();
 
+		//Se mostrará el menuExitDialog si no está HIDDEN, y si lo está, mostramos el botón exit
 		if (menuExitDialog.getState().equals(DialogBoxState.HIDDEN))
 			exit.render();
 		else

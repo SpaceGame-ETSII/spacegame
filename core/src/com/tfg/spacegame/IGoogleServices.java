@@ -9,6 +9,6 @@ public interface IGoogleServices
     void submitScore(long score);
     void showScores();
     boolean isSignedIn();
-    void unlockAchievement();
+    void unlockAchievement(String achievementId);
     void showAchievements();
 }

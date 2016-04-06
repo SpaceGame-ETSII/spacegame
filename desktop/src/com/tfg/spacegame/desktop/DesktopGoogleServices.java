@@ -41,4 +41,15 @@ public class DesktopGoogleServices implements IGoogleServices
         System.out.println("DesktopGoogleServies: isSignedIn()");
         return false;
     }
+
+    @Override
+    public void unlockAchievement(int achievementId) {
+        System.out.println("DesktopGoogleServies: unlockAchievement()");
+    }
+
+    @Override
+    public void showAchievements() {
+        System.out.println("DesktopGoogleServies: showAchievements()");
+    }
+
 }

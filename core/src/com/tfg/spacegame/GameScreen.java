@@ -2,6 +2,7 @@ package com.tfg.spacegame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.tfg.spacegame.utils.AchievementsManager;
 import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.enums.GameState;
 
@@ -108,6 +109,9 @@ public abstract class GameScreen extends BasicScreen {
             default:
                 throw new IllegalArgumentException("Estado de juego no válido");
         }
+
+        //Actualizamos la gestión de logros
+        AchievementsManager.update(delta);
     }
 
     @Override

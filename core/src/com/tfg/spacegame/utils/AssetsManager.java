@@ -220,7 +220,6 @@ public class AssetsManager {
         return Gdx.files.internal(assetsReferences.get(scriptName));
     }
 
-
     //Se llamará a este método cuando se vaya a cargar el bundle
     public static I18NBundle loadBundle(){
         return I18NBundle.createBundle(Gdx.files.internal(assetsReferences.get("bundle")), Locale.getDefault());
