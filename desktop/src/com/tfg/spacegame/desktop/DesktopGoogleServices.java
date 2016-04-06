@@ -8,13 +8,13 @@ public class DesktopGoogleServices implements IGoogleServices
     @Override
     public void signIn()
     {
-        System.out.println("DesktopGoogleServies: signIn()");
+        System.out.println("DesktopGoogleServices: signIn()");
     }
 
     @Override
     public void signOut()
     {
-        System.out.println("DesktopGoogleServies: signOut()");
+        System.out.println("DesktopGoogleServices: signOut()");
     }
 
     @Override
@@ -26,30 +26,29 @@ public class DesktopGoogleServices implements IGoogleServices
     @Override
     public void submitScore(long score)
     {
-        System.out.println("DesktopGoogleServies: submitScore(" + score + ")");
+        System.out.println("DesktopGoogleServices: submitScore(" + score + ")");
     }
 
     @Override
     public void showScores()
     {
-        System.out.println("DesktopGoogleServies: showScores()");
+        System.out.println("DesktopGoogleServices: showScores()");
     }
 
     @Override
     public boolean isSignedIn()
     {
-        System.out.println("DesktopGoogleServies: isSignedIn()");
+        System.out.println("DesktopGoogleServices: isSignedIn()");
         return false;
     }
 
     @Override
-    public void unlockAchievement(int achievementId) {
-        System.out.println("DesktopGoogleServies: unlockAchievement()");
+    public void unlockAchievement(String achievementId) {
+        System.out.println("DesktopGoogleServices: unlockAchievement()");
     }
 
     @Override
     public void showAchievements() {
-        System.out.println("DesktopGoogleServies: showAchievements()");
+        System.out.println("DesktopGoogleServices: showAchievements()");
     }
-
 }

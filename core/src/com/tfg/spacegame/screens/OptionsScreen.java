@@ -20,11 +20,15 @@ public class OptionsScreen extends BasicScreen {
 
     private final SpaceGame game;
 
+    //Variable para guardar el record del jugador en el modo arcade
+    private String record;
+
     //Objetos interactuables de la pantalla
     private OptionButton music;
     private OptionButton effect;
     private Button back;
     private Button resetArcadePuntuation;
+    private Button viewAchievements;
     private DialogBox menuResetDialog;
 
     //Representa el tiempo que dura el efecto visual de pulsado sobre una opción
@@ -35,11 +39,15 @@ public class OptionsScreen extends BasicScreen {
 
         AudioManager.playMusic("menu", true);
 
+        //Guardamos el record del usuario en la variable
+        record = "record:    " + ArcadeScreen.obtainRecord() + " - ";
+
         //Creamos los botones para la pantalla de opciones
         music = new OptionButton("buttonMusic", "buttonMusicCancel",200, 265);
         effect = new OptionButton("buttonEffect", "buttonEffectCancel",260, 265);
         back = new Button("arrow_back", 750, 430, null, false);
-        resetArcadePuntuation = new Button("button", 200, 180, "resetArcadePuntuation", true);
+        viewAchievements = new Button("button", 100, 100, "viewAchievements", true);
+        resetArcadePuntuation = new Button("button", record.length() + 215, 180, "resetArcadePuntuation", true);
         //Cambiamos la escala botón para resetear la puntuación para hacerlo más adecuado al texto
         resetArcadePuntuation.setScale(0.6f,0.6f);
 
@@ -64,6 +72,9 @@ public class OptionsScreen extends BasicScreen {
 
         //Inicializamos el timer de espera para el efecto en los botones
         timeUntilExit = 0.5f;
+
+        //Cambiamos el valor de la variable que guarda el record, para poder utilizar el DrawText en el render
+        record = record.substring(6,record.length());
     }
 
 	@Override
@@ -83,9 +94,10 @@ public class OptionsScreen extends BasicScreen {
         music.render();
         effect.render();
         back.render();
+        viewAchievements.render();
 
         //Pintamos la puntuación del usuario en el modo arcade
-        FontManager.drawText("record", ": " + ArcadeScreen.obtainRecord() + " - ", 100, 211);
+        FontManager.drawText("record", record, 100, 211);
 
         //En función de si oculto o no, pintamos el cuadro de diálogo para borrar la puntuación del modo arcade
         if (menuResetDialog.getState().equals(DialogBoxState.HIDDEN))
@@ -98,6 +110,7 @@ public class OptionsScreen extends BasicScreen {
         //Actualizamos los botones del menú de opciones
         back.update();
         resetArcadePuntuation.update();
+        viewAchievements.update();
 
         //Si se ha tocado algún botón, lo marcamos como pulsado
         if (Gdx.input.justTouched()) {
@@ -132,6 +145,13 @@ public class OptionsScreen extends BasicScreen {
             //Si el botón de atrás es pulsado, volvermos al menú principal
             if (back.isPressed()){
                game.setScreen(new MainMenuScreen(game));
+            }
+
+            /*Si el botón de ver logros es pulsado, veremos la vista con los logros del usuario, volviendo al estado
+              anterior para el botón*/
+            if (viewAchievements.isPressed()){
+                SpaceGame.googleServices.showAchievements();
+                viewAchievements.setPressed(false);
             }
         } else {
             timeUntilExit -= delta;
@@ -180,5 +200,6 @@ public class OptionsScreen extends BasicScreen {
         back.dispose();
         resetArcadePuntuation.dispose();
         menuResetDialog.dispose();
+        viewAchievements.dispose();
 	}
 }
