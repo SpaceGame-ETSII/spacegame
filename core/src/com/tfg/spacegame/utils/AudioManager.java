@@ -2,7 +2,10 @@ package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-
+import com.tfg.spacegame.screens.ArcadeScreen;
+import com.tfg.spacegame.screens.CampaignScreen;
+import com.tfg.spacegame.screens.MultiplayerScreen;
+import com.tfg.spacegame.utils.enums.GameState;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,14 +17,65 @@ public class AudioManager {
     private static Music music;
     private static Map<String, Sound> sounds;
 
+    private static boolean isLoaded = false;
+    private static String currentMusic = "";
+
     public static void loadSounds() {
         sounds = new HashMap<String, Sound>();
+
         sounds.put("arcade_shock_effect", AssetsManager.loadSound("arcade_shock_effect"));
         sounds.put("button_backward", AssetsManager.loadSound("button_backward"));
         sounds.put("button_forward", AssetsManager.loadSound("button_forward"));
         sounds.put("inventary", AssetsManager.loadSound("inventary"));
         sounds.put("new_record", AssetsManager.loadSound("new_record"));
         sounds.put("pause", AssetsManager.loadSound("pause"));
+
+        isLoaded = true;
+    }
+
+    public static void update() {
+        String newMusic = "no_music";
+
+        if (ScreenManager.isCurrentScreenEqualsTo(ArcadeScreen.class)) {
+            if (ScreenManager.isCurrentStateEqualsTo(GameState.READY)) {
+                newMusic = "arcade";
+            } else if (ScreenManager.isCurrentStateEqualsTo(GameState.START)) {
+                newMusic = "arcade";
+            } else if (ScreenManager.isCurrentStateEqualsTo(GameState.PAUSE)) {
+                newMusic = "pause";
+            } else if (ScreenManager.isCurrentStateEqualsTo(GameState.WIN)) {
+
+            } else if (ScreenManager.isCurrentStateEqualsTo(GameState.LOSE)) {
+
+            }
+        } else if (ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class)) {
+            if (ScreenManager.isCurrentStateEqualsTo(GameState.READY)) {
+                newMusic = "campaign";
+            } else if (ScreenManager.isCurrentStateEqualsTo(GameState.START)) {
+                newMusic = "campaign";
+            } else if (ScreenManager.isCurrentStateEqualsTo(GameState.PAUSE)) {
+                newMusic = "pause";
+            } else if (ScreenManager.isCurrentStateEqualsTo(GameState.WIN)) {
+                newMusic = "campaign_win";
+            } else if (ScreenManager.isCurrentStateEqualsTo(GameState.LOSE)) {
+
+            }
+        } else if (ScreenManager.isCurrentScreenEqualsTo(MultiplayerScreen.class)) {
+
+        } else {
+            newMusic = "menu";
+        }
+
+        if (newMusic.equals("pause")) {
+            pauseMusic();
+        } else if (newMusic.equals("no_music")) {
+            stopMusic();
+        } else if (newMusic.equals(currentMusic)) {
+            playMusic();
+        } else if (!newMusic.equals(currentMusic)) {
+            AudioManager.playMusic(newMusic, true);
+            currentMusic = newMusic;
+        }
     }
 
     public static float getVolumeMusic() {
@@ -34,14 +88,25 @@ public class AudioManager {
 
     public static void setVolumeMusic(float volumeMusic) {
         AudioManager.volumeMusic = volumeMusic;
-        music.setVolume(volumeMusic);
+        if (music != null)
+            music.setVolume(volumeMusic);
     }
 
     public static void setVolumeEffect(float volumeEffect) {
         AudioManager.volumeEffect = volumeEffect;
     }
 
-    public static void playMusic(String name, boolean isLooping) {
+    public static void playSound(String name) {
+        if (!isLoaded)
+            loadSounds();
+
+        Sound sound = sounds.get(name);
+        long id = sound.play();
+
+        sound.setVolume(id, volumeEffect);
+    }
+
+    private static void playMusic(String name, boolean isLooping) {
         if (music != null)
             stopMusic();
 
@@ -52,19 +117,12 @@ public class AudioManager {
         music.setLooping(isLooping);
     }
 
-    public static void playSound(String name) {
-        Sound s = sounds.get(name);
-        long id = s.play();
-
-        s.setVolume(id,volumeEffect);
-    }
-
-    public static void playMusic() {
-        if (music != null)
+    private static void playMusic() {
+        if (music != null && !isPlaying())
             music.play();
     }
 
-    public static boolean isPlaying() {
+    private static boolean isPlaying() {
         boolean res = false;
         if (music != null)
             res = music.isPlaying();
@@ -76,8 +134,9 @@ public class AudioManager {
             music.pause();
     }
 
-    public static void stopMusic() {
-        music.stop();
+    private static void stopMusic() {
+        if (isPlaying())
+            music.stop();
     }
 
     public static void dispose() {

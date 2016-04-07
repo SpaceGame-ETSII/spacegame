@@ -81,7 +81,6 @@ public class ArcadeScreen extends GameScreen {
 		layer = 1;
 		timeAlive = 0;
 		record = ArcadeScreen.obtainRecord();
-		AudioManager.playMusic("arcade", true);
 	}
 
 	//Recoge el record, y si no hay ninguno coge un 0 por defecto
@@ -192,7 +191,6 @@ public class ArcadeScreen extends GameScreen {
 			//Realizamos los efectos visuales y de sonido
 			Gdx.input.vibrate(300);
 			CameraManager.startShake();
-			AudioManager.stopMusic();
 
 			//Si hemos conseguido nuevo record se considerará victoria, en caso contrario, derrota
 			if (newRecord) {
@@ -236,7 +234,6 @@ public class ArcadeScreen extends GameScreen {
 					menuExitDialog.setStateToWaiting();
 				} else {
 					state = GameState.START;
-					AudioManager.playMusic();
 					AudioManager.playSound("pause");
 				}
 			}
