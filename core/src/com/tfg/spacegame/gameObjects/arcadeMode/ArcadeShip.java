@@ -124,6 +124,7 @@ public class ArcadeShip extends GameObject {
         fireEffect.getEmitters().first().getLife().setHigh(fireEffectLife * y);
 
         destroyEffect.getEmitters().first().getScale().setHigh(destroyEffectScale * y);
+        destroyEffect.getEmitters().first().getVelocity().setHigh(destroyEffectScale * y);
         destroyEffect.getEmitters().first().getLife().setHigh(destroyEffectLife * y);
     }
 
