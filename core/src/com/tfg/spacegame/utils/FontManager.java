@@ -39,6 +39,12 @@ public class FontManager {
         bundle = AssetsManager.loadBundle();
     }
 
+    //Modifica el alpha de los BitmapFont en caso de ser necesario
+    public static void setAlpha(float alpha) {
+        title.setColor(1,1,1,alpha);
+        text.setColor(1,1,1,alpha);
+    }
+
     //Pinta un texto con formato text en la posición dada
     public static void drawText(String string, float x, float y){
         text.draw(SpaceGame.batch,bundle.get(string),x,y);

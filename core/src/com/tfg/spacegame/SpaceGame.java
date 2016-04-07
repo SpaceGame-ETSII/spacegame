@@ -51,6 +51,7 @@ public class SpaceGame extends Game {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, SpaceGame.width, SpaceGame.height);
 
+		BasicScreen.activeInitialAttenuation();
 		ScreenManager.changeScreen(this, MainMenuScreen.class);
 	}
 
