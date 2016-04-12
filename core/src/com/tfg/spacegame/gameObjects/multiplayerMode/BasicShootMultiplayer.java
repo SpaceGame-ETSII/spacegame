@@ -1,30 +1,28 @@
-package com.tfg.spacegame.gameObjects.campaignMode.shoots;
+package com.tfg.spacegame.gameObjects.multiplayerMode;
+
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.utils.enums.TypeShoot;
-import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Shoot;
+import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
+import com.tfg.spacegame.utils.AssetsManager;
 
-public class Basic extends Shoot {
+public class BasicShootMultiplayer extends Shoot {
 
     // Velocidad de movimiento
     public static final float SPEED = 600;
 
     // Efecto de partículas que forma el disparo en sí
-    private ParticleEffect shoot;
+    protected ParticleEffect shoot;
 
-    public Basic(GameObject shooter, int x, int y) {
+    public BasicShootMultiplayer(GameObject shooter, int x, int y) {
         // Situamos el disparo en el sitio correcto
         // X - Extremo derecha del shooter
         // Y - La mitad del alto del shooter - la mitad del alto del disparo
         super("basic_shoot",x,y,shooter,
                 AssetsManager.loadParticleEffect("basic_effect_shoot"),
                 AssetsManager.loadParticleEffect("basic_effect_shoot"));
-        // Establememos el tipo del arma
-        type = TypeShoot.BASIC;
         //Creamos el efecto que hará las veces de textura
         shoot = AssetsManager.loadParticleEffect("basic_shoot_effect");
         this.updateParticleEffect();
@@ -37,7 +35,7 @@ public class Basic extends Shoot {
         //Comprobamos si el disparo ha chocado
         if (!this.isShocked()) {
             //Se actuará de forma distinta si el shooter es enemigo o no
-            if (this.getShooter() instanceof Enemy) {
+            if (this.getShooter() instanceof EnemyShip) {
                 shoot.getEmitters().first().setPosition(this.getX() + this.getShooter().getWidth()/2, this.getY());
 
                 // Rotamos el efecto de particulas 180º
@@ -49,10 +47,10 @@ public class Basic extends Shoot {
         }
     }
 
-    public void update(float delta) {
+    public void update(float delta){
         if (!this.isShocked()) {
             // Actualizamos el movimiento del disparo
-            if (getShooter() instanceof Enemy) {
+            if (getShooter() instanceof EnemyShip) {
                 this.setX(this.getX() - (SPEED * delta));
             } else {
                 this.setX(this.getX() + (SPEED * delta));
@@ -91,7 +89,7 @@ public class Basic extends Shoot {
         super.collideWithShoot(shoot);
         this.shock();
     }
-    
+
     public void dispose(){
         super.dispose();
         shoot.dispose();

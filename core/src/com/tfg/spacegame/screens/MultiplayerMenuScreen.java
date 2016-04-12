@@ -1,7 +1,6 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.tfg.spacegame.BasicScreen;
 import com.tfg.spacegame.SpaceGame;
@@ -68,7 +67,7 @@ public class MultiplayerMenuScreen extends BasicScreen {
 
 			}
 			else if(quickGame.isPressed()){
-				ScreenManager.changeScreen(game,MultiplayerScreen.class, "", false);
+				ScreenManager.changeScreen(game,MultiplayerScreen.class,"",false);
 			}
 			else if(joinGame.isPressed()){
 				gameNameInput.show();

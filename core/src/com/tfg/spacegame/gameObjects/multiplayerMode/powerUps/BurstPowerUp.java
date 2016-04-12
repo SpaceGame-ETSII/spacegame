@@ -23,7 +23,7 @@ public class BurstPowerUp extends PowerUp{
         // Disparamos una ráfaga continuada de 3 segundos
         if(burstTime < BURST_TIME){
             if(shootTime >= SHOOT_TIME){
-                ShootsManager.shootOneBasicWeapon(g);
+                ShootsManager.shootOneBasicMultiplayerWeapon(g);
                 shootTime = 0;
             }else{
                 shootTime+=delta;

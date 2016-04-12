@@ -6,7 +6,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class Rocket extends Shoot {
 

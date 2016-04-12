@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.enums.TypeEnemy;

@@ -3,7 +3,7 @@ package com.tfg.spacegame.utils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.screens.CampaignScreen;
@@ -127,11 +127,8 @@ public class CollissionsManager {
         Array<Shoot> shoots = new Array<Shoot>(ShootsManager.shoots);
         Array<Shoot> shootsSource = new Array<Shoot>(ShootsManager.shoots);
 
-        boolean shootOverlapped;
-
         // Comprobamos las colisiones entre los shoots y el jugador y el enemigo
         for(Shoot shoot: shoots){
-            shootOverlapped = false;
             // Intento de colision con el enemigo
             if(shoot.getShooter() instanceof PlayerShip &&
                     shoot.isOverlapingWith(MultiplayerScreen.enemyShip) &&
@@ -139,19 +136,15 @@ public class CollissionsManager {
                     !MultiplayerScreen.enemyShip.isUndamagable() ){
                 // Colisión con el enemigo
                 enemyShootCollision = new Pair<EnemyShip, Shoot>(MultiplayerScreen.enemyShip,shoot);
-                shootOverlapped = true;
             }
             // Intento de colision con el player
-            if(shoot.getShooter() instanceof EnemyShip &&
+            else if(shoot.getShooter() instanceof EnemyShip &&
                     shoot.isOverlapingWith(MultiplayerScreen.playerShip) &&
                     !shoot.isShocked() &&
                     !MultiplayerScreen.playerShip.isUndamagable()){
                 // Colisión con el player
                 playerShootCollision = new Pair<PlayerShip, Shoot>(MultiplayerScreen.playerShip,shoot);
-                shootOverlapped = true;
-            }
-
-            if(!shootOverlapped){
+            }else{
                 for (Shoot shootSrc : shootsSource) {
                     if (!shoot.equals(shootSrc) && shoot.isOverlapingWith(shootSrc)
                             && !shoot.isShocked() && !shootSrc.isShocked()
@@ -181,9 +174,13 @@ public class CollissionsManager {
 
     private static void managesPlayerShootCollision(){
         playerShootCollision.getFirst().receiveDamage();
+        ShootsManager.shoots.removeValue(playerShootCollision.getSecond(),false);
+        playerShootCollision = null;
     }
     private static void managesEnemyShootCollision(){
         enemyShootCollision.getFirst().receiveDamage();
+        ShootsManager.shoots.removeValue(enemyShootCollision.getSecond(),false);
+        enemyShootCollision = null;
     }
 
     //Gestiona una colisión de enemigo a la nave

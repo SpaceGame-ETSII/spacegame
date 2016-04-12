@@ -11,4 +11,11 @@ public interface IGoogleServices
     boolean isSignedIn();
     void unlockAchievement(String achievementId);
     void showAchievements();
+
+    void startQuickGame();
+    void leaveRoom();
+    boolean canMultiplayerGameStart();
+    void sendMessageToOponent(String message);
+    String getMessageFromOponent();
+    String getMessageFromMyself();
 }

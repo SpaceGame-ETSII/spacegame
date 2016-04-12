@@ -1,9 +1,10 @@
-package com.tfg.spacegame.gameObjects.campaignMode.shoots;
+package com.tfg.spacegame.gameObjects;
 
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
+import com.tfg.spacegame.screens.CampaignScreen;
+import com.tfg.spacegame.utils.ScreenManager;
 import com.tfg.spacegame.utils.ShootsManager;
 import com.tfg.spacegame.utils.enums.TypeShoot;
 
@@ -54,9 +55,18 @@ public class Burst {
             //último es superior a su punto de inicio más su ancho por 1.3)
 
             if (lastShootOfBurst == null ||
-                    lastShootOfBurst.getX() > startPoint + (lastShootOfBurst.getWidth() * aparitionFactor) || (burstShooter instanceof Enemy && lastShootOfBurst.getX() < (startPoint - (lastShootOfBurst.getWidth()*aparitionFactor)))) {
-                if(typeToBurst.equals(TypeShoot.BASIC))
-                    lastShootOfBurst = ShootsManager.shootOneBasicWeapon(burstShooter);
+                    lastShootOfBurst.getX() > startPoint + (lastShootOfBurst.getWidth() * aparitionFactor) ||
+                    (burstShooter instanceof Enemy &&
+                            lastShootOfBurst.getX() < (startPoint - (lastShootOfBurst.getWidth()*aparitionFactor))) ||
+                    (burstShooter instanceof EnemyShip &&
+                            lastShootOfBurst.getX() < (startPoint - (lastShootOfBurst.getWidth()*aparitionFactor)))) {
+                if(typeToBurst.equals(TypeShoot.BASIC)){
+                    if(ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class))
+                        lastShootOfBurst = ShootsManager.shootOneBasicWeapon(burstShooter);
+                    else
+                        lastShootOfBurst = ShootsManager.shootOneBasicMultiplayerWeapon(burstShooter);
+                }
+
                 else if(typeToBurst.equals(TypeShoot.ORANGE))
                     lastShootOfBurst = ShootsManager.shootOneOrangeWeapon(landscapeShip,(int)(landscapeShip.getX() + landscapeShip.getWidth()),(int) (landscapeShip.getY() + landscapeShip.getHeight()/2), 45f ,burstTarget, numberOfBasicShoots);
                 numberOfBasicShoots -= 1;

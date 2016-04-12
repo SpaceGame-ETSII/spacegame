@@ -11,7 +11,7 @@ public class PlayerShip extends LandscapeShip {
     public final float SPEED = 50;
 
     public PlayerShip() {
-        super("playerShip",0,0,5);
+        super("playerShip",80,0,5);
     }
 
     public void update(float delta, float y, boolean canShipMove) {
@@ -33,9 +33,5 @@ public class PlayerShip extends LandscapeShip {
     }
     public void shoot() {
         ShootsManager.shootBurstBasicWeaponForShip(this);
-    }
-
-    public void healHalfLife(){
-
     }
 }

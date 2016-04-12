@@ -35,6 +35,8 @@
 !/android/src/com/tfg/spacegame/
 !/android/src/com/tfg/spacegame/android/
 !/android/src/com/tfg/spacegame/android/*
+!/android/src/com/tfg/spacegame/android/*/*
+!/android/src/com/tfg/spacegame/android/*/*/*
 !/desktop/
 !/desktop/src/
 !/desktop/src/com/

@@ -1,7 +1,6 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
@@ -9,7 +8,7 @@ import com.tfg.spacegame.gameObjects.*;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Inventary;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.DialogBoxState;
 import com.tfg.spacegame.utils.enums.GameState;
