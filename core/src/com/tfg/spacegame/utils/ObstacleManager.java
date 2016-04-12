@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.arcadeMode.ArcadeShip;
 import com.tfg.spacegame.gameObjects.arcadeMode.Obstacle;
 import com.tfg.spacegame.screens.ArcadeScreen;
 import com.tfg.spacegame.utils.enums.TypeObstacle;
@@ -20,6 +21,8 @@ public class ObstacleManager {
     public static final float MIN_TOP_PROBABILITY = 0.5f;
     //Velocidad inicial a la que se moverán los obstáculos
     public final static int INITIAL_SPEED = 150;
+    //Aceleración con la que aumentará la velocidad
+    public final static float ACCELERATION = 1.5f;
 
     //Obstáculos de la capa superior
     public static Array<Obstacle> obstaclesInTop;
@@ -55,8 +58,8 @@ public class ObstacleManager {
     public static void update(float delta){
         generateObstacles();
         updateProbabilities(delta);
-        updateObstacles(delta, obstaclesInTop);
-        updateObstacles(delta, obstaclesInBottom);
+        updateObstacles(delta, obstaclesInTop, TOP_SCALE);
+        updateObstacles(delta, obstaclesInBottom, BOTTOM_SCALE);
     }
 
     //
@@ -105,11 +108,11 @@ public class ObstacleManager {
             //Colocamos el obstáculo en una posición 'Y' arriba de la pantalla y fuera de ésta
             obstacle.setY(SpaceGame.height + obstacle.getHeight());
             //Escalamos el objeto según la escala dada
-            float scale = (layer == 1) ? 1 : 0.5f;
+            float scale = (layer == 1) ? TOP_SCALE : BOTTOM_SCALE;
             obstacle.setScale(scale, scale);
 
             //Finalmente añadimos el obstáculo a la lista, siempre y cuando no choque con algún otro obstáculo
-            if (!existsCollision(obstacle, ArcadeScreen.layer)) {
+            if (!existsCollision(obstacle, layer)) {
                 obstacles.add(obstacle);
             }
         }
@@ -133,19 +136,19 @@ public class ObstacleManager {
     }
 
     //Actualizamos la posición de los obstáculos que están creados
-    private static void updateObstacles(float delta, Array<Obstacle> obstacles) {
+    private static void updateObstacles(float delta, Array<Obstacle> obstacles, float scale) {
         for (Obstacle obstacle: obstacles) {
             //Actualizamos el obstáculo concreto
-            obstacle.update(delta);
-
-            //Aumentamos la velocidad de los obstáculos
-            speed = INITIAL_SPEED + delta;
+            obstacle.update(delta, speed * scale);
 
             //Eliminamos el obstáculo si se ha salido de la pantalla
             if(obstacle.getY() < -obstacle.getHeight()){
                 removeObstacle(obstacle, obstacles);
             }
         }
+
+        //Aumentamos la velocidad de los obstáculos
+        speed += (delta * ACCELERATION);
     }
 
     //Borra un obstáculo de la lista pasada por parámetro y lo incluye en su correspondiente lista de borrados
@@ -191,7 +194,10 @@ public class ObstacleManager {
 
         //Finalmente comprobamos si hay colisión
         for (Obstacle obstacle: obstacles) {
-            if (gameObject.isOverlapingWith(obstacle)) {
+
+            //Pregutnamos de forma distinta si se trata de un obstáculo o bien la nave
+            if ((gameObject instanceof Obstacle && obstacle.isOverlapingWithAnotherObstacle((Obstacle) gameObject)) ||
+                    (gameObject instanceof ArcadeShip && gameObject.isOverlapingWith(obstacle))) {
                 res = true;
                 break;
             }
