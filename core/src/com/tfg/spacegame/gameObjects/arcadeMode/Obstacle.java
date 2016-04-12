@@ -68,12 +68,27 @@ public class Obstacle extends GameObject {
         Color c = SpaceGame.batch.getColor();
         float oldAlpha = c.a;
 
+        /*
         c.a = alpha;
         SpaceGame.batch.setColor(c);
 
         this.renderRotate(degrees / 2);
 
         c.a = oldAlpha;
+        */
+
+        c.r -= 1 - alpha;
+        c.g -= 1 - alpha;
+        c.b -= 1 - alpha;
+
+        SpaceGame.batch.setColor(c);
+
+        this.renderRotate(degrees / 2);
+
+        c.r = oldAlpha;
+        c.g = oldAlpha;
+        c.b = oldAlpha;
+
         SpaceGame.batch.setColor(c);
     }
 
