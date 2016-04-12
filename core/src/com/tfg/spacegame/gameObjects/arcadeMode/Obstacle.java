@@ -1,7 +1,9 @@
 package com.tfg.spacegame.gameObjects.arcadeMode;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.FontManager;
@@ -36,7 +38,7 @@ public class Obstacle extends GameObject {
         direction = (MathUtils.random(-1, 1) >= 0) ? 1 : -1;
     }
 
-    public void update(float delta) {
+    public void update(float delta, float speed) {
         //Primero rotamos el obstáculo
         this.setRotation(degrees);
 
@@ -44,7 +46,7 @@ public class Obstacle extends GameObject {
         this.updateDegrees(delta);
 
         //Actualizamos la posición del obstáculo
-        this.setY(this.getY() - (ObstacleManager.speed * delta));
+        this.setY(this.getY() - (speed * delta));
     }
 
     private void updateDegrees(float delta) {
@@ -73,6 +75,14 @@ public class Obstacle extends GameObject {
 
         c.a = oldAlpha;
         SpaceGame.batch.setColor(c);
+    }
+
+    //Indica si hay una colisión con el obstáculo, aunque sólo preguntando por sus radios, para que la colisión sea más probable
+    public boolean isOverlapingWithAnotherObstacle(Obstacle o) {
+        float distance = Vector2.dst(this.getCenter().x, this.getCenter().y, o.getCenter().x, o.getCenter().y);
+        float totalRadios = this.getRadio() + o.getRadio();
+
+        return distance < totalRadios;
     }
 
     public TypeObstacle getType() {
