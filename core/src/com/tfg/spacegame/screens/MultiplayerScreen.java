@@ -150,10 +150,13 @@ public class MultiplayerScreen extends GameScreen{
         if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched()){
             if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched()){
                 outcomeMessage.setBurstOperation();
+                playerBurstPowerUp.setTouched();
             }else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched()){
                 outcomeMessage.setRefLifeOperation();
+                playerRegLifePowerUp.setTouched();
             }else {
                 outcomeMessage.setShootOperation();
+                playerShip.shoot();
             }
         }
 
@@ -173,28 +176,14 @@ public class MultiplayerScreen extends GameScreen{
 
         if(playerShip.isDefeated()){
             outcomeMessage.setLeaveOperation();
+            state = GameState.LOSE;
+            if(!playerShip.isDefeated())
+                abandonPlayer = true;
         }
 
         SpaceGame.googleServices.sendMessageToOponent(outcomeMessage.getForSendMessage());
         outcomeMessage.resetOperations();
         updateEnemy();
-        updatePlayer();
-    }
-
-    public void updatePlayer(){
-        incomePlayerMessage.setPropertiesFromMessage(SpaceGame.googleServices.getMessageFromMyself());
-
-        if(incomePlayerMessage.isShootOperationActive())
-            playerShip.shoot();
-        if(incomePlayerMessage.isBurstOperationActive())
-            playerBurstPowerUp.setTouched();
-        if(incomePlayerMessage.isRefLifeOperationActive())
-            playerRegLifePowerUp.setTouched();
-        if(incomePlayerMessage.isLeaveOperationActive()){
-            state = GameState.LOSE;
-            if(!playerShip.isDefeated())
-                abandonPlayer = true;
-        }
     }
 
     public void updateEnemy() {
@@ -286,6 +275,9 @@ public class MultiplayerScreen extends GameScreen{
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK){
             outcomeMessage.setLeaveOperation();
+            state = GameState.LOSE;
+            if(!playerShip.isDefeated())
+                abandonPlayer = true;
         }
         return false;
     }

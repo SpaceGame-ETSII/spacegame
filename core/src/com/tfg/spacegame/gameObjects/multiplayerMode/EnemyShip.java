@@ -13,7 +13,7 @@ import com.tfg.spacegame.utils.ShootsManager;
 public class EnemyShip extends LandscapeShip {
 
     //Indica la velocidad para el movimiento de la nave
-    private final float MAX_SPEED = 20;
+    private final float MAX_SPEED = 10;
 
     public EnemyShip() {
         super("enemyShip", SpaceGame.width - (80+100), SpaceGame.height/2, 5);

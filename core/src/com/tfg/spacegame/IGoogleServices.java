@@ -17,5 +17,4 @@ public interface IGoogleServices
     boolean canMultiplayerGameStart();
     void sendMessageToOponent(String message);
     String getMessageFromOponent();
-    String getMessageFromMyself();
 }

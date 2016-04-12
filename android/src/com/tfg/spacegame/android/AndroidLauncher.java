@@ -26,7 +26,7 @@ import com.tfg.spacegame.android.multiplayerListeners.RoomUpdate;
 
 import java.util.ArrayList;
 
-public class AndroidLauncher extends AndroidApplication implements IGoogleServices, RealTimeMultiplayer.ReliableMessageSentCallback {
+public class AndroidLauncher extends AndroidApplication implements IGoogleServices {
 
 	private final static int REQUEST_CODE_UNUSED = 9002;
 	private final static int REQUEST_CODE_WAITING_ROOM = 10002;
@@ -242,14 +242,12 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 	@Override
 	public void sendMessageToOponent(String message) {
-		poolMessages.add(message);
 		for(Participant p : participants){
 			if(!p.getParticipantId().equals(myId))
-				Games.RealTimeMultiplayer.sendReliableMessage(_gameHelper.getApiClient(),this,message.getBytes(),roomId,p.getParticipantId());
+				Games.RealTimeMultiplayer.sendUnreliableMessage(_gameHelper.getApiClient(),message.getBytes(),roomId,p.getParticipantId());
 		}
 	}
 
-	@Override
 	public void onRealTimeMessageSent(int i, int i1, String s) {
 		if(i == 0){
 			playerMessage = poolMessages.first();
@@ -263,16 +261,6 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		if(enemyMessage != null){
 			result = new String(enemyMessage.getMessageData());
 			enemyMessage = null;
-		}
-		return result;
-	}
-
-	@Override
-	public String getMessageFromMyself(){
-		String result = "";
-		if(playerMessage != null){
-			result = playerMessage;
-			playerMessage = null;
 		}
 		return result;
 	}
