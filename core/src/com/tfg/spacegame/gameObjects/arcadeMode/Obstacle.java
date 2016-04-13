@@ -80,6 +80,7 @@ public class Obstacle extends GameObject {
         c.r -= 1 - alpha;
         c.g -= 1 - alpha;
         c.b -= 1 - alpha;
+        c.a = alpha;
 
         SpaceGame.batch.setColor(c);
 
@@ -88,6 +89,7 @@ public class Obstacle extends GameObject {
         c.r = oldAlpha;
         c.g = oldAlpha;
         c.b = oldAlpha;
+        c.a = oldAlpha;
 
         SpaceGame.batch.setColor(c);
     }
