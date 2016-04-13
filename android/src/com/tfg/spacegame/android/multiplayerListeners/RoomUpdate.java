@@ -5,6 +5,8 @@ import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.tfg.spacegame.android.AndroidLauncher;
 
+import java.util.Calendar;
+
 
 public class RoomUpdate implements RoomUpdateListener{
 
@@ -18,6 +20,7 @@ public class RoomUpdate implements RoomUpdateListener{
     public void onRoomCreated(int i, Room room) {
         Gdx.app.log("multi","onRoomCreated   -  Code:"+i+"   RoomID:"+room.getRoomId());
         callback.roomId = room.getRoomId();
+        callback.timeRoomCreated = Calendar.getInstance().getTimeInMillis();
         callback.showWaitingRoom(room);
     }
 

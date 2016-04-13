@@ -9,11 +9,9 @@ import android.view.WindowManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.utils.Array;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.multiplayer.Participant;
-import com.google.android.gms.games.multiplayer.realtime.RealTimeMessage;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
@@ -23,10 +21,11 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.android.multiplayerListeners.MessageReceived;
 import com.tfg.spacegame.android.multiplayerListeners.RoomStatusUpdate;
 import com.tfg.spacegame.android.multiplayerListeners.RoomUpdate;
+import com.tfg.spacegame.utils.MultiplayerMessage;
 
 import java.util.ArrayList;
 
-public class AndroidLauncher extends AndroidApplication implements IGoogleServices {
+public class AndroidLauncher extends AndroidApplication implements IGoogleServices, RealTimeMultiplayer.ReliableMessageSentCallback {
 
 	private final static int REQUEST_CODE_UNUSED = 9002;
 	private final static int REQUEST_CODE_WAITING_ROOM = 10002;
@@ -34,11 +33,11 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	public String roomId;
 	public String myId;
 	public ArrayList<Participant> participants;
-	public RealTimeMessage enemyMessage;
+	public MultiplayerMessage gameMessage;
+	public String tcpMessage;
+	public Long timeRoomCreated;
+	private boolean hasSendTimeRoomCreated;
 
-	public Array<String>   poolMessages;
-
-	public String playerMessage;
 	public boolean startMultiplayerGame;
 
 	private GameHelper _gameHelper;
@@ -52,7 +51,6 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		_gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
 		_gameHelper.enableDebugLog(false);
 
-		poolMessages = new Array<String>();
 		resetMultiplayerProperties();
 
 
@@ -241,28 +239,49 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	}
 
 	@Override
-	public void sendMessageToOponent(String message) {
+	public void sendGameMessage(String message) {
 		for(Participant p : participants){
 			if(!p.getParticipantId().equals(myId))
 				Games.RealTimeMultiplayer.sendUnreliableMessage(_gameHelper.getApiClient(),message.getBytes(),roomId,p.getParticipantId());
 		}
 	}
 
+	@Override
+	public boolean calculateMasterSlave(){
+		boolean result = false;
+		if(!hasSendTimeRoomCreated){
+			sendTCPMessage(timeRoomCreated.toString());
+			hasSendTimeRoomCreated = true;
+		}else if(tcpMessage != ""){
+			Long hisTime = Long.parseLong(tcpMessage);
+			if(timeRoomCreated < hisTime)
+				result = true;
+		}
+		return result;
+	}
+
+	@Override
+	public void sendTCPMessage(String message) {
+		for(Participant p : participants){
+			if(!p.getParticipantId().equals(myId))
+				Games.RealTimeMultiplayer.sendReliableMessage(_gameHelper.getApiClient(),this,message.getBytes(),roomId,p.getParticipantId());
+		}
+	}
+
 	public void onRealTimeMessageSent(int i, int i1, String s) {
 		if(i == 0){
-			playerMessage = poolMessages.first();
-			poolMessages.removeIndex(0);
+
 		}
 	}
 
 	@Override
-	public String getMessageFromOponent() {
-		String result = "";
-		if(enemyMessage != null){
-			result = new String(enemyMessage.getMessageData());
-			enemyMessage = null;
-		}
-		return result;
+	public MultiplayerMessage receiveGameMessage() {
+		return gameMessage;
+	}
+
+	@Override
+	public String receiveTCpMessage() {
+		return null;
 	}
 
 	public void setMyId(Room room){
@@ -295,10 +314,11 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 	private void resetMultiplayerProperties(){
 		startMultiplayerGame 	= false;
-		enemyMessage 			= null;
-		playerMessage 			= null;
+		gameMessage = null;
+		tcpMessage				= "";
 		roomId 					= "";
+		hasSendTimeRoomCreated  = false;
 		participants 			= new ArrayList<Participant>();
-		poolMessages.clear();
+		timeRoomCreated			= 0L;
 	}
 }

@@ -1,5 +1,7 @@
 package com.tfg.spacegame;
 
+import com.tfg.spacegame.utils.MultiplayerMessage;
+
 //Se usará para conectarnos a Google Services
 public interface IGoogleServices
 {
@@ -14,7 +16,14 @@ public interface IGoogleServices
 
     void startQuickGame();
     void leaveRoom();
+
     boolean canMultiplayerGameStart();
-    void sendMessageToOponent(String message);
-    String getMessageFromOponent();
+
+    void sendGameMessage(String message);
+    void sendTCPMessage(String message);
+    MultiplayerMessage receiveGameMessage();
+    String receiveTCpMessage();
+    boolean calculateMasterSlave();
+
+
 }

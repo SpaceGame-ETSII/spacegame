@@ -38,26 +38,27 @@ public class MultiplayerScreen extends GameScreen{
 
     private boolean abandonPlayer;
     private boolean abandonEnemy;
-    private boolean leaveTheRoom;
     private MultiplayerMessage outcomeMessage;
-    private MultiplayerMessage incomeEnemyMessage;
-    private MultiplayerMessage incomePlayerMessage;
+    private MultiplayerMessage incomeMessage;
+    // 0 - Nothing ; 1 - Master ; 2 - Slave
+    private boolean firstSendingMessage;
+    private boolean canSendMessage;
+
 
     public MultiplayerScreen(final SpaceGame game, String roomId, Boolean createRoom){
         this.game = game;
 
         background = AssetsManager.loadTexture("background");
         outcomeMessage  = new MultiplayerMessage();
-        incomeEnemyMessage = new MultiplayerMessage();
-        incomePlayerMessage = new MultiplayerMessage();
+        incomeMessage = new MultiplayerMessage();
         state = GameState.READY;
+        firstSendingMessage = false;
+        canSendMessage = false;
 
         infoMessage = FontManager.getFromBundle("connectServer");
 
         timeToStartGame = MAX_TIME_TO_START_GAME;
         timeToLeftGame = MAX_TIME_TO_LEFT_GAME;
-
-        leaveTheRoom = false;
 
         playerShip  = new PlayerShip();
         enemyShip   = new EnemyShip();
@@ -81,7 +82,6 @@ public class MultiplayerScreen extends GameScreen{
         Gdx.input.setCatchBackKey(true);
 
         SpaceGame.googleServices.startQuickGame();
-
     }
 
     @Override
@@ -109,8 +109,10 @@ public class MultiplayerScreen extends GameScreen{
                 timeToStartGame = 0;
                 state = GameState.START;
             }
-        }
 
+            if(!firstSendingMessage)
+                firstSendingMessage = SpaceGame.googleServices.calculateMasterSlave();
+        }
     }
 
     @Override
@@ -136,31 +138,8 @@ public class MultiplayerScreen extends GameScreen{
         ShootsManager.update(delta, playerShip);
         CameraManager.update(delta);
 
-        // Obtenemos un vector de coordenadas si está en la zona de movimiento de la nave
-        Vector3 coordinates = TouchManager.getAnyXTouchLowerThan(playerShip.getX() + playerShip.getWidth());
-
-        boolean canShipMove = false;
-        if(!coordinates.equals(Vector3.Zero))
-            canShipMove = true;
-
-        playerShip.update(delta, coordinates.y, canShipMove);
-
-        coordinates = TouchManager.getAnyXTouchGreaterThan(playerShip.getX() + playerShip.getWidth());
-
-        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched()){
-            if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched()){
-                outcomeMessage.setBurstOperation();
-                playerBurstPowerUp.setTouched();
-            }else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched()){
-                outcomeMessage.setRefLifeOperation();
-                playerRegLifePowerUp.setTouched();
-            }else {
-                outcomeMessage.setShootOperation();
-                playerShip.shoot();
-            }
-        }
-
-        outcomeMessage.setPositionY(playerShip.getCenter().y);
+        updateIncomeMessage(delta);
+        updateOutComeMessage();
 
         if(playerBurstPowerUp.isTouched())
             playerBurstPowerUp.act(delta, playerShip);
@@ -174,38 +153,90 @@ public class MultiplayerScreen extends GameScreen{
         if(enemyRegLifePowerUp.isTouched())
             enemyRegLifePowerUp.act(delta, enemyShip);
 
-        if(playerShip.isDefeated()){
-            outcomeMessage.setLeaveOperation();
-            state = GameState.LOSE;
-            if(!playerShip.isDefeated())
-                abandonPlayer = true;
-        }
+        outcomeMessage.resetPlayerOperations();
+        outcomeMessage.resetRivalOperations();
 
-        SpaceGame.googleServices.sendMessageToOponent(outcomeMessage.getForSendMessage());
-        outcomeMessage.resetOperations();
-        updateEnemy();
+        incomeMessage.resetRivalOperations();
+        incomeMessage.resetPlayerOperations();
     }
 
-    public void updateEnemy() {
-        incomeEnemyMessage.setPropertiesFromMessage(SpaceGame.googleServices.getMessageFromOponent());
+    private void updateIncomeMessage(float delta){
+        incomeMessage = SpaceGame.googleServices.receiveGameMessage();
 
-        enemyYposition = incomeEnemyMessage.getPositionY();
-        if(incomeEnemyMessage.isShootOperationActive()){
-            enemyShip.shoot();
-        }
-        if(incomeEnemyMessage.isBurstOperationActive()){
-            enemyBurstPowerUp.setTouched();
-        }
-        if(incomeEnemyMessage.isRefLifeOperationActive()){
-            enemyRegLifePowerUp.setTouched();
-        }
-        if(incomeEnemyMessage.isLeaveOperationActive()){
-            if (!enemyShip.isDefeated()) {
-                abandonEnemy = true;
+        // ACK PLAYER
+        if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_ACK)){
+
+            canSendMessage = true;
+
+            playerShip.update(delta, incomeMessage.getPlayerPositionY(), true);
+
+            if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_LEAVE)){
+                state = GameState.LOSE;
+                if(!playerShip.isDefeated())
+                    abandonPlayer = true;
             }
+            if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_SHOOT))
+                playerShip.shoot();
+
+            if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_BURST))
+                playerBurstPowerUp.setTouched();
+
+            if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_REG_LIFE))
+                playerRegLifePowerUp.setTouched();
+        }
+
+        // ENEMY
+        enemyYposition = incomeMessage.getRivalPositionY();
+
+        if(incomeMessage.checkRivalOperation(incomeMessage.MASK_SHOOT))
+            enemyShip.shoot();
+
+        if(incomeMessage.checkRivalOperation(incomeMessage.MASK_BURST))
+            enemyBurstPowerUp.setTouched();
+
+        if(incomeMessage.checkRivalOperation(incomeMessage.MASK_REG_LIFE))
+            enemyRegLifePowerUp.setTouched();
+
+        if(incomeMessage.checkRivalOperation(incomeMessage.MASK_LEAVE)){
+            if (!enemyShip.isDefeated())
+                abandonEnemy = true;
             state = GameState.WIN;
         }
-        incomeEnemyMessage.resetOperations();
+    }
+
+    private void updateOutComeMessage(){
+        // Obtenemos un vector de coordenadas si está en la zona de movimiento de la nave
+        Vector3 coordinates = TouchManager.getAnyXTouchLowerThan(playerShip.getX() + playerShip.getWidth());
+
+        if(!coordinates.equals(Vector3.Zero))
+            outcomeMessage.setPlayerPositionY(playerShip.getCenter().y);
+
+        coordinates = TouchManager.getAnyXTouchGreaterThan(playerShip.getX() + playerShip.getWidth());
+
+        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched())
+
+            if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched())
+                outcomeMessage.setPlayerOperation(outcomeMessage.MASK_BURST);
+
+            else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched())
+                outcomeMessage.setPlayerOperation(outcomeMessage.MASK_REG_LIFE);
+
+            else
+                outcomeMessage.setPlayerOperation(outcomeMessage.MASK_SHOOT);
+
+        if(playerShip.isDefeated())
+            outcomeMessage.setPlayerOperation(outcomeMessage.MASK_LEAVE);
+
+        // Build the enemy ACK
+        outcomeMessage.setRivalPositionY(enemyYposition);
+        outcomeMessage.setRivalOperations(incomeMessage.getRivalOperations());
+        outcomeMessage.setRivalOperation(incomeMessage.MASK_ACK);
+
+        if(canSendMessage || firstSendingMessage){
+            SpaceGame.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
+            firstSendingMessage = false;
+            canSendMessage = false;
+        }
     }
 
     @Override
@@ -274,10 +305,7 @@ public class MultiplayerScreen extends GameScreen{
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK){
-            outcomeMessage.setLeaveOperation();
-            state = GameState.LOSE;
-            if(!playerShip.isDefeated())
-                abandonPlayer = true;
+            outcomeMessage.setPlayerOperation(outcomeMessage.MASK_LEAVE);
         }
         return false;
     }

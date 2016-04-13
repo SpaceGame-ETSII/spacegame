@@ -68,12 +68,12 @@ public class DesktopGoogleServices implements IGoogleServices
     }
 
     @Override
-    public void sendMessageToOponent(String message) {
+    public void sendGameMessage(String message) {
 
     }
 
     @Override
-    public String getMessageFromOponent() {
+    public String receiveGameMessage() {
         return null;
     }
 }
