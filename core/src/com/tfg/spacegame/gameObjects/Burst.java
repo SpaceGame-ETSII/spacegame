@@ -2,7 +2,7 @@ package com.tfg.spacegame.gameObjects;
 
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.RivalShip;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.ScreenManager;
 import com.tfg.spacegame.utils.ShootsManager;
@@ -58,7 +58,7 @@ public class Burst {
                     lastShootOfBurst.getX() > startPoint + (lastShootOfBurst.getWidth() * aparitionFactor) ||
                     (burstShooter instanceof Enemy &&
                             lastShootOfBurst.getX() < (startPoint - (lastShootOfBurst.getWidth()*aparitionFactor))) ||
-                    (burstShooter instanceof EnemyShip &&
+                    (burstShooter instanceof RivalShip &&
                             lastShootOfBurst.getX() < (startPoint - (lastShootOfBurst.getWidth()*aparitionFactor)))) {
                 if(typeToBurst.equals(TypeShoot.BASIC)){
                     if(ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class))

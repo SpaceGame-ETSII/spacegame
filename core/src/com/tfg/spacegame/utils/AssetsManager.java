@@ -100,7 +100,7 @@ public class AssetsManager {
         assetsReferences.put("cockpit_damage3", shipsFolder+"cabina_dano3.png");
         assetsReferences.put("cockpit_damage4", shipsFolder+"cabina_dano4.png");
         assetsReferences.put("playerShip", shipsFolder+"nave_multi_p1.png");
-        assetsReferences.put("enemyShip", shipsFolder+"nave_multi_p2.png");
+        assetsReferences.put("rivalShip", shipsFolder+"nave_multi_p2.png");
 
         // Texturas referentes a powerUps
         assetsReferences.put("shieldEnemy", powerUpsFolder+"shieldEnemy.png");

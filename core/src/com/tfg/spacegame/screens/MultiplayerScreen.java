@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Shoot;
-import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.RivalShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.BurstPowerUp;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.RegLifePowerUp;
@@ -17,41 +17,64 @@ import com.tfg.spacegame.utils.enums.GameState;
 public class MultiplayerScreen extends GameScreen{
     final SpaceGame game;
 
+    // Nave del jugador
     public static PlayerShip playerShip;
-    public static EnemyShip   enemyShip;
-    public static float enemyYposition;
+    // Nave del rival
+    public static RivalShip rivalShip;
+    // Posicion de la nave rival
+    // TODO No se puede poner en la rivalShip?
+    public static float rivalYposition;
+
+    // Tiempo máximo para poder empezar la partida
     private final float MAX_TIME_TO_START_GAME = 5f;
+    // Tiempo máximo para poder salir de la partida
     private final float MAX_TIME_TO_LEFT_GAME = 1f;
 
+    // TODO Actualizate con el backgroundManager
     private Texture background;
 
+    // Mensaje de información para mostrar al usuario
     private String infoMessage;
 
+    // Tiempos -> de comienzo y de salida
     private float timeToStartGame;
     private float timeToLeftGame;
 
+    // PowerUps del jugador
     private BurstPowerUp playerBurstPowerUp;
     private RegLifePowerUp playerRegLifePowerUp;
 
-    private BurstPowerUp    enemyBurstPowerUp;
-    private RegLifePowerUp  enemyRegLifePowerUp;
+    // PowerUps del rival
+    private BurstPowerUp rivalBurstPowerUp;
+    private RegLifePowerUp rivalRegLifePowerUp;
 
+    // Sabremos si el jugador abandonó la partida
     private boolean abandonPlayer;
-    private boolean abandonEnemy;
+    // Sabremos si el rival abandonó la partida
+    private boolean abandonRival;
+
+    // TODO Piensa si se puede hacer en un solo mensaje
+    // Mensajes de entrada y de salida del juego
     private MultiplayerMessage outcomeMessage;
     private MultiplayerMessage incomeMessage;
-    // 0 - Nothing ; 1 - Master ; 2 - Slave
-    private boolean firstSendingMessage;
-    private boolean canSendMessage;
 
+    // Con esto sabremos quien es el que envía primero el primer mensaje
+    // Ya que nuestro objetivo es que haya solamente uno por momento circulando
+    private boolean firstSendingMessage;
+
+    // Variable que controlará que hasta que no se reciba un ACK no puede enviar su mensaje
+    private boolean canSendMessage;
 
     public MultiplayerScreen(final SpaceGame game, String roomId, Boolean createRoom){
         this.game = game;
 
         background = AssetsManager.loadTexture("background");
+
         outcomeMessage  = new MultiplayerMessage();
         incomeMessage = new MultiplayerMessage();
+
         state = GameState.READY;
+
         firstSendingMessage = false;
         canSendMessage = false;
 
@@ -61,22 +84,22 @@ public class MultiplayerScreen extends GameScreen{
         timeToLeftGame = MAX_TIME_TO_LEFT_GAME;
 
         playerShip  = new PlayerShip();
-        enemyShip   = new EnemyShip();
+        rivalShip = new RivalShip();
 
-        abandonEnemy = false;
+        abandonRival = false;
         abandonPlayer = false;
 
         playerBurstPowerUp = new BurstPowerUp("burstPlayer", SpaceGame.width/3, 5);
         playerRegLifePowerUp = new RegLifePowerUp("regLifePlayer", SpaceGame.width/2, 5);
 
-        enemyBurstPowerUp    = new BurstPowerUp("burstEnemy",SpaceGame.width/3,SpaceGame.height - 55);
-        enemyRegLifePowerUp  = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2,SpaceGame.height-55);
+        rivalBurstPowerUp = new BurstPowerUp("burstEnemy",SpaceGame.width/3,SpaceGame.height - 55);
+        rivalRegLifePowerUp = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2,SpaceGame.height-55);
 
         CollissionsManager.load();
         ShootsManager.load();
-        CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
+        CameraManager.loadShakeEffect(1f, CameraManager.NORMAL_SHAKE);
 
-        enemyYposition = enemyShip.getY();
+        rivalYposition = rivalShip.getY();
 
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
@@ -101,6 +124,7 @@ public class MultiplayerScreen extends GameScreen{
 
     @Override
     public void updateReady(float delta) {
+        // Lógica de espera para empezar la partida
         if(SpaceGame.googleServices.canMultiplayerGameStart()){
             if(timeToStartGame > 0){
                 infoMessage = FontManager.getFromBundle("startGame")+"  "+(int)timeToStartGame;
@@ -110,6 +134,7 @@ public class MultiplayerScreen extends GameScreen{
                 state = GameState.START;
             }
 
+            // Aqui vamos a descubrir si este dispositivo o el contrario va a empezar a enviar el primer mensaje
             if(!firstSendingMessage)
                 firstSendingMessage = SpaceGame.googleServices.calculateMasterSlave();
         }
@@ -118,27 +143,29 @@ public class MultiplayerScreen extends GameScreen{
     @Override
     public void renderStart(float delta) {
         playerShip.render();
-        enemyShip.render();
+        rivalShip.render();
 
         ShootsManager.render();
 
         playerBurstPowerUp.render();
         playerRegLifePowerUp.render();
 
-        enemyBurstPowerUp.render();
-        enemyRegLifePowerUp.render();
+        rivalBurstPowerUp.render();
+        rivalRegLifePowerUp.render();
     }
 
     @Override
     public void updateStart(float delta) {
 
-        enemyShip.update(delta);
+        rivalShip.update(delta);
 
         CollissionsManager.update();
         ShootsManager.update(delta, playerShip);
         CameraManager.update(delta);
 
+        // Actualizaremos la lógica por parte de la entrada del mensaje
         updateIncomeMessage(delta);
+        // Actaulizaremos la lógica por parte de la salida del mensaje
         updateOutComeMessage();
 
         if(playerBurstPowerUp.isTouched())
@@ -147,12 +174,14 @@ public class MultiplayerScreen extends GameScreen{
         if(playerRegLifePowerUp.isTouched())
             playerRegLifePowerUp.act(delta, playerShip);
 
-        if(enemyBurstPowerUp.isTouched())
-            enemyBurstPowerUp.act(delta, enemyShip);
+        if(rivalBurstPowerUp.isTouched())
+            rivalBurstPowerUp.act(delta, rivalShip);
 
-        if(enemyRegLifePowerUp.isTouched())
-            enemyRegLifePowerUp.act(delta, enemyShip);
+        if(rivalRegLifePowerUp.isTouched())
+            rivalRegLifePowerUp.act(delta, rivalShip);
 
+        // Reseteamos todas las operaciones
+        // TODO No se puede hacer más sencillo? :(
         outcomeMessage.resetPlayerOperations();
         outcomeMessage.resetRivalOperations();
 
@@ -161,12 +190,16 @@ public class MultiplayerScreen extends GameScreen{
     }
 
     private void updateIncomeMessage(float delta){
+        // Obtenemos el mensaje de entrada
         incomeMessage = SpaceGame.googleServices.receiveGameMessage();
 
-        // ACK PLAYER
+        // Preguntamos si por parte del jugador, es un mensaje de ACK
         if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_ACK)){
 
+            // Al ser un mensaje de ACK, podremos enviar nuestro mensaje de vuelta
             canSendMessage = true;
+
+            // Como lo es, actualizamos la lógica del jugador
 
             playerShip.update(delta, incomeMessage.getPlayerPositionY(), true);
 
@@ -185,27 +218,31 @@ public class MultiplayerScreen extends GameScreen{
                 playerRegLifePowerUp.setTouched();
         }
 
-        // ENEMY
-        enemyYposition = incomeMessage.getRivalPositionY();
+        // Actualizamos la lógica del rival
+        // TODO Esto está mal por ahora. Usaré el tiempo medio de latencia para retrasar estas actualizaciones
+        rivalYposition = incomeMessage.getRivalPositionY();
 
         if(incomeMessage.checkRivalOperation(incomeMessage.MASK_SHOOT))
-            enemyShip.shoot();
+            rivalShip.shoot();
 
         if(incomeMessage.checkRivalOperation(incomeMessage.MASK_BURST))
-            enemyBurstPowerUp.setTouched();
+            rivalBurstPowerUp.setTouched();
 
         if(incomeMessage.checkRivalOperation(incomeMessage.MASK_REG_LIFE))
-            enemyRegLifePowerUp.setTouched();
+            rivalRegLifePowerUp.setTouched();
 
         if(incomeMessage.checkRivalOperation(incomeMessage.MASK_LEAVE)){
-            if (!enemyShip.isDefeated())
-                abandonEnemy = true;
+            if (!rivalShip.isDefeated())
+                abandonRival = true;
             state = GameState.WIN;
         }
     }
 
     private void updateOutComeMessage(){
-        // Obtenemos un vector de coordenadas si está en la zona de movimiento de la nave
+
+        // Vamos a construir el mensaje de salir
+        // Como vemos es muy parecido en principio al usado en el modo campaña
+
         Vector3 coordinates = TouchManager.getAnyXTouchLowerThan(playerShip.getX() + playerShip.getWidth());
 
         if(!coordinates.equals(Vector3.Zero))
@@ -227,11 +264,14 @@ public class MultiplayerScreen extends GameScreen{
         if(playerShip.isDefeated())
             outcomeMessage.setPlayerOperation(outcomeMessage.MASK_LEAVE);
 
-        // Build the enemy ACK
-        outcomeMessage.setRivalPositionY(enemyYposition);
+        // Construimos el mensaje para el rival, a partir, parcialmente, de lo que le ha llegado del
+        // mensaje de entrada
+        outcomeMessage.setRivalPositionY(rivalYposition);
         outcomeMessage.setRivalOperations(incomeMessage.getRivalOperations());
+        // Lo marcamos como ACK para el rival (que en su caso será el player)
         outcomeMessage.setRivalOperation(incomeMessage.MASK_ACK);
 
+        // Finalmente enviamos el mensaje
         if(canSendMessage || firstSendingMessage){
             SpaceGame.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
             firstSendingMessage = false;
@@ -251,7 +291,7 @@ public class MultiplayerScreen extends GameScreen{
 
     @Override
     public void renderWin(float delta) {
-        if(abandonEnemy)
+        if(abandonRival)
             FontManager.draw(FontManager.getFromBundle("multiplayerGameEnemyAbandon"),SpaceGame.height/2 + 50);
         FontManager.draw(FontManager.getFromBundle("multiplayerGameWon"),SpaceGame.height/2);
 
@@ -296,7 +336,7 @@ public class MultiplayerScreen extends GameScreen{
     @Override
     public void disposeScreen() {
         playerShip.dispose();
-        enemyShip.dispose();
+        rivalShip.dispose();
         for(Shoot shoot: ShootsManager.shoots){
             shoot.dispose();
         }

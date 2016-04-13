@@ -5,7 +5,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Purple;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.RivalShip;
 import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class Shoot extends GameObject {
@@ -72,7 +72,7 @@ public class Shoot extends GameObject {
         //Comprobamos si el disparo ha chocado
         if (!this.isShocked() && shootEffect != null) {
             //Se actuará de forma distinta si el shooter es enemigo o no
-            if (this.getShooter() instanceof Enemy || this.getShooter() instanceof EnemyShip) {
+            if (this.getShooter() instanceof Enemy || this.getShooter() instanceof RivalShip) {
                 shootEffect.getEmitters().first().setPosition(this.getShooter().getX(), this.getShooter().getY() + this.getShooter().getHeight() / 2);
 
                 // Rotamos el efecto de particulas
@@ -84,7 +84,7 @@ public class Shoot extends GameObject {
             }
         } else if (destroyEffect != null) {
             //Si el disparo ha chocado, el efecto a mostrar es el del shockEffect
-            if (this.getShooter() instanceof Enemy || this.getShooter() instanceof EnemyShip) {
+            if (this.getShooter() instanceof Enemy || this.getShooter() instanceof RivalShip) {
                 //Comprobamos si el disparo es o no un disparo morado para actuar en consecuencia
                 if (this instanceof Purple==false)
                     destroyEffect.getEmitters().first().setPosition(this.getX(), this.getY());
@@ -110,7 +110,7 @@ public class Shoot extends GameObject {
             //Se comprueba que no sea una instancia del arma morada para pintar la textura del arma, ya que ésta deberá tener otro tipo de render
             if (this instanceof Purple==false)
                 //Si el shooter es un enemigo, giramos el arma al contrario
-            if (this.getShooter() instanceof Enemy || this.getShooter() instanceof EnemyShip)
+            if (this.getShooter() instanceof Enemy || this.getShooter() instanceof RivalShip)
                 super.renderRotate(180);
             else
 

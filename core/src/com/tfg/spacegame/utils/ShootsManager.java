@@ -9,7 +9,7 @@ import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
 import com.tfg.spacegame.gameObjects.Burst;
 import com.tfg.spacegame.gameObjects.multiplayerMode.BasicShootMultiplayer;
-import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.RivalShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.screens.MultiplayerScreen;
@@ -43,7 +43,7 @@ public class ShootsManager {
         }else if(ScreenManager.isCurrentScreenEqualsTo(MultiplayerScreen.class)){
             if(isMultiplayerShipReadyToShoot() && shooter instanceof PlayerShip){
                 bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
-            }else if(shooter instanceof EnemyShip && isMultiplayerEnemyShipReadyToShoot()){
+            }else if(shooter instanceof RivalShip && isMultiplayerEnemyShipReadyToShoot()){
                 bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
             }
         }
@@ -93,7 +93,7 @@ public class ShootsManager {
     private static boolean isMultiplayerEnemyShipReadyToShoot(){
         boolean canShootAgain = true;
         for(Shoot shoot: shoots){
-            if(shoot.getShooter() instanceof EnemyShip && !shoot.isShocked()) {
+            if(shoot.getShooter() instanceof RivalShip && !shoot.isShocked()) {
                 canShootAgain = false;
                 break;
             }

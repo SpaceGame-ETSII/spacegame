@@ -31,11 +31,17 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	private final static int REQUEST_CODE_WAITING_ROOM = 10002;
 
 	public String roomId;
+
 	public String myId;
+
 	public ArrayList<Participant> participants;
+
 	public MultiplayerMessage gameMessage;
+
 	public String tcpMessage;
+
 	public Long timeRoomCreated;
+
 	private boolean hasSendTimeRoomCreated;
 
 	public boolean startMultiplayerGame;

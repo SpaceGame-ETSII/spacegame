@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
-import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.RivalShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.screens.MultiplayerScreen;
@@ -17,7 +17,7 @@ public class CollissionsManager {
 
     // Contendrán las colisiones del modo multijugador
     private static Pair<PlayerShip,Shoot> playerShootCollision;
-    private static Pair<EnemyShip,Shoot>  enemyShootCollision;
+    private static Pair<RivalShip,Shoot>  enemyShootCollision;
 
     public static void load() {
         if(ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class)){
@@ -131,14 +131,14 @@ public class CollissionsManager {
         for(Shoot shoot: shoots){
             // Intento de colision con el enemigo
             if(shoot.getShooter() instanceof PlayerShip &&
-                    shoot.isOverlapingWith(MultiplayerScreen.enemyShip) &&
+                    shoot.isOverlapingWith(MultiplayerScreen.rivalShip) &&
                     !shoot.isShocked() &&
-                    !MultiplayerScreen.enemyShip.isUndamagable() ){
+                    !MultiplayerScreen.rivalShip.isUndamagable() ){
                 // Colisión con el enemigo
-                enemyShootCollision = new Pair<EnemyShip, Shoot>(MultiplayerScreen.enemyShip,shoot);
+                enemyShootCollision = new Pair<RivalShip, Shoot>(MultiplayerScreen.rivalShip,shoot);
             }
             // Intento de colision con el player
-            else if(shoot.getShooter() instanceof EnemyShip &&
+            else if(shoot.getShooter() instanceof RivalShip &&
                     shoot.isOverlapingWith(MultiplayerScreen.playerShip) &&
                     !shoot.isShocked() &&
                     !MultiplayerScreen.playerShip.isUndamagable()){

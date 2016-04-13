@@ -5,6 +5,7 @@ import com.tfg.spacegame.SpaceGame;
 
 public class MultiplayerMessage {
 
+    // Máscaras a usar a nivel de operaciones Bit
     public final int MASK_NO_OPT;
     public final int MASK_LEAVE;
     public final int MASK_SHOOT;
@@ -12,13 +13,16 @@ public class MultiplayerMessage {
     public final int MASK_BURST;
     public final int MASK_ACK;
 
+    // Las operaciones posibles del jugador y su posicion Y
     private int playerOperations;
     private float playerPositionY;
 
+    // Las operaciones posibles del rival y su posición Y
     private int rivalOperations;
     private float rivalPositionY;
 
     public MultiplayerMessage(){
+        // Códigos que representa en binario :
         // 00000
         MASK_NO_OPT     = 0;
         // 00001
@@ -32,9 +36,12 @@ public class MultiplayerMessage {
         // 10000
         MASK_ACK        = 16;
 
+        // Al principio no realizan ninguna operación
         playerOperations = MASK_NO_OPT;
         rivalOperations  = MASK_NO_OPT;
 
+        // Al principio la posición inicial es la mitad de la altura
+        // TODO Esto deben de recogerlo de cada clase, no puesto aqui
         playerPositionY = SpaceGame.height/2;
         rivalPositionY  = SpaceGame.height/2;
     }

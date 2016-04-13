@@ -35,7 +35,7 @@ public class BasicShootMultiplayer extends Shoot {
         //Comprobamos si el disparo ha chocado
         if (!this.isShocked()) {
             //Se actuará de forma distinta si el shooter es enemigo o no
-            if (this.getShooter() instanceof EnemyShip) {
+            if (this.getShooter() instanceof RivalShip) {
                 shoot.getEmitters().first().setPosition(this.getX() + this.getShooter().getWidth()/2, this.getY());
 
                 // Rotamos el efecto de particulas 180º
@@ -50,7 +50,7 @@ public class BasicShootMultiplayer extends Shoot {
     public void update(float delta){
         if (!this.isShocked()) {
             // Actualizamos el movimiento del disparo
-            if (getShooter() instanceof EnemyShip) {
+            if (getShooter() instanceof RivalShip) {
                 this.setX(this.getX() - (SPEED * delta));
             } else {
                 this.setX(this.getX() + (SPEED * delta));
