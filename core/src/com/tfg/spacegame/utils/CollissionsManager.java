@@ -15,10 +15,6 @@ public class CollissionsManager {
     public static Array<Pair<Shoot, Enemy>> shootsToEnemies;
     private static Array<Pair<Shoot, Shoot>> shootsToShoots;
 
-    // Contendrán las colisiones del modo multijugador
-    private static Pair<PlayerShip,Shoot> playerShootCollision;
-    private static Pair<EnemyShip,Shoot>  enemyShootCollision;
-
     public static void load() {
         if(ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class)){
             shootsToEnemies = new Array<Pair<Shoot, Enemy>>();
@@ -129,6 +125,9 @@ public class CollissionsManager {
 
         boolean shootOverlapped;
 
+        Pair<PlayerShip,Shoot> playerShootCollision = null;
+        Pair<EnemyShip,Shoot>  enemyShootCollision = null;
+
         // Comprobamos las colisiones entre los shoots y el jugador y el enemigo
         for(Shoot shoot: shoots){
             shootOverlapped = false;
@@ -171,18 +170,20 @@ public class CollissionsManager {
         }
 
         if(playerShootCollision != null){
-            managesPlayerShootCollision();
+            managesPlayerShootCollision(playerShootCollision);
         }
+
         if(enemyShootCollision != null){
-            managesEnemyShootCollision();
+            managesEnemyShootCollision(enemyShootCollision);
         }
+
         manageShootsToShoots();
     }
 
-    private static void managesPlayerShootCollision(){
+    private static void managesPlayerShootCollision(Pair<PlayerShip,Shoot> playerShootCollision){
         playerShootCollision.getFirst().receiveDamage();
     }
-    private static void managesEnemyShootCollision(){
+    private static void managesEnemyShootCollision(Pair<EnemyShip,Shoot> enemyShootCollision){
         enemyShootCollision.getFirst().receiveDamage();
     }
 
