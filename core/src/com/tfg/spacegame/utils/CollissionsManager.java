@@ -15,10 +15,6 @@ public class CollissionsManager {
     public static Array<Pair<Shoot, Enemy>> shootsToEnemies;
     private static Array<Pair<Shoot, Shoot>> shootsToShoots;
 
-    // Contendrán las colisiones del modo multijugador
-    private static Pair<PlayerShip,Shoot> playerShootCollision;
-    private static Pair<RivalShip,Shoot>  enemyShootCollision;
-
     public static void load() {
         if(ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class)){
             shootsToEnemies = new Array<Pair<Shoot, Enemy>>();
@@ -127,6 +123,9 @@ public class CollissionsManager {
         Array<Shoot> shoots = new Array<Shoot>(ShootsManager.shoots);
         Array<Shoot> shootsSource = new Array<Shoot>(ShootsManager.shoots);
 
+        Pair<PlayerShip,Shoot> playerShootCollision = null;
+        Pair<RivalShip,Shoot>  enemyShootCollision = null;
+
         // Comprobamos las colisiones entre los shoots y el jugador y el enemigo
         for(Shoot shoot: shoots){
             // Intento de colision con el enemigo
@@ -164,23 +163,23 @@ public class CollissionsManager {
         }
 
         if(playerShootCollision != null){
-            managesPlayerShootCollision();
+            managesPlayerShootCollision(playerShootCollision);
         }
+
         if(enemyShootCollision != null){
-            managesEnemyShootCollision();
+            managesEnemyShootCollision(enemyShootCollision);
         }
+
         manageShootsToShoots();
     }
 
-    private static void managesPlayerShootCollision(){
+    private static void managesPlayerShootCollision(Pair<PlayerShip,Shoot> playerShootCollision){
         playerShootCollision.getFirst().receiveDamage();
         ShootsManager.shoots.removeValue(playerShootCollision.getSecond(),false);
-        playerShootCollision = null;
     }
-    private static void managesEnemyShootCollision(){
+    private static void managesEnemyShootCollision(Pair<RivalShip,Shoot> enemyShootCollision){
         enemyShootCollision.getFirst().receiveDamage();
         ShootsManager.shoots.removeValue(enemyShootCollision.getSecond(),false);
-        enemyShootCollision = null;
     }
 
     //Gestiona una colisión de enemigo a la nave
