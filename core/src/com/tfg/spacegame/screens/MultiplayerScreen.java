@@ -135,6 +135,7 @@ public class MultiplayerScreen extends GameScreen{
             }
 
             // Aqui vamos a descubrir si este dispositivo o el contrario va a empezar a enviar el primer mensaje
+            // TODO No se si esto va a funcionar hasta que se pruebe
             if(!firstSendingMessage)
                 firstSendingMessage = SpaceGame.googleServices.calculateMasterSlave();
         }
@@ -219,7 +220,7 @@ public class MultiplayerScreen extends GameScreen{
         }
 
         // Actualizamos la lógica del rival
-        // TODO Esto está mal por ahora. Usaré el tiempo medio de latencia para retrasar estas actualizaciones
+        // TODO Esto está mal por ahora. Usaré el tiempo medio de latencia para retrasar estas actualizaciones (si llegase a funcionar, claro)
         rivalYposition = incomeMessage.getRivalPositionY();
 
         if(incomeMessage.checkRivalOperation(incomeMessage.MASK_SHOOT))
