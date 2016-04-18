@@ -25,25 +25,37 @@ import com.tfg.spacegame.utils.MultiplayerMessage;
 
 import java.util.ArrayList;
 
-public class AndroidLauncher extends AndroidApplication implements IGoogleServices, RealTimeMultiplayer.ReliableMessageSentCallback {
+public class AndroidLauncher extends AndroidApplication implements IGoogleServices {
 
 	private final static int REQUEST_CODE_UNUSED = 9002;
+	// Código que usa google internamente para saber que es una ventana de espera
 	private final static int REQUEST_CODE_WAITING_ROOM = 10002;
 
+	// Variable que guarderemos el ID de la habitación para futuras consultas
 	public String roomId;
 
+	// Variable que guardaremos nuestro ID dentro de la habitación para futuras consultas
 	public String myId;
 
+	// Los participantes que existen en la habitación actual
 	public ArrayList<Participant> participants;
 
+	// Mensaje recibido desde el Listener MessageReceived que se pasará a la Screen
+	// Este mensaje va por UDP y corresponde a la inforamción del juego
 	public MultiplayerMessage gameMessage;
 
+	// Mensaje recibido desde el Listener MEssageReceived que se pasará a la Screen
+	// Este mensaje va por TCP y corresponde al calculo Maestro-Esclavo
 	public String tcpMessage;
 
+	// Guardaremos el instante de tiempo en el que la habitación se ha creado
 	public Long timeRoomCreated;
 
+	// Comprobaremos si se ha enviado al otro dispositivo el instante de tiempo nuestro de creación de la habitación
 	private boolean hasSendTimeRoomCreated;
 
+	// Comprobaremos si puede iniciarse el multijugador o no
+	// Basicamente esto se hace comprobando si ambos jugadores están en la habitación creada
 	public boolean startMultiplayerGame;
 
 	private GameHelper _gameHelper;
@@ -104,19 +116,18 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		Gdx.app.log("multi","RequestCode: "+requestCode+"  - ResultCode: "+resultCode);
 		switch (requestCode){
 			case REQUEST_CODE_WAITING_ROOM:{
-				// we got the result from the "waiting room" UI.
+				// Obtenemos el resultado que coincide con el de la petición
 				if (resultCode == Activity.RESULT_OK) {
-					// ready to start playing
+					// Empezamos el juego multijugador
 					Gdx.app.log("multi","Requested players connected, starting game");
 					startMultiplayerGame = true;
 				} else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
-					// player indicated that they want to leave the room
+					// Un jugador se va
 					Gdx.app.log("multi","Oponent left the room");
 					leaveRoom();
 				} else if (resultCode == Activity.RESULT_CANCELED) {
-					// Dialog was cancelled (user pressed back key, for instance). In our game,
-					// this means leaving the room too. In more elaborate games, this could mean
-					// something else (like minimizing the waiting room UI).
+					// El jugador cancela la partida, esto para nosotros se transforma en una
+					// solicitud de abandono de habitación
 					Gdx.app.log("multi","Search canceled");
 					leaveRoom();
 				}
@@ -223,16 +234,23 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 	@Override
 	public void startQuickGame() {
+		// Reseteamos la variable de control
 		startMultiplayerGame = false;
+		// Creamos la configuración de nuestra habitación ( minimo, máximo, ? )
+		// TODO Quizas sea bonito hacerlas variables finales arriba (minimo máximo)
 		Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(1,
 				1, 0);
+		// Ubicamos los listeners
 		RoomConfig.Builder rtmConfigBuilder = RoomConfig.builder(new RoomUpdate(this));
 		rtmConfigBuilder.setMessageReceivedListener(new MessageReceived(this));
 		rtmConfigBuilder.setRoomStatusUpdateListener(new RoomStatusUpdate(this));
 		rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
+		// Creamos la partida
 		Games.RealTimeMultiplayer.create(_gameHelper.getApiClient(), rtmConfigBuilder.build());
 	}
 
+	// Cada vez que en algún listener se modifique en algo la habitación activará
+	// este método que se usa para actualizar la lista de participantes
 	public void updateRoomProperties(Room room){
 		if (room != null) {
 			participants = room.getParticipants();
@@ -240,11 +258,15 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	}
 
 	@Override
+	// Método usado para que la Screen pregunte si se puede empezar la partida
 	public boolean canMultiplayerGameStart() {
 		return startMultiplayerGame;
 	}
 
 	@Override
+	// Método que envia un mensaje por UDP a todos los participantes (menos a uno mismo)
+	// Antes de que toni pregunte: Aunque ponga que te lo envies a ti mismo no funciona
+	// leído en StackOverflow y comprobado empiricamente
 	public void sendGameMessage(String message) {
 		for(Participant p : participants){
 			if(!p.getParticipantId().equals(myId))
@@ -253,12 +275,18 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	}
 
 	@Override
+	// Método usado para calcular la relacion Maestro-Esclavo
+	// Esto quiere decir que va a calcular que dispositivo es el Maestro de la conexión y quien es el Esclavo
+	// Esta comprobación se hace mediante el envio y recepcion de los tiempos de creación de habitción
 	public boolean calculateMasterSlave(){
 		boolean result = false;
 		if(!hasSendTimeRoomCreated){
+			// Enviamos nuestro tiempo de creación de la habitación
 			sendTCPMessage(timeRoomCreated.toString());
 			hasSendTimeRoomCreated = true;
-		}else if(tcpMessage != ""){
+		}else if(!tcpMessage.equals("")){
+			// Al recibirla la del oponente comparamos con la nuestra
+			// Dependiendo de si es menor o mayor nosotros seeremos el esclavo o maestro
 			Long hisTime = Long.parseLong(tcpMessage);
 			if(timeRoomCreated < hisTime)
 				result = true;
@@ -267,33 +295,32 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	}
 
 	@Override
+	// Envía un mensaje TCP a todos los participantes menos a uno mismo
 	public void sendTCPMessage(String message) {
 		for(Participant p : participants){
 			if(!p.getParticipantId().equals(myId))
-				Games.RealTimeMultiplayer.sendReliableMessage(_gameHelper.getApiClient(),this,message.getBytes(),roomId,p.getParticipantId());
-		}
-	}
-
-	public void onRealTimeMessageSent(int i, int i1, String s) {
-		if(i == 0){
-
+				Games.RealTimeMultiplayer.sendReliableMessage(_gameHelper.getApiClient(),null,message.getBytes(),roomId,p.getParticipantId());
 		}
 	}
 
 	@Override
+	// Método usado por la Screen para obtener el mensaje que usa el juego
 	public MultiplayerMessage receiveGameMessage() {
 		return gameMessage;
 	}
 
 	@Override
+	// Método usado por la Screen para obtener un mensaje recibido por tcp
 	public String receiveTCpMessage() {
-		return null;
+		return tcpMessage;
 	}
 
+	// Obtiene de una Room el ID nuestro
 	public void setMyId(Room room){
 		myId = room.getParticipantId(Games.Players.getCurrentPlayerId(_gameHelper.getApiClient()));
 	}
 
+	// Muestra la ventana de espera
 	public void showWaitingRoom(Room room) {
 		// minimum number of players required for our game
 		// For simplicity, we require everyone to join the game before we start it
@@ -305,7 +332,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		startActivityForResult(i, REQUEST_CODE_WAITING_ROOM);
 	}
 
-	// Leave the room.
+	// Abandonar la habitación
 	@Override
 	public void leaveRoom() {
 		Gdx.app.log("multi","Leave room");
@@ -318,6 +345,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		resetMultiplayerProperties();
 	}
 
+	// Método privado usado para resetear las propiedades del multijugador
 	private void resetMultiplayerProperties(){
 		startMultiplayerGame 	= false;
 		gameMessage = null;
