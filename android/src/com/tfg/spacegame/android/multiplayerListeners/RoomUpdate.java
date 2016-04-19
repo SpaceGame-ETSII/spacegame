@@ -20,7 +20,6 @@ public class RoomUpdate implements RoomUpdateListener{
     public void onRoomCreated(int i, Room room) {
         Gdx.app.log("multi","onRoomCreated   -  Code:"+i+"   RoomID:"+room.getRoomId());
         callback.roomId = room.getRoomId();
-        callback.timeRoomCreated = Calendar.getInstance().getTimeInMillis();
         callback.showWaitingRoom(room);
     }
 

@@ -40,7 +40,7 @@ public class CampaignScreen extends GameScreen {
         scrollingPosition = 0;
 
         ShootsManager.load();
-        CollissionsManager.load();
+        CollisionsManager.load();
         EnemiesManager.load(scriptLevel);
         DamageManager.load();
         CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
@@ -211,7 +211,7 @@ public class CampaignScreen extends GameScreen {
         }
 
         //Realizamos la lógica de los objetos en juego
-        CollissionsManager.update();
+        CollisionsManager.update();
         EnemiesManager.update(delta);
         ShootsManager.update(delta, ship);
     }

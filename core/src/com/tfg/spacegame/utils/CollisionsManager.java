@@ -9,7 +9,7 @@ import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.screens.MultiplayerScreen;
 
-public class CollissionsManager {
+public class CollisionsManager {
 
     //Contendrán las colisiones realizadas
     public static Array<Pair<Shoot, Enemy>> shootsToEnemies;
@@ -134,7 +134,7 @@ public class CollissionsManager {
                     !shoot.isShocked() &&
                     !MultiplayerScreen.rivalShip.isUndamagable() ){
                 // Colisión con el enemigo
-                enemyShootCollision = new Pair<RivalShip, Shoot>(MultiplayerScreen.rivalShip,shoot);
+                shoots.removeValue(shoot, false);
             }
             // Intento de colision con el player
             else if(shoot.getShooter() instanceof RivalShip &&
@@ -166,20 +166,13 @@ public class CollissionsManager {
             managesPlayerShootCollision(playerShootCollision);
         }
 
-        if(enemyShootCollision != null){
-            managesEnemyShootCollision(enemyShootCollision);
-        }
-
         manageShootsToShoots();
     }
 
     private static void managesPlayerShootCollision(Pair<PlayerShip,Shoot> playerShootCollision){
+        playerShootCollision.getFirst().setBeenDamage(true);
         playerShootCollision.getFirst().receiveDamage();
         ShootsManager.shoots.removeValue(playerShootCollision.getSecond(),false);
-    }
-    private static void managesEnemyShootCollision(Pair<RivalShip,Shoot> enemyShootCollision){
-        enemyShootCollision.getFirst().receiveDamage();
-        ShootsManager.shoots.removeValue(enemyShootCollision.getSecond(),false);
     }
 
     //Gestiona una colisión de enemigo a la nave

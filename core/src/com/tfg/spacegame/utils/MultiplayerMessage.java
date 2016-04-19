@@ -9,115 +9,73 @@ public class MultiplayerMessage {
     public final int MASK_NO_OPT;
     public final int MASK_LEAVE;
     public final int MASK_SHOOT;
+    public final int MASK_HAS_RECEIVE_DAMAGE;
     public final int MASK_REG_LIFE;
     public final int MASK_BURST;
-    public final int MASK_ACK;
 
-    // Las operaciones posibles del jugador y su posicion Y
-    private int playerOperations;
-    private float playerPositionY;
-
-    // Las operaciones posibles del rival y su posición Y
-    private int rivalOperations;
-    private float rivalPositionY;
+    private int operations;
+    private float positionY;
 
     public MultiplayerMessage(){
         // Códigos que representa en binario :
         // 00000
-        MASK_NO_OPT     = 0;
+        MASK_NO_OPT             = 0;
         // 00001
-        MASK_LEAVE      = 1;
+        MASK_LEAVE              = 1;
         // 00010
-        MASK_SHOOT      = 2;
+        MASK_SHOOT              = 2;
         // 00100
-        MASK_REG_LIFE   = 4;
+        MASK_REG_LIFE           = 4;
         // 01000
-        MASK_BURST      = 8;
+        MASK_BURST              = 8;
         // 10000
-        MASK_ACK        = 16;
+        MASK_HAS_RECEIVE_DAMAGE = 16;
 
         // Al principio no realizan ninguna operación
-        playerOperations = MASK_NO_OPT;
-        rivalOperations  = MASK_NO_OPT;
+        operations = MASK_NO_OPT;
 
         // Al principio la posición inicial es la mitad de la altura
         // TODO Esto deben de recogerlo de cada clase, no puesto aqui
-        playerPositionY = SpaceGame.height/2;
-        rivalPositionY  = SpaceGame.height/2;
+        positionY = SpaceGame.height/2;
     }
 
-    public int getRivalOperations(){
-        return rivalOperations;
-    }
-    public void setRivalOperations(int i){
-        rivalOperations = i;
-    }
-
-    public void resetPlayerOperations(){
+    public void resetOperations(){
         // Operation = 00000
-        playerOperations = MASK_NO_OPT;
-    }
-    public void resetRivalOperations(){
-        // Operation = 00000
-        playerOperations = MASK_NO_OPT;
+        operations = MASK_NO_OPT;
     }
 
-    public void setPlayerOperation(int i){
-        playerOperations = playerOperations | i;
+    public void setOperation(int i){
+        operations = operations | i;
     }
 
-    public void setRivalOperation(int i){
-        rivalOperations = rivalOperations | i;
+    public int getOperations(){
+        return operations;
     }
 
-    public boolean checkPlayerOperation(int i){
-        return (playerOperations & i) == i;
+
+    public boolean checkOperation(int i){
+        return (operations & i) == i;
     }
 
-    public boolean checkRivalOperation(int i){
-        return (rivalOperations & i) == i;
+    public float getPositionY() {
+        return positionY;
     }
 
-    public float getPlayerPositionY() {
-        return playerPositionY;
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
     }
 
-    public void setPlayerPositionY(float playerPositionY) {
-        this.playerPositionY = playerPositionY;
-    }
-
-    public float getRivalPositionY() {
-        return rivalPositionY;
-    }
-
-    public void setRivalPositionY(float rivalPositionY) {
-        this.rivalPositionY = rivalPositionY;
-    }
 
     public void setPropertiesFromMessage(String s){
         if(!s.isEmpty() || !s.equals("")){
             String[] result = s.split(":");
-            playerPositionY = Float.parseFloat(result[0]);
-            playerOperations = Integer.parseInt(result[1]);
-
-            rivalPositionY = Float.parseFloat(result[2]);
-            rivalOperations = Integer.parseInt(result[3]);
+            positionY = Float.parseFloat(result[0]);
+            operations = Integer.parseInt(result[1]);
         }
     }
 
-    public void swapMessageAuthors(){
-        int auxOperations = playerOperations;
-        float auxPosition = playerPositionY;
-
-        playerOperations  = rivalOperations;
-        playerPositionY   = rivalPositionY;
-
-        rivalOperations   = auxOperations;
-        rivalPositionY    = auxPosition;
-    }
-
     public String getForSendMessage(){
-        return playerPositionY+":"+playerOperations+":"+rivalPositionY+":"+rivalOperations;
+        return positionY +":"+ operations;
     }
 
 }

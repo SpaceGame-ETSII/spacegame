@@ -20,10 +20,7 @@ public interface IGoogleServices
     boolean canMultiplayerGameStart();
 
     void sendGameMessage(String message);
-    void sendTCPMessage(String message);
     MultiplayerMessage receiveGameMessage();
-    String receiveTCpMessage();
-    boolean calculateMasterSlave();
 
 
 }

@@ -18,13 +18,7 @@ public class MessageReceived implements RealTimeMessageReceivedListener{
 
     @Override
     public void onRealTimeMessageReceived(RealTimeMessage realTimeMessage) {
-        if(realTimeMessage.isReliable())
-            callback.tcpMessage = new String(realTimeMessage.getMessageData());
-        else{
-            income.setPropertiesFromMessage(new String(realTimeMessage.getMessageData()));
-            income.swapMessageAuthors();
-            callback.gameMessage = income;
-        }
-
+        income.setPropertiesFromMessage(new String(realTimeMessage.getMessageData()));
+        callback.gameMessage = income;
     }
 }

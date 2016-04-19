@@ -8,9 +8,6 @@ import com.tfg.spacegame.utils.ShootsManager;
 
 public class RivalShip extends LandscapeShip {
 
-    //Indica la velocidad para el movimiento de la nave
-    private final float MAX_SPEED = 10;
-
     public RivalShip() {
         super("rivalShip", SpaceGame.width - (80+100), SpaceGame.height/2, 5);
         this.setY(this.getY() + this.getHeight()/2);
@@ -24,14 +21,9 @@ public class RivalShip extends LandscapeShip {
         destroyEffect.getEmitters().first().setPosition(this.getCenter().x,this.getCenter().y);
     }
 
-    public void update(float delta){
+    public void update(float delta, float positionY){
         super.update(delta);
-        float accel = MAX_SPEED *delta;
-
-        if(Math.abs(MultiplayerScreen.rivalYposition - this.getCenter().y) > accel ){
-            float diffY = MultiplayerScreen.rivalYposition - this.getCenter().y;
-            this.setY(this.getY() + diffY*accel);
-        }
+        this.setY(positionY - this.getHeight()/2);
     }
 
     public void shoot(){

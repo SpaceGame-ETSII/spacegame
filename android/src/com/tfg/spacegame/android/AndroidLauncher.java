@@ -44,16 +44,6 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	// Este mensaje va por UDP y corresponde a la inforamción del juego
 	public MultiplayerMessage gameMessage;
 
-	// Mensaje recibido desde el Listener MEssageReceived que se pasará a la Screen
-	// Este mensaje va por TCP y corresponde al calculo Maestro-Esclavo
-	public String tcpMessage;
-
-	// Guardaremos el instante de tiempo en el que la habitación se ha creado
-	public Long timeRoomCreated;
-
-	// Comprobaremos si se ha enviado al otro dispositivo el instante de tiempo nuestro de creación de la habitación
-	private boolean hasSendTimeRoomCreated;
-
 	// Comprobaremos si puede iniciarse el multijugador o no
 	// Basicamente esto se hace comprobando si ambos jugadores están en la habitación creada
 	public boolean startMultiplayerGame;
@@ -70,7 +60,6 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		_gameHelper.enableDebugLog(false);
 
 		resetMultiplayerProperties();
-
 
 		GameHelper.GameHelperListener gameHelperListener = new GameHelper.GameHelperListener()
 		{
@@ -275,44 +264,9 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	}
 
 	@Override
-	// Método usado para calcular la relacion Maestro-Esclavo
-	// Esto quiere decir que va a calcular que dispositivo es el Maestro de la conexión y quien es el Esclavo
-	// Esta comprobación se hace mediante el envio y recepcion de los tiempos de creación de habitción
-	public boolean calculateMasterSlave(){
-		boolean result = false;
-		if(!hasSendTimeRoomCreated){
-			// Enviamos nuestro tiempo de creación de la habitación
-			sendTCPMessage(timeRoomCreated.toString());
-			hasSendTimeRoomCreated = true;
-		}else if(!tcpMessage.equals("")){
-			// Al recibirla la del oponente comparamos con la nuestra
-			// Dependiendo de si es menor o mayor nosotros seeremos el esclavo o maestro
-			Long hisTime = Long.parseLong(tcpMessage);
-			if(timeRoomCreated < hisTime)
-				result = true;
-		}
-		return result;
-	}
-
-	@Override
-	// Envía un mensaje TCP a todos los participantes menos a uno mismo
-	public void sendTCPMessage(String message) {
-		for(Participant p : participants){
-			if(!p.getParticipantId().equals(myId))
-				Games.RealTimeMultiplayer.sendReliableMessage(_gameHelper.getApiClient(),null,message.getBytes(),roomId,p.getParticipantId());
-		}
-	}
-
-	@Override
 	// Método usado por la Screen para obtener el mensaje que usa el juego
 	public MultiplayerMessage receiveGameMessage() {
 		return gameMessage;
-	}
-
-	@Override
-	// Método usado por la Screen para obtener un mensaje recibido por tcp
-	public String receiveTCpMessage() {
-		return tcpMessage;
 	}
 
 	// Obtiene de una Room el ID nuestro
@@ -349,10 +303,8 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	private void resetMultiplayerProperties(){
 		startMultiplayerGame 	= false;
 		gameMessage = null;
-		tcpMessage				= "";
 		roomId 					= "";
-		hasSendTimeRoomCreated  = false;
 		participants 			= new ArrayList<Participant>();
-		timeRoomCreated			= 0L;
+		gameMessage 			= new MultiplayerMessage();
 	}
 }

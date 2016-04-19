@@ -21,9 +21,6 @@ public class MultiplayerScreen extends GameScreen{
     public static PlayerShip playerShip;
     // Nave del rival
     public static RivalShip rivalShip;
-    // Posicion de la nave rival
-    // TODO No se puede poner en la rivalShip?
-    public static float rivalYposition;
 
     // Tiempo máximo para poder empezar la partida
     private final float MAX_TIME_TO_START_GAME = 5f;
@@ -53,17 +50,11 @@ public class MultiplayerScreen extends GameScreen{
     // Sabremos si el rival abandonó la partida
     private boolean abandonRival;
 
-    // TODO Piensa si se puede hacer en un solo mensaje
     // Mensajes de entrada y de salida del juego
     private MultiplayerMessage outcomeMessage;
     private MultiplayerMessage incomeMessage;
 
-    // Con esto sabremos quien es el que envía primero el primer mensaje
-    // Ya que nuestro objetivo es que haya solamente uno por momento circulando
-    private boolean firstSendingMessage;
-
-    // Variable que controlará que hasta que no se reciba un ACK no puede enviar su mensaje
-    private boolean canSendMessage;
+    private boolean leaveRoom;
 
     public MultiplayerScreen(final SpaceGame game, String roomId, Boolean createRoom){
         this.game = game;
@@ -75,8 +66,7 @@ public class MultiplayerScreen extends GameScreen{
 
         state = GameState.READY;
 
-        firstSendingMessage = false;
-        canSendMessage = false;
+        leaveRoom = false;
 
         infoMessage = FontManager.getFromBundle("connectServer");
 
@@ -95,11 +85,9 @@ public class MultiplayerScreen extends GameScreen{
         rivalBurstPowerUp = new BurstPowerUp("burstEnemy",SpaceGame.width/3,SpaceGame.height - 55);
         rivalRegLifePowerUp = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2,SpaceGame.height-55);
 
-        CollissionsManager.load();
+        CollisionsManager.load();
         ShootsManager.load();
         CameraManager.loadShakeEffect(1f, CameraManager.NORMAL_SHAKE);
-
-        rivalYposition = rivalShip.getY();
 
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
@@ -133,11 +121,6 @@ public class MultiplayerScreen extends GameScreen{
                 timeToStartGame = 0;
                 state = GameState.START;
             }
-
-            // Aqui vamos a descubrir si este dispositivo o el contrario va a empezar a enviar el primer mensaje
-            // TODO No se si esto va a funcionar hasta que se pruebe
-            if(!firstSendingMessage)
-                firstSendingMessage = SpaceGame.googleServices.calculateMasterSlave();
         }
     }
 
@@ -158,16 +141,14 @@ public class MultiplayerScreen extends GameScreen{
     @Override
     public void updateStart(float delta) {
 
-        rivalShip.update(delta);
-
-        CollissionsManager.update();
+        CollisionsManager.update();
         ShootsManager.update(delta, playerShip);
         CameraManager.update(delta);
 
         // Actualizaremos la lógica por parte de la entrada del mensaje
         updateIncomeMessage(delta);
         // Actaulizaremos la lógica por parte de la salida del mensaje
-        updateOutComeMessage();
+        updateOutComeMessage(delta);
 
         if(playerBurstPowerUp.isTouched())
             playerBurstPowerUp.act(delta, playerShip);
@@ -182,102 +163,86 @@ public class MultiplayerScreen extends GameScreen{
             rivalRegLifePowerUp.act(delta, rivalShip);
 
         // Reseteamos todas las operaciones
-        // TODO No se puede hacer más sencillo? :(
-        outcomeMessage.resetPlayerOperations();
-        outcomeMessage.resetRivalOperations();
-
-        incomeMessage.resetRivalOperations();
-        incomeMessage.resetPlayerOperations();
+        outcomeMessage.resetOperations();
+        incomeMessage.resetOperations();
     }
 
     private void updateIncomeMessage(float delta){
         // Obtenemos el mensaje de entrada
         incomeMessage = SpaceGame.googleServices.receiveGameMessage();
 
-        // Preguntamos si por parte del jugador, es un mensaje de ACK
-        if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_ACK)){
-
-            // Al ser un mensaje de ACK, podremos enviar nuestro mensaje de vuelta
-            canSendMessage = true;
-
-            // Como lo es, actualizamos la lógica del jugador
-
-            playerShip.update(delta, incomeMessage.getPlayerPositionY(), true);
-
-            if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_LEAVE)){
-                state = GameState.LOSE;
-                if(!playerShip.isDefeated())
-                    abandonPlayer = true;
-            }
-            if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_SHOOT))
-                playerShip.shoot();
-
-            if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_BURST))
-                playerBurstPowerUp.setTouched();
-
-            if(incomeMessage.checkPlayerOperation(incomeMessage.MASK_REG_LIFE))
-                playerRegLifePowerUp.setTouched();
-        }
-
-        // Actualizamos la lógica del rival
-        // TODO Esto está mal por ahora. Usaré el tiempo medio de latencia para retrasar estas actualizaciones (si llegase a funcionar, claro)
-        rivalYposition = incomeMessage.getRivalPositionY();
-
-        if(incomeMessage.checkRivalOperation(incomeMessage.MASK_SHOOT))
-            rivalShip.shoot();
-
-        if(incomeMessage.checkRivalOperation(incomeMessage.MASK_BURST))
-            rivalBurstPowerUp.setTouched();
-
-        if(incomeMessage.checkRivalOperation(incomeMessage.MASK_REG_LIFE))
-            rivalRegLifePowerUp.setTouched();
-
-        if(incomeMessage.checkRivalOperation(incomeMessage.MASK_LEAVE)){
+        if (incomeMessage.checkOperation(incomeMessage.MASK_LEAVE)) {
             if (!rivalShip.isDefeated())
                 abandonRival = true;
             state = GameState.WIN;
         }
+        if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT))
+            rivalShip.shoot();
+        if (incomeMessage.checkOperation(incomeMessage.MASK_BURST))
+            rivalBurstPowerUp.setTouched();
+        if (incomeMessage.checkOperation(incomeMessage.MASK_REG_LIFE))
+            rivalRegLifePowerUp.setTouched();
+        if(incomeMessage.checkOperation(incomeMessage.MASK_HAS_RECEIVE_DAMAGE)){
+            rivalShip.receiveDamage();
+        }
+
+        // Actualizamos la lógica del rival
+        rivalShip.update(delta,incomeMessage.getPositionY());
+
+        incomeMessage.resetOperations();
     }
 
-    private void updateOutComeMessage(){
+    private void updateOutComeMessage(float delta){
 
         // Vamos a construir el mensaje de salir
         // Como vemos es muy parecido en principio al usado en el modo campaña
 
         Vector3 coordinates = TouchManager.getAnyXTouchLowerThan(playerShip.getX() + playerShip.getWidth());
 
+        boolean canShipMove = false;
         if(!coordinates.equals(Vector3.Zero))
-            outcomeMessage.setPlayerPositionY(playerShip.getCenter().y);
+            canShipMove = true;
+
+        playerShip.update(delta, coordinates.y , canShipMove);
+        outcomeMessage.setPositionY(playerShip.getCenter().y);
 
         coordinates = TouchManager.getAnyXTouchGreaterThan(playerShip.getX() + playerShip.getWidth());
 
         if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched())
 
-            if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched())
-                outcomeMessage.setPlayerOperation(outcomeMessage.MASK_BURST);
+            if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched()){
+                playerBurstPowerUp.setTouched();
+                outcomeMessage.setOperation(outcomeMessage.MASK_BURST);
+            }
+            else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched()){
+                playerRegLifePowerUp.setTouched();
+                outcomeMessage.setOperation(outcomeMessage.MASK_REG_LIFE);
+            }
+            else{
+                playerShip.shoot();
+                outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
+            }
 
-            else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched())
-                outcomeMessage.setPlayerOperation(outcomeMessage.MASK_REG_LIFE);
-
-            else
-                outcomeMessage.setPlayerOperation(outcomeMessage.MASK_SHOOT);
-
-        if(playerShip.isDefeated())
-            outcomeMessage.setPlayerOperation(outcomeMessage.MASK_LEAVE);
-
-        // Construimos el mensaje para el rival, a partir, parcialmente, de lo que le ha llegado del
-        // mensaje de entrada
-        outcomeMessage.setRivalPositionY(rivalYposition);
-        outcomeMessage.setRivalOperations(incomeMessage.getRivalOperations());
-        // Lo marcamos como ACK para el rival (que en su caso será el player)
-        outcomeMessage.setRivalOperation(incomeMessage.MASK_ACK);
-
-        // Finalmente enviamos el mensaje
-        if(canSendMessage || firstSendingMessage){
-            SpaceGame.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
-            firstSendingMessage = false;
-            canSendMessage = false;
+        if(playerShip.hasBeenDamage()){
+            outcomeMessage.setOperation(outcomeMessage.MASK_HAS_RECEIVE_DAMAGE);
+            playerShip.setBeenDamage(false);
         }
+
+        if(leaveRoom){
+            if(!playerShip.isDefeated())
+                abandonPlayer = true;
+            outcomeMessage.setOperation(outcomeMessage.MASK_LEAVE);
+            state = GameState.LOSE;
+        }
+
+        if(playerShip.isDefeated()){
+            state = GameState.LOSE;
+            outcomeMessage.setOperation(outcomeMessage.MASK_LEAVE);
+        }
+
+        SpaceGame.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
+
+        outcomeMessage.resetOperations();
     }
 
     @Override
@@ -346,7 +311,7 @@ public class MultiplayerScreen extends GameScreen{
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.BACK){
-            outcomeMessage.setPlayerOperation(outcomeMessage.MASK_LEAVE);
+            leaveRoom = true;
         }
         return false;
     }
