@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.tfg.spacegame.BasicScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
-import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.FontManager;
 import com.tfg.spacegame.utils.ScreenManager;
 
@@ -26,10 +25,6 @@ public class MainMenuScreen extends BasicScreen {
         this.game = game;
 
         SpaceGame.changeToLandscape();
-
-        AudioManager.loadSounds();
-        if (!AudioManager.isPlaying())
-            AudioManager.playMusic("menu", true);
 
         //Creamos los botones para el menú principal
         campaign = new Button("button", 260, 315, "campaignTitle", true);
@@ -70,9 +65,6 @@ public class MainMenuScreen extends BasicScreen {
                     options.isPressed() ||
                     exit.isPressed()) {
                 timeUntilExit=0.5f;
-
-                if (!campaign.isPressed())
-                    AudioManager.stopMusic();
             }
         }
 

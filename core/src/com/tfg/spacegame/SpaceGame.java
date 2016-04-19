@@ -41,6 +41,7 @@ public class SpaceGame extends Game {
 		orientation = "sensorLandscape";
 
 		AssetsManager.load();
+		AudioManager.load();
 		BackgroundManager.load();
 		TouchManager.initialize();
 		ShapeRendererManager.initialize();

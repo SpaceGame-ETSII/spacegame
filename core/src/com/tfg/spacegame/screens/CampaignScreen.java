@@ -52,10 +52,6 @@ public class CampaignScreen extends GameScreen {
         ship = new CampaignShip();
         inventary = new Inventary();
 
-        if (!AudioManager.isPlaying())
-            AudioManager.playMusic("campaign", true);
-
-
         exit = new Button("buttonExit", 750, 430, null,true);
 
         menuExitDialog = new DialogBox("exitModeQuestion");
@@ -119,7 +115,6 @@ public class CampaignScreen extends GameScreen {
                 //Si el inventario ya no está cerrándose, volvemos a la partida
                 if (!inventary.isClosing()) {
                     state = GameState.START;
-                    AudioManager.playMusic();
                 }
             } else {
                 Vector3 v = TouchManager.getFirstTouchPos();
@@ -168,7 +163,6 @@ public class CampaignScreen extends GameScreen {
         if (ship.isDefeated())
             state = GameState.LOSE;
         if(EnemiesManager.noMoreEnemiesToGenerateOrToDefeat()) {
-            AudioManager.playMusic("campaign_win", false);
             state = GameState.WIN;
         }
 

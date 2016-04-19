@@ -1,6 +1,5 @@
 package com.tfg.spacegame.utils;
 
-
 import com.badlogic.gdx.utils.ArrayMap;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Shoot;

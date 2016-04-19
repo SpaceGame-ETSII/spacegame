@@ -1,7 +1,6 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.tfg.spacegame.BasicScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
@@ -70,8 +69,6 @@ public class DemoMenuScreen extends BasicScreen {
                     purpleEnemy.isPressed() ||
                     back.isPressed()) {
                 timeUntilExit=0.5f;
-                if (!back.isPressed())
-                    AudioManager.stopMusic();
             }
         }
 
