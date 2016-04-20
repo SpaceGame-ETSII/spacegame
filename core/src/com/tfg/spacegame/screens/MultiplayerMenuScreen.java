@@ -22,12 +22,8 @@ public class MultiplayerMenuScreen extends BasicScreen {
 
 	private TextInput gameNameInput;
 
-	public Texture background;
-
     public MultiplayerMenuScreen(final SpaceGame gam) {
         game = gam;
-
-		background = AssetsManager.loadTexture("background");
 
 		quickGame = new Button("button", 260, 315, "quickGame", true);
 		createGame = new Button("button", 260, 255, "createGame", true);

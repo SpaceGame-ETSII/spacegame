@@ -27,11 +27,15 @@ public class MultiplayerScreen extends GameScreen{
     // Tiempo máximo para poder salir de la partida
     private final float MAX_TIME_TO_LEFT_GAME = 1f;
 
-    private final int TIMES_TO_SEND_SAME_OPERATION = 5;
-    private int times_sended_receive_damage_operation;
+    // Estas variables solo se usan en caso de necesidad cuando tengamos que enviar
+    // más de una vez una misma operación
+    // Esto es debido a que enviamos los paquetes por UDP y la lógica del juego
+    // corre más que la preparación y envio del mensaje.
 
-    // TODO Actualizate con el backgroundManager
-    private Texture background;
+    // Número de veces que vamos a enviar una misma operación
+    private final int TIMES_TO_SEND_SAME_OPERATION = 5;
+    // Número de veces que hemos enviado la operación de recibir daño (por mi parte, al jugador rival)
+    private int times_sended_receive_damage_operation;
 
     // Mensaje de información para mostrar al usuario
     private String infoMessage;
@@ -57,12 +61,11 @@ public class MultiplayerScreen extends GameScreen{
     private MultiplayerMessage outcomeMessage;
     private MultiplayerMessage incomeMessage;
 
+    // Comprobaremos si el jugador quiere abandonar o no la habitación
     private boolean leaveRoom;
 
     public MultiplayerScreen(final SpaceGame game, String roomId, Boolean createRoom){
         this.game = game;
-
-        background = AssetsManager.loadTexture("background");
 
         outcomeMessage  = new MultiplayerMessage();
         incomeMessage = new MultiplayerMessage();
@@ -102,7 +105,6 @@ public class MultiplayerScreen extends GameScreen{
 
     @Override
     public void renderEveryState(float delta) {
-        SpaceGame.batch.draw(background, 0,0);
     }
 
     @Override
@@ -120,9 +122,11 @@ public class MultiplayerScreen extends GameScreen{
         // Lógica de espera para empezar la partida
         if(SpaceGame.googleServices.canMultiplayerGameStart()){
             if(timeToStartGame > 0){
+                // Informaremos al jugador cuanto tiempo queda para empezar la partida
                 infoMessage = FontManager.getFromBundle("startGame")+"  "+(int)timeToStartGame;
                 timeToStartGame-=delta;
             }else {
+                // En el momento que se cumpla el periodo de tiempo, podremos empezar la partida
                 timeToStartGame = 0;
                 state = GameState.START;
             }
@@ -155,6 +159,7 @@ public class MultiplayerScreen extends GameScreen{
         // Actaulizaremos la lógica por parte de la salida del mensaje
         updateOutComeMessage(delta);
 
+        // En esta sección actualizamos la lógica de los powerUps
         if(playerBurstPowerUp.isTouched())
             playerBurstPowerUp.act(delta, playerShip);
 
@@ -166,31 +171,36 @@ public class MultiplayerScreen extends GameScreen{
 
         if(rivalRegLifePowerUp.isTouched())
             rivalRegLifePowerUp.act(delta, rivalShip);
-
-        // Reseteamos todas las operaciones
-        outcomeMessage.resetOperations();
-        incomeMessage.resetOperations();
     }
 
     private void updateIncomeMessage(float delta){
         // Obtenemos el mensaje de entrada
         incomeMessage = SpaceGame.googleServices.receiveGameMessage();
 
+        // Comprobamos si el rival nos ha enviado una petición de salida del juego
         if (incomeMessage.checkOperation(incomeMessage.MASK_LEAVE)) {
+            // En cuyo caso habremos ganado y si la nave rival no ha sido derrotada
+            // marcamos como que ha sido un abandono del rival
             if (!rivalShip.isDefeated())
                 abandonRival = true;
             state = GameState.WIN;
         }
+        // Petición recibida de disparo
         if (incomeMessage.checkOperation(incomeMessage.MASK_SHOOT))
             rivalShip.shoot();
+        // Petición recibida de powerUp Burst usado
         if (incomeMessage.checkOperation(incomeMessage.MASK_BURST))
             rivalBurstPowerUp.setTouched();
+        // Petición recibida de powerUp Regeneración de Vida usado
         if (incomeMessage.checkOperation(incomeMessage.MASK_REG_LIFE))
             rivalRegLifePowerUp.setTouched();
+        // Petición recibida de recepción de daño
         if(incomeMessage.checkOperation(incomeMessage.MASK_HAS_RECEIVE_DAMAGE)){
             rivalShip.receiveDamage();
         }
 
+        // Si la nave rival ha sido completamente derrotada
+        // Habremos ganado la partida
         if(rivalShip.isCompletelyDefeated()){
             state = GameState.WIN;
         }
@@ -198,6 +208,7 @@ public class MultiplayerScreen extends GameScreen{
         // Actualizamos la lógica del rival
         rivalShip.update(delta,incomeMessage.getPositionY());
 
+        // Reseteamos las operaciones para no interferir en la siguiente iteración
         incomeMessage.resetOperations();
     }
 
@@ -213,6 +224,7 @@ public class MultiplayerScreen extends GameScreen{
             canShipMove = true;
 
         playerShip.update(delta, coordinates.y , canShipMove);
+        // Ubicamos la posición de nuestra nave en la salida del mensaje
         outcomeMessage.setPositionY(playerShip.getCenter().y);
 
         coordinates = TouchManager.getAnyXTouchGreaterThan(playerShip.getX() + playerShip.getWidth());
@@ -221,17 +233,22 @@ public class MultiplayerScreen extends GameScreen{
 
             if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched()){
                 playerBurstPowerUp.setTouched();
+                // Ubicamos la petición de haber usado el powerUp Burst
                 outcomeMessage.setOperation(outcomeMessage.MASK_BURST);
             }
             else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched()){
                 playerRegLifePowerUp.setTouched();
+                // Ubicamos la petición de haber usado el powerUp Regeneración de Vida
                 outcomeMessage.setOperation(outcomeMessage.MASK_REG_LIFE);
             }
             else{
                 playerShip.shoot();
+                // Ubicamos la petición de disparo
                 outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
             }
 
+        // Si la nave ha sido dañada Ó si ha sido derrotada, ubicamos la petición de recepción de daño
+        // Este envío se realiza unas veces para asegurarse de que este mensaje llegue correctamente a su destino
         if(playerShip.isUndamagable() || playerShip.isDefeated()){
             if(times_sended_receive_damage_operation <= TIMES_TO_SEND_SAME_OPERATION){
                 outcomeMessage.setOperation(outcomeMessage.MASK_HAS_RECEIVE_DAMAGE);
@@ -241,6 +258,8 @@ public class MultiplayerScreen extends GameScreen{
             times_sended_receive_damage_operation = 0;
         }
 
+        // Si el jugador desea abandonar la partida
+        // Ubicamos la petición de salida de partida
         if(leaveRoom){
             if(!playerShip.isDefeated())
                 abandonPlayer = true;
@@ -248,12 +267,16 @@ public class MultiplayerScreen extends GameScreen{
             state = GameState.LOSE;
         }
 
+        // Si nuestra nave ha sido completamente derrotada
+        // habremos perdido la partida
         if(playerShip.isCompletelyDefeated()){
             state = GameState.LOSE;
         }
 
+        // Finalmente enviamos el mensaje
         SpaceGame.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
 
+        // Reseteamos las operaciones para no interferir en la siguiente interación
         outcomeMessage.resetOperations();
     }
 
