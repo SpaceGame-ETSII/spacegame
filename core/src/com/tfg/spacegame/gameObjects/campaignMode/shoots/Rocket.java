@@ -14,7 +14,7 @@ public class Rocket extends Shoot {
     protected float speed;
 
     //Constante que se multiplicará por la velocidad cuando el misil gire
-    public static final float ACCELERATION = 70;
+    public static final int ACCELERATION = 70;
 
     //Efecto de particulas del fuego de propulsión
     protected ParticleEffect propulsionEffect;

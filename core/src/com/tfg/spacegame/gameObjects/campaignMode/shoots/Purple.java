@@ -13,7 +13,7 @@ import com.tfg.spacegame.utils.enums.TypeShoot;
 public class Purple extends Shoot{
 
     //Velocidad de movimiento
-    public static final float SPEED = 10;
+    public static final int SPEED = 10;
 
     //Efecto de particulas de este disparo
     private ParticleEffect shoot;
@@ -34,8 +34,6 @@ public class Purple extends Shoot{
         Vector2 aux = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() +
                 shooter.getHeight()/2)));
         angle = aux.angle();
-        // Establememos el tipo del arma
-        type = TypeShoot.PURPLE;
 
         //Cambiamos el ángulo
         this.getLogicShape().setRotation(angle);

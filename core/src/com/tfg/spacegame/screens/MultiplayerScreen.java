@@ -208,7 +208,7 @@ public class MultiplayerScreen extends GameScreen{
 
         coordinates = TouchManager.getAnyXTouchGreaterThan(playerShip.getX() + playerShip.getWidth());
 
-        if(!coordinates.equals(Vector3.Zero) && Gdx.input.justTouched())
+        if(!coordinates.equals(Vector3.Zero))
 
             if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched()){
                 playerBurstPowerUp.setTouched();
@@ -223,9 +223,8 @@ public class MultiplayerScreen extends GameScreen{
                 outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
             }
 
-        if(playerShip.hasBeenDamage()){
+        if(playerShip.isUndamagable()){
             outcomeMessage.setOperation(outcomeMessage.MASK_HAS_RECEIVE_DAMAGE);
-            playerShip.setBeenDamage(false);
         }
 
         if(leaveRoom){

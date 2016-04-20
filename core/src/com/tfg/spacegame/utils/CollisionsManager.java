@@ -170,7 +170,6 @@ public class CollisionsManager {
     }
 
     private static void managesPlayerShootCollision(Pair<PlayerShip,Shoot> playerShootCollision){
-        playerShootCollision.getFirst().setBeenDamage(true);
         playerShootCollision.getFirst().receiveDamage();
         ShootsManager.shoots.removeValue(playerShootCollision.getSecond(),false);
     }

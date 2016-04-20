@@ -37,14 +37,6 @@ public class PlayerShip extends LandscapeShip {
         }
     }
 
-    public boolean hasBeenDamage(){
-        return beenDamage;
-    }
-
-    public void setBeenDamage(boolean b){
-        beenDamage = b;
-    }
-
     public void shoot() {
         ShootsManager.shootBurstBasicWeaponForShip(this);
     }

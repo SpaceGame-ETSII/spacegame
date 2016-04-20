@@ -36,8 +36,6 @@ public class Enemy extends GameObject {
     //Sólo las armas que apunten a un enemigo tendrán este efecto. (Naranja)
     private boolean targettedByShip;
 
-    protected TypeEnemy type;
-
     public Enemy(String textureName, int x, int y, int vitality, ParticleEffect destroyEffect) {
         super(textureName, x, y);
         initialPosition = new Vector2(x,y);
@@ -171,10 +169,6 @@ public class Enemy extends GameObject {
     //Usado para activar o desactivar el efecto de localización
     public void setTargettedByShip(boolean b){
         targettedByShip = b;
-    }
-
-    public TypeEnemy getType(){
-        return type;
     }
 
     public void dispose() {

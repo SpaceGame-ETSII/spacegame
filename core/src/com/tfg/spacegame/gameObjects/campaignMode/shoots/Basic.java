@@ -11,7 +11,7 @@ import com.tfg.spacegame.gameObjects.Shoot;
 public class Basic extends Shoot {
 
     // Velocidad de movimiento
-    public static final float SPEED = 600;
+    public static final int SPEED = 600;
 
     // Efecto de partículas que forma el disparo en sí
     private ParticleEffect shoot;
@@ -23,8 +23,6 @@ public class Basic extends Shoot {
         super("basic_shoot",x,y,shooter,
                 AssetsManager.loadParticleEffect("basic_effect_shoot"),
                 AssetsManager.loadParticleEffect("basic_effect_shoot"));
-        // Establememos el tipo del arma
-        type = TypeShoot.BASIC;
         //Creamos el efecto que hará las veces de textura
         shoot = AssetsManager.loadParticleEffect("basic_shoot_effect");
         this.updateParticleEffect();

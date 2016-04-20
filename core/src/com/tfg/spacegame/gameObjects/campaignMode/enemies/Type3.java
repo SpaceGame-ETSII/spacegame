@@ -47,9 +47,6 @@ public class Type3 extends Enemy {
     public Type3(int x, int y) {
         super("tipo3", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.TYPE3;
-
         pixelsToMoveSlowly = 150;
         timeToShoot = INITIAL_TIME_TO_SHOOT;
         centerOfCircle = SpaceGame.width - (pixelsToMoveSlowly * ACCELERATION);
@@ -81,10 +78,6 @@ public class Type3 extends Enemy {
                 }
             }
         }
-    }
-
-    public void render(){
-        super.render();
     }
 
     public void shoot(){

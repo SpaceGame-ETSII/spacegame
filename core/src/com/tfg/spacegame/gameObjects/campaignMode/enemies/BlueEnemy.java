@@ -29,9 +29,6 @@ public class BlueEnemy extends Enemy {
     public BlueEnemy(int x, int y) {
         super("blue_enemy", x, y, 200, AssetsManager.loadParticleEffect("blue_destroyed"));
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.BLUE;
-
         //Inicialmente lo pondremos que va hacia arriba, sólo por darle un valor válido
         direction = 1;
 

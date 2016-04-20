@@ -24,9 +24,6 @@ public class Type1 extends Enemy{
     public Type1(int x, int y, float delay) {
         super("enemy", x, y, 1, AssetsManager.loadParticleEffect("basic_destroyed"));
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.TYPE1;
-
         this.delay = delay;
         degrees = 0;
     }
@@ -47,10 +44,6 @@ public class Type1 extends Enemy{
 
     public void collideWithShoot(Shoot shoot) {
         DamageManager.calculateDamage(shoot,this);
-    }
-
-    public void dispose() {
-        super.dispose();
     }
 
 }

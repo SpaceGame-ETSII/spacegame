@@ -53,9 +53,6 @@ public class YellowEnemy extends Enemy{
     public YellowEnemy(int x, int y) {
         super("yellow_enemy", x, y, 30, AssetsManager.loadParticleEffect("yellow_enemy_defeated"));
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.YELLOW;
-
         target = CampaignScreen.ship;
 
         movement = new Vector2();

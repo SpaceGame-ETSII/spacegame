@@ -31,9 +31,6 @@ public class Type5 extends Enemy{
         timeToShoot = FREQUENCY_OF_SHOOTING;
         hasShooted = false;
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.TYPE5;
-
         //Creamos el efecto de particulas
         shootEffectWarning = AssetsManager.loadParticleEffect("warning_shoot_type5_effect");
         this.updateParticleEffect();

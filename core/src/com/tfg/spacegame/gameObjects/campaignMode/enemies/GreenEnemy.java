@@ -36,9 +36,6 @@ public class GreenEnemy extends Enemy {
         shield = new PartOfEnemy("green_shield", x - 56,y - 33, 15,
                                     AssetsManager.loadParticleEffect("green_destroyed"), this, false, true);
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.GREEN;
-
         direction = 1;
         isReady = false;
         counter = INITIAL_COUNTER;

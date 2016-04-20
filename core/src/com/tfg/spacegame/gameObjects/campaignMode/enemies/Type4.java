@@ -44,9 +44,6 @@ public class Type4 extends Enemy{
         shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false, true);
         body = new PartOfEnemy("type4_body", x + 35, y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false, true);
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.TYPE4;
-
         timeToShoot = FREQUENCY_OF_SHOOTING;
         timeToOpenCannon = FREQUENCY_OF_OPEN_CANNON;
         timeToCloseCannon = FREQUENCY_OF_CLOSE_CANNON;

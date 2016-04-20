@@ -41,9 +41,6 @@ public class PurpleEnemy extends Enemy {
     public PurpleEnemy(int x, int y) {
         super("purple_eye_center", x, y, 1100, AssetsManager.loadParticleEffect("purple_destroyed"));
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.PURPLE;
-
         state = PurpleEnemyState.APPEAR;
 
         //Creamos las distintas partes que compondrán al enemigo

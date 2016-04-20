@@ -24,9 +24,6 @@ public class Type2 extends Enemy{
     public Type2(int x, int y) {
         super("enemy", x, y, 10, AssetsManager.loadParticleEffect("basic_destroyed"));
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.TYPE2;
-
         timeToGoFast = 2f;
     }
 

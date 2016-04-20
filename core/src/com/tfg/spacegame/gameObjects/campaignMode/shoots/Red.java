@@ -13,7 +13,7 @@ import com.tfg.spacegame.utils.enums.TypeShoot;
 public class Red extends Shoot{
 
     //Velocidad de movimiento
-    public static final float SPEED = 800;
+    public static final int SPEED = 800;
 
     /*Tiempo necesario a esperar para que empiece a moverse el disparo
      Se trata de un delay de aparición*/
@@ -40,9 +40,6 @@ public class Red extends Shoot{
 
         //Los iniciamos, pero aunque los iniciemos si no haya un update no avanzarán
         shoot.start();
-
-        // Establememos el tipo del arma
-        type = TypeShoot.RED;
 
         //Inicializamos las variables para pintar el disparo a trozos y no la textura entera
         texture = new TextureRegion(this.getTexture());

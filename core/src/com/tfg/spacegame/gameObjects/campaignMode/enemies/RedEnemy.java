@@ -30,9 +30,6 @@ public class RedEnemy extends Enemy{
 
     public RedEnemy(int x, int y) {
         super("red_enemy", x, y, 40, AssetsManager.loadParticleEffect("red_destroyed"));
-
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.RED;
     }
 
     public void update(float delta){

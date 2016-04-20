@@ -19,7 +19,7 @@ public class AssetsManager {
     private static String particlesFolder = "particleEffects/";
     private static String enemiesFolder = "textures/enemies/";
     private static String obstaclesFolder = "textures/obstacles/";
-    private static String weaponsFolder = "textures/weapons/";
+    private static String shootsFolder = "textures/shoots/";
     private static String levelScriptsFolder = "levelScripts/";
     private static String shipsFolder = "textures/ships/";
     private static String backgroundsFolder = "textures/backgrounds/";
@@ -110,15 +110,15 @@ public class AssetsManager {
         assetsReferences.put("burstEnemy", powerUpsFolder+"burstEnemy.png");
         assetsReferences.put("burstPlayer", powerUpsFolder+"burstPlayer.png");
 
-        //Texturas referentes a weapons
-        assetsReferences.put("basic_shoot", weaponsFolder+"disparo.png");
-        assetsReferences.put("bigshoot_shoot", weaponsFolder+"disparo_enemigo_basico_tipo5.png");
-        assetsReferences.put("red_shoot", weaponsFolder+"disparo_rojo.png");
-        assetsReferences.put("blue_shoot", weaponsFolder+"disparo_azul.png");
-        assetsReferences.put("yellow_shoot", weaponsFolder+"disparo_amarillo.png");
-        assetsReferences.put("purple_shoot", weaponsFolder+"disparo_morado.png");
-        assetsReferences.put("orange_shoot", weaponsFolder+"disparo_naranja.png");
-        assetsReferences.put("green_shoot", weaponsFolder+"disparo_verde.png");
+        //Texturas referentes a shoots
+        assetsReferences.put("basic_shoot", shootsFolder +"disparo.png");
+        assetsReferences.put("bigshoot_shoot", shootsFolder +"disparo_enemigo_basico_tipo5.png");
+        assetsReferences.put("red_shoot", shootsFolder +"disparo_rojo.png");
+        assetsReferences.put("blue_shoot", shootsFolder +"disparo_azul.png");
+        assetsReferences.put("yellow_shoot", shootsFolder +"disparo_amarillo.png");
+        assetsReferences.put("purple_shoot", shootsFolder +"disparo_morado.png");
+        assetsReferences.put("orange_shoot", shootsFolder +"disparo_naranja.png");
+        assetsReferences.put("green_shoot", shootsFolder +"disparo_verde.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", particlesFolder + "rojo_seleccionado");
