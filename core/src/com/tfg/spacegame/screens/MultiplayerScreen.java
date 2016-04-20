@@ -64,7 +64,7 @@ public class MultiplayerScreen extends GameScreen{
     // Comprobaremos si el jugador quiere abandonar o no la habitación
     private boolean leaveRoom;
 
-    public MultiplayerScreen(final SpaceGame game, String roomId, Boolean createRoom){
+    public MultiplayerScreen(final SpaceGame game, String option){
         this.game = game;
 
         outcomeMessage  = new MultiplayerMessage();
@@ -100,7 +100,12 @@ public class MultiplayerScreen extends GameScreen{
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
 
-        SpaceGame.googleServices.startQuickGame();
+        if(option.equals("QUICK"))
+            SpaceGame.googleServices.startQuickGame();
+        else if(option.equals("INVITE"))
+            SpaceGame.googleServices.invitePlayer();
+        else
+            SpaceGame.googleServices.seeMyInvitations();
     }
 
     @Override

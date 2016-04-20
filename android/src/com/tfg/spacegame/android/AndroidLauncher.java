@@ -11,6 +11,8 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesActivityResultCodes;
+import com.google.android.gms.games.multiplayer.Invitation;
+import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
@@ -30,6 +32,10 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	private final static int REQUEST_CODE_UNUSED = 9002;
 	// Código que usa google internamente para saber que es una ventana de espera
 	private final static int REQUEST_CODE_WAITING_ROOM = 10002;
+	private final static int REQUEST_CODE_SELECT_PLAYERS = 10000;
+	private final static int REQUEST_CODE_INVITATION_INBOX = 10001;
+
+	private final static int NUMBER_OF_OPPONENTS = 1;
 
 	// Variable que guarderemos el ID de la habitación para futuras consultas
 	public String roomId;
@@ -104,35 +110,78 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	{
 		Gdx.app.log("multi","RequestCode: "+requestCode+"  - ResultCode: "+resultCode);
 		switch (requestCode){
-			case REQUEST_CODE_WAITING_ROOM:{
+			case REQUEST_CODE_WAITING_ROOM:
 				// Obtenemos el resultado que coincide con el de la petición
 				if (resultCode == Activity.RESULT_OK) {
 					// Empezamos el juego multijugador
-					Gdx.app.log("multi","Requested players connected, starting game");
 					startMultiplayerGame = true;
 				} else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
 					// Un jugador se va
-					Gdx.app.log("multi","Oponent left the room");
 					leaveRoom();
 				} else if (resultCode == Activity.RESULT_CANCELED) {
 					// El jugador cancela la partida, esto para nosotros se transforma en una
 					// solicitud de abandono de habitación
-					Gdx.app.log("multi","Search canceled");
 					leaveRoom();
 				}
 				break;
-			}
+			case REQUEST_CODE_SELECT_PLAYERS:
+				if (resultCode == Activity.RESULT_OK) {
 
+					// Obtenemos la lista de usuarios a los que hemos invitado
+					final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
+
+					// Iniciamos nuestro criterio de auto de emparejamiento
+					Bundle autoMatchCriteria = null;
+					// Información obtenida desde la ventana de invitación
+					int minAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+					int maxAutoMatchPlayers = data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+
+					if (minAutoMatchPlayers > 0 || maxAutoMatchPlayers > 0) {
+						autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
+								minAutoMatchPlayers, maxAutoMatchPlayers, 0);
+					}
+
+					// Creamos la configuración de la habitación
+					RoomConfig.Builder rtmConfigBuilder = RoomConfig.builder(new RoomUpdate(this));
+					rtmConfigBuilder.addPlayersToInvite(invitees);
+					rtmConfigBuilder.setMessageReceivedListener(new MessageReceived(this));
+					rtmConfigBuilder.setRoomStatusUpdateListener(new RoomStatusUpdate(this));
+
+					if (autoMatchCriteria != null) {
+						rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
+					}
+					// Reseteamos las propiedades del multijugador por si acaso
+					resetMultiplayerProperties();
+
+					// Creamos la sala multijugador con esta configuración de la habitación
+					Games.RealTimeMultiplayer.create(_gameHelper.getApiClient(), rtmConfigBuilder.build());
+				}
+				break;
+			case REQUEST_CODE_INVITATION_INBOX:
+				if (resultCode == Activity.RESULT_OK) {
+					// Obtenemos la invitación desde la ventana correspondiente
+					Invitation inv = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
+
+					// Iniciamos el proceso de aceptación de la invitación
+
+					// Creamos la configuración de la habitación
+					RoomConfig.Builder roomConfigBuilder = RoomConfig.builder(new RoomUpdate(this));
+					roomConfigBuilder.setInvitationIdToAccept(inv.getInvitationId())
+							.setMessageReceivedListener(new MessageReceived(this))
+							.setRoomStatusUpdateListener(new RoomStatusUpdate(this));
+
+					// Nos unimos a la habitación correspondiente con nuesta ID de invitación
+					Games.RealTimeMultiplayer.join(_gameHelper.getApiClient(), roomConfigBuilder.build());
+				}
+				break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 		_gameHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
-	public void signIn()
-	{
-		try
-		{
+	public void signIn(){
+		try{
 			runOnUiThread(new Runnable()
 			{
 				//@Override
@@ -142,17 +191,14 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 				}
 			});
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			Gdx.app.log("MainActivity", "Log in failed: " + e.getMessage() + ".");
 		}
 	}
 
 	@Override
-	public void signOut()
-	{
-		try
-		{
+	public void signOut(){
+		try{
 			runOnUiThread(new Runnable()
 			{
 				//@Override
@@ -162,23 +208,20 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 				}
 			});
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			Gdx.app.log("MainActivity", "Log out failed: " + e.getMessage() + ".");
 		}
 	}
 
 	@Override
-	public void rateGame()
-	{
+	public void rateGame() {
 		// Replace the end of the URL with the package of your game
 		String str ="https://play.google.com/store/apps/details?id=org.fortheloss.plunderperil";
 		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
 	}
 
 	@Override
-	public void submitScore(long score)
-	{
+	public void submitScore(long score) {
 		if (isSignedIn() == true) {
 			Games.Leaderboards.submitScore(_gameHelper.getApiClient(), getString(R.string.leaderboard_id), score);
 			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(_gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
@@ -225,10 +268,9 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	public void startQuickGame() {
 		// Reseteamos la variable de control
 		startMultiplayerGame = false;
-		// Creamos la configuración de nuestra habitación ( minimo, máximo, ? )
-		// TODO Quizas sea bonito hacerlas variables finales arriba (minimo máximo)
-		Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(1,
-				1, 0);
+		// Creamos la configuración de nuestra habitación
+		Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(NUMBER_OF_OPPONENTS,
+				NUMBER_OF_OPPONENTS, 0);
 		// Ubicamos los listeners
 		RoomConfig.Builder rtmConfigBuilder = RoomConfig.builder(new RoomUpdate(this));
 		rtmConfigBuilder.setMessageReceivedListener(new MessageReceived(this));
@@ -236,6 +278,18 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		rtmConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
 		// Creamos la partida
 		Games.RealTimeMultiplayer.create(_gameHelper.getApiClient(), rtmConfigBuilder.build());
+	}
+
+	@Override
+	public void invitePlayer() {
+		Intent i = Games.RealTimeMultiplayer.getSelectOpponentsIntent(_gameHelper.getApiClient(),1,1);
+		startActivityForResult(i,REQUEST_CODE_SELECT_PLAYERS);
+	}
+
+	@Override
+	public void seeMyInvitations() {
+		Intent i = Games.Invitations.getInvitationInboxIntent(_gameHelper.getApiClient());
+		startActivityForResult(i, REQUEST_CODE_INVITATION_INBOX);
 	}
 
 	// Cada vez que en algún listener se modifique en algo la habitación activará

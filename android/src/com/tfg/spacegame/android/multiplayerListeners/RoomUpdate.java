@@ -26,6 +26,8 @@ public class RoomUpdate implements RoomUpdateListener{
     @Override
     public void onJoinedRoom(int i, Room room) {
         Gdx.app.log("multi","onJoinedRoom   -  Code:"+i+"   RoomID:"+room.getRoomId());
+        callback.roomId = room.getRoomId();
+        callback.showWaitingRoom(room);
     }
 
     @Override

@@ -15,6 +15,8 @@ public interface IGoogleServices
     void showAchievements();
 
     void startQuickGame();
+    void invitePlayer();
+    void seeMyInvitations();
     void leaveRoom();
 
     boolean canMultiplayerGameStart();
