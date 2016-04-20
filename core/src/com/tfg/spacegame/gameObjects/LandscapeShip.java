@@ -131,6 +131,10 @@ public class LandscapeShip extends GameObject {
         return damageReceived >= VITALITY;
     }
 
+    public boolean isCompletelyDefeated(){
+        return destroyEffect.isComplete();
+    }
+
     public int getDamageReceived(){
         return damageReceived;
     }

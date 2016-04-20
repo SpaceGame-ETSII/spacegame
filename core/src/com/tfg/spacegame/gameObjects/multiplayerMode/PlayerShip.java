@@ -8,7 +8,6 @@ import com.tfg.spacegame.utils.ShootsManager;
 public class PlayerShip extends LandscapeShip {
 
     public final float SPEED = 20;
-    private boolean beenDamage;
 
     public PlayerShip() {
         super("playerShip",80,0,5);
@@ -16,7 +15,6 @@ public class PlayerShip extends LandscapeShip {
 
     public void update(float delta, float y, boolean canShipMove) {
         super.update(delta);
-        beenDamage = false;
 
         if(!this.isDefeated()){
 
@@ -36,6 +34,7 @@ public class PlayerShip extends LandscapeShip {
                 this.setY(SpaceGame.height - getHeight());
         }
     }
+
 
     public void shoot() {
         ShootsManager.shootBurstBasicWeaponForShip(this);

@@ -249,8 +249,7 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void disposeScreen() {
         ship.dispose();
-        for(Enemy enemy: EnemiesManager.enemies)
-            enemy.dispose();
+        EnemiesManager.dispose();
         for(Shoot shoot : ShootsManager.shoots)
             shoot.dispose();
         inventary.dispose();

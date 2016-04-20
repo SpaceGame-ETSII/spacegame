@@ -64,4 +64,10 @@ public class EnemiesManager {
     public static boolean noMoreEnemiesToGenerateOrToDefeat(){
         return enemies.size == 0 && level.enemiesToGenerate.size == 0;
     }
+
+    public static void dispose(){
+        for(Enemy enemy: EnemiesManager.enemies)
+            enemy.dispose();
+        enemies = null;
+    }
 }

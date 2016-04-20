@@ -27,6 +27,9 @@ public class MultiplayerScreen extends GameScreen{
     // Tiempo máximo para poder salir de la partida
     private final float MAX_TIME_TO_LEFT_GAME = 1f;
 
+    private final int TIMES_TO_SEND_SAME_OPERATION = 5;
+    private int times_sended_receive_damage_operation;
+
     // TODO Actualizate con el backgroundManager
     private Texture background;
 
@@ -67,6 +70,8 @@ public class MultiplayerScreen extends GameScreen{
         state = GameState.READY;
 
         leaveRoom = false;
+
+        times_sended_receive_damage_operation = 0;
 
         infoMessage = FontManager.getFromBundle("connectServer");
 
@@ -186,6 +191,10 @@ public class MultiplayerScreen extends GameScreen{
             rivalShip.receiveDamage();
         }
 
+        if(rivalShip.isCompletelyDefeated()){
+            state = GameState.WIN;
+        }
+
         // Actualizamos la lógica del rival
         rivalShip.update(delta,incomeMessage.getPositionY());
 
@@ -223,8 +232,13 @@ public class MultiplayerScreen extends GameScreen{
                 outcomeMessage.setOperation(outcomeMessage.MASK_SHOOT);
             }
 
-        if(playerShip.isUndamagable()){
-            outcomeMessage.setOperation(outcomeMessage.MASK_HAS_RECEIVE_DAMAGE);
+        if(playerShip.isUndamagable() || playerShip.isDefeated()){
+            if(times_sended_receive_damage_operation <= TIMES_TO_SEND_SAME_OPERATION){
+                outcomeMessage.setOperation(outcomeMessage.MASK_HAS_RECEIVE_DAMAGE);
+                times_sended_receive_damage_operation++;
+            }
+        }else{
+            times_sended_receive_damage_operation = 0;
         }
 
         if(leaveRoom){
@@ -234,9 +248,8 @@ public class MultiplayerScreen extends GameScreen{
             state = GameState.LOSE;
         }
 
-        if(playerShip.isDefeated()){
+        if(playerShip.isCompletelyDefeated()){
             state = GameState.LOSE;
-            outcomeMessage.setOperation(outcomeMessage.MASK_LEAVE);
         }
 
         SpaceGame.googleServices.sendGameMessage(outcomeMessage.getForSendMessage());
