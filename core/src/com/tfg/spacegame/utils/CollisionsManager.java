@@ -11,7 +11,7 @@ import com.tfg.spacegame.screens.MultiplayerScreen;
 
 public class CollisionsManager {
 
-    //Contendrán las colisiones realizadas
+    // Contendrán las colisiones realizadas
     public static Array<Pair<Shoot, Enemy>> shootsToEnemies;
     private static Array<Pair<Shoot, Shoot>> shootsToShoots;
 

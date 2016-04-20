@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.FontManager;
 
@@ -74,6 +75,9 @@ public abstract class BasicScreen implements Screen, InputProcessor {
         // Actualizamos los fondos y el resto del juego
         BackgroundManager.update(delta);
         this.update(delta);
+
+        // Actualizamos el audio
+        AudioManager.update();
     }
 
     // Se llama cuando se desea activar una atenuación a la hora de pintarse

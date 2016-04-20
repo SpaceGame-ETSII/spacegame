@@ -37,8 +37,6 @@ public class OptionsScreen extends BasicScreen {
     public OptionsScreen(final SpaceGame game) {
         this.game = game;
 
-        AudioManager.playMusic("menu", true);
-
         //Guardamos el record del usuario en la variable
         record = "record:    " + ArcadeScreen.obtainRecord() + " - ";
 
