@@ -2,7 +2,6 @@ package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
@@ -14,6 +13,7 @@ import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.RegLifePowerUp;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.ShieldPowerUp;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
+import com.tfg.spacegame.utils.enums.MultiplayerState;
 
 public class MultiplayerScreen extends GameScreen{
     final SpaceGame game;
@@ -46,14 +46,14 @@ public class MultiplayerScreen extends GameScreen{
     private float timeToLeftGame;
 
     // PowerUps del jugador
-    private BurstPowerUp playerBurstPowerUp;
-    private RegLifePowerUp playerRegLifePowerUp;
-    private ShieldPowerUp playerShieldPowerUp;
+    public static BurstPowerUp playerBurstPowerUp;
+    private static RegLifePowerUp playerRegLifePowerUp;
+    private static ShieldPowerUp playerShieldPowerUp;
 
     // PowerUps del rival
-    private BurstPowerUp rivalBurstPowerUp;
-    private RegLifePowerUp rivalRegLifePowerUp;
-    private ShieldPowerUp rivalShieldPoweUp;
+    public static BurstPowerUp rivalBurstPowerUp;
+    private static RegLifePowerUp rivalRegLifePowerUp;
+    private static ShieldPowerUp rivalShieldPoweUp;
 
     // Sabremos si el jugador abandonó la partida
     private boolean abandonPlayer;
@@ -123,23 +123,28 @@ public class MultiplayerScreen extends GameScreen{
 
     @Override
     public void renderReady(float delta) {
-        if(SpaceGame.googleServices.canMultiplayerGameStart())
+        if(SpaceGame.googleServices.getMultiplayerState().equals(MultiplayerState.STARTMULTIPLAYER))
             FontManager.text.draw(SpaceGame.batch,infoMessage,SpaceGame.width/3,SpaceGame.height/2);
     }
 
     @Override
     public void updateReady(float delta) {
         // Lógica de espera para empezar la partida
-        if(SpaceGame.googleServices.canMultiplayerGameStart()){
-            if(timeToStartGame > 0){
-                // Informaremos al jugador cuanto tiempo queda para empezar la partida
-                infoMessage = FontManager.getFromBundle("startGame")+"  "+(int)timeToStartGame;
-                timeToStartGame-=delta;
-            }else {
-                // En el momento que se cumpla el periodo de tiempo, podremos empezar la partida
-                timeToStartGame = 0;
-                state = GameState.START;
-            }
+        switch (SpaceGame.googleServices.getMultiplayerState()){
+            case STARTMULTIPLAYER:
+                if(timeToStartGame > 0){
+                    // Informaremos al jugador cuanto tiempo queda para empezar la partida
+                    infoMessage = FontManager.getFromBundle("startGame")+"  "+(int)timeToStartGame;
+                    timeToStartGame-=delta;
+                }else {
+                    // En el momento que se cumpla el periodo de tiempo, podremos empezar la partida
+                    timeToStartGame = 0;
+                    state = GameState.START;
+                }
+                break;
+            case CANCEL:
+                ScreenManager.changeScreen(game,MultiplayerMenuScreen.class);
+                break;
         }
     }
 
@@ -252,18 +257,21 @@ public class MultiplayerScreen extends GameScreen{
 
         if(!coordinates.equals(Vector3.Zero))
 
-            if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched()){
-                playerBurstPowerUp.setTouched();
+            if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y)){
+                if(!playerBurstPowerUp.isTouched())
+                    playerBurstPowerUp.setTouched();
                 // Ubicamos la petición de haber usado el powerUp Burst
                 outcomeMessage.setOperation(outcomeMessage.MASK_BURST);
             }
-            else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched()){
-                playerRegLifePowerUp.setTouched();
+            else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)){
+                if(!playerRegLifePowerUp.isTouched())
+                    playerRegLifePowerUp.setTouched();
                 // Ubicamos la petición de haber usado el powerUp Regeneración de Vida
                 outcomeMessage.setOperation(outcomeMessage.MASK_REG_LIFE);
             }
-            else if(playerShieldPowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerShieldPowerUp.isTouched()){
-                playerShieldPowerUp.setTouched();
+            else if(playerShieldPowerUp.isOverlapingWith(coordinates.x,coordinates.y)){
+                if(!playerShieldPowerUp.isTouched())
+                    playerShieldPowerUp.setTouched();
                 // Ubicamos la petición de haber usado el powerUp Regeneración de Vida
                 outcomeMessage.setOperation(outcomeMessage.MASK_SHIELD);
             }

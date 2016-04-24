@@ -13,10 +13,17 @@ public class BurstPowerUp extends PowerUp{
     private float burstTime;
     private float shootTime;
 
+    private boolean shooting;
+
     public BurstPowerUp(String textureName, int x, int y) {
         super(textureName, x, y);
         burstTime = 0;
+        shooting = false;
         shootTime = 0;
+    }
+
+    public boolean isShooting(){
+        return shooting;
     }
 
     @Override
@@ -30,6 +37,10 @@ public class BurstPowerUp extends PowerUp{
                 shootTime+=delta;
             }
             burstTime+=delta;
+
+            shooting = true;
+        }else{
+            shooting = false;
         }
     }
 }

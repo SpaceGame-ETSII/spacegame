@@ -1,9 +1,7 @@
 package com.tfg.spacegame.gameObjects.multiplayerMode;
 
 
-import com.badlogic.gdx.graphics.Texture;
 import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.utils.ShootsManager;
 

@@ -1,6 +1,7 @@
 package com.tfg.spacegame;
 
 import com.tfg.spacegame.utils.MultiplayerMessage;
+import com.tfg.spacegame.utils.enums.MultiplayerState;
 
 //Se usará para conectarnos a Google Services
 public interface IGoogleServices
@@ -19,7 +20,7 @@ public interface IGoogleServices
     void seeMyInvitations();
     void leaveRoom();
 
-    boolean canMultiplayerGameStart();
+    MultiplayerState getMultiplayerState();
 
     void sendGameMessage(String message);
     MultiplayerMessage receiveGameMessage();
