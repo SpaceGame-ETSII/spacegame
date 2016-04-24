@@ -1,16 +1,19 @@
 package com.tfg.spacegame.gameObjects.multiplayerMode;
 
 
+import com.badlogic.gdx.graphics.Texture;
+import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.utils.ShootsManager;
 
-public class PlayerShip extends LandscapeShip {
+public class PlayerShip extends MultiplayerShip {
 
     public final float SPEED = 20;
 
+
     public PlayerShip() {
-        super("playerShip",80,0,5);
+        super("playerShip",80,0);
     }
 
     public void update(float delta, float y, boolean canShipMove) {
@@ -34,7 +37,6 @@ public class PlayerShip extends LandscapeShip {
                 this.setY(SpaceGame.height - getHeight());
         }
     }
-
 
     public void shoot() {
         ShootsManager.shootBurstBasicWeaponForShip(this);

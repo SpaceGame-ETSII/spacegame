@@ -124,15 +124,15 @@ public class CollisionsManager {
         Array<Shoot> shootsSource = new Array<Shoot>(ShootsManager.shoots);
 
         Pair<PlayerShip,Shoot> playerShootCollision = null;
-        Pair<RivalShip,Shoot>  enemyShootCollision = null;
 
         // Comprobamos las colisiones entre los shoots y el jugador y el enemigo
         for(Shoot shoot: shoots){
             // Intento de colision con el enemigo
-            if(shoot.getShooter() instanceof PlayerShip &&
+            if (shoot.getShooter() instanceof PlayerShip &&
                     shoot.isOverlapingWith(MultiplayerScreen.rivalShip) &&
                     !shoot.isShocked() &&
-                    !MultiplayerScreen.rivalShip.isUndamagable() ){
+                    !MultiplayerScreen.rivalShip.isUndamagable() &&
+                    !MultiplayerScreen.rivalShip.isProtected()) {
                 // Colisión con el enemigo
                 shoots.removeValue(shoot, false);
             }
@@ -140,7 +140,8 @@ public class CollisionsManager {
             else if(shoot.getShooter() instanceof RivalShip &&
                     shoot.isOverlapingWith(MultiplayerScreen.playerShip) &&
                     !shoot.isShocked() &&
-                    !MultiplayerScreen.playerShip.isUndamagable()){
+                    !MultiplayerScreen.playerShip.isUndamagable() &&
+                    !MultiplayerScreen.playerShip.isProtected()){
                 // Colisión con el player
                 playerShootCollision = new Pair<PlayerShip, Shoot>(MultiplayerScreen.playerShip,shoot);
             }else{
@@ -162,9 +163,8 @@ public class CollisionsManager {
             }
         }
 
-        if(playerShootCollision != null){
+        if(playerShootCollision != null)
             managesPlayerShootCollision(playerShootCollision);
-        }
 
         manageShootsToShoots();
     }
@@ -203,5 +203,4 @@ public class CollisionsManager {
         shootsToShoots.clear();
         shootsToShoots = new Array<Pair<Shoot, Shoot>>();
     }
-
 }

@@ -6,10 +6,10 @@ import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.screens.MultiplayerScreen;
 import com.tfg.spacegame.utils.ShootsManager;
 
-public class RivalShip extends LandscapeShip {
+public class RivalShip extends MultiplayerShip {
 
     public RivalShip() {
-        super("rivalShip", SpaceGame.width - (80+100), SpaceGame.height/2, 5);
+        super("rivalShip", SpaceGame.width - (80+100), SpaceGame.height/2);
         this.setY(this.getY() + this.getHeight()/2);
         cockpitOffsetX=18;
         cockpitOffsetY=22;
@@ -28,9 +28,5 @@ public class RivalShip extends LandscapeShip {
 
     public void shoot(){
         ShootsManager.shootBurstBasicWeaponForShip(this);
-    }
-
-    public void render(){
-        super.render();
     }
 }

@@ -103,6 +103,7 @@ public class AssetsManager {
         assetsReferences.put("rivalShip", shipsFolder+"nave_multi_p2.png");
 
         // Texturas referentes a powerUps
+        assetsReferences.put("shieldProtection", powerUpsFolder+"shieldProtection.png");
         assetsReferences.put("shieldEnemy", powerUpsFolder+"shieldEnemy.png");
         assetsReferences.put("shieldPlayer", powerUpsFolder+"shieldPlayer.png");
         assetsReferences.put("regLifeEnemy", powerUpsFolder+"lifeEnemy.png");

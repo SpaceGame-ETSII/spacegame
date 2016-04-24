@@ -11,6 +11,7 @@ import com.tfg.spacegame.gameObjects.multiplayerMode.RivalShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.BurstPowerUp;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.RegLifePowerUp;
+import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.ShieldPowerUp;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
 
@@ -47,10 +48,12 @@ public class MultiplayerScreen extends GameScreen{
     // PowerUps del jugador
     private BurstPowerUp playerBurstPowerUp;
     private RegLifePowerUp playerRegLifePowerUp;
+    private ShieldPowerUp playerShieldPowerUp;
 
     // PowerUps del rival
     private BurstPowerUp rivalBurstPowerUp;
     private RegLifePowerUp rivalRegLifePowerUp;
+    private ShieldPowerUp rivalShieldPoweUp;
 
     // Sabremos si el jugador abandonó la partida
     private boolean abandonPlayer;
@@ -87,11 +90,13 @@ public class MultiplayerScreen extends GameScreen{
         abandonRival = false;
         abandonPlayer = false;
 
-        playerBurstPowerUp = new BurstPowerUp("burstPlayer", SpaceGame.width/3, 5);
-        playerRegLifePowerUp = new RegLifePowerUp("regLifePlayer", SpaceGame.width/2, 5);
+        playerBurstPowerUp = new BurstPowerUp("burstPlayer", SpaceGame.width/3 - 25, 5);
+        playerRegLifePowerUp = new RegLifePowerUp("regLifePlayer", SpaceGame.width/2 - 25, 5);
+        playerShieldPowerUp = new ShieldPowerUp("shieldPlayer", (SpaceGame.width*2)/3 - 25, 5);
 
-        rivalBurstPowerUp = new BurstPowerUp("burstEnemy",SpaceGame.width/3,SpaceGame.height - 55);
-        rivalRegLifePowerUp = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2,SpaceGame.height-55);
+        rivalBurstPowerUp = new BurstPowerUp("burstEnemy",SpaceGame.width/3 - 25,SpaceGame.height - 55);
+        rivalRegLifePowerUp = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2 - 25,SpaceGame.height-55);
+        rivalShieldPoweUp = new ShieldPowerUp("shieldEnemy",(SpaceGame.width*2)/3 - 25,SpaceGame.height-55);
 
         CollisionsManager.load();
         ShootsManager.load();
@@ -147,9 +152,11 @@ public class MultiplayerScreen extends GameScreen{
 
         playerBurstPowerUp.render();
         playerRegLifePowerUp.render();
+        playerShieldPowerUp.render();
 
         rivalBurstPowerUp.render();
         rivalRegLifePowerUp.render();
+        rivalShieldPoweUp.render();
     }
 
     @Override
@@ -171,11 +178,17 @@ public class MultiplayerScreen extends GameScreen{
         if(playerRegLifePowerUp.isTouched())
             playerRegLifePowerUp.act(delta, playerShip);
 
+        if(playerShieldPowerUp.isTouched())
+            playerShieldPowerUp.act(delta, playerShip);
+
         if(rivalBurstPowerUp.isTouched())
             rivalBurstPowerUp.act(delta, rivalShip);
 
         if(rivalRegLifePowerUp.isTouched())
             rivalRegLifePowerUp.act(delta, rivalShip);
+
+        if(rivalShieldPoweUp.isTouched())
+            rivalShieldPoweUp.act(delta, rivalShip);
     }
 
     private void updateIncomeMessage(float delta){
@@ -199,6 +212,9 @@ public class MultiplayerScreen extends GameScreen{
         // Petición recibida de powerUp Regeneración de Vida usado
         if (incomeMessage.checkOperation(incomeMessage.MASK_REG_LIFE))
             rivalRegLifePowerUp.setTouched();
+        // Petición recibida de powerUp Escudo
+        if (incomeMessage.checkOperation(incomeMessage.MASK_SHIELD))
+            rivalShieldPoweUp.setTouched();
         // Petición recibida de recepción de daño
         if(incomeMessage.checkOperation(incomeMessage.MASK_HAS_RECEIVE_DAMAGE)){
             rivalShip.receiveDamage();
@@ -245,6 +261,11 @@ public class MultiplayerScreen extends GameScreen{
                 playerRegLifePowerUp.setTouched();
                 // Ubicamos la petición de haber usado el powerUp Regeneración de Vida
                 outcomeMessage.setOperation(outcomeMessage.MASK_REG_LIFE);
+            }
+            else if(playerShieldPowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerShieldPowerUp.isTouched()){
+                playerShieldPowerUp.setTouched();
+                // Ubicamos la petición de haber usado el powerUp Regeneración de Vida
+                outcomeMessage.setOperation(outcomeMessage.MASK_SHIELD);
             }
             else{
                 playerShip.shoot();

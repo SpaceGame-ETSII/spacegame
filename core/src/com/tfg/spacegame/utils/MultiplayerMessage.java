@@ -12,6 +12,7 @@ public class MultiplayerMessage {
     public final int MASK_HAS_RECEIVE_DAMAGE;
     public final int MASK_REG_LIFE;
     public final int MASK_BURST;
+    public final int MASK_SHIELD;
 
     private int operations;
     private float positionY;
@@ -20,16 +21,18 @@ public class MultiplayerMessage {
         // Códigos que representa en binario :
         // 00000
         MASK_NO_OPT             = 0;
-        // 00001
+        // 000001
         MASK_LEAVE              = 1;
-        // 00010
+        // 000010
         MASK_SHOOT              = 2;
-        // 00100
+        // 000100
         MASK_REG_LIFE           = 4;
-        // 01000
+        // 001000
         MASK_BURST              = 8;
-        // 10000
+        // 010000
         MASK_HAS_RECEIVE_DAMAGE = 16;
+        // 100000
+        MASK_SHIELD             = 32;
 
         // Al principio no realizan ninguna operación
         operations = MASK_NO_OPT;
