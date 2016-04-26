@@ -3,7 +3,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Basic;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Green;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.GreenFire;
@@ -35,9 +35,6 @@ public class GreenEnemy extends Enemy {
         super("green_body", x, y, 600, AssetsManager.loadParticleEffect("green_destroyed"));
         shield = new PartOfEnemy("green_shield", x - 56,y - 33, 15,
                                     AssetsManager.loadParticleEffect("green_destroyed"), this, false, true);
-
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.GREEN;
 
         direction = 1;
         isReady = false;

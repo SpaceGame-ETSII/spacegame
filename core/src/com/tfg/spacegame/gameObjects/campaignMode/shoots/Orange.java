@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.enums.TypeShoot;
@@ -15,8 +15,8 @@ import com.tfg.spacegame.utils.enums.TypeShoot;
 public class Orange extends Shoot{
 
     // Constantes de velocidad de movimiento del arma naranja
-    private final float SPEEDX;
-    private final float SPEEDY;
+    private final int SPEEDX;
+    private final int SPEEDY;
 
     // Constantes de velocidad angular en el arma naranja
     private final float SPEEDANGLE;
@@ -53,9 +53,6 @@ public class Orange extends Shoot{
 
         shoot = AssetsManager.loadParticleEffect("orange_shoot_effect");
         shoot.getEmitters().first().setPosition(this.getX()+this.getWidth()/2,this.getY()+this.getHeight()/2);
-
-        // Establememos el tipo del arma
-        type = TypeShoot.ORANGE;
 
         this.target = target;
 

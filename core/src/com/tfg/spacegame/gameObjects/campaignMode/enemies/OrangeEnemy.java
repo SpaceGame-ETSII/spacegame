@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Orange;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.partsOfEnemy.Cannon;
@@ -42,7 +42,7 @@ public class OrangeEnemy extends Enemy {
     private static final int    APPEAR_SPEED = 30;
     // Posición limite de aparición relativa a la posición del cañon principal
     private static final int    APPEAR_POSITION = 580;
-    private Array<Integer> aviableSecondaryCannons = new Array<Integer>();
+    private Array<Integer> aviableSecondaryCannons;
 
     // Tiempo de carga del cañon principal
     private float   timeChargingMainCannon;
@@ -88,8 +88,7 @@ public class OrangeEnemy extends Enemy {
     public OrangeEnemy(int x, int y) {
         super("orange_enemy", x, y, 600, AssetsManager.loadParticleEffect("orange_enemy_defeated"));
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.ORANGE;
+        aviableSecondaryCannons = new Array<Integer>();
 
         chargeMainCannonEffect = AssetsManager.loadParticleEffect("orange_main_cannon_charging");
 

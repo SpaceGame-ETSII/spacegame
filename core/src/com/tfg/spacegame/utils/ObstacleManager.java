@@ -12,7 +12,7 @@ import com.tfg.spacegame.utils.enums.TypeObstacle;
 public class ObstacleManager {
 
     //Escala de los obstáculos en la capa superior
-    public static final float TOP_SCALE = 1;
+    public static final float TOP_SCALE = 1f;
     //Escala de los obstáculos en la capa inferior
     public static final float BOTTOM_SCALE = 0.5f;
     //Valor mínimo que podrá tener bottomProbability

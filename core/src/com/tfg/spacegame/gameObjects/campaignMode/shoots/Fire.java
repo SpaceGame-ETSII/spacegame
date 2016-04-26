@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.TouchManager;
@@ -14,7 +14,7 @@ import com.tfg.spacegame.utils.TouchManager;
 public class Fire extends Shoot {
 
     // Amplitud del efecto de disparo (el efecto de particulas)
-    private static final int AMPLITUDE_OF_FIRE=10;
+    private static final int AMPLITUDE_OF_FIRE = 10;
     private static final int SHOOT_EFFECT_LIFE = 160;
     private final float FULL_WIDTH;
     private static final float CHANGE_IN_SCALLING = 0.04f;

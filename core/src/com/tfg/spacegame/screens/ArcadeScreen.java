@@ -15,7 +15,7 @@ public class ArcadeScreen extends GameScreen {
 	private final SpaceGame game;
 
 	//Tiempo que bloquearemos el cambio de capa cada vez que se realice un cambio
-	private static final float MAX_TIME_TO_BLOCK = 1;
+	private static final float MAX_TIME_TO_BLOCK = 1f;
 	//Tiempo máximo hasta que actualicemos lastMeasureY
 	private static final float TIME_TO_MEASURE_Y = 0.2f;
 	//Mínimo alpha para las transparencias de los obstacles

@@ -2,7 +2,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
@@ -24,9 +24,6 @@ public class Type1 extends Enemy{
     public Type1(int x, int y, float delay) {
         super("enemy", x, y, 1, AssetsManager.loadParticleEffect("basic_destroyed"));
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.TYPE1;
-
         this.delay = delay;
         degrees = 0;
     }
@@ -47,10 +44,6 @@ public class Type1 extends Enemy{
 
     public void collideWithShoot(Shoot shoot) {
         DamageManager.calculateDamage(shoot,this);
-    }
-
-    public void dispose() {
-        super.dispose();
     }
 
 }

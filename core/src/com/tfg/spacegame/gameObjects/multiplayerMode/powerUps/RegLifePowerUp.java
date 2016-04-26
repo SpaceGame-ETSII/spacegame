@@ -1,11 +1,7 @@
 package com.tfg.spacegame.gameObjects.multiplayerMode.powerUps;
 
 
-import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.LandscapeShip;
-import com.tfg.spacegame.gameObjects.multiplayerMode.EnemyShip;
-import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
-import com.tfg.spacegame.utils.AssetsManager;
 
 public class RegLifePowerUp extends PowerUp{
 

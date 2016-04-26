@@ -1,7 +1,6 @@
 package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
@@ -9,7 +8,7 @@ import com.tfg.spacegame.gameObjects.*;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.Inventary;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.DialogBoxState;
 import com.tfg.spacegame.utils.enums.GameState;
@@ -41,7 +40,7 @@ public class CampaignScreen extends GameScreen {
         scrollingPosition = 0;
 
         ShootsManager.load();
-        CollissionsManager.load();
+        CollisionsManager.load();
         EnemiesManager.load(scriptLevel);
         DamageManager.load();
         CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
@@ -206,7 +205,7 @@ public class CampaignScreen extends GameScreen {
         }
 
         //Realizamos la lógica de los objetos en juego
-        CollissionsManager.update();
+        CollisionsManager.update();
         EnemiesManager.update(delta);
         ShootsManager.update(delta, ship);
     }
@@ -250,8 +249,7 @@ public class CampaignScreen extends GameScreen {
     @Override
     public void disposeScreen() {
         ship.dispose();
-        for(Enemy enemy: EnemiesManager.enemies)
-            enemy.dispose();
+        EnemiesManager.dispose();
         for(Shoot shoot : ShootsManager.shoots)
             shoot.dispose();
         inventary.dispose();

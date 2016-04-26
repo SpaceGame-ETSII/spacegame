@@ -23,8 +23,6 @@ public class Green extends Rocket {
 
         counter = 100;
         isShootingFire = false;
-        // Establememos el tipo del arma
-        type = TypeShoot.GREEN;
     }
 
     public void update(float delta) {

@@ -3,7 +3,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies.partsOfEnemy;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;

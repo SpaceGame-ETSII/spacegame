@@ -30,6 +30,7 @@ public class LandscapeShip extends GameObject {
 
     //Imagen de la cabina que irá sobre la nave y que se actualizará con los daños
     protected Texture cockpit;
+    protected int cockpitOffsetX,cockpitOffsetY;
     //Sirve para indicar los tiempos en los que la nave parpadeará a ser invulnerable
     private int timeForInvisible;
 
@@ -47,6 +48,8 @@ public class LandscapeShip extends GameObject {
         timeToUndamagable = DURATION_UNDAMAGABLE;
 
         cockpit = AssetsManager.loadTexture("cockpit");
+        cockpitOffsetX = 45;
+        cockpitOffsetY = 22;
 
         //Creamos el efecto de partículas del fuego
         fireEffect = AssetsManager.loadParticleEffect("propulsion_ship_effect");
@@ -99,12 +102,9 @@ public class LandscapeShip extends GameObject {
              * -> La nave está en modo invulnerable y timeForInvisible es positivo
              * -> Estamos en el modo campaña y el estado está en pause
              */
-            if (!this.isUndamagable() ||
-                    (this.isUndamagable() && timeForInvisible > 0) ||
-                    (ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class) &&
-                            ScreenManager.isCurrentStateEqualsTo(GameState.PAUSE))) {
+            if (!this.isUndamagable() || (timeForInvisible > 0) || (ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class) && ScreenManager.isCurrentStateEqualsTo(GameState.PAUSE))) {
                 super.render();
-                SpaceGame.batch.draw(cockpit, this.getX() + 45, this.getY() + 22);
+                SpaceGame.batch.draw(cockpit, this.getX() + cockpitOffsetX, this.getY() + cockpitOffsetY);
             }
             fireEffect.draw(SpaceGame.batch);
         }
@@ -131,13 +131,20 @@ public class LandscapeShip extends GameObject {
         return damageReceived >= VITALITY;
     }
 
+    public boolean isCompletelyDefeated(){
+        return destroyEffect.isComplete();
+    }
+
     public int getDamageReceived(){
         return damageReceived;
     }
 
     public void setDamageReceived(int damageReceived){
         this.damageReceived = damageReceived;
-        cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
+        if(damageReceived == 0)
+            cockpit = AssetsManager.loadTexture("cockpit");
+        else
+            cockpit = AssetsManager.loadTexture("cockpit_damage" + damageReceived);
     }
 
     //Inicia si la navez puede recibir daños

@@ -2,8 +2,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
-import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.partsOfEnemy.Eye;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
@@ -41,9 +40,6 @@ public class PurpleEnemy extends Enemy {
 
     public PurpleEnemy(int x, int y) {
         super("purple_eye_center", x, y, 1100, AssetsManager.loadParticleEffect("purple_destroyed"));
-
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.PURPLE;
 
         state = PurpleEnemyState.APPEAR;
 

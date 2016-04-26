@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.PartOfEnemy;
 import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
@@ -34,8 +35,6 @@ public class Enemy extends GameObject {
     //Lo usamos para activar el efecto de localización (circulo rojo alrededor del enemigo)
     //Sólo las armas que apunten a un enemigo tendrán este efecto. (Naranja)
     private boolean targettedByShip;
-
-    protected TypeEnemy type;
 
     public Enemy(String textureName, int x, int y, int vitality, ParticleEffect destroyEffect) {
         super(textureName, x, y);
@@ -170,10 +169,6 @@ public class Enemy extends GameObject {
     //Usado para activar o desactivar el efecto de localización
     public void setTargettedByShip(boolean b){
         targettedByShip = b;
-    }
-
-    public TypeEnemy getType(){
-        return type;
     }
 
     public void dispose() {

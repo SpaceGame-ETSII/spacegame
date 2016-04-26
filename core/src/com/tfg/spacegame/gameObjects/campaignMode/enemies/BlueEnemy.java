@@ -3,9 +3,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
-import com.tfg.spacegame.gameObjects.campaignMode.shoots.Basic;
-import com.tfg.spacegame.gameObjects.campaignMode.shoots.Blue;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
@@ -30,9 +28,6 @@ public class BlueEnemy extends Enemy {
 
     public BlueEnemy(int x, int y) {
         super("blue_enemy", x, y, 200, AssetsManager.loadParticleEffect("blue_destroyed"));
-
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.BLUE;
 
         //Inicialmente lo pondremos que va hacia arriba, sólo por darle un valor válido
         direction = 1;

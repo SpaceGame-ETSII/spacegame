@@ -19,7 +19,7 @@ public class AssetsManager {
     private final static String PARTICLES_FOLDER = "particleEffects/";
     private final static String ENEMIES_FOLDER = "textures/enemies/";
     private final static String OBSTACLES_FOLDER = "textures/obstacles/";
-    private final static String WEAPONS_FOLDER = "textures/weapons/";
+    private final static String WEAPONS_FOLDER = "textures/shoots/";
     private final static String LEVEL_SCRIPTS_FOLDER = "levelScripts/";
     private final static String SHIPS_FOLDER = "textures/ships/";
     private final static String BACKGROUNDS_FOLDER = "textures/backgrounds/";
@@ -100,7 +100,7 @@ public class AssetsManager {
         assetsReferences.put("cockpit_damage3", SHIPS_FOLDER +"cabina_dano3.png");
         assetsReferences.put("cockpit_damage4", SHIPS_FOLDER +"cabina_dano4.png");
         assetsReferences.put("playerShip", SHIPS_FOLDER +"nave_multi_p1.png");
-        assetsReferences.put("enemyShip", SHIPS_FOLDER +"nave_multi_p2.png");
+        assetsReferences.put("rivalShip", SHIPS_FOLDER +"nave_multi_p2.png");
 
         // Texturas referentes a powerUps
         assetsReferences.put("shieldEnemy", POWER_UPS_FOLDER +"shieldEnemy.png");

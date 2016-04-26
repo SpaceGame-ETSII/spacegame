@@ -1,8 +1,7 @@
 package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
-import com.tfg.spacegame.gameObjects.campaignMode.shoots.Fire;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.enums.TypeEnemy;
@@ -24,9 +23,6 @@ public class Type2 extends Enemy{
 
     public Type2(int x, int y) {
         super("enemy", x, y, 10, AssetsManager.loadParticleEffect("basic_destroyed"));
-
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.TYPE2;
 
         timeToGoFast = 2f;
     }

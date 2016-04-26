@@ -1,21 +1,19 @@
 package com.tfg.spacegame.gameObjects.campaignMode.shoots;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.ShapeRendererManager;
 import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class Purple extends Shoot{
 
     //Velocidad de movimiento
-    public static final float SPEED = 10;
+    public static final int SPEED = 10;
 
     //Efecto de particulas de este disparo
     private ParticleEffect shoot;
@@ -36,8 +34,6 @@ public class Purple extends Shoot{
         Vector2 aux = new Vector2((xTarget - (shooter.getX() + shooter.getWidth())),(yTarget - (shooter.getY() +
                 shooter.getHeight()/2)));
         angle = aux.angle();
-        // Establememos el tipo del arma
-        type = TypeShoot.PURPLE;
 
         //Cambiamos el ángulo
         this.getLogicShape().setRotation(angle);

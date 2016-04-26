@@ -3,7 +3,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.shoots;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.enums.TypeShoot;
@@ -11,7 +11,7 @@ import com.tfg.spacegame.utils.enums.TypeShoot;
 public class BigShoot extends Shoot {
 
     //Velocidad de movimiento
-    public static final float SPEED = 200;
+    public static final int SPEED = 200;
     // Máxima velocidad que tendrá el efecto
     private final int MAXIMUM_VELOCITY = 300;
     // Velocidad actual máxima que tiene el efecto
@@ -26,9 +26,6 @@ public class BigShoot extends Shoot {
 
     public BigShoot(GameObject shooter, int x, int y, float delay) {
         super("bigshoot_shoot", x, y, shooter, AssetsManager.loadParticleEffect("bigshoot_shoot_effect"), null);
-
-        // Establememos el tipo del arma
-        type = TypeShoot.BIGSHOOT;
 
         // Creamos el efecto de particulas
         shoot = AssetsManager.loadParticleEffect("bigshoot_shoot_effect");

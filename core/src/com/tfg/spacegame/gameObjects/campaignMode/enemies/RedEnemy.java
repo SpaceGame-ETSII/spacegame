@@ -2,9 +2,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
-import com.tfg.spacegame.gameObjects.campaignMode.shoots.Basic;
-import com.tfg.spacegame.gameObjects.campaignMode.shoots.Red;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
@@ -32,9 +30,6 @@ public class RedEnemy extends Enemy{
 
     public RedEnemy(int x, int y) {
         super("red_enemy", x, y, 40, AssetsManager.loadParticleEffect("red_destroyed"));
-
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.RED;
     }
 
     public void update(float delta){

@@ -51,4 +51,29 @@ public class DesktopGoogleServices implements IGoogleServices
     public void showAchievements() {
         System.out.println("DesktopGoogleServices: showAchievements()");
     }
+
+    @Override
+    public void startQuickGame() {
+
+    }
+
+    @Override
+    public void stopGame() {
+
+    }
+
+    @Override
+    public boolean canMultiplayerGameStart() {
+        return false;
+    }
+
+    @Override
+    public void sendGameMessage(String message) {
+
+    }
+
+    @Override
+    public String receiveGameMessage() {
+        return null;
+    }
 }

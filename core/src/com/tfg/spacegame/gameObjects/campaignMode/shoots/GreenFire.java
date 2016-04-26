@@ -9,8 +9,6 @@ public class GreenFire extends Fire {
 
     public GreenFire(GameObject shooter, float xTarget, float yTarget) {
         super(shooter,xTarget,yTarget, AssetsManager.loadParticleEffect("green_shoot_effect"));
-        // Establememos el tipo del arma
-        type = TypeShoot.GREEN;
     }
 
 }

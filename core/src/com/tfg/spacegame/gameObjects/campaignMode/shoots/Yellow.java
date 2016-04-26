@@ -9,9 +9,6 @@ public class Yellow extends Fire {
 
     public Yellow(GameObject shooter, float xTarget, float yTarget) {
         super(shooter,xTarget,yTarget,AssetsManager.loadParticleEffect("yellow_shoot_effect"));
-
-        // Establememos el tipo del arma
-        type = TypeShoot.YELLOW;
     }
 
 }

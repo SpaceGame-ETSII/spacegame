@@ -3,7 +3,7 @@ package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 import com.badlogic.gdx.math.MathUtils;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
 import com.tfg.spacegame.utils.ShootsManager;
@@ -47,9 +47,6 @@ public class Type3 extends Enemy {
     public Type3(int x, int y) {
         super("tipo3", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
 
-        // Establememos el tipo del enemigo
-        type = TypeEnemy.TYPE3;
-
         pixelsToMoveSlowly = 150;
         timeToShoot = INITIAL_TIME_TO_SHOOT;
         centerOfCircle = SpaceGame.width - (pixelsToMoveSlowly * ACCELERATION);
@@ -81,10 +78,6 @@ public class Type3 extends Enemy {
                 }
             }
         }
-    }
-
-    public void render(){
-        super.render();
     }
 
     public void shoot(){

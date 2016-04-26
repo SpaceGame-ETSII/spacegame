@@ -3,26 +3,29 @@ package com.tfg.spacegame.gameObjects.multiplayerMode;
 
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.LandscapeShip;
-import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShootsManager;
 
 public class PlayerShip extends LandscapeShip {
 
-    public final float SPEED = 50;
+    public final float SPEED = 20;
 
     public PlayerShip() {
-        super("playerShip",0,0,5);
+        super("playerShip",80,0,5);
     }
 
     public void update(float delta, float y, boolean canShipMove) {
         super.update(delta);
+
         if(!this.isDefeated()){
+
             //Movimiento de la nave
             if (canShipMove) {
-                if (y < (this.getY() + this.getHeight() / 2))
-                    this.setY(this.getY() - (Math.abs(y - (this.getY() + this.getHeight() / 2)) * SPEED * delta));
-                if (y > (this.getY() + this.getHeight() / 2))
-                    this.setY(this.getY() + (Math.abs(y - (this.getY() + this.getHeight() / 2)) * SPEED * delta));
+                float accel = SPEED *delta;
+
+                if(Math.abs(y - this.getCenter().y) > accel ){
+                    float diffY = y - this.getCenter().y;
+                    this.setY(this.getY() + diffY*accel);
+                }
             }
             //Controlamos si la nave se sale de la pantalla
             if (this.getY() < 0)
@@ -31,11 +34,9 @@ public class PlayerShip extends LandscapeShip {
                 this.setY(SpaceGame.height - getHeight());
         }
     }
+
+
     public void shoot() {
         ShootsManager.shootBurstBasicWeaponForShip(this);
-    }
-
-    public void healHalfLife(){
-
     }
 }

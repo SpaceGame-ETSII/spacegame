@@ -2,7 +2,7 @@ package com.tfg.spacegame.utils;
 
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class EnemiesManager {
 
@@ -62,5 +62,11 @@ public class EnemiesManager {
 
     public static boolean noMoreEnemiesToGenerateOrToDefeat(){
         return enemies.size == 0 && level.enemiesToGenerate.size == 0;
+    }
+
+    public static void dispose(){
+        for(Enemy enemy: EnemiesManager.enemies)
+            enemy.dispose();
+        enemies = null;
     }
 }

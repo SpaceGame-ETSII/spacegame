@@ -12,8 +12,6 @@ public class Blue extends Rocket {
                 AssetsManager.loadParticleEffect("blue_shoot_effect_shock"),
                 AssetsManager.loadParticleEffect("blue_propulsion_effect"));
 
-        // Establememos el tipo del arma
-        type = TypeShoot.BLUE;
     }
 
 }

@@ -6,7 +6,7 @@ import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.CampaignShip;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
-import com.tfg.spacegame.gameObjects.campaignMode.Shoot;
+import com.tfg.spacegame.gameObjects.Shoot;
 
 public class Rocket extends Shoot {
 
@@ -14,7 +14,7 @@ public class Rocket extends Shoot {
     protected float speed;
 
     //Constante que se multiplicará por la velocidad cuando el misil gire
-    public static final float ACCELERATION = 70;
+    public static final int ACCELERATION = 70;
 
     //Efecto de particulas del fuego de propulsión
     protected ParticleEffect propulsionEffect;
