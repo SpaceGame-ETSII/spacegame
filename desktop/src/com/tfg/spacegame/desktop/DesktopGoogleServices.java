@@ -1,6 +1,7 @@
 package com.tfg.spacegame.desktop;
 
 import com.tfg.spacegame.IGoogleServices;
+import com.tfg.spacegame.utils.MultiplayerMessage;
 
 //Será una clase cuyo único fin es permitirnos ejecutar la aplicación en escritorio sin que dé fallo
 public class DesktopGoogleServices implements IGoogleServices
@@ -58,7 +59,17 @@ public class DesktopGoogleServices implements IGoogleServices
     }
 
     @Override
-    public void stopGame() {
+    public void invitePlayer() {
+
+    }
+
+    @Override
+    public void seeMyInvitations() {
+
+    }
+
+    @Override
+    public void leaveRoom() {
 
     }
 
@@ -73,7 +84,7 @@ public class DesktopGoogleServices implements IGoogleServices
     }
 
     @Override
-    public String receiveGameMessage() {
+    public MultiplayerMessage receiveGameMessage() {
         return null;
     }
 }

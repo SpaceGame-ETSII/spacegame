@@ -47,7 +47,7 @@ public class LevelGenerator {
 
     //Convierte los enemigos del json en objetos
     public static LevelGenerator loadLevel(String jsonFile){
-        FileHandle file = AssetsManager.loadScript(jsonFile);
+        FileHandle file = AssetsManager.loadFile(jsonFile);
         Json json = new Json();
 
         return json.fromJson(LevelGenerator.class,file);

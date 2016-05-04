@@ -1,7 +1,9 @@
 package com.tfg.spacegame.gameObjects.campaignMode;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameObject;
+import com.tfg.spacegame.utils.TouchManager;
 import com.tfg.spacegame.utils.enums.ColorShip;
 import com.tfg.spacegame.utils.enums.TypeElement;
 
@@ -32,8 +34,6 @@ public class Inventary extends GameObject {
     //Indica si el inventario se está cerrando
     private boolean isClosing;
 
-    private float areSlotsChangeables;
-
     public Inventary() {
         super("inventary", 0, 0);
 
@@ -50,8 +50,6 @@ public class Inventary extends GameObject {
         relativePos = 0.0f;
 
         transitionArrow = 0;
-
-        areSlotsChangeables = 0.0f;
     }
 
     //Se ejecutará cada vez que se active el inventario
@@ -114,7 +112,7 @@ public class Inventary extends GameObject {
         }
     }
 
-    public void update(float delta, CampaignShip ship, float x, float y) {
+    public void update(float delta, CampaignShip ship) {
 
         //Primero comprobamos si el inventario no está colocado en su sitio
         if (this.getX() < 0) {
@@ -131,16 +129,17 @@ public class Inventary extends GameObject {
             //Como el inventario está colocado en su sitio, ahora comprobamos si el jugador está interactuando con algún elemento
 
             if (Gdx.input.justTouched()) {
+                Vector3 v = TouchManager.getFirstTouchPos();
 
                 //Comprobamos si se ha tocado un slot y actuamos en consecuencia
-                this.checkSlotIsTouched(slot1, x, y, ship);
-                this.checkSlotIsTouched(slot2, x, y, ship);
+                this.checkSlotIsTouched(slot1, v.x, v.y, ship);
+                this.checkSlotIsTouched(slot2, v.x, v.y, ship);
 
                 //Desactivamos los elementos antes de activar el que se haya pulsado (si se dió el caso)
                 deactivateElements();
 
                 //Si se ha pulsado un elemento, lo activamos
-                this.checkAnyElementIsTouched(x, y);
+                this.checkAnyElementIsTouched(v.x, v.y);
             }
 
             //Actualizamos cada objeto en los casos que sean necesario
@@ -152,7 +151,7 @@ public class Inventary extends GameObject {
     }
 
     //Mueve todos los elementos según la posición relativa
-    public void moveAllElements(float delta, float distance) {
+    private void moveAllElements(float delta, float distance) {
         this.setX(this.getX() + distance);
         red.setX(delta, red.getX() + distance);
         yellow.setX(delta, yellow.getX() + distance);
@@ -162,7 +161,7 @@ public class Inventary extends GameObject {
     }
 
     //Invoca los updates de todos los elementos dentro del inventario
-    public void updateAllObjects(float delta) {
+    private void updateAllObjects(float delta) {
         red.update(delta);
         blue.update(delta);
         yellow.update(delta);
@@ -172,7 +171,7 @@ public class Inventary extends GameObject {
     }
 
     //Actualiza el movimiento de las flechas que indican la posición de los slots
-    public void updateArrows(float delta) {
+    private void updateArrows(float delta) {
         if ((arrow1.getY() > 220 && transitionArrow > 0) || (arrow1.getY() < 190 && transitionArrow < 0))
             transitionArrow *= -1;
         arrow1.setY(arrow1.getY() + transitionArrow * delta);
@@ -298,17 +297,13 @@ public class Inventary extends GameObject {
         }
     }
 
-    public boolean isAnyElementActivated() {
-        return red.isActivate() || blue.isActivate() || yellow.isActivate();
-    }
-
     public void deactivateElements() {
         red.setIsActivate(false);
         blue.setIsActivate(false);
         yellow.setIsActivate(false);
     }
 
-    public void dipose() {
+    public void dispose() {
         red.dispose();
         blue.dispose();
         yellow.dispose();

@@ -30,7 +30,7 @@ public class ShapeLoader {
 
     // Método que usaremos para inicializar la carga de los shapes dado el fichero en settings
     public static ShapeLoader initialize(String jsonFile){
-        FileHandle file = AssetsManager.loadSetting(jsonFile);
+        FileHandle file = AssetsManager.loadFile(jsonFile);
         Json json = new Json();
 
         return json.fromJson(ShapeLoader.class,file);

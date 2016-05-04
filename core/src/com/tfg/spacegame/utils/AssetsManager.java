@@ -215,18 +215,14 @@ public class AssetsManager {
         return Gdx.audio.newSound(Gdx.files.internal(assetsReferences.get("sound/" + soundName)));
     }
 
-    //Se llamará a este método cada vez que se pretenda cargar script del juego
-    public static FileHandle loadScript(String scriptName){
+    //Se llamará a este método cada vez que se pretenda cargar archivo de texto plano del juego
+    public static FileHandle loadFile(String scriptName){
         return Gdx.files.internal(assetsReferences.get(scriptName));
     }
 
-    //Se llamará a este método cuando se vaya a cargar el bundle
+    //Se llamará a este método cuando se vaya a cargar el bundle que nos servirá para la localización
     public static I18NBundle loadBundle(){
         return I18NBundle.createBundle(Gdx.files.internal(assetsReferences.get("bundle")), Locale.getDefault());
-    }
-
-    public static FileHandle loadSetting(String settingsName){
-        return Gdx.files.internal(assetsReferences.get(settingsName));
     }
 
 }

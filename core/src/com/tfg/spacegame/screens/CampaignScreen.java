@@ -23,10 +23,6 @@ public class CampaignScreen extends GameScreen {
     private DialogBox menuExitDialog;
     private Button exit;
 
-    //Ayudan con la posición de la ventana cuando se abre y se cierra el inventario
-    private int scrollingPosition;
-    private static final int SCROLLING_SPEED = 100;
-
     // Vamos a controlar que touch está disparando y cual está controlando la nave
     // Seguiremos el siguiente modelo:
     // -1 para ningún touch asignado
@@ -37,7 +33,6 @@ public class CampaignScreen extends GameScreen {
 
     public CampaignScreen(SpaceGame game, String scriptLevel){
         this.game = game;
-        scrollingPosition = 0;
 
         ShootsManager.load();
         CollisionsManager.load();
@@ -116,8 +111,7 @@ public class CampaignScreen extends GameScreen {
                     state = GameState.START;
                 }
             } else {
-                Vector3 v = TouchManager.getFirstTouchPos();
-                inventary.update(delta, ship, v.x, v.y);
+                inventary.update(delta, ship);
                 exit.update();
                 if (exit.isPressed())
                     menuExitDialog.setStateToWaiting();
