@@ -19,7 +19,7 @@ public class AssetsManager {
     private final static String PARTICLES_FOLDER = "particleEffects/";
     private final static String ENEMIES_FOLDER = "textures/enemies/";
     private final static String OBSTACLES_FOLDER = "textures/obstacles/";
-    private final static String WEAPONS_FOLDER = "textures/shoots/";
+    private final static String SHOOTS_FOLDER = "textures/shoots/";
     private final static String LEVEL_SCRIPTS_FOLDER = "levelScripts/";
     private final static String SHIPS_FOLDER = "textures/ships/";
     private final static String BACKGROUNDS_FOLDER = "textures/backgrounds/";
@@ -103,6 +103,7 @@ public class AssetsManager {
         assetsReferences.put("rivalShip", SHIPS_FOLDER +"nave_multi_p2.png");
 
         // Texturas referentes a powerUps
+        assetsReferences.put("shieldProtection", POWER_UPS_FOLDER+"shieldProtection.png");
         assetsReferences.put("shieldEnemy", POWER_UPS_FOLDER +"shieldEnemy.png");
         assetsReferences.put("shieldPlayer", POWER_UPS_FOLDER +"shieldPlayer.png");
         assetsReferences.put("regLifeEnemy", POWER_UPS_FOLDER +"lifeEnemy.png");
@@ -110,15 +111,15 @@ public class AssetsManager {
         assetsReferences.put("burstEnemy", POWER_UPS_FOLDER +"burstEnemy.png");
         assetsReferences.put("burstPlayer", POWER_UPS_FOLDER +"burstPlayer.png");
 
-        //Texturas referentes a weapons
-        assetsReferences.put("basic_shoot", WEAPONS_FOLDER +"disparo.png");
-        assetsReferences.put("bigshoot_shoot", WEAPONS_FOLDER +"disparo_enemigo_basico_tipo5.png");
-        assetsReferences.put("red_shoot", WEAPONS_FOLDER +"disparo_rojo.png");
-        assetsReferences.put("blue_shoot", WEAPONS_FOLDER +"disparo_azul.png");
-        assetsReferences.put("yellow_shoot", WEAPONS_FOLDER +"disparo_amarillo.png");
-        assetsReferences.put("purple_shoot", WEAPONS_FOLDER +"disparo_morado.png");
-        assetsReferences.put("orange_shoot", WEAPONS_FOLDER +"disparo_naranja.png");
-        assetsReferences.put("green_shoot", WEAPONS_FOLDER +"disparo_verde.png");
+        // Texturas referentes a shoots
+        assetsReferences.put("basic_shoot", SHOOTS_FOLDER +"disparo.png");
+        assetsReferences.put("bigshoot_shoot", SHOOTS_FOLDER +"disparo_enemigo_basico_tipo5.png");
+        assetsReferences.put("red_shoot", SHOOTS_FOLDER +"disparo_rojo.png");
+        assetsReferences.put("blue_shoot", SHOOTS_FOLDER +"disparo_azul.png");
+        assetsReferences.put("yellow_shoot", SHOOTS_FOLDER +"disparo_amarillo.png");
+        assetsReferences.put("purple_shoot", SHOOTS_FOLDER +"disparo_morado.png");
+        assetsReferences.put("orange_shoot", SHOOTS_FOLDER +"disparo_naranja.png");
+        assetsReferences.put("green_shoot", SHOOTS_FOLDER +"disparo_verde.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", PARTICLES_FOLDER + "rojo_seleccionado");

@@ -95,7 +95,9 @@
     },
     {
       "entity":"arcadeShip", "vertices": [ 0,40, 24,15, 48,40, 24,70 ]
+    },
+    {
+      "entity":"shieldProtection", "vertices": [ 0,25, 55,0, 110,25, 55,50 ]
     }
-
   ]
 }

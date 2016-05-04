@@ -112,6 +112,9 @@ public class ShootsManager {
         if(selected.size <= 0)
             result = true;
 
+        if(MultiplayerScreen.playerBurstPowerUp.isShooting())
+            result = false;
+
         return result;
     }
 

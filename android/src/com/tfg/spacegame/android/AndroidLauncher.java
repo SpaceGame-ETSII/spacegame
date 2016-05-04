@@ -14,7 +14,6 @@ import com.google.android.gms.games.GamesActivityResultCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.Participant;
-import com.google.android.gms.games.multiplayer.realtime.RealTimeMultiplayer;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.example.games.basegameutils.GameHelper;
@@ -24,6 +23,7 @@ import com.tfg.spacegame.android.multiplayerListeners.MessageReceived;
 import com.tfg.spacegame.android.multiplayerListeners.RoomStatusUpdate;
 import com.tfg.spacegame.android.multiplayerListeners.RoomUpdate;
 import com.tfg.spacegame.utils.MultiplayerMessage;
+import com.tfg.spacegame.utils.enums.MultiplayerState;
 
 import java.util.ArrayList;
 
@@ -52,7 +52,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 	// Comprobaremos si puede iniciarse el multijugador o no
 	// Basicamente esto se hace comprobando si ambos jugadores están en la habitación creada
-	public boolean startMultiplayerGame;
+	public MultiplayerState multiplayerState;
 
 	private GameHelper _gameHelper;
 
@@ -114,19 +114,21 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 				// Obtenemos el resultado que coincide con el de la petición
 				if (resultCode == Activity.RESULT_OK) {
 					// Empezamos el juego multijugador
-					startMultiplayerGame = true;
+					multiplayerState = MultiplayerState.STARTMULTIPLAYER;
 				} else if (resultCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
 					// Un jugador se va
 					leaveRoom();
+					multiplayerState = MultiplayerState.CANCEL;
 				} else if (resultCode == Activity.RESULT_CANCELED) {
 					// El jugador cancela la partida, esto para nosotros se transforma en una
 					// solicitud de abandono de habitación
 					leaveRoom();
+					multiplayerState = MultiplayerState.CANCEL;
 				}
 				break;
 			case REQUEST_CODE_SELECT_PLAYERS:
 				if (resultCode == Activity.RESULT_OK) {
-
+					multiplayerState = MultiplayerState.WAITING;
 					// Obtenemos la lista de usuarios a los que hemos invitado
 					final ArrayList<String> invitees = data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
 
@@ -155,10 +157,13 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 					// Creamos la sala multijugador con esta configuración de la habitación
 					Games.RealTimeMultiplayer.create(_gameHelper.getApiClient(), rtmConfigBuilder.build());
+				}else{
+					multiplayerState = MultiplayerState.CANCEL;
 				}
 				break;
 			case REQUEST_CODE_INVITATION_INBOX:
 				if (resultCode == Activity.RESULT_OK) {
+					multiplayerState = MultiplayerState.WAITING;
 					// Obtenemos la invitación desde la ventana correspondiente
 					Invitation inv = data.getExtras().getParcelable(Multiplayer.EXTRA_INVITATION);
 
@@ -172,6 +177,8 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 					// Nos unimos a la habitación correspondiente con nuesta ID de invitación
 					Games.RealTimeMultiplayer.join(_gameHelper.getApiClient(), roomConfigBuilder.build());
+				}else{
+					multiplayerState = MultiplayerState.CANCEL;
 				}
 				break;
 		}
@@ -267,7 +274,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	@Override
 	public void startQuickGame() {
 		// Reseteamos la variable de control
-		startMultiplayerGame = false;
+		multiplayerState = MultiplayerState.WAITING;
 		// Creamos la configuración de nuestra habitación
 		Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(NUMBER_OF_OPPONENTS,
 				NUMBER_OF_OPPONENTS, 0);
@@ -302,8 +309,8 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 	@Override
 	// Método usado para que la Screen pregunte si se puede empezar la partida
-	public boolean canMultiplayerGameStart() {
-		return startMultiplayerGame;
+	public MultiplayerState getMultiplayerState() {
+		return multiplayerState;
 	}
 
 	@Override
@@ -355,7 +362,7 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 
 	// Método privado usado para resetear las propiedades del multijugador
 	private void resetMultiplayerProperties(){
-		startMultiplayerGame 	= false;
+		multiplayerState		= MultiplayerState.NONE;
 		gameMessage = null;
 		roomId 					= "";
 		participants 			= new ArrayList<Participant>();

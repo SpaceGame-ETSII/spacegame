@@ -2,7 +2,6 @@ package com.tfg.spacegame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.tfg.spacegame.GameScreen;
 import com.tfg.spacegame.SpaceGame;
@@ -11,8 +10,10 @@ import com.tfg.spacegame.gameObjects.multiplayerMode.RivalShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.PlayerShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.BurstPowerUp;
 import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.RegLifePowerUp;
+import com.tfg.spacegame.gameObjects.multiplayerMode.powerUps.ShieldPowerUp;
 import com.tfg.spacegame.utils.*;
 import com.tfg.spacegame.utils.enums.GameState;
+import com.tfg.spacegame.utils.enums.MultiplayerState;
 
 public class MultiplayerScreen extends GameScreen{
     final SpaceGame game;
@@ -45,12 +46,14 @@ public class MultiplayerScreen extends GameScreen{
     private float timeToLeftGame;
 
     // PowerUps del jugador
-    private BurstPowerUp playerBurstPowerUp;
-    private RegLifePowerUp playerRegLifePowerUp;
+    public static BurstPowerUp playerBurstPowerUp;
+    private static RegLifePowerUp playerRegLifePowerUp;
+    private static ShieldPowerUp playerShieldPowerUp;
 
     // PowerUps del rival
-    private BurstPowerUp rivalBurstPowerUp;
-    private RegLifePowerUp rivalRegLifePowerUp;
+    public static BurstPowerUp rivalBurstPowerUp;
+    private static RegLifePowerUp rivalRegLifePowerUp;
+    private static ShieldPowerUp rivalShieldPoweUp;
 
     // Sabremos si el jugador abandonó la partida
     private boolean abandonPlayer;
@@ -87,11 +90,13 @@ public class MultiplayerScreen extends GameScreen{
         abandonRival = false;
         abandonPlayer = false;
 
-        playerBurstPowerUp = new BurstPowerUp("burstPlayer", SpaceGame.width/3, 5);
-        playerRegLifePowerUp = new RegLifePowerUp("regLifePlayer", SpaceGame.width/2, 5);
+        playerBurstPowerUp = new BurstPowerUp("burstPlayer", SpaceGame.width/3 - 25, 5);
+        playerRegLifePowerUp = new RegLifePowerUp("regLifePlayer", SpaceGame.width/2 - 25, 5);
+        playerShieldPowerUp = new ShieldPowerUp("shieldPlayer", (SpaceGame.width*2)/3 - 25, 5);
 
-        rivalBurstPowerUp = new BurstPowerUp("burstEnemy",SpaceGame.width/3,SpaceGame.height - 55);
-        rivalRegLifePowerUp = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2,SpaceGame.height-55);
+        rivalBurstPowerUp = new BurstPowerUp("burstEnemy",SpaceGame.width/3 - 25,SpaceGame.height - 55);
+        rivalRegLifePowerUp = new RegLifePowerUp("regLifeEnemy",SpaceGame.width/2 - 25,SpaceGame.height-55);
+        rivalShieldPoweUp = new ShieldPowerUp("shieldEnemy",(SpaceGame.width*2)/3 - 25,SpaceGame.height-55);
 
         CollisionsManager.load();
         ShootsManager.load();
@@ -118,23 +123,28 @@ public class MultiplayerScreen extends GameScreen{
 
     @Override
     public void renderReady(float delta) {
-        if(SpaceGame.googleServices.canMultiplayerGameStart())
+        if(SpaceGame.googleServices.getMultiplayerState().equals(MultiplayerState.STARTMULTIPLAYER))
             FontManager.text.draw(SpaceGame.batch,infoMessage,SpaceGame.width/3,SpaceGame.height/2);
     }
 
     @Override
     public void updateReady(float delta) {
         // Lógica de espera para empezar la partida
-        if(SpaceGame.googleServices.canMultiplayerGameStart()){
-            if(timeToStartGame > 0){
-                // Informaremos al jugador cuanto tiempo queda para empezar la partida
-                infoMessage = FontManager.getFromBundle("startGame")+"  "+(int)timeToStartGame;
-                timeToStartGame-=delta;
-            }else {
-                // En el momento que se cumpla el periodo de tiempo, podremos empezar la partida
-                timeToStartGame = 0;
-                state = GameState.START;
-            }
+        switch (SpaceGame.googleServices.getMultiplayerState()){
+            case STARTMULTIPLAYER:
+                if(timeToStartGame > 0){
+                    // Informaremos al jugador cuanto tiempo queda para empezar la partida
+                    infoMessage = FontManager.getFromBundle("startGame")+"  "+(int)timeToStartGame;
+                    timeToStartGame-=delta;
+                }else {
+                    // En el momento que se cumpla el periodo de tiempo, podremos empezar la partida
+                    timeToStartGame = 0;
+                    state = GameState.START;
+                }
+                break;
+            case CANCEL:
+                ScreenManager.changeScreen(game,MultiplayerMenuScreen.class);
+                break;
         }
     }
 
@@ -147,9 +157,11 @@ public class MultiplayerScreen extends GameScreen{
 
         playerBurstPowerUp.render();
         playerRegLifePowerUp.render();
+        playerShieldPowerUp.render();
 
         rivalBurstPowerUp.render();
         rivalRegLifePowerUp.render();
+        rivalShieldPoweUp.render();
     }
 
     @Override
@@ -171,11 +183,17 @@ public class MultiplayerScreen extends GameScreen{
         if(playerRegLifePowerUp.isTouched())
             playerRegLifePowerUp.act(delta, playerShip);
 
+        if(playerShieldPowerUp.isTouched())
+            playerShieldPowerUp.act(delta, playerShip);
+
         if(rivalBurstPowerUp.isTouched())
             rivalBurstPowerUp.act(delta, rivalShip);
 
         if(rivalRegLifePowerUp.isTouched())
             rivalRegLifePowerUp.act(delta, rivalShip);
+
+        if(rivalShieldPoweUp.isTouched())
+            rivalShieldPoweUp.act(delta, rivalShip);
     }
 
     private void updateIncomeMessage(float delta){
@@ -199,6 +217,9 @@ public class MultiplayerScreen extends GameScreen{
         // Petición recibida de powerUp Regeneración de Vida usado
         if (incomeMessage.checkOperation(incomeMessage.MASK_REG_LIFE))
             rivalRegLifePowerUp.setTouched();
+        // Petición recibida de powerUp Escudo
+        if (incomeMessage.checkOperation(incomeMessage.MASK_SHIELD))
+            rivalShieldPoweUp.setTouched();
         // Petición recibida de recepción de daño
         if(incomeMessage.checkOperation(incomeMessage.MASK_HAS_RECEIVE_DAMAGE)){
             rivalShip.receiveDamage();
@@ -236,15 +257,23 @@ public class MultiplayerScreen extends GameScreen{
 
         if(!coordinates.equals(Vector3.Zero))
 
-            if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y) && !playerBurstPowerUp.isTouched()){
-                playerBurstPowerUp.setTouched();
+            if(playerBurstPowerUp.isOverlapingWith(coordinates.x,coordinates.y)){
+                if(!playerBurstPowerUp.isTouched())
+                    playerBurstPowerUp.setTouched();
                 // Ubicamos la petición de haber usado el powerUp Burst
                 outcomeMessage.setOperation(outcomeMessage.MASK_BURST);
             }
-            else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)  && !playerRegLifePowerUp.isTouched()){
-                playerRegLifePowerUp.setTouched();
+            else if(playerRegLifePowerUp.isOverlapingWith(coordinates.x,coordinates.y)){
+                if(!playerRegLifePowerUp.isTouched())
+                    playerRegLifePowerUp.setTouched();
                 // Ubicamos la petición de haber usado el powerUp Regeneración de Vida
                 outcomeMessage.setOperation(outcomeMessage.MASK_REG_LIFE);
+            }
+            else if(playerShieldPowerUp.isOverlapingWith(coordinates.x,coordinates.y)){
+                if(!playerShieldPowerUp.isTouched())
+                    playerShieldPowerUp.setTouched();
+                // Ubicamos la petición de haber usado el powerUp Regeneración de Vida
+                outcomeMessage.setOperation(outcomeMessage.MASK_SHIELD);
             }
             else{
                 playerShip.shoot();

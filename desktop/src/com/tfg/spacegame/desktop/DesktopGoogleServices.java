@@ -2,6 +2,7 @@ package com.tfg.spacegame.desktop;
 
 import com.tfg.spacegame.IGoogleServices;
 import com.tfg.spacegame.utils.MultiplayerMessage;
+import com.tfg.spacegame.utils.enums.MultiplayerState;
 
 //Será una clase cuyo único fin es permitirnos ejecutar la aplicación en escritorio sin que dé fallo
 public class DesktopGoogleServices implements IGoogleServices
@@ -74,8 +75,8 @@ public class DesktopGoogleServices implements IGoogleServices
     }
 
     @Override
-    public boolean canMultiplayerGameStart() {
-        return false;
+    public MultiplayerState getMultiplayerState() {
+        return null;
     }
 
     @Override

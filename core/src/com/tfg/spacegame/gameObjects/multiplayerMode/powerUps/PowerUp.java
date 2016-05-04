@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.LandscapeShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.MultiplayerShip;
 
 public abstract class PowerUp extends GameObject{
 
@@ -15,7 +16,7 @@ public abstract class PowerUp extends GameObject{
         touched = false;
     }
 
-    public abstract void act(float delta, LandscapeShip g);
+    public abstract void act(float delta, MultiplayerShip g);
 
     public boolean isTouched(){
         return touched;
