@@ -7,7 +7,7 @@ import com.tfg.spacegame.utils.enums.GameState;
 
 public class AchievementsManager {
 
-    //Mapa que tendrá la asociación del nombre de las texturas con la imagen concreta de dicha textura
+    //Mapa que tendrá la asociación del nombre representativo de un logro con su id
     private static ArrayMap<String, String> idsReferences;
 
     //Mapa que indicará cuál logro está desactivado
