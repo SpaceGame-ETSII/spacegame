@@ -11,7 +11,7 @@ import com.tfg.spacegame.utils.enums.TypeShoot;
 public class Burst {
 
     //Será necesario para hacer una ráfaga de disparos básicos
-    private int numberOfBasicShoots;
+    private int numberOfShoots;
 
     //Guarda el último disparo realizado en una ráfaga
     private Shoot lastShootOfBurst;
