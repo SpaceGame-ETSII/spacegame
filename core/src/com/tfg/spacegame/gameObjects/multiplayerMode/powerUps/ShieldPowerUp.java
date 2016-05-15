@@ -21,7 +21,7 @@ public class ShieldPowerUp extends PowerUp {
             g.updateShield();
             timeProtecting-=delta;
         }else{
-            g.unProtectShip();
+            g.unprotectShip();
         }
     }
 }

@@ -9,7 +9,7 @@ import com.tfg.spacegame.utils.ShootsManager;
 
 public class PlayerShip extends MultiplayerShip {
 
-    public final float SPEED = 20;
+    public final int SPEED = 20;
 
 
     public PlayerShip() {

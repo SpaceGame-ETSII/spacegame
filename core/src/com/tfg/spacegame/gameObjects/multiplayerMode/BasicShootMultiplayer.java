@@ -11,7 +11,7 @@ import com.tfg.spacegame.utils.AssetsManager;
 public class BasicShootMultiplayer extends Shoot {
 
     // Velocidad de movimiento
-    public static final float SPEED = 600;
+    public static final int SPEED = 600;
 
     // Efecto de partículas que forma el disparo en sí
     protected ParticleEffect shoot;

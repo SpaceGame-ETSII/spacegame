@@ -7,14 +7,14 @@ import com.tfg.spacegame.utils.ShootsManager;
 
 public class MultiplayerShip extends LandscapeShip {
 
-    public final float SPEED = 20;
+    public final int SPEED = 20;
 
     private GameObject shield;
     private boolean protectedShip;
 
     public MultiplayerShip(String textureName, int x, int y) {
         super(textureName,x,y,5);
-        shield = new GameObject("shieldProtection",x,y);
+        shield = new GameObject("shieldProtection",x-20,y);
         protectedShip = false;
     }
 
@@ -34,11 +34,11 @@ public class MultiplayerShip extends LandscapeShip {
     public void protectShip(){
         protectedShip = true;
     }
-    public void unProtectShip(){
+    public void unprotectShip(){
         protectedShip = false;
     }
     public void updateShield(){
-        shield.setY(this.getY());
+        shield.setY(this.getY()-(this.getHeight()/2) + 5);
     }
 
     public void shoot() {

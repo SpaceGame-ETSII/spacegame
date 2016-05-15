@@ -15,6 +15,7 @@ public class MultiplayerMenuScreen extends BasicScreen {
 	private Button invitePlayer;
 	private Button quickGame;
 	private Button seeInvitations;
+	private Button back;
 
 	private float timeUntilExit;
 
@@ -24,6 +25,7 @@ public class MultiplayerMenuScreen extends BasicScreen {
 		quickGame = new Button("button", 260, 315, "quickGame", true);
 		invitePlayer = new Button("button", 260, 255, "invitePlayer", true);
 		seeInvitations = new Button("button", 260, 195, "seeInvitations",true);
+		back = new Button("arrow_back", 750, 430, null, true);
 
 		timeUntilExit = 0.5f;
     }
@@ -33,6 +35,7 @@ public class MultiplayerMenuScreen extends BasicScreen {
 		quickGame.render();
 		invitePlayer.render();
 		seeInvitations.render();
+		back.render();
 	}
 
 	public void update(float delta) {
@@ -42,8 +45,9 @@ public class MultiplayerMenuScreen extends BasicScreen {
 			invitePlayer.update();
 			quickGame.update();
 			seeInvitations.update();
+			back.update();
 
-			if (invitePlayer.isPressed() || quickGame.isPressed() || seeInvitations.isPressed()){
+			if (invitePlayer.isPressed() || quickGame.isPressed() || seeInvitations.isPressed() || back.isPressed()){
 				timeUntilExit=0.5f;
 			}
 		}
@@ -57,6 +61,8 @@ public class MultiplayerMenuScreen extends BasicScreen {
 			}
 			else if(seeInvitations.isPressed()){
 				ScreenManager.changeScreen(game, MultiplayerScreen.class ,"SEE_INVITATIONS");
+			}else if (back.isPressed()){
+				ScreenManager.changeScreen(game, MainMenuScreen.class);
 			}
 		}else{
 			timeUntilExit-=delta;
@@ -68,5 +74,6 @@ public class MultiplayerMenuScreen extends BasicScreen {
 		invitePlayer.dispose();
 		quickGame.dispose();
 		seeInvitations.dispose();
+		back.dispose();
 	}
 }
