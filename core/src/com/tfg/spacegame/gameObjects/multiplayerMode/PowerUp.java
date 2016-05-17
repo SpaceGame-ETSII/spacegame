@@ -1,4 +1,4 @@
-package com.tfg.spacegame.gameObjects.multiplayerMode.powerUps;
+package com.tfg.spacegame.gameObjects.multiplayerMode;
 
 
 import com.badlogic.gdx.graphics.Color;

@@ -1,10 +1,10 @@
 package com.tfg.spacegame.gameObjects.multiplayerMode.powerUps;
 
 
-import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.MultiplayerShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.PowerUp;
 
-public class RegLifePowerUp extends PowerUp{
+public class RegLifePowerUp extends PowerUp {
 
     public boolean actted;
 

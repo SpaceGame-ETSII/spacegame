@@ -174,7 +174,7 @@ public class MultiplayerScreen extends GameScreen{
         // Actualizaremos la lógica por parte de la entrada del mensaje
         updateIncomeMessage(delta);
         // Actaulizaremos la lógica por parte de la salida del mensaje
-        updateOutComeMessage(delta);
+        updateOutcomeMessage(delta);
 
         // En esta sección actualizamos la lógica de los powerUps
         if(playerBurstPowerUp.isTouched())
@@ -238,7 +238,7 @@ public class MultiplayerScreen extends GameScreen{
         incomeMessage.resetOperations();
     }
 
-    private void updateOutComeMessage(float delta){
+    private void updateOutcomeMessage(float delta){
 
         // Vamos a construir el mensaje de salir
         // Como vemos es muy parecido en principio al usado en el modo campaña

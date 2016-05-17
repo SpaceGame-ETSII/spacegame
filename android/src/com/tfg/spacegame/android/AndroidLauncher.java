@@ -70,13 +70,11 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		GameHelper.GameHelperListener gameHelperListener = new GameHelper.GameHelperListener()
 		{
 			@Override
-			public void onSignInSucceeded()
-			{
+			public void onSignInSucceeded(){
 			}
 
 			@Override
-			public void onSignInFailed()
-			{
+			public void onSignInFailed(){
 			}
 		};
 
@@ -92,15 +90,13 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 	}
 
 	@Override
-	protected void onStart()
-	{
+	protected void onStart() {
 		super.onStart();
 		_gameHelper.onStart(this);
 	}
 
 	@Override
-	protected void onStop()
-	{
+	protected void onStop() {
 		super.onStop();
 		_gameHelper.onStop();
 	}
@@ -186,63 +182,16 @@ public class AndroidLauncher extends AndroidApplication implements IGoogleServic
 		_gameHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
-	@Override
-	public void signIn(){
-		try{
-			runOnUiThread(new Runnable()
-			{
-				//@Override
-				public void run()
-				{
-					_gameHelper.beginUserInitiatedSignIn();
-				}
-			});
-		}
-		catch (Exception e) {
-			Gdx.app.log("MainActivity", "Log in failed: " + e.getMessage() + ".");
-		}
-	}
 
-	@Override
-	public void signOut(){
-		try{
-			runOnUiThread(new Runnable()
-			{
-				//@Override
-				public void run()
-				{
-					_gameHelper.signOut();
-				}
-			});
-		}
-		catch (Exception e) {
-			Gdx.app.log("MainActivity", "Log out failed: " + e.getMessage() + ".");
-		}
-	}
 
-	@Override
-	public void rateGame() {
-		// Replace the end of the URL with the package of your game
-		String str ="https://play.google.com/store/apps/details?id=org.fortheloss.plunderperil";
-		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
-	}
 
 	@Override
 	public void submitScore(long score) {
 		if (isSignedIn() == true) {
-			Games.Leaderboards.submitScore(_gameHelper.getApiClient(), getString(R.string.leaderboard_id), score);
+			Games.Leaderboards.submitScore(_gameHelper.getApiClient(),  getString(R.string.leaderboard_id), score);
 			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(_gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
 		} else {
 			// Maybe sign in here then redirect to submitting score?
-		}
-	}
-
-	@Override
-	public void showScores() {
-		if (isSignedIn())
-			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(_gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
-		else {
-			// Maybe sign in here then redirect to showing scores?
 		}
 	}
 

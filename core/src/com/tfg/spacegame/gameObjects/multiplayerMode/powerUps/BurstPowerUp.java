@@ -1,12 +1,11 @@
 package com.tfg.spacegame.gameObjects.multiplayerMode.powerUps;
 
 
-import com.tfg.spacegame.GameObject;
-import com.tfg.spacegame.gameObjects.LandscapeShip;
 import com.tfg.spacegame.gameObjects.multiplayerMode.MultiplayerShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.PowerUp;
 import com.tfg.spacegame.utils.ShootsManager;
 
-public class BurstPowerUp extends PowerUp{
+public class BurstPowerUp extends PowerUp {
 
     private final float BURST_TIME = 3f;
     private final float SHOOT_TIME = 0.2f;

@@ -1,6 +1,7 @@
 package com.tfg.spacegame.gameObjects.multiplayerMode.powerUps;
 
 import com.tfg.spacegame.gameObjects.multiplayerMode.MultiplayerShip;
+import com.tfg.spacegame.gameObjects.multiplayerMode.PowerUp;
 
 
 public class ShieldPowerUp extends PowerUp {

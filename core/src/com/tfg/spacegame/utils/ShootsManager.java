@@ -43,7 +43,7 @@ public class ShootsManager {
         }else if(ScreenManager.isCurrentScreenEqualsTo(MultiplayerScreen.class)){
             if(isMultiplayerShipReadyToShoot() && shooter instanceof PlayerShip){
                 bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
-            }else if(shooter instanceof RivalShip && isMultiplayerEnemyShipReadyToShoot()){
+            }else if(shooter instanceof RivalShip && isMultiplayerRivalShipReadyToShoot()){
                 bursts.add(new Burst(shooter,3,0,TypeShoot.BASIC,null,2.0));
             }
         }
@@ -90,7 +90,7 @@ public class ShootsManager {
         return basic;
     }
 
-    private static boolean isMultiplayerEnemyShipReadyToShoot(){
+    private static boolean isMultiplayerRivalShipReadyToShoot(){
         boolean canShootAgain = true;
         for(Shoot shoot: shoots){
             if(shoot.getShooter() instanceof RivalShip && !shoot.isShocked()) {
@@ -310,11 +310,11 @@ public class ShootsManager {
         }
     }
 
-    public static Orange shootOneOrangeWeapon(GameObject shooter,int xShoot, int yShoot, float angle,  GameObject target, int numberOfBasicShoots) {
+    public static Orange shootOneOrangeWeapon(GameObject shooter,int xShoot, int yShoot, float angle,  GameObject target, int orangeShootsFired) {
         Orange result = null;
 
         if(shooter instanceof CampaignShip){
-            angle =  (shoots.size/(float)(numberOfBasicShoots + shoots.size)) * angle;
+            angle =  (shoots.size/(float)(orangeShootsFired + shoots.size)) * angle;
             angle =  MathUtils.random(-angle,angle);
         }
 
