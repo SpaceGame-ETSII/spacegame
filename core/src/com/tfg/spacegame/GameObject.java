@@ -95,6 +95,8 @@ public class GameObject {
             System.out.println("Height: "+height);
             System.out.println("Texture Width:  "+getTexture().getWidth()*scaleXFactor);
             System.out.println("Texture height: "+getTexture().getHeight()*scaleYFactor);
+            System.out.println("Desired Size: "+desiredSize[0]);
+            System.out.println("Desired Size: "+desiredSize[1]);
             System.out.println("---------------------------");
         }
     }

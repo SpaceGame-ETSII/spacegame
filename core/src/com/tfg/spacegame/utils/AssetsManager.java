@@ -59,9 +59,9 @@ public class AssetsManager {
         assetsReferences.put("purple_eye_center_closed", ENEMIES_FOLDER +"enemigo_morado_centro_cerrado.png");
 
         //Texturas referentes a obstacles
-        assetsReferences.put("big_obstacle", OBSTACLES_FOLDER +"meteorito_grande.png");
-        assetsReferences.put("medium_obstacle", OBSTACLES_FOLDER +"meteorito_mediano.png");
-        assetsReferences.put("small_obstacle", OBSTACLES_FOLDER +"meteorito_pequeno.png");
+        assetsReferences.put("big_obstacle", OBSTACLES_FOLDER +"asteroid2.png");
+        assetsReferences.put("medium_obstacle", OBSTACLES_FOLDER +"asteroid3.png");
+        assetsReferences.put("small_obstacle", OBSTACLES_FOLDER +"asteroid1.png");
 
         //Texturas referentes a backgrounds
         assetsReferences.put("background", BACKGROUNDS_FOLDER +"fondo.jpg");
@@ -88,7 +88,7 @@ public class AssetsManager {
 
         //Texturas referentes a ships
         assetsReferences.put("ship", SHIPS_FOLDER +"ship_basic.png");
-        assetsReferences.put("arcadeShip", SHIPS_FOLDER +"nave_arcade.png");
+        assetsReferences.put("arcadeShip", SHIPS_FOLDER +"arcade_ship.png");
         assetsReferences.put("ship_red", SHIPS_FOLDER +"ship_red.png");
         assetsReferences.put("ship_blue", SHIPS_FOLDER +"ship_blue.png");
         assetsReferences.put("ship_yellow", SHIPS_FOLDER +"ship_yellow.png");
