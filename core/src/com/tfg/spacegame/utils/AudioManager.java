@@ -87,6 +87,7 @@ public class AudioManager {
             AudioManager.playMusic(newMusic, true);
             currentMusic = newMusic;
         }
+        System.out.println(music.isLooping());
     }
 
     public static float getVolumeMusic() {
@@ -126,7 +127,13 @@ public class AudioManager {
 
         music.setVolume(volumeMusic);
         music.play();
-        music.setLooping(isLooping);
+
+        if (!name.equals("campaign_win")) {
+            music.setLooping(isLooping);
+        } else {
+            System.out.println(name.equals("campaign_win"));
+            music.setLooping(false);
+        }
     }
 
     // Activa una canción ya cargada si estaba parada o en pausa
