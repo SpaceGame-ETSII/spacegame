@@ -22,7 +22,7 @@ public class Type2 extends Enemy{
     private float timeToGoFast;
 
     public Type2(int x, int y) {
-        super("enemy", x, y, 10, AssetsManager.loadParticleEffect("basic_destroyed"));
+        super("type2", x, y, 10, AssetsManager.loadParticleEffect("basic_destroyed"));
 
         timeToGoFast = 2f;
     }

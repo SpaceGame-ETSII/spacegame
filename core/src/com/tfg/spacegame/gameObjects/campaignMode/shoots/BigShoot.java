@@ -38,7 +38,7 @@ public class BigShoot extends Shoot {
     }
 
     public void updateParticleEffect() {
-        shoot.getEmitters().first().setPosition(this.getX(),this.getY()+18);
+        shoot.getEmitters().first().setPosition(this.getX(),this.getY() +18 );
         shoot.getEmitters().first().getVelocity().setHighMax(actualVelocity);
     }
 

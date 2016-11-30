@@ -33,29 +33,30 @@ public class AssetsManager {
         assetsReferences = new ArrayMap<String, String>();
 
         //Texturas referentes a enemies
-        assetsReferences.put("tipo3", ENEMIES_FOLDER +"tipo3.png");
+        assetsReferences.put("type3", ENEMIES_FOLDER +"tipo3.png");
         assetsReferences.put("type4", ENEMIES_FOLDER +"tipo4.png");
         assetsReferences.put("type4_shield", ENEMIES_FOLDER +"tipo4_shield.png");
         assetsReferences.put("type4_body", ENEMIES_FOLDER +"tipo4_body.png");
-        assetsReferences.put("enemigo_basico_tipo5", ENEMIES_FOLDER +"enemigo_basico_tipo5.png");
-        assetsReferences.put("enemy", ENEMIES_FOLDER +"enemigo.png");
+        assetsReferences.put("type5", ENEMIES_FOLDER +"tipo5.png");
+        assetsReferences.put("type1", ENEMIES_FOLDER +"tipo1.png");
+        assetsReferences.put("type2", ENEMIES_FOLDER +"tipo2.png");
         assetsReferences.put("yellow_enemy", ENEMIES_FOLDER +"amarillo.png");
         assetsReferences.put("red_enemy", ENEMIES_FOLDER +"rojo.png");
         assetsReferences.put("blue_enemy", ENEMIES_FOLDER +"azul.png");
-        assetsReferences.put("orange_enemy", ENEMIES_FOLDER +"enemigo_naranja_canon_principal.png");
-        assetsReferences.put("orange_enemy_body", ENEMIES_FOLDER +"enemigo_naranja_cuerpo.png");
-        assetsReferences.put("orange_enemy_body_aux_up", ENEMIES_FOLDER +"enemigo_naranja_cuerpo_aux_superior.png");
-        assetsReferences.put("orange_enemy_body_aux_bottom", ENEMIES_FOLDER +"enemigo_naranja_cuerpo_aux_inferior.png");
-        assetsReferences.put("orange_enemy_shield", ENEMIES_FOLDER +"enemigo_naranja_escudo.png");
-        assetsReferences.put("orange_enemy_cannon", ENEMIES_FOLDER +"enemigo_naranja_canon_secundario.png");
+
+        assetsReferences.put("orange_enemy_main_cannon", ENEMIES_FOLDER +"naranja_cannon.png");
+        assetsReferences.put("orange_enemy_cannon", ENEMIES_FOLDER +"naranja_cannon.png");
+        assetsReferences.put("orange_enemy_shield", ENEMIES_FOLDER +"naranja_shield.png");
+        assetsReferences.put("orange_enemy_body", ENEMIES_FOLDER +"naranja_body.png");
+
         assetsReferences.put("green_body", ENEMIES_FOLDER +"verde_body.png");
         assetsReferences.put("green_shield", ENEMIES_FOLDER +"verde_shield.png");
+
         assetsReferences.put("purple_body", ENEMIES_FOLDER +"enemigo_morado_cuerpo.png");
-        assetsReferences.put("purple_eye_1", ENEMIES_FOLDER +"enemigo_morado_ojo1.png");
-        assetsReferences.put("purple_eye_2", ENEMIES_FOLDER +"enemigo_morado_ojo2.png");
-        assetsReferences.put("purple_eye_3", ENEMIES_FOLDER +"enemigo_morado_ojo3.png");
-        assetsReferences.put("purple_eye_4", ENEMIES_FOLDER +"enemigo_morado_ojo4.png");
-        assetsReferences.put("purple_eye_center", ENEMIES_FOLDER +"enemigo_morado_centro.png");
+        assetsReferences.put("purple_eye_opened", ENEMIES_FOLDER +"enemigo_morado_ojo_abierto.png");
+        assetsReferences.put("purple_eye_closed", ENEMIES_FOLDER +"enemigo_morado_ojo_cerrado.png");
+        assetsReferences.put("purple_eye_center_opened", ENEMIES_FOLDER +"enemigo_morado_centro_abierto.png");
+        assetsReferences.put("purple_eye_center_closed", ENEMIES_FOLDER +"enemigo_morado_centro_cerrado.png");
 
         //Texturas referentes a obstacles
         assetsReferences.put("big_obstacle", OBSTACLES_FOLDER +"meteorito_grande.png");
@@ -86,19 +87,19 @@ public class AssetsManager {
         assetsReferences.put("buttonEffectCancel", OTHERS_FOLDER +"boton_efecto_cancelado.png");
 
         //Texturas referentes a ships
-        assetsReferences.put("ship", SHIPS_FOLDER +"nave.png");
+        assetsReferences.put("ship", SHIPS_FOLDER +"ship_basic.png");
         assetsReferences.put("arcadeShip", SHIPS_FOLDER +"nave_arcade.png");
-        assetsReferences.put("ship_red", SHIPS_FOLDER +"nave_roja.png");
-        assetsReferences.put("ship_blue", SHIPS_FOLDER +"nave_azul.png");
-        assetsReferences.put("ship_yellow", SHIPS_FOLDER +"nave_amarilla.png");
-        assetsReferences.put("ship_green", SHIPS_FOLDER +"nave_verde.png");
-        assetsReferences.put("ship_orange", SHIPS_FOLDER +"nave_naranja.png");
-        assetsReferences.put("ship_purple", SHIPS_FOLDER +"nave_morada.png");
-        assetsReferences.put("cockpit", SHIPS_FOLDER +"cabina.png");
-        assetsReferences.put("cockpit_damage1", SHIPS_FOLDER +"cabina_dano1.png");
-        assetsReferences.put("cockpit_damage2", SHIPS_FOLDER +"cabina_dano2.png");
-        assetsReferences.put("cockpit_damage3", SHIPS_FOLDER +"cabina_dano3.png");
-        assetsReferences.put("cockpit_damage4", SHIPS_FOLDER +"cabina_dano4.png");
+        assetsReferences.put("ship_red", SHIPS_FOLDER +"ship_red.png");
+        assetsReferences.put("ship_blue", SHIPS_FOLDER +"ship_blue.png");
+        assetsReferences.put("ship_yellow", SHIPS_FOLDER +"ship_yellow.png");
+        assetsReferences.put("ship_green", SHIPS_FOLDER +"ship_green.png");
+        assetsReferences.put("ship_orange", SHIPS_FOLDER +"ship_orange.png");
+        assetsReferences.put("ship_purple", SHIPS_FOLDER +"ship_purple.png");
+        assetsReferences.put("cockpit", SHIPS_FOLDER +"ship_cockpit.png");
+        assetsReferences.put("cockpit_damage1", SHIPS_FOLDER +"ship_cockpit_damage1.png");
+        assetsReferences.put("cockpit_damage2", SHIPS_FOLDER +"ship_cockpit_damage2.png");
+        assetsReferences.put("cockpit_damage3", SHIPS_FOLDER +"ship_cockpit_damage3.png");
+        assetsReferences.put("cockpit_damage4", SHIPS_FOLDER +"ship_cockpit_damage4.png");
         assetsReferences.put("playerShip", SHIPS_FOLDER +"nave_multi_p1.png");
         assetsReferences.put("rivalShip", SHIPS_FOLDER +"nave_multi_p2.png");
 
@@ -115,11 +116,11 @@ public class AssetsManager {
         assetsReferences.put("basic_shoot", SHOOTS_FOLDER +"disparo.png");
         assetsReferences.put("bigshoot_shoot", SHOOTS_FOLDER +"disparo_enemigo_basico_tipo5.png");
         assetsReferences.put("red_shoot", SHOOTS_FOLDER +"disparo_rojo.png");
-        assetsReferences.put("blue_shoot", SHOOTS_FOLDER +"disparo_azul.png");
+        assetsReferences.put("blue_shoot", SHOOTS_FOLDER +"blue_missile.png");
         assetsReferences.put("yellow_shoot", SHOOTS_FOLDER +"disparo_amarillo.png");
         assetsReferences.put("purple_shoot", SHOOTS_FOLDER +"disparo_morado.png");
         assetsReferences.put("orange_shoot", SHOOTS_FOLDER +"disparo_naranja.png");
-        assetsReferences.put("green_shoot", SHOOTS_FOLDER +"disparo_verde.png");
+        assetsReferences.put("green_shoot", SHOOTS_FOLDER +"green_missile.png");
 
         //Assets referentes a los efectos de partículas
         assetsReferences.put("red_selected", PARTICLES_FOLDER + "rojo_seleccionado");

@@ -48,8 +48,8 @@ public class LandscapeShip extends GameObject {
         timeToUndamagable = DURATION_UNDAMAGABLE;
 
         cockpit = AssetsManager.loadTexture("cockpit");
-        cockpitOffsetX = 45;
-        cockpitOffsetY = 22;
+        cockpitOffsetX = 35;
+        cockpitOffsetY = 17;
 
         //Creamos el efecto de partículas del fuego
         fireEffect = AssetsManager.loadParticleEffect("propulsion_ship_effect");
@@ -64,7 +64,7 @@ public class LandscapeShip extends GameObject {
     }
 
     protected void updateParticleEffect() {
-        fireEffect.getEmitters().first().setPosition(this.getX(),this.getY() + this.getHeight()/2 + 2);
+        fireEffect.getEmitters().first().setPosition(this.getX() - 5,this.getY() + this.getHeight()/2 - 5);
         destroyEffect.getEmitters().first().setPosition(this.getCenter().x,this.getCenter().y);
     }
 
@@ -104,7 +104,7 @@ public class LandscapeShip extends GameObject {
              */
             if (!this.isUndamagable() || (timeForInvisible > 0) || (ScreenManager.isCurrentScreenEqualsTo(CampaignScreen.class) && ScreenManager.isCurrentStateEqualsTo(GameState.PAUSE))) {
                 super.render();
-                SpaceGame.batch.draw(cockpit, this.getX() + cockpitOffsetX, this.getY() + cockpitOffsetY);
+                SpaceGame.batch.draw(cockpit, this.getX() + cockpitOffsetX, this.getY() + cockpitOffsetY, 40,10);
             }
             fireEffect.draw(SpaceGame.batch);
         }

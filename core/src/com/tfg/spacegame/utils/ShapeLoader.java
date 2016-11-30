@@ -15,6 +15,7 @@ public class ShapeLoader {
     private static class ShapeWrapper implements Json.Serializable{
         String entity;
         float[] vertices;
+        float[] desiredSize;
 
         @Override
         public void write(Json json) {
@@ -25,6 +26,8 @@ public class ShapeLoader {
         public void read(Json json, JsonValue jsonData) {
             entity = jsonData.child().asString();
             vertices = jsonData.child().next().asFloatArray();
+            if(jsonData.child().next().next() != null)
+                desiredSize = jsonData.child().next().next().asFloatArray();
         }
     }
 
@@ -51,6 +54,26 @@ public class ShapeLoader {
             }
         }
         return result.vertices;
+    }
+
+    /**
+     * Obtiene el tamaño deseado dado el nombre de una entidad
+     * Este nombre de entidad coincide con el nombre del objeto expuesto en el AssetManager
+     */
+    public float[] getDesiredSize(String entity){
+        ShapeWrapper result = new ShapeWrapper();
+
+        for(ShapeWrapper wrapper: shapeEntities){
+            if(wrapper.entity.equals(entity)){
+                result = wrapper;
+                break;
+            }
+        }
+
+        if(result.desiredSize == null)
+            return null;
+
+        return result.desiredSize;
     }
 
 }

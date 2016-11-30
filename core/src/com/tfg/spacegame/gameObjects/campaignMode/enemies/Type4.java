@@ -42,7 +42,7 @@ public class Type4 extends Enemy{
     public Type4(int x, int y) {
         super("type4", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
         shield = new PartOfEnemy("type4_shield", x + 15,y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false, true);
-        body = new PartOfEnemy("type4_body", x + 35, y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false, true);
+        body = new PartOfEnemy("type4_body",  x + 35, y - 37, 7, AssetsManager.loadParticleEffect("basic_destroyed"), this, false, true);
 
         timeToShoot = FREQUENCY_OF_SHOOTING;
         timeToOpenCannon = FREQUENCY_OF_OPEN_CANNON;

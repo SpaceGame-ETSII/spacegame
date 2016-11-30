@@ -12,7 +12,6 @@ public class DamageManager {
 
     public static void load(){
         damageByTypeOfShootAndEnemy = new ArrayMap<Pair<Class, Class>, Integer>();
-        System.out.println("Cargado");
         // Arma básica con los enemigos a los que daña
         damageByTypeOfShootAndEnemy.put(new Pair<Class, Class>(Basic.class,Type1.class),1);
         damageByTypeOfShootAndEnemy.put(new Pair<Class, Class>(Basic.class,Type2.class),4);
@@ -93,11 +92,9 @@ public class DamageManager {
 
     // Calcula el daño y realiza la accion del damage en caso de que sea necesario
     public static void calculateDamage(Shoot shoot, Enemy enemy){
-        System.out.println("Shoot: "+shoot.getClass()+ "  Enemy: "+enemy.getClass());
         Integer damage = damageByTypeOfShootAndEnemy.get(new Pair<Class, Class>(shoot.getClass(),enemy.getClass()));
         // Si hemos intentado calcular el daño de un shoot-enemy que no existe, no realizamos ese daño
         if(damage != null)
             enemy.damage(damage);
-        System.out.println("Damage: "+damage);
     }
 }

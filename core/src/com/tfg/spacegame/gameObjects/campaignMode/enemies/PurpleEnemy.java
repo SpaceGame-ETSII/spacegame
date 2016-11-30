@@ -1,12 +1,14 @@
 package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.Shoot;
 import com.tfg.spacegame.gameObjects.campaignMode.enemies.partsOfEnemy.Eye;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.DamageManager;
-import com.tfg.spacegame.utils.enums.TypeEnemy;
 
 public class PurpleEnemy extends Enemy {
 
@@ -21,7 +23,7 @@ public class PurpleEnemy extends Enemy {
     // Indica el tiempo máximo en el cual el ojo principal estará abierto
     private final float FREQUENCY_MAIN_EYE_OPEN = 3f;
     // Posición que debe de alcanzar para cambiar de estado
-    public final int APPEAR_POSITION_X = 450;
+    public final int APPEAR_POSITION_X = 480;
 
     // Tiempo actual del ojo principal abierto
     private float timeMainEyeOpen;
@@ -38,8 +40,14 @@ public class PurpleEnemy extends Enemy {
     //Parte del enemigo correspondiente al cuerpo del enemigo
     private PartOfEnemy body;
 
+    private Texture eye_center_closed;
+    private Texture eye_center_opened;
+
     public PurpleEnemy(int x, int y) {
-        super("purple_eye_center", x, y, 1100, AssetsManager.loadParticleEffect("purple_destroyed"));
+        super("purple_eye_center_opened", x, y, 1100, AssetsManager.loadParticleEffect("purple_destroyed"));
+
+        eye_center_opened = getTexture();
+        eye_center_closed = AssetsManager.loadTexture("purple_eye_center_closed");
 
         state = PurpleEnemyState.APPEAR;
 
@@ -48,14 +56,15 @@ public class PurpleEnemy extends Enemy {
                 AssetsManager.loadParticleEffect("purple_destroyed"), this, false, false);
 
         eyes = new Array<Eye>();
-        eyes.add(new Eye("purple_eye_1", x + 35, y + 380, this));
-        eyes.add(new Eye("purple_eye_2", x + 10, y + 260, this));
-        eyes.add(new Eye("purple_eye_3", x + 10, y + 145, this));
-        eyes.add(new Eye("purple_eye_4", x + 36, y + 25, this));
+        eyes.add(new Eye(x + 80, y + (int)body.getHeight()/5     - 32 , this));
+        eyes.add(new Eye(x + 30 , y + ((int)body.getHeight()/5)*2 - 32 , this));
+        eyes.add(new Eye(x + 30, y + ((int)body.getHeight()/5)*3 - 32, this));
+        eyes.add(new Eye(x + 80, y + ((int)body.getHeight()/5)*4 - 32, this));
+
 
         //Actualizamos el ojo central para hacerlo conincidir con su posición dentro del cuerpo del enemigo
-        this.setX(body.getX() + 175);
-        this.setY(body.getY() + 165);
+        this.setX(body.getCenter().x - getWidth() / 2);
+        this.setY(body.getCenter().y - getHeight() /2);
 
         //Inicializamos las variables de control
         timeToEyeShoot  = 0;
@@ -132,8 +141,14 @@ public class PurpleEnemy extends Enemy {
         /*El ojo central (enemigo en sí), solo será visible y por lo tanto dañable cuando los cuatro ojos que disparan
           estén abatidos*/
         if (isAllEyesClosed() && !state.equals(PurpleEnemyState.APPEAR)) {
-            super.render();
+            if(getTexture().equals(eye_center_closed))
+                changeTexture(eye_center_opened);
+        }else{
+            if(getTexture().equals(eye_center_opened))
+                changeTexture(eye_center_closed);
         }
+
+        super.render();
     }
 
     public void changeToDeletable() {
