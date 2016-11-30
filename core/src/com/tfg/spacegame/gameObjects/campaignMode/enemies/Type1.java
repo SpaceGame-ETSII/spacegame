@@ -22,7 +22,7 @@ public class Type1 extends Enemy{
     private float delay;
 
     public Type1(int x, int y, float delay) {
-        super("enemy", x, y, 1, AssetsManager.loadParticleEffect("basic_destroyed"));
+        super("type1", x, y, 1, AssetsManager.loadParticleEffect("basic_destroyed"));
 
         this.delay = delay;
         degrees = 0;

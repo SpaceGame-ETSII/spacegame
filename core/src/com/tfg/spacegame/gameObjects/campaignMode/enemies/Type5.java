@@ -27,7 +27,7 @@ public class Type5 extends Enemy{
     private ParticleEffect shootEffectWarning;
 
     public Type5(int x, int y) {
-        super("enemigo_basico_tipo5", x, y, 350, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
+        super("type5", x, y, 350, AssetsManager.loadParticleEffect("basic_type5_destroyed"));
         timeToShoot = FREQUENCY_OF_SHOOTING;
         hasShooted = false;
 
@@ -75,8 +75,7 @@ public class Type5 extends Enemy{
         if (this.isDefeated()){
             super.updateParticleEffect();
         }else {
-            shootEffectWarning.getEmitters().first().setPosition(this.getX(), this.getY() + this.getHeight() / 2);
-        }
+            shootEffectWarning.getEmitters().first().setPosition(this.getX(), this.getY() + this.getHeight() / 2);        }
     }
 
     public void shoot(){

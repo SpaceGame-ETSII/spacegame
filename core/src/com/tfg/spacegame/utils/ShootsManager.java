@@ -201,7 +201,7 @@ public class ShootsManager {
         BigShoot bigShoot = new BigShoot(shooter,0,0,0f);
 
         int x = (int) (shooter.getX());
-        int y = (int) (shooter.getY() + shooter.getHeight()/2);
+        int y = (int) (50);
 
         bigShoot.setX(x);
         bigShoot.setY(y);

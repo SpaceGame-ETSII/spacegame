@@ -54,6 +54,7 @@ public class SpaceGame extends Game {
 
 		BasicScreen.activeInitialAttenuation();
 		ScreenManager.changeScreen(this, MainMenuScreen.class);
+		ShapeRendererManager.initialize();
 	}
 
 	public void render() {
@@ -104,6 +105,8 @@ public class SpaceGame extends Game {
 	public static float[] loadShape(String entity){
 		return shapeLoader.getVertices(entity);
 	}
+
+	public static float[] loadDesiredSize(String entity) {return shapeLoader.getDesiredSize(entity);}
 
 	public void dispose() {
 		batch.dispose();

@@ -1,6 +1,7 @@
 package com.tfg.spacegame.gameObjects;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Purple;
@@ -25,10 +26,14 @@ public class Shoot extends GameObject {
     // Efecto de partículas cuando el disparo choca
     private ParticleEffect destroyEffect;
 
+    private Vector2 originalShootPosition;
+
     public Shoot(String nameTexture, int x, int y, GameObject shooter, ParticleEffect shootEffect, ParticleEffect destroyEffect) {
         super(nameTexture,x,y);
         this.shooter = shooter;
         shocked = false;
+
+        originalShootPosition = new Vector2(x,y);
 
         //Creamos los efectos de partículas si no vienen nulos
         if (shootEffect != null) {
@@ -71,11 +76,13 @@ public class Shoot extends GameObject {
         if (!this.isShocked() && shootEffect != null) {
             //Se actuará de forma distinta si el shooter es enemigo o no
             if (this.getShooter() instanceof Enemy || this.getShooter() instanceof RivalShip) {
-                shootEffect.getEmitters().first().setPosition(this.getShooter().getX(), this.getShooter().getY() + this.getShooter().getHeight() / 2);
+                shootEffect.getEmitters().first().setPosition(originalShootPosition.x, originalShootPosition.y);
+
+                float angle = 180 + getShooter().getLogicShape().getRotation();
 
                 // Rotamos el efecto de particulas
-                shootEffect.getEmitters().first().getAngle().setHigh(135, 225);
-                shootEffect.getEmitters().first().getAngle().setLow(160, 200);
+                shootEffect.getEmitters().first().getAngle().setHigh(angle-45, angle+45);
+                shootEffect.getEmitters().first().getAngle().setLow(angle - 20, angle + 20);
             } else {
                 // Lo ubicamos en el extremo derecha y mitad de altura del shooter
                 shootEffect.getEmitters().first().setPosition(this.getShooter().getX() + this.getShooter().getWidth(), this.getShooter().getY() + this.getShooter().getHeight() / 2);
@@ -106,12 +113,11 @@ public class Shoot extends GameObject {
     public void render() {
         if (!this.isShocked()) {
             //Se comprueba que no sea una instancia del arma morada para pintar la textura del arma, ya que ésta deberá tener otro tipo de render
-            if (this instanceof Purple==false)
+            if (!(this instanceof Purple))
                 //Si el shooter es un enemigo, giramos el arma al contrario
             if (this.getShooter() instanceof Enemy || this.getShooter() instanceof RivalShip)
                 super.renderRotate(180);
             else
-
                 super.render();
 
             if (shootEffect != null)

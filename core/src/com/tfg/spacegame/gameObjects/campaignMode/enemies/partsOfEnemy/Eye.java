@@ -1,5 +1,6 @@
 package com.tfg.spacegame.gameObjects.campaignMode.enemies.partsOfEnemy;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
@@ -22,10 +23,20 @@ public class Eye extends PartOfEnemy {
     //Variable para saber si el ojo está esperando a disparar o no
     private boolean waitToShoot;
 
-    public Eye(String texture, int x, int y, Enemy father) {
-        super(texture, x, y, 100, AssetsManager.loadParticleEffect("purple_destroyed"), father, true, true);
+    private Texture eye_closed;
+    private Texture eye_opened;
+
+    private Enemy father;
+
+    public Eye( int x, int y, Enemy father) {
+        super("purple_eye_opened", x, y, 100, AssetsManager.loadParticleEffect("purple_destroyed"), father, true, true);
         this.waitToShoot = false;
         closed=true;
+
+        this.father = father;
+
+        eye_opened = this.getTexture();
+        eye_closed = AssetsManager.loadTexture("purple_eye_closed");
 
         //Creamos el efecto de particulas
         shootEffectWarning = AssetsManager.loadParticleEffect("purple_eye_warning");
@@ -77,7 +88,7 @@ public class Eye extends PartOfEnemy {
         }else
             //Si el ojo no está cerrado y está esperando, actualizamos el efecto de partículas
             if (!isClosed() && isWaitToShoot()){
-                shootEffectWarning.getEmitters().first().setPosition(this.getCenter().x+15, this.getCenter().y+15);
+                shootEffectWarning.getEmitters().first().setPosition(this.getCenter().x, this.getCenter().y);
             }
     }
 
@@ -90,12 +101,20 @@ public class Eye extends PartOfEnemy {
     public void render() {
         //Si el ojo está abierto, se pintará la textura
         if (!closed) {
-            super.render();
+
+            if(getTexture().equals(eye_closed))
+                this.changeTexture(eye_opened);
+
             //Si está esperando, pintamos el efecto de partículas
             if (isWaitToShoot())
                 shootEffectWarning.draw(SpaceGame.batch);
+        }else{
+            if(getTexture().equals(eye_opened))
+                this.changeTexture(eye_closed);
         }
 
+        if(!father.isDefeated())
+            super.render();
     }
 
     public boolean canCollide(){

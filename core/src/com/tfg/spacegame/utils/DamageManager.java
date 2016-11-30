@@ -12,7 +12,6 @@ public class DamageManager {
 
     public static void load(){
         damageByTypeOfShootAndEnemy = new ArrayMap<Pair<Class, Class>, Integer>();
-
         // Arma básica con los enemigos a los que daña
         damageByTypeOfShootAndEnemy.put(new Pair<Class, Class>(Basic.class,Type1.class),1);
         damageByTypeOfShootAndEnemy.put(new Pair<Class, Class>(Basic.class,Type2.class),4);

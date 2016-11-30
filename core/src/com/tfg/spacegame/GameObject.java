@@ -1,11 +1,16 @@
 package com.tfg.spacegame;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.utils.BaseAnimationController;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.utils.AssetsManager;
+import com.tfg.spacegame.utils.ShapeRendererManager;
+
+import java.awt.*;
 
 public class GameObject {
 
@@ -24,15 +29,19 @@ public class GameObject {
     private float width;
     private float height;
 
+    private float scaleXFactor;
+    private float scaleYFactor;
+
     public GameObject(String textureName, int x, int y) {
         texture = AssetsManager.loadTexture(textureName);
         center = new Vector2();
 
+        scaleXFactor=1f;
+        scaleYFactor=1f;
+
         float[] vertices = SpaceGame.loadShape(textureName);
 
-
         if(vertices == null){
-
             vertices = new float[8];
 
             vertices[0] = 0;
@@ -47,50 +56,80 @@ public class GameObject {
             vertices[6] = texture.getWidth();
             vertices[7] = 0;
         }
-        logicShape = new Polygon(vertices);
 
+        this.loadWidthAndHeight(vertices);
+        this.loadScaleFactors(textureName);
+        this.applyScaleToVertices(vertices);
+
+        logicShape = new Polygon(vertices);
         logicShape.setPosition(x,y);
 
-        this.loadWidthAndHeight();
         this.relocateCenter();
         this.calculateRadio();
 
         //Recolocamos el origen del logic shape para cuando se realice un giro con setRotation
-        this.getLogicShape().setOrigin(this.getWidth() / 2, this.getHeight() / 2);
+        this.getLogicShape().setOrigin(getWidth()/2, getHeight()/2);
     }
 
-    private void loadWidthAndHeight(){
+    private void applyScaleToVertices(float[] vertices) {
+        for(int i=0; i < vertices.length; i+=2){
+            vertices[i]     *= scaleXFactor;
+            vertices[i+1]   *= scaleYFactor;
+        }
+    }
 
-        float widthLowestPoint = logicShape.getVertices()[0];
-        float widthGreaterPoint = logicShape.getVertices()[0];
+    private void loadScaleFactors(String textureName){
+        float[] desiredSize = SpaceGame.loadDesiredSize(textureName);
 
-        float heightLowestPoint = logicShape.getVertices()[1];
-        float heightGreaterPoint = logicShape.getVertices()[1];
+        if(desiredSize != null){
 
-        for(int i = 2; i < logicShape.getVertices().length; i++){
+            if(scaleXFactor == 1f)
+                scaleXFactor = desiredSize[0] / width;
+            if(scaleYFactor == 1f)
+                scaleYFactor = desiredSize[1] / height;
+
+            width*=scaleXFactor;
+            height*=scaleYFactor;
+
+            System.out.println("Width: "+width);
+            System.out.println("Height: "+height);
+            System.out.println("Texture Width:  "+getTexture().getWidth()*scaleXFactor);
+            System.out.println("Texture height: "+getTexture().getHeight()*scaleYFactor);
+            System.out.println("---------------------------");
+        }
+    }
+
+    private void loadWidthAndHeight(float[] vertices){
+
+        float widthLowestPoint = vertices[0];
+        float widthGreaterPoint = vertices[0];
+
+        float heightLowestPoint = vertices[1];
+        float heightGreaterPoint = vertices[1];
+
+        for(int i = 2; i < vertices.length; i++){
 
             if(i%2 == 0){
-                if(logicShape.getVertices()[i] < widthLowestPoint)
-                    widthLowestPoint = logicShape.getVertices()[i];
+                if(vertices[i] < widthLowestPoint)
+                    widthLowestPoint = vertices[i];
 
-                if(logicShape.getVertices()[i] > widthGreaterPoint)
-                    widthGreaterPoint = logicShape.getVertices()[i];
+                if(vertices[i] > widthGreaterPoint)
+                    widthGreaterPoint = vertices[i];
             }else{
-                if(logicShape.getVertices()[i] < heightLowestPoint)
-                    heightLowestPoint = logicShape.getVertices()[i];
+                if(vertices[i] < heightLowestPoint)
+                    heightLowestPoint = vertices[i];
 
-                if(logicShape.getVertices()[i] > heightGreaterPoint)
-                    heightGreaterPoint = logicShape.getVertices()[i];
+                if(vertices[i] > heightGreaterPoint)
+                    heightGreaterPoint = vertices[i];
             }
         }
 
         width = widthGreaterPoint - widthLowestPoint;
         height = heightGreaterPoint - heightLowestPoint;
+
     }
 
-
     public void relocateCenter() {
-
         center.set(this.getX() + (this.getWidth() / 2),
                    this.getY() + (this.getHeight() / 2));
     }
@@ -145,12 +184,16 @@ public class GameObject {
 
     public void setTexture(String textureName) { texture = AssetsManager.loadTexture(textureName); }
 
+    public void changeTexture(Texture newTexture){
+        texture = newTexture;
+    }
+
     public Polygon getLogicShape() {
         return logicShape;
     }
 
     public void setScale(float x, float y){
-        logicShape.setScale(x,y);
+       // scaleXFactor = x; scaleYFactor = y;
     }
     public void setRotation(float angle){
         logicShape.setRotation(angle);
@@ -160,22 +203,16 @@ public class GameObject {
     }
 
     public void render(){
-        if (this.getLogicShape().getScaleX() != 1 || this.getLogicShape().getScaleY() != 1)
-            this.renderScale(this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY(), 0);
-        else
-            SpaceGame.batch.draw(texture, getX(), getY());
+        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getLogicShape().getOriginX(), getLogicShape().getOriginY(), getWidth(), getHeight(), 1, 1, getLogicShape().getRotation());
+        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 
     //Método para pintar un objeto rotando N grados su textura
     public void renderRotate(float n){
         SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2,
-                                texture.getWidth(), texture.getHeight(),
+                                this.getWidth(), this.getHeight(),
                                 this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY(), n);
-    }
-
-    //Método para pintar un objeto a razón de su escalado, lo llama el render normal si se tiene escalado
-    private void renderScale(float scaleX, float scaleY, float n){
-        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2, texture.getWidth(), texture.getHeight(), scaleX, scaleY, n);
+        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 
     public void dispose() {

@@ -1,55 +1,88 @@
 {
   "shapeEntities":[
     {
-      "entity":"landscapeShip", "vertices":   [ 0,13 , 0,25 , 61,33 , 99,22 , 99,13, 42,0 ]
+      "entity":"ship",
+      "vertices":   [ 323,60 ,  250,16 , 87,0 , 0,22 , 5,96 , 140,112 , 280,81 ],
+      "desiredSize":   [ 100,33 ]
     },
     {
-      "entity":"enemy", "vertices":   [ 0,0,  0,40,  40,40,   40,0 ]
+      "entity":"type1",
+      "vertices":   [ 0,50 ,  86,101 , 110,88 , 110,12 , 86,0 ],
+      "desiredSize":   [ 40,40 ]
     },
     {
-      "entity":"tipo3", "vertices":   [ 45,0,  14,14,  0,45,  14,76,  45,90,  76,76,  90,45,  76,14 ]
+      "entity":"type2",
+      "vertices":   [  0,131 ,  104,207 , 250,131 , 250,81 , 104,2, 0,81],
+      "desiredSize":   [ 40,40 ]
     },
     {
-      "entity":"type4_body", "vertices":   [ 45,0,  14,14,  0,45,  14,76,  45,90,  76,76,  90,45,  76,14 ]
+      "entity":"type3",
+      "vertices":   [ 1,252 ,  98,484 , 255,521 , 414,484 , 506,280, 450,110, 255,5, 80,88],
+      "desiredSize":   [ 90,90 ]
     },
     {
-      "entity":"type4_shield", "vertices": [ 10,0,  0,35,  0,65,  10,90,  20,45 ]
+      "entity":"type4_body",
+      "vertices":   [ 0,106 ,  40,130 , 94,130 , 134,117, 134,15, 94,2, 40,2, 0,26 ],
+      "desiredSize":   [ 90,90 ]
     },
     {
-      "entity":"type4", "vertices": [ 0,0,  0,15,  35,15,  35,0]
+      "entity":"type4_shield",
+      "vertices": [  0,84 ,  19,169 , 21,124 , 21,45, 19,1 ],
+      "desiredSize":   [ 20,90 ]
     },
     {
-      "entity":"enemigo_basico_tipo5", "vertices": [ 0,57,  0,144,  56,200,  223,200,  275,148,  319,148,  319,53,  275,53,  223,0,  56,0 ]
+      "entity":"type4",
+      "vertices": [ 3,25 ,  29,25 , 29,2 , 3,2 ],
+      "desiredSize":   [ 35,17 ]
     },
     {
-      "entity":"yellow_enemy", "vertices": [ 0,20 , 31,40 , 39,26 , 39,15 , 31,0]
+      "entity":"type5",
+      "vertices": [ 1,116 ,  49,139 , 80,130 , 120,130, 154,139 , 218,158 , 300,155, 300,5, 218,2, 154,21, 120,31, 80,31, 49,21, 1,45 ],
+      "desiredSize":   [ 319,200 ]
     },
     {
-      "entity":"red_enemy", "vertices": [  0,45 , 45,90 , 90,45 , 45,0 ]
+      "entity":"yellow_enemy",
+      "vertices": [ 78,430 ,  550,834 , 843,430 , 550,29],
+      "desiredSize":   [ 40,40 ]
     },
     {
-      "entity":"blue_enemy", "vertices": [0,49 , 0,92 , 16,140 , 38,140 , 59,94 , 59,47 , 38,0 , 16,0 ]
+      "entity":"red_enemy", "vertices": [ 2,121 ,  98,175 , 166,160 , 166,17, 98,1, 2,57, 29,78, 29,100],
+      "desiredSize":   [ 90,90 ]
     },
     {
-      "entity":"green_body", "vertices": [0,66 , 19,110 , 71,132 , 123,110 , 143,66 , 123,22 , 71,0 , 19,22]
+      "entity":"blue_enemy",
+      "vertices": [7,213 ,  36,280 , 0,296 , 45,425, 118,213, 45,0, 0,130, 36,147 ],
+      "desiredSize":   [ 60,140 ]
     },
     {
-      "entity":"orange_enemy_body", "vertices": [0,10 , 50,0 , 113,20 , 155,67 , 170,125 , 155,183 , 113,230 , 50,250 , 0,240]
+      "entity":"green_body",
+      "vertices": [ 0,127 ,  66,239 , 184,239 , 250,127 , 184,14 , 66,14],
+      "desiredSize":   [ 143,132 ]
     },
     {
-      "entity":"orange_enemy_body_aux_up", "vertices": [6,67 , 64,39 , 64,115]
+      "entity":"green_shield",
+      "vertices": [ 0,169 ,  149,312 , 175,288 , 94,158, 175,28, 149,0, 0,147],
+      "desiredSize":   [ 67,199 ]
     },
     {
-      "entity":"orange_enemy_body_aux_bottom", "vertices": [6,56 , 64,91 , 64,10]
+      "entity":"orange_enemy_body",
+      "vertices": [ 0,195 ,  184,330 , 184,530 , 1,660, 192,820, 355,850, 537,808, 677,700, 775,475, 716,205, 517,39, 300,7],
+      "desiredSize":   [ 256, 256 ]
     },
     {
-      "entity":"orange_enemy_shield", "vertices": [0,47 , 12,10, 24,0 , 24,121 , 12,110 , 0,74]
+      "entity":"orange_enemy_shield",
+      "vertices": [4,231 ,  27,350 , 70,463 , 253,333, 253,127, 70,0, 27,93],
+      "desiredSize":   [ 81, 140 ]
     },
     {
-      "entity":"orange_enemy_cannon", "vertices": [20,0 , 0,20 , 20,40 , 40,20]
+      "entity":"orange_enemy_cannon",
+      "vertices": [0,40 ,  65,68 , 65,1 , 0,28],
+      "desiredSize":   [ 40, 40 ]
     },
     {
-      "entity":"green_shield", "vertices": [0,100 , 24,173, 49,200 , 67,200 , 67,0 , 49,0 , 24,27]
+      "entity":"orange_enemy_main_cannon",
+      "vertices": [0,40 ,  65,68 , 65,1 , 0,28],
+      "desiredSize":   [ 50, 50 ]
     },
     {
       "entity":"basic_shoot", "vertices": [ 0,0 , 0,20 , 40,20 , 40,0]
@@ -58,7 +91,14 @@
       "entity":"bigshoot_shoot", "vertices": [ 0,0 , 0,40 , 155,40 , 155,0]
     },
     {
-      "entity":"blue_shoot", "vertices": [ 10,0 , 0,10 , 10,20 , 27,20 , 40,10 , 27,0 ]
+      "entity":"blue_shoot",
+      "vertices": [   8,136 ,  8,54 , 78,42 , 180,95, 78,147 ],
+       "desiredSize":   [ 30, 25 ]
+    },
+      {
+      "entity":"green_shoot",
+      "vertices": [ 0,56 ,  0,138 , 78,150 , 180,97, 78,45 ],
+       "desiredSize":   [ 30, 25 ]
     },
     {
       "entity":"yellow_shoot", "vertices": [ 0,0 , 0,13 , 100,13 , 100,0 ]
@@ -67,25 +107,37 @@
       "entity":"orange_shoot", "vertices": [ 0,0 , 0,15 , 15,15 , 15,0 ]
     },
     {
-      "entity":"purple_body", "vertices": [ 180,325 , 334,325 , 334,160 , 180,160 ]
+      "entity":"purple_body",
+      "vertices": [  0,430 ,  128,728 , 425,854 , 723,728, 846,430, 723,130, 425,3, 128,130 ],
+      "desiredSize":   [ 512,512 ]
     },
     {
-      "entity":"purple_shoot", "vertices": [ 0,0 , 0,20 , 160,20 , 160,0 ]
+      "entity":"purple_shoot",
+      "vertices": [ 0,0 , 0,20 , 160,20 , 160,0 ]
     },
     {
-      "entity":"purple_eye_1", "vertices": [ 13,20 , 47,20 , 47,54 , 13,54 ]
+      "entity":"purple_eye_opened",
+      "vertices": [ 3,465 ,  66,695 , 465,925 , 866,695, 930,465, 866,235, 465,3, 66,235 ],
+      "desiredSize":   [ 64,64 ]
     },
     {
-      "entity":"purple_eye_2", "vertices": [ 13,20 , 47,20 , 47,54 , 13,54 ]
+      "entity":"purple_eye_closed",
+      "vertices": [ 3,465 ,  66,695 , 465,925 , 866,695, 930,465, 866,235, 465,3, 66,235 ],
+      "desiredSize":   [ 64,64 ]
     },
     {
-      "entity":"purple_eye_3", "vertices": [ 13,20 , 47,20 , 47,54 , 13,54 ]
+      "entity":"purple_eye_center_opened",
+      "vertices": [ 3,465 ,  66,695 , 465,925 , 866,695, 930,465, 866,235, 465,3, 66,235 ],
+      "desiredSize":   [ 128,128 ]
     },
     {
-      "entity":"purple_eye_4", "vertices": [ 13,20 , 47,20 , 47,54 , 13,54 ]
+      "entity":"purple_eye_center_closed",
+      "vertices": [ 3,465 ,  66,695 , 465,925 , 866,695, 930,465, 866,235, 465,3, 66,235 ],
+      "desiredSize":   [ 128,128 ]
     },
     {
-      "entity":"small_obstacle", "vertices": [ 0,25 , 20,2 , 45,13 , 41,42 , 21,49 ]
+      "entity":"small_obstacle",
+      "vertices": [ 0,25 , 20,2 , 45,13 , 41,42 , 21,49 ]
     },
     {
       "entity":"medium_obstacle", "vertices": [ 3,26 , 37,4 , 80,33 , 72,80 , 32,85 , 6,55 ]

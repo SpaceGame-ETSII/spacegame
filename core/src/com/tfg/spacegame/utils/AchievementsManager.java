@@ -30,11 +30,11 @@ public class AchievementsManager {
         achievementsUnlocked = new ArrayMap<String, Boolean>();
 
         //Ids de los achievements
-        idsReferences.put("achievement_finalized_campaign_id", "CgkItcy9y-kSEAIQAQ");
-        idsReferences.put("achievement_denizen_deep_id", "CgkItcy9y-kSEAIQAg");
-        idsReferences.put("achievement_denizen_heights_id", "CgkItcy9y-kSEAIQAw");
-        idsReferences.put("achievement_reflexes_id", "CgkItcy9y-kSEAIQBA");
-        idsReferences.put("achievement_master_id", "CgkItcy9y-kSEAIQBQ");
+        idsReferences.put("achievement_finalized_campaign_id", "CgkIm5z9sJkQEAIQAg");
+        idsReferences.put("achievement_denizen_deep_id", "CgkIm5z9sJkQEAIQAw");
+        idsReferences.put("achievement_denizen_heights_id", "CgkIm5z9sJkQEAIQBA");
+        idsReferences.put("achievement_reflexes_id", "CgkIm5z9sJkQEAIQBQ");
+        idsReferences.put("achievement_master_id", "CgkIm5z9sJkQEAIQBg");
 
         //Inicialmente todos estarán bloqueados
         achievementsUnlocked.put("achievement_finalized_campaign_id", false);

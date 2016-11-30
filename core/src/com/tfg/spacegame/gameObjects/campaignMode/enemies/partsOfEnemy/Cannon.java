@@ -30,20 +30,23 @@ public class Cannon extends PartOfEnemy {
     // Inhabilitado o no
     private boolean disable;
 
-    public Cannon(float x, float y, Enemy father, float xShoot, float yShoot, float angle) {
+    public Cannon(float x, float y, Enemy father, float xShoot, float yShoot, float angle , float shootAngle) {
         super("orange_enemy_cannon", 0, 0, 20, AssetsManager.loadParticleEffect("basic_destroyed"), father, true, true);
 
         this.setX(x);
         this.setY(y);
 
         shootingPosition = new Vector2(xShoot,yShoot);
-        shootAngle = angle;
+        this.shootAngle = shootAngle;
+
+        this.getLogicShape().rotate(angle);
 
         timeDisableEffect = 0;
 
         disabledEffect = AssetsManager.loadParticleEffect("orange_secondary_cannon_disabled");
         disabledEffect.getEmitters().first().setPosition(shootingPosition.x,shootingPosition.y);
         disabledEffect.getEmitters().first().getAngle().setLow(shootAngle-30,shootAngle+30);
+
     }
 
     public void shoot(){

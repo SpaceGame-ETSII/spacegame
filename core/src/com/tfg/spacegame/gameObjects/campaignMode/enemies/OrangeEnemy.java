@@ -41,7 +41,7 @@ public class OrangeEnemy extends Enemy {
     // Velocidad de aparición
     private static final int    APPEAR_SPEED = 30;
     // Posición limite de aparición relativa a la posición del cañon principal
-    private static final int    APPEAR_POSITION = 580;
+    private static final int    APPEAR_POSITION = 530;
     private Array<Integer> aviableSecondaryCannons;
 
     // Tiempo de carga del cañon principal
@@ -67,10 +67,6 @@ public class OrangeEnemy extends Enemy {
     private PartOfEnemy shield;
     // Su cuerpo (parte derecha y centro)
     private PartOfEnemy body;
-    // Su cuerpo (parte arriba izquierda)
-    private PartOfEnemy body_aux_up;
-    // Su cuerpo (parte abajo izquierda)
-    private PartOfEnemy body_aux_bottom;
 
     // Cañon superior izquierda
     private Cannon cannonUpperLeft;
@@ -86,7 +82,7 @@ public class OrangeEnemy extends Enemy {
     private ParticleEffect chargeMainCannonEffect;
 
     public OrangeEnemy(int x, int y) {
-        super("orange_enemy", x, y, 600, AssetsManager.loadParticleEffect("orange_enemy_defeated"));
+        super("orange_enemy_main_cannon", x, y, 600, AssetsManager.loadParticleEffect("orange_enemy_defeated"));
 
         aviableSecondaryCannons = new Array<Integer>();
 
@@ -94,43 +90,36 @@ public class OrangeEnemy extends Enemy {
 
         // Creación y posicionamiento del cuerpo
         body = new PartOfEnemy("orange_enemy_body",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false, true);
-        body.setX(x + getWidth()/2);
-        body.setY((y+getHeight()/2)-body.getHeight()/2);
-
-        // Creación y posicionamiento del cuerpo (arriba izquierda)
-        body_aux_up = new PartOfEnemy("orange_enemy_body_aux_up",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false, true);
-        body_aux_up.setX(body.getX()-65);
-        body_aux_up.setY(body.getY()+getHeight() + body_aux_up.getHeight() + 10);
-
-        // Creación y posicionamiento del cuerpo (abajo izquierda)
-        body_aux_bottom = new PartOfEnemy("orange_enemy_body_aux_bottom",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false,true);
-        body_aux_bottom.setX(body_aux_up.getX());
-        body_aux_bottom.setY(body.getY() - body_aux_up.getHeight()/2 + 40);
+        body.setX(x - 10);
+        body.setY( (y + getHeight()/2) - body.getHeight()/2 ) ;
 
         // Creación y posicionamiento del escudo
         shield = new PartOfEnemy("orange_enemy_shield",x,y,7,AssetsManager.loadParticleEffect("basic_destroyed"),this, false, true);
-        shield.setX(body.getX() - 79);
-        SHIELD_OFFSET_X = 79;
-        shield.setY(body.getY()+body.getHeight()/2 - shield.getHeight()/2 + 1);
+        SHIELD_OFFSET_X = 22;
+        shield.setX(body.getX() - SHIELD_OFFSET_X);
+
+        shield.setY((y + getHeight()/2) - shield.getHeight()/2);
 
         // Creación y posicionamiento de los cañones
-        float xPosition = body.getX() - 30;
-        float yPosition = body.getY() + body.getHeight()/2 + 90;
+        float xPosition = x;
+        float yPosition = (y + getHeight()/2) + body.getHeight()/3 + 10;
 
-        cannonUpperLeft = new Cannon(xPosition, yPosition , this, xPosition-10, yPosition+30, 150);
+        cannonUpperLeft = new Cannon(xPosition, yPosition , this, xPosition, yPosition+30, -50, 150);
 
-        xPosition = cannonUpperLeft.getX() + body.getWidth()/2 + 40;
+        xPosition = body.getCenter().x - cannonUpperLeft.getWidth()/2 - 12;
+        yPosition = body.getCenter().y + body.getHeight()/2 - 5;
 
-        cannonUpperRight = new Cannon(xPosition, yPosition, this, xPosition+10, yPosition+30, 90);
+        cannonUpperRight = new Cannon(xPosition, yPosition, this, xPosition+15, yPosition+30, -90 , 90);
 
-        xPosition = cannonUpperLeft.getX();
-        yPosition = body.getY();
+        xPosition = x;
+        yPosition = (y + getHeight()/2) - body.getHeight()/2 - 7 ;
 
-        cannonLowerLeft = new Cannon(xPosition, yPosition, this, xPosition-10, yPosition+10, 230);
+        cannonLowerLeft = new Cannon(xPosition, yPosition, this, xPosition, yPosition+10, 50, 230);
 
-        xPosition = cannonUpperRight.getX();
+        xPosition = body.getCenter().x - cannonUpperLeft.getWidth()/2 - 12;
+        yPosition = body.getCenter().y - body.getHeight()/2 - cannonUpperRight.getHeight() + 5;
 
-        cannonLowerRight = new Cannon(xPosition, yPosition, this, xPosition+10, yPosition+10, 270);
+        cannonLowerRight = new Cannon(xPosition, yPosition, this, xPosition, yPosition, 90 , 270);
 
         resetStates();
         orangeEnemyState = OrangeEnemyState.APPEAR;
@@ -163,7 +152,7 @@ public class OrangeEnemy extends Enemy {
             case OPENING_SHIELD:
                 // Abrimos el escudo
                 shield.setX(shield.getX() + 10*delta);
-                if(shield.getX() >= body.getX()){
+                if(shield.getX() >= body.getX()+50){
                     orangeEnemyState = OrangeEnemyState.SHIELD_OPENED;
                 }
                 // Seguimos disparando los cañones secundarios
@@ -236,7 +225,7 @@ public class OrangeEnemy extends Enemy {
         // es la quinta parte que la del cañon secundario)
         if(timeToShoot >= FREQUENCY_OF_SHOOTING/5){
             float angle = MathUtils.random(110,250);
-            ShootsManager.shootOneOrangeWeapon(this,(int)(getX() - this.getWidth()/2 +5),(int)(this.getY()+this.getHeight()/2),angle, CampaignScreen.ship,0);
+            ShootsManager.shootOneOrangeWeapon(this,(int)(getX() - getWidth() + 20),(int)(this.getY()+this.getHeight()/2),angle, CampaignScreen.ship,0);
             timeToShoot=0;
             shootsFired++;
             // Si hemos disparado ya todas las bolas de fuego
@@ -317,8 +306,6 @@ public class OrangeEnemy extends Enemy {
         shield.setX(shield.getX() - APPEAR_SPEED*delta);
 
         body.setX(body.getX() - APPEAR_SPEED*delta);
-        body_aux_up.setX(body_aux_up.getX() - APPEAR_SPEED*delta);
-        body_aux_bottom.setX(body_aux_bottom.getX() - APPEAR_SPEED*delta);
 
         cannonLowerLeft.move(-APPEAR_SPEED*delta);
         cannonUpperLeft.move(-APPEAR_SPEED*delta);
@@ -349,8 +336,6 @@ public class OrangeEnemy extends Enemy {
         shield.changeToDeletable();
 
         body.changeToDeletable();
-        body_aux_bottom.changeToDeletable();
-        body_aux_up.changeToDeletable();
 
         cannonLowerLeft.changeToDeletable();
         cannonLowerRight.changeToDeletable();
@@ -365,12 +350,6 @@ public class OrangeEnemy extends Enemy {
 
     public PartOfEnemy getBody(){
         return body;
-    }
-    public PartOfEnemy getBodyAuxUp() {
-        return body_aux_up;
-    }
-    public PartOfEnemy getBodyAuxBottom(){
-        return body_aux_bottom;
     }
 
     public PartOfEnemy getCannonUpperLeft(){
@@ -390,10 +369,10 @@ public class OrangeEnemy extends Enemy {
 
     public Array<PartOfEnemy> getPartsOfEnemy() {
         Array<PartOfEnemy> result = new Array<PartOfEnemy>();
-        result.add(getBody());
-        result.add(getBodyAuxUp());
-        result.add(getBodyAuxBottom());
+
         result.add(getShield());
+        result.add(getBody());
+
         result.add(getCannonUpperLeft());
         result.add(getCannonUpperRight());
         result.add(getCannonLowerLeft());

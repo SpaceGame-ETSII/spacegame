@@ -45,7 +45,7 @@ public class Type3 extends Enemy {
     private float aux;
 
     public Type3(int x, int y) {
-        super("tipo3", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
+        super("type3", x, y, 60, AssetsManager.loadParticleEffect("basic_destroyed"));
 
         pixelsToMoveSlowly = 150;
         timeToShoot = INITIAL_TIME_TO_SHOOT;
