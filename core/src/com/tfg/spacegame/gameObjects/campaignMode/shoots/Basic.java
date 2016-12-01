@@ -16,13 +16,14 @@ public class Basic extends Shoot {
     // Efecto de partículas que forma el disparo en sí
     private ParticleEffect shoot;
 
+
     public Basic(GameObject shooter, int x, int y) {
         // Situamos el disparo en el sitio correcto
         // X - Extremo derecha del shooter
         // Y - La mitad del alto del shooter - la mitad del alto del disparo
         super("basic_shoot",x,y,shooter,
                 AssetsManager.loadParticleEffect("basic_effect_shoot"),
-                AssetsManager.loadParticleEffect("basic_effect_shoot"));
+                AssetsManager.loadParticleEffect("basic_effect_shoot"),"shoot_basic_FX");
         //Creamos el efecto que hará las veces de textura
         shoot = AssetsManager.loadParticleEffect("basic_shoot_effect");
         this.updateParticleEffect();

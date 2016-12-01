@@ -182,6 +182,12 @@ public class AssetsManager {
         assetsReferences.put("sound/inventary", SOUNDS_FOLDER + "inventary.wav");
         assetsReferences.put("sound/new_record", SOUNDS_FOLDER + "new_record.wav");
         assetsReferences.put("sound/pause", SOUNDS_FOLDER + "pause.wav");
+        assetsReferences.put("sound/shoot_basic_FX", SOUNDS_FOLDER + "shoot_fx_basic.ogg");
+        assetsReferences.put("sound/shoot_red_FX", SOUNDS_FOLDER + "shoot_fx_red.ogg");
+        assetsReferences.put("sound/shoot_rocket_FX", SOUNDS_FOLDER + "shoot_fx_rocket.wav");
+        assetsReferences.put("sound/shoot_orange_FX", SOUNDS_FOLDER + "shoot_fx_orange.wav");
+        assetsReferences.put("sound/shoot_purple_FX", SOUNDS_FOLDER + "shoot_fx_purple.wav");
+        assetsReferences.put("sound/shoot_bigBasic_FX", SOUNDS_FOLDER + "shoot_fx_bigBasic.wav");
 
         //Assets referentes a los scripts de niveles
         assetsReferences.put("allEnemies", LEVEL_SCRIPTS_FOLDER + "allEnemies");

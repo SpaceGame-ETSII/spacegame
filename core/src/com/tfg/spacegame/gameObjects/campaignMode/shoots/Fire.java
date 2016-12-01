@@ -30,7 +30,7 @@ public class Fire extends Shoot {
     private ParticleEffect shoot;
 
     public Fire(GameObject shooter, float xTarget, float yTarget, ParticleEffect shoot) {
-        super("yellow_shoot", 0, 0, shooter,null,null);
+        super("yellow_shoot", 0, 0, shooter,null,null,null);
 
         if (!this.isFromShootOfEnemy()) {
             this.setX((int)(shooter.getX()+shooter.getWidth()+this.getHeight()));

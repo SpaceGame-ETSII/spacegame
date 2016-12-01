@@ -25,7 +25,7 @@ public class Purple extends Shoot{
     public Purple(GameObject shooter, int x, int y, float xTarget, float yTarget) {
         super("purple_shoot", x, y, shooter,
                 AssetsManager.loadParticleEffect("purple_shoot_effect_shoot"),
-                AssetsManager.loadParticleEffect("purple_effect_shock"));
+                AssetsManager.loadParticleEffect("purple_effect_shock"),"shoot_purple_FX");
 
         this.setY(this.getY()-this.getHeight()/2);
         this.getLogicShape().setOrigin(0,this.getHeight()/2);

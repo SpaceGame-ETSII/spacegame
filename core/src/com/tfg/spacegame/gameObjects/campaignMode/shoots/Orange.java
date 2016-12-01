@@ -47,7 +47,10 @@ public class Orange extends Shoot{
     private GameObject target;
 
     public Orange(GameObject shooter, int x, int y, float angle, GameObject target) {
-        super("orange_shoot", x, y, shooter, AssetsManager.loadParticleEffect("orange_shoot_effect_shoot"), AssetsManager.loadParticleEffect("orange_shoot_effect_shock"));
+        super("orange_shoot", x, y, shooter,
+                AssetsManager.loadParticleEffect("orange_shoot_effect_shoot"),
+                AssetsManager.loadParticleEffect("orange_shoot_effect_shock"),
+                "shoot_orange_FX");
 
         this.setY(this.getY() - this.getHeight()/2);
 

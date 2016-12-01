@@ -82,10 +82,8 @@ public class ShootsManager {
             x += shooter.getWidth() + basic.getWidth();
             y -= (shooter.getHeight()/2 - basic.getHeight()/2);
         }
-        basic.setX(x);
-        basic.setY(y);
 
-        shoots.add(basic);
+        addToShoots(basic,x,y);
 
         return basic;
     }
@@ -203,33 +201,28 @@ public class ShootsManager {
         int x = (int) (shooter.getX());
         int y = (int) (50);
 
-        bigShoot.setX(x);
-        bigShoot.setY(y);
-
-        shoots.add(bigShoot);
+        addToShoots(bigShoot,x,y);
     }
 
     public static void shootRedWeapon(GameObject shooter) {
-        Red redShoot = new Red(shooter,0,0);
+        Red redShoot;
 
         if (shooter instanceof CampaignShip){
             if(isCampaignShipReadyToShoot(TypeShoot.RED)){
+                redShoot = new Red(shooter,0,0);
+
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
-                redShoot.setX(x);
-                redShoot.setY(y);
-
-                shoots.add(redShoot);
+                addToShoots(redShoot,x,y);
             }
         }else if (shooter instanceof RedEnemy){
+            redShoot = new Red(shooter,0,0);
+
             int x = (int) (shooter.getX() - redShoot.getWidth());
             int y = (int) (shooter.getY() + shooter.getHeight()/2);
 
-            redShoot.setX(x);
-            redShoot.setY(y);
-
-            shoots.add(redShoot);
+            addToShoots(redShoot, x, y);
         }
 
     }
@@ -239,33 +232,40 @@ public class ShootsManager {
 
         if (shooter instanceof CampaignShip) {
             if (isCampaignShipReadyToShoot(TypeShoot.BLUE)) {
+
                 int x = (int) (shooter.getX() + shooter.getWidth());
                 int y = (int) (shooter.getY() + shooter.getHeight() / 3);
 
                 blueShoot = new Blue(shooter, x, y, yTarget);
 
-                shoots.add(blueShoot);
-            }
-        } else {
-            int x = (int) (shooter.getX());
-            int y = (int) (shooter.getY() + shooter.getHeight() / 2);
+                addToShoots(blueShoot, x, y);
+        }
+    } else {
+
+
+
+        int x = (int) (shooter.getX());
+        int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
             blueShoot = new Blue(shooter, x, y, CampaignScreen.ship.getY() + (CampaignScreen.ship.getHeight()/2));
-            blueShoot.setX(blueShoot.getX() - blueShoot.getWidth());
 
-            shoots.add(blueShoot);
+            x = (int)blueShoot.getX() - (int)blueShoot.getWidth();
+
+            addToShoots(blueShoot, x, y);
         }
     }
 
     public static void shootYellowWeapon(GameObject shooter, float xTarget, float yTarget) {
-        Yellow yellowShoot = new Yellow(shooter, xTarget, yTarget);
+        Yellow yellowShoot;
 
         if (shooter instanceof CampaignShip) {
             if (isCampaignShipReadyToShoot(TypeShoot.YELLOW)) {
-                shoots.add(yellowShoot);
+                yellowShoot = new Yellow(shooter, 0, 0);
+                addToShoots(yellowShoot,(int)xTarget,(int)yTarget);
             }
         } else {
-            shoots.add(yellowShoot);
+            yellowShoot = new Yellow(shooter, 0, 0);
+            addToShoots(yellowShoot, (int) xTarget, (int) yTarget);
         }
     }
 
@@ -279,7 +279,7 @@ public class ShootsManager {
 
                 purpleShoot = new Purple(shooter, x, y, xTarget, yTarget);
 
-                shoots.add(purpleShoot);
+                addToShoots(purpleShoot,x,y);
             }
         }else if (shooter instanceof Enemy) {
             int x = (int) (shooter.getX());
@@ -287,7 +287,7 @@ public class ShootsManager {
 
             purpleShoot = new Purple(shooter,x,y, CampaignScreen.ship.getX() + (CampaignScreen.ship.getWidth()), CampaignScreen.ship.getY() + (CampaignScreen.ship.getHeight()/2));
 
-            shoots.add(purpleShoot);
+            addToShoots(purpleShoot,x,y);
         }
     }
 
@@ -319,7 +319,7 @@ public class ShootsManager {
         }
 
         result = new Orange(shooter,xShoot,yShoot, angle, target);
-        shoots.add(result);
+        addToShoots(result,xShoot,yShoot);
 
         return result;
     }
@@ -334,22 +334,22 @@ public class ShootsManager {
 
                 greenShoot = new Green(shooter, x, y, yTarget);
 
-                shoots.add(greenShoot);
+                addToShoots(greenShoot,x,y);
             }
         } else {
             int x = (int) (shooter.getX());
             int y = (int) (shooter.getY() + shooter.getHeight() / 2);
 
             greenShoot = new Green(shooter, x, y, CampaignScreen.ship.getY() + (CampaignScreen.ship.getHeight()/2));
-            greenShoot.setX(greenShoot.getX() - greenShoot.getWidth());
+            x = (int)greenShoot.getX() - (int)greenShoot.getWidth();
 
-            shoots.add(greenShoot);
+            addToShoots(greenShoot,x,y);
         }
     }
 
     public static void shootGreenFireWeapon(GameObject shooter, float xTarget, float yTarget) {
         GreenFire greenFireShoot = new GreenFire(shooter, xTarget, yTarget);
-        shoots.add(greenFireShoot);
+        addToShoots(greenFireShoot,(int)xTarget,(int)yTarget);
     }
 
     //Devuelve el arma verde en pantalla disparada por el shooter pasado por parámetro, si no existe devuelve null
@@ -382,5 +382,14 @@ public class ShootsManager {
 
         shoot1.collideWithShoot(shoot2);
         shoot2.collideWithShoot(shoot1);
+    }
+
+    private static void addToShoots(Shoot shoot, int x, int y){
+        shoot.setX(x);
+        shoot.setY(y);
+
+        shoot.playShootFX();
+
+        shoots.add(shoot);
     }
 }

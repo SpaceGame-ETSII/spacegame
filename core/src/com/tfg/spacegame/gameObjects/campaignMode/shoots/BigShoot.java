@@ -25,7 +25,10 @@ public class BigShoot extends Shoot {
     private ParticleEffect shoot;
 
     public BigShoot(GameObject shooter, int x, int y, float delay) {
-        super("bigshoot_shoot", x, y, shooter, AssetsManager.loadParticleEffect("bigshoot_shoot_effect"), null);
+        super("bigshoot_shoot", x, y, shooter,
+                AssetsManager.loadParticleEffect("bigshoot_shoot_effect"),
+                null,
+                "shoot_bigBasic_FX");
 
         // Creamos el efecto de particulas
         shoot = AssetsManager.loadParticleEffect("bigshoot_shoot_effect");

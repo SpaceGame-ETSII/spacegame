@@ -33,7 +33,7 @@ public class GreenEnemy extends Enemy {
 
     public GreenEnemy(int x, int y) {
         super("green_body", x, y, 600, AssetsManager.loadParticleEffect("green_destroyed"));
-        shield = new PartOfEnemy("green_shield", x - 56,y - 33, 15,
+        shield = new PartOfEnemy("green_shield", x - 40 ,y - 33, 15,
                                     AssetsManager.loadParticleEffect("green_destroyed"), this, false, true);
 
         direction = 1;

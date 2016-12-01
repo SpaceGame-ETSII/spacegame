@@ -33,6 +33,13 @@ public class AudioManager {
         sounds.put("new_record", AssetsManager.loadSound("new_record"));
         sounds.put("pause", AssetsManager.loadSound("pause"));
 
+        sounds.put("shoot_basic_FX", AssetsManager.loadSound("shoot_basic_FX"));
+        sounds.put("shoot_red_FX", AssetsManager.loadSound("shoot_red_FX"));
+        sounds.put("shoot_rocket_FX", AssetsManager.loadSound("shoot_rocket_FX"));
+        sounds.put("shoot_orange_FX", AssetsManager.loadSound("shoot_orange_FX"));
+        sounds.put("shoot_purple_FX", AssetsManager.loadSound("shoot_purple_FX"));
+        sounds.put("shoot_bigBasic_FX", AssetsManager.loadSound("shoot_bigBasic_FX"));
+
         currentMusic = "no_music";
         volumeMusic = 0.3f;
         volumeEffect = 0.7f;

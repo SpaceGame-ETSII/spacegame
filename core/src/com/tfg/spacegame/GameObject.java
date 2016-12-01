@@ -3,14 +3,11 @@ package com.tfg.spacegame;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.utils.BaseAnimationController;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.ShapeRendererManager;
-
-import java.awt.*;
 
 public class GameObject {
 
@@ -29,15 +26,21 @@ public class GameObject {
     private float width;
     private float height;
 
-    private float scaleXFactor;
-    private float scaleYFactor;
+    private float initialXScale;
+    private float initialYScale;
+
+    private float scaleX;
+    private float scaleY;
 
     public GameObject(String textureName, int x, int y) {
         texture = AssetsManager.loadTexture(textureName);
         center = new Vector2();
 
-        scaleXFactor=1f;
-        scaleYFactor=1f;
+        initialXScale =1f;
+        initialYScale =1f;
+
+        scaleX = 1f;
+        scaleY = 1f;
 
         float[] vertices = SpaceGame.loadShape(textureName);
 
@@ -73,8 +76,8 @@ public class GameObject {
 
     private void applyScaleToVertices(float[] vertices) {
         for(int i=0; i < vertices.length; i+=2){
-            vertices[i]     *= scaleXFactor;
-            vertices[i+1]   *= scaleYFactor;
+            vertices[i]     *= initialXScale;
+            vertices[i+1]   *= initialYScale;
         }
     }
 
@@ -83,21 +86,10 @@ public class GameObject {
 
         if(desiredSize != null){
 
-            if(scaleXFactor == 1f)
-                scaleXFactor = desiredSize[0] / width;
-            if(scaleYFactor == 1f)
-                scaleYFactor = desiredSize[1] / height;
+            setInitialScale(desiredSize[0] / width, desiredSize[1] / height);
 
-            width*=scaleXFactor;
-            height*=scaleYFactor;
-
-            System.out.println("Width: "+width);
-            System.out.println("Height: "+height);
-            System.out.println("Texture Width:  "+getTexture().getWidth()*scaleXFactor);
-            System.out.println("Texture height: "+getTexture().getHeight()*scaleYFactor);
-            System.out.println("Desired Size: "+desiredSize[0]);
-            System.out.println("Desired Size: "+desiredSize[1]);
-            System.out.println("---------------------------");
+            width*= initialXScale;
+            height*= initialYScale;
         }
     }
 
@@ -195,8 +187,15 @@ public class GameObject {
     }
 
     public void setScale(float x, float y){
-       // scaleXFactor = x; scaleYFactor = y;
+        scaleX = x; scaleY = y;
+        getLogicShape().setScale(x,y);
     }
+
+    public void setInitialScale(float x, float y) {
+        initialXScale = x;
+        initialYScale = y;
+    }
+
     public void setRotation(float angle){
         logicShape.setRotation(angle);
     }
@@ -205,8 +204,8 @@ public class GameObject {
     }
 
     public void render(){
-        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getLogicShape().getOriginX(), getLogicShape().getOriginY(), getWidth(), getHeight(), 1, 1, getLogicShape().getRotation());
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
+        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getLogicShape().getOriginX(), getLogicShape().getOriginY(), getWidth(), getHeight(), scaleX, scaleY, getLogicShape().getRotation());
+        //ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 
     //Método para pintar un objeto rotando N grados su textura
@@ -214,7 +213,7 @@ public class GameObject {
         SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2,
                                 this.getWidth(), this.getHeight(),
                                 this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY(), n);
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
+        //ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 
     public void dispose() {

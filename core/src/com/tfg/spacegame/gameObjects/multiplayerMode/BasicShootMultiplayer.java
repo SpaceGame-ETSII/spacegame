@@ -22,7 +22,7 @@ public class BasicShootMultiplayer extends Shoot {
         // Y - La mitad del alto del shooter - la mitad del alto del disparo
         super("basic_shoot",x,y,shooter,
                 AssetsManager.loadParticleEffect("basic_effect_shoot"),
-                AssetsManager.loadParticleEffect("basic_effect_shoot"));
+                AssetsManager.loadParticleEffect("basic_effect_shoot"),"shoot_basic_FX");
         //Creamos el efecto que hará las veces de textura
         shoot = AssetsManager.loadParticleEffect("basic_shoot_effect");
         this.updateParticleEffect();

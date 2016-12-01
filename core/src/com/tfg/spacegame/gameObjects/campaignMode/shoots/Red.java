@@ -31,7 +31,7 @@ public class Red extends Shoot{
     public Red(GameObject shooter, int x, int y) {
         super("red_shoot", x, y, shooter,
                 AssetsManager.loadParticleEffect("red_shoot_effect_shoot"),
-                AssetsManager.loadParticleEffect("red_effect_shock"));
+                AssetsManager.loadParticleEffect("red_effect_shock"),"shoot_red_FX");
 
         //Creamos el efecto de particulas
         shoot = AssetsManager.loadParticleEffect("red_shoot_effect");

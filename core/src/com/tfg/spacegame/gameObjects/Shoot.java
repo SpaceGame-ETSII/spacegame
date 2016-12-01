@@ -7,6 +7,7 @@ import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
 import com.tfg.spacegame.gameObjects.campaignMode.shoots.Purple;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.multiplayerMode.RivalShip;
+import com.tfg.spacegame.utils.AudioManager;
 import com.tfg.spacegame.utils.enums.TypeShoot;
 
 public class Shoot extends GameObject {
@@ -28,7 +29,9 @@ public class Shoot extends GameObject {
 
     private Vector2 originalShootPosition;
 
-    public Shoot(String nameTexture, int x, int y, GameObject shooter, ParticleEffect shootEffect, ParticleEffect destroyEffect) {
+    private String shootFX;
+
+    public Shoot(String nameTexture, int x, int y, GameObject shooter, ParticleEffect shootEffect, ParticleEffect destroyEffect, String shootFX) {
         super(nameTexture,x,y);
         this.shooter = shooter;
         shocked = false;
@@ -44,6 +47,13 @@ public class Shoot extends GameObject {
             this.destroyEffect = destroyEffect;
             destroyEffect.start();
         }
+
+        this.shootFX = shootFX;
+    }
+
+    public void playShootFX(){
+        if(shootFX != null)
+            AudioManager.playSound(shootFX);
     }
 
     public GameObject getShooter(){

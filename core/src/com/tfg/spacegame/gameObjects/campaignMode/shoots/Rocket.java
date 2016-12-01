@@ -49,7 +49,7 @@ public class Rocket extends Shoot {
 
     public Rocket(String textureName, GameObject shooter, int x, int y, float yTarget, int speed, ParticleEffect shootEffect,
                   ParticleEffect shockEffect, ParticleEffect propulsionEffect) {
-        super(textureName,x,y,shooter,shootEffect,shockEffect);
+        super(textureName,x,y,shooter,shootEffect,shockEffect,"shoot_rocket_FX");
 
         this.propulsionEffect = propulsionEffect;
         this.speed = speed;
