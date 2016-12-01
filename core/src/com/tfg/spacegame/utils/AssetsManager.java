@@ -59,9 +59,9 @@ public class AssetsManager {
         assetsReferences.put("purple_eye_center_closed", ENEMIES_FOLDER +"enemigo_morado_centro_cerrado.png");
 
         //Texturas referentes a obstacles
-        assetsReferences.put("big_obstacle", OBSTACLES_FOLDER +"meteorito_grande.png");
-        assetsReferences.put("medium_obstacle", OBSTACLES_FOLDER +"meteorito_mediano.png");
-        assetsReferences.put("small_obstacle", OBSTACLES_FOLDER +"meteorito_pequeno.png");
+        assetsReferences.put("big_obstacle", OBSTACLES_FOLDER +"asteroid2.png");
+        assetsReferences.put("medium_obstacle", OBSTACLES_FOLDER +"asteroid3.png");
+        assetsReferences.put("small_obstacle", OBSTACLES_FOLDER +"asteroid1.png");
 
         //Texturas referentes a backgrounds
         assetsReferences.put("background", BACKGROUNDS_FOLDER +"fondo.jpg");
@@ -88,7 +88,7 @@ public class AssetsManager {
 
         //Texturas referentes a ships
         assetsReferences.put("ship", SHIPS_FOLDER +"ship_basic.png");
-        assetsReferences.put("arcadeShip", SHIPS_FOLDER +"nave_arcade.png");
+        assetsReferences.put("arcadeShip", SHIPS_FOLDER +"arcade_ship.png");
         assetsReferences.put("ship_red", SHIPS_FOLDER +"ship_red.png");
         assetsReferences.put("ship_blue", SHIPS_FOLDER +"ship_blue.png");
         assetsReferences.put("ship_yellow", SHIPS_FOLDER +"ship_yellow.png");
@@ -100,17 +100,17 @@ public class AssetsManager {
         assetsReferences.put("cockpit_damage2", SHIPS_FOLDER +"ship_cockpit_damage2.png");
         assetsReferences.put("cockpit_damage3", SHIPS_FOLDER +"ship_cockpit_damage3.png");
         assetsReferences.put("cockpit_damage4", SHIPS_FOLDER +"ship_cockpit_damage4.png");
-        assetsReferences.put("playerShip", SHIPS_FOLDER +"nave_multi_p1.png");
-        assetsReferences.put("rivalShip", SHIPS_FOLDER +"nave_multi_p2.png");
+        assetsReferences.put("playerShip", SHIPS_FOLDER +"multiplayer_ship_player.png");
+        assetsReferences.put("rivalShip", SHIPS_FOLDER +"multiplayer_ship_enemy.png");
 
         // Texturas referentes a powerUps
         assetsReferences.put("shieldProtection", POWER_UPS_FOLDER+"shieldProtection.png");
-        assetsReferences.put("shieldEnemy", POWER_UPS_FOLDER +"shieldEnemy.png");
-        assetsReferences.put("shieldPlayer", POWER_UPS_FOLDER +"shieldPlayer.png");
-        assetsReferences.put("regLifeEnemy", POWER_UPS_FOLDER +"lifeEnemy.png");
-        assetsReferences.put("regLifePlayer", POWER_UPS_FOLDER +"lifePlayer.png");
-        assetsReferences.put("burstEnemy", POWER_UPS_FOLDER +"burstEnemy.png");
-        assetsReferences.put("burstPlayer", POWER_UPS_FOLDER +"burstPlayer.png");
+        assetsReferences.put("shieldEnemy", POWER_UPS_FOLDER +"red_shield.png");
+        assetsReferences.put("shieldPlayer", POWER_UPS_FOLDER +"blue_shield.png");
+        assetsReferences.put("regLifeEnemy", POWER_UPS_FOLDER +"red_health.png");
+        assetsReferences.put("regLifePlayer", POWER_UPS_FOLDER +"blue_health.png");
+        assetsReferences.put("burstEnemy", POWER_UPS_FOLDER +"red_power.png");
+        assetsReferences.put("burstPlayer", POWER_UPS_FOLDER +"blue_power.png");
 
         // Texturas referentes a shoots
         assetsReferences.put("basic_shoot", SHOOTS_FOLDER +"disparo.png");
