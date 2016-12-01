@@ -133,7 +133,12 @@ public class AudioManager {
 
         music.setVolume(volumeMusic);
         music.play();
-        music.setLooping(isLooping);
+
+        if (!name.equals("campaign_win")) {
+            music.setLooping(isLooping);
+        } else {
+            music.setLooping(false);
+        }
     }
 
     // Activa una canción ya cargada si estaba parada o en pausa

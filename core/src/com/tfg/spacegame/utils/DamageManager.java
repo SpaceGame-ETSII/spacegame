@@ -93,6 +93,7 @@ public class DamageManager {
     // Calcula el daño y realiza la accion del damage en caso de que sea necesario
     public static void calculateDamage(Shoot shoot, Enemy enemy){
         Integer damage = damageByTypeOfShootAndEnemy.get(new Pair<Class, Class>(shoot.getClass(),enemy.getClass()));
+
         // Si hemos intentado calcular el daño de un shoot-enemy que no existe, no realizamos ese daño
         if(damage != null)
             enemy.damage(damage);

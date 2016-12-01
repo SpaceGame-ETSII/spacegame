@@ -3,13 +3,7 @@ android {
         release {
             keyAlias 'spacegame'
             keyPassword 'nolose'
-            storeFile file('E:/Desarrollo de videojuegos/finalKey.jks')
-            storePassword 'nolose'
-        }
-        finalRelease {
-            keyAlias 'spacegamekey'
-            keyPassword 'nolose'
-            storeFile file('E:/Desarrollo de videojuegos/releaseKey.jks')
+            storeFile file('/home/gaems-dev/Escritorio/finalKey.jks')
             storePassword 'nolose'
         }
     }
@@ -30,7 +24,7 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.finalRelease
+            signingConfig signingConfigs.release
         }
     }
 }

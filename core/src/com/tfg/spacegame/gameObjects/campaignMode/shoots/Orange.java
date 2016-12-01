@@ -153,7 +153,6 @@ public class Orange extends Shoot{
 
     public void collideWithEnemy(Enemy enemy) {
         super.collideWithEnemy(enemy);
-        System.out.println(enemy.getClass().toString());
         this.shock();
     }
 
