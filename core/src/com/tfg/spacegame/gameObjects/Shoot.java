@@ -148,8 +148,10 @@ public class Shoot extends GameObject {
 
     public void dispose() {
         super.dispose();
-        shootEffect.dispose();
-        destroyEffect.dispose();
+        if(shootEffect!= null)
+            shootEffect.dispose();
+        if(shootEffect!= null)
+            destroyEffect.dispose();
     }
 
 }

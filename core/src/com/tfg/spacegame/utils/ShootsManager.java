@@ -260,12 +260,14 @@ public class ShootsManager {
 
         if (shooter instanceof CampaignShip) {
             if (isCampaignShipReadyToShoot(TypeShoot.YELLOW)) {
-                yellowShoot = new Yellow(shooter, 0, 0);
-                addToShoots(yellowShoot,(int)xTarget,(int)yTarget);
+                yellowShoot = new Yellow(shooter, (int)xTarget, (int)yTarget);
+                yellowShoot.playShootFX();
+                shoots.add(yellowShoot);
             }
         } else {
-            yellowShoot = new Yellow(shooter, 0, 0);
-            addToShoots(yellowShoot, (int) xTarget, (int) yTarget);
+            yellowShoot = new Yellow(shooter, (int)xTarget, (int)yTarget);
+            yellowShoot.playShootFX();
+            shoots.add(yellowShoot);
         }
     }
 
