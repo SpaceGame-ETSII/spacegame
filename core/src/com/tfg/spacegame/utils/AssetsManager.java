@@ -74,7 +74,7 @@ public class AssetsManager {
         assetsReferences.put("yellow", OTHERS_FOLDER +"amarillo.png");
         assetsReferences.put("blue", OTHERS_FOLDER +"azul.png");
         assetsReferences.put("button", OTHERS_FOLDER +"button.png");
-        assetsReferences.put("buttonExit", OTHERS_FOLDER +"button_exit.jpg");
+        assetsReferences.put("buttonExit", OTHERS_FOLDER +"button_exit.png");
         assetsReferences.put("buttonCancel", OTHERS_FOLDER +"button_cancel.png");
         assetsReferences.put("buttonConfirm", OTHERS_FOLDER +"button_confirm.png");
         assetsReferences.put("ventana", OTHERS_FOLDER +"ventana.png");

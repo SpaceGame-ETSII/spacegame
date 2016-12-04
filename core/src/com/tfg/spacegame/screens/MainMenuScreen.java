@@ -27,11 +27,11 @@ public class MainMenuScreen extends BasicScreen {
         SpaceGame.changeToLandscape();
 
         //Creamos los botones para el menú principal
-        campaign = new Button("button", 260, 315, "campaignTitle", true);
-        arcade = new Button("button", 260, 255, "arcadeTitle", true);
-        multiplayer = new Button("button", 260, 195, "multiplayerTitle",true);
-        options = new Button("button", 260, 135, "optionsTitle",true);
-        exit = new Button("button", 260, 75, "exitTitle",true);
+        campaign = new Button("button", 260, 300, "campaignTitle", true);
+        arcade = new Button("button", 260, 235, "arcadeTitle", true);
+        multiplayer = new Button("button", 260, 170, "multiplayerTitle",true);
+        options = new Button("button", 260, 105, "optionsTitle",true);
+        exit = new Button("button", 260, 40, "exitTitle",true);
 
         //Inicializamos el timer de espera para el efecto en los botones
         timeUntilExit = 0.5f;
@@ -40,7 +40,7 @@ public class MainMenuScreen extends BasicScreen {
     @Override
     public void mainRender(float delta) {
         // Pintamos el título del juego
-        FontManager.drawTitle("titleGame", 229, 420);
+        FontManager.drawTitle("titleGame", 165, 420);
 
         // Delegamos el render de los botones
         campaign.render();

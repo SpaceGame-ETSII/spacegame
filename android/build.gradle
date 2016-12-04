@@ -1,5 +1,5 @@
 android {
-    def keyFile = file('C:/Users/Portotol/Google Drive/TFG-Gaems/finalKey.jks')
+    def keyFile = file('/home/gaems-dev/Escritorio/finalKey.jks')
     if(!keyFile.exists()) {
         keyFile = file('/home/gaems-dev/Escritorio/finalKey.jks')
     }

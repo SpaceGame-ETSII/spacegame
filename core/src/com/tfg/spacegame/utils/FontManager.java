@@ -30,7 +30,7 @@ public class FontManager {
 
         parameter.size = width / 44;
         text = generator.generateFont(parameter);
-        parameter.size = width / 20;
+        parameter.size = width / 15;
         title = generator.generateFont(parameter);
 
         generator.dispose();
@@ -41,7 +41,7 @@ public class FontManager {
 
     //Modifica el alpha de los BitmapFont en caso de ser necesario
     public static void setAlpha(float alpha) {
-        title.setColor(1,1,1,alpha);
+        title.setColor(0,1,1,alpha);
         text.setColor(1,1,1,alpha);
     }
 

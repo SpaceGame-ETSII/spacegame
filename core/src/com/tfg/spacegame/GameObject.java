@@ -205,7 +205,7 @@ public class GameObject {
 
     public void render(){
         SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getLogicShape().getOriginX(), getLogicShape().getOriginY(), getWidth(), getHeight(), scaleX, scaleY, getLogicShape().getRotation());
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
+        //ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 
     //Método para pintar un objeto rotando N grados su textura
@@ -213,7 +213,7 @@ public class GameObject {
         SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getWidth()/2, getHeight()/2,
                                 this.getWidth(), this.getHeight(),
                                 this.getLogicShape().getScaleX(), this.getLogicShape().getScaleY(), n);
-        ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
+        //ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 
     public void dispose() {
