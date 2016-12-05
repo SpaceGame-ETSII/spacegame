@@ -84,11 +84,22 @@ public class TouchManager {
 
     public static Vector3 getTouchFromPosition(float x, float y){
         Vector3 result = null;
-        if(firstTouchPos.x == x && firstTouchPos.y == y)
-            result = firstTouchPos;
-        else if (secondTouchPos.x == x && secondTouchPos.y == y)
-            result = secondTouchPos;
+        if(isSecondTouchActive()){
+            float xSecondDistance = Math.abs(secondTouchPos.x - x);
+            float ySecondDistance = Math.abs(secondTouchPos.y - y);
 
+            float xFirstDistance = Math.abs(firstTouchPos.x - x);
+            float yFirstDistance = Math.abs(firstTouchPos.y - y);
+
+            float firstDistance = xFirstDistance*xFirstDistance + yFirstDistance*yFirstDistance;
+            float secondDistance = xSecondDistance*xSecondDistance + ySecondDistance*ySecondDistance;
+
+            if(firstDistance < secondDistance)
+                result = firstTouchPos;
+            else
+                result = secondTouchPos;
+        }else
+            result = firstTouchPos;
         return result;
     }
 
