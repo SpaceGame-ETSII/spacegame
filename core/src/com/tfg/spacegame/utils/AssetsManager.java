@@ -205,7 +205,10 @@ public class AssetsManager {
 
     //Se llamará a este método cada vez que se pretenda cargar una textura
     public static Texture loadTexture(String textureName) {
-        return new Texture(Gdx.files.internal(assetsReferences.get(textureName)));
+        if(textureName == null)
+            return null;
+        else
+            return new Texture(Gdx.files.internal(assetsReferences.get(textureName)));
     }
 
     //Se llamará a este método cada vez que se pretenda cargar un efecto de partículas

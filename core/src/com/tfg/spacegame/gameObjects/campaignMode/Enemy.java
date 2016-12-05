@@ -47,8 +47,10 @@ public class Enemy extends GameObject {
 
         targettedByShip = false;
 
-        this.destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
-        this.destroyEffect.start();
+        if(this.destroyEffect != null){
+            this.destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
+            this.destroyEffect.start();
+        }
     }
 
     public void update(float delta) {
