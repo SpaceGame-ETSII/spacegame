@@ -1,6 +1,7 @@
 package com.tfg.spacegame.gameObjects.campaignMode.enemies;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.tfg.spacegame.gameObjects.campaignMode.Enemy;
@@ -23,11 +24,13 @@ public class OrangeEnemy extends Enemy {
     }
 
     // Frecuencia de inicio de las ráfagas de los cañones secundarios
-    private static final float  FREQUENCY_OF_BURST = 3f;
+    private static final float  FREQUENCY_OF_BURST = 4f;
+    // Número de ráfagas de cañon secundario antes de iniciar el cañon principal
+    private static final int NUMBER_OF_SECONDARY_BURSTS = 2;
     // Frecuencia de disparo de cada ráfaga
-    private static final float  FREQUENCY_OF_SHOOTING = 0.9f;
+    private static final float  FREQUENCY_OF_SHOOTING = 1.4f;
     // Número de disparos máximo con los que contaremos cada ráfaga
-    private static final int    MAX_OF_SHOOTS_SECUNDARY_CANNON = 5;
+    private static final int    MAX_OF_SHOOTS_SECUNDARY_CANNON = 4;
     // Frecuencia de tiempo de carga para el disparo del cañon principal
     private static final float  FREQUENCY_OF_SHOOT_MAIN_CANNON = 6f;
     // Maxima velocidad del efecto de particulas que se encarga del efecto de carga
@@ -39,7 +42,7 @@ public class OrangeEnemy extends Enemy {
     // Cantidad a restar al tiempo de carga cuando un disparo golpee al enemigo
     private static final double AMOUNT_TO_SUBSTRACT_TIME_CHARGING_MAIN_CANNON = 0.35;
     // Velocidad de aparición
-    private static final int    APPEAR_SPEED = 30;
+    private static final int    APPEAR_SPEED = 60;
     // Posición limite de aparición relativa a la posición del cañon principal
     private static final int    APPEAR_POSITION = 530;
     private Array<Integer> aviableSecondaryCannons;
@@ -81,8 +84,11 @@ public class OrangeEnemy extends Enemy {
     // Efecto de partículas encargado del efecto de carga y de disparo del cañon principal
     private ParticleEffect chargeMainCannonEffect;
 
+    private PartOfEnemy auxTopPart;
+    private PartOfEnemy auxBottomPart;
+
     public OrangeEnemy(int x, int y) {
-        super("orange_enemy_main_cannon", x, y, 600, AssetsManager.loadParticleEffect("orange_enemy_defeated"));
+        super("orange_enemy_main_cannon", x, y, 400, AssetsManager.loadParticleEffect("orange_enemy_defeated"));
 
         aviableSecondaryCannons = new Array<Integer>();
 
@@ -129,6 +135,59 @@ public class OrangeEnemy extends Enemy {
         super.updateParticleEffect();
         chargeMainCannonEffect.getEmitters().first().setPosition(this.getX()-10,this.getY()+this.getHeight()/2);
         chargeMainCannonEffect.start();
+
+        createAuxiliaryParts(x,y);
+
+    }
+
+    private void createAuxiliaryParts(int x, int y){
+        auxBottomPart   = new PartOfEnemy(null,0,0,1,null,this,false,true);
+        auxTopPart      = new PartOfEnemy(null,0,0,1,null,this,false,true);
+
+
+        float[] bodyVertices = body.getLogicShape().getVertices();
+
+        // Vertices para la parte superior
+        float[] topVertices = new float[]{
+                bodyVertices[4],
+                bodyVertices[5],
+                bodyVertices[6],
+                bodyVertices[7],
+                bodyVertices[8],
+                bodyVertices[9],
+        };
+
+        // Vertices para la parte inferior
+        float[] bottomVertices = new float[]{
+                bodyVertices[0],
+                bodyVertices[1],
+                bodyVertices[2],
+                bodyVertices[3],
+                bodyVertices[bodyVertices.length-2],
+                bodyVertices[bodyVertices.length-1],
+        };
+
+        // Aplicar esos vertices a cada parte
+        auxBottomPart.getLogicShape().setVertices(bottomVertices);
+        auxTopPart.getLogicShape().setVertices(topVertices);
+
+        // Crear los nuevos vertices del body
+        float[] newBodyVertices = new float[18];
+        int j=0;
+        for(int i=8; i < bodyVertices.length ;i++){
+            newBodyVertices[j] = bodyVertices[i];
+            j++;
+        }
+
+        // Posicionar las partes auxiliares
+        auxBottomPart.setX(x - 10);
+        auxBottomPart.setY(y - body.getHeight()/2 + 25);
+
+        auxTopPart.setX(x - 10);
+        auxTopPart.setY(y - body.getHeight()/2 + 25);
+
+        // Establecer los nuevos vertices del body
+        body.getLogicShape().setVertices(newBodyVertices);
     }
 
     // Método usado para resetear todas las variables de control y de estados
@@ -203,7 +262,7 @@ public class OrangeEnemy extends Enemy {
                 // Disparamos los cañones secundarios
                 shootSecondaryCannonBurst(delta);
                 // Si ya hemos producido tres rafagas
-                if(burstsFired >= 3){
+                if(burstsFired >= NUMBER_OF_SECONDARY_BURSTS){
                     // Abrimos el escudo
                     orangeEnemyState = OrangeEnemyState.OPENING_SHIELD;
                 }
@@ -284,7 +343,7 @@ public class OrangeEnemy extends Enemy {
     public void render() {
         super.render();
         // Solo si el escudo está abierto se visualizará el efecto de carga
-        if(orangeEnemyState.equals(OrangeEnemyState.SHIELD_OPENED))
+        if(orangeEnemyState.equals(OrangeEnemyState.SHIELD_OPENED) && !isDefeated())
             chargeMainCannonEffect.draw(SpaceGame.batch);
     }
 
@@ -306,6 +365,8 @@ public class OrangeEnemy extends Enemy {
         shield.setX(shield.getX() - APPEAR_SPEED*delta);
 
         body.setX(body.getX() - APPEAR_SPEED*delta);
+        auxTopPart.setX(auxTopPart.getX() - APPEAR_SPEED*delta);
+        auxBottomPart.setX(auxBottomPart.getX() - APPEAR_SPEED*delta);
 
         cannonLowerLeft.move(-APPEAR_SPEED*delta);
         cannonUpperLeft.move(-APPEAR_SPEED*delta);
@@ -342,6 +403,9 @@ public class OrangeEnemy extends Enemy {
 
         cannonUpperLeft.changeToDeletable();
         cannonUpperRight.changeToDeletable();
+
+        auxTopPart.changeToDeletable();
+        auxBottomPart.changeToDeletable();
     }
 
     public PartOfEnemy getShield(){
@@ -372,6 +436,8 @@ public class OrangeEnemy extends Enemy {
 
         result.add(getShield());
         result.add(getBody());
+        result.add(auxBottomPart);
+        result.add(auxTopPart);
 
         result.add(getCannonUpperLeft());
         result.add(getCannonUpperRight());

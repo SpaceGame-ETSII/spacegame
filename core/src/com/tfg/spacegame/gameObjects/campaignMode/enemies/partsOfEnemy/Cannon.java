@@ -13,7 +13,7 @@ import com.tfg.spacegame.utils.ShootsManager;
 public class Cannon extends PartOfEnemy {
 
     // Frecuencia del efecto de inhabilitación
-    private final float FREQUENCY_OF_DISABLE_EFFECT = 8f;
+    private final float FREQUENCY_OF_DISABLE_EFFECT = 30f;
     // Máxima emisión para el efecto de inhabilitación
     private final int   MAX_EMISSION_DISABLE_EFFECT = 250;
     // Máxima vitalidad del cañon
@@ -30,6 +30,8 @@ public class Cannon extends PartOfEnemy {
     // Inhabilitado o no
     private boolean disable;
 
+    private Enemy father;
+
     public Cannon(float x, float y, Enemy father, float xShoot, float yShoot, float angle , float shootAngle) {
         super("orange_enemy_cannon", 0, 0, 20, AssetsManager.loadParticleEffect("basic_destroyed"), father, true, true);
 
@@ -43,6 +45,8 @@ public class Cannon extends PartOfEnemy {
 
         timeDisableEffect = 0;
 
+        this.father = father;
+
         disabledEffect = AssetsManager.loadParticleEffect("orange_secondary_cannon_disabled");
         disabledEffect.getEmitters().first().setPosition(shootingPosition.x,shootingPosition.y);
         disabledEffect.getEmitters().first().getAngle().setLow(shootAngle-30,shootAngle+30);
@@ -51,7 +55,8 @@ public class Cannon extends PartOfEnemy {
 
     public void shoot(){
         // Disparamos
-        ShootsManager.shootOneOrangeWeapon(this, (int)shootingPosition.x, (int)shootingPosition.y, shootAngle, CampaignScreen.ship,0);
+        if(!disable)
+            ShootsManager.shootOneOrangeWeapon(this, (int)shootingPosition.x, (int)shootingPosition.y, shootAngle, CampaignScreen.ship,0);
     }
     public void move(float speed){
         this.setX(this.getX() + speed);
@@ -83,7 +88,7 @@ public class Cannon extends PartOfEnemy {
     }
     public void render() {
         super.render();
-        if (disable)
+        if (disable && !father.isDefeated() )
             disabledEffect.draw(SpaceGame.batch);
     }
 
