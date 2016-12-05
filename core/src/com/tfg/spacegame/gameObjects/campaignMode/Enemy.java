@@ -112,7 +112,7 @@ public class Enemy extends GameObject {
                     if(getHeight() > radius)
                         radius = getHeight();
 
-                    ShapeRendererManager.renderCircle(getX()+getWidth()/2, getY()+getHeight()/2,radius, Color.RED);
+                    ShapeRendererManager.renderCircle(getCenter().x, getCenter().y,radius, Color.RED);
                 }
             }
         } else {
