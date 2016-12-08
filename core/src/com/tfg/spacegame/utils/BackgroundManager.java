@@ -7,10 +7,16 @@ import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.screens.ArcadeScreen;
 import com.tfg.spacegame.utils.enums.GameState;
 
+import java.util.HashMap;
+
 public class BackgroundManager {
 
+    public enum BackgroundType {
+        CAMPAIGN, ARCADE, MULTIPLAYER
+    }
+
     //Almacena los fondos que se mostrarán
-    private static Array<Texture> backgrounds;
+    private static HashMap<BackgroundType, Array<Texture>> backgrounds;
 
     //Posición concreta que tendrán los fondos
     private static Array<Float> scrollingPositions;
@@ -18,16 +24,37 @@ public class BackgroundManager {
     //Velocidad de scroll de los fondos
     private static Array<Float> scrollingSpeeds;
 
+    //Almacenará el array de los fondos que deberán mostrarse en el momento, servirá para acceder múltiples veces al Map
+    private static Array<Texture> currentBackground;
+
+    //Indica si el fondo actual debe tener movimiento o no
+    private static boolean hasMovement;
+
+    //Indica si el manager ya ha ejecutado su método load
     private static boolean isLoaded;
 
     public static void load() {
-        backgrounds = new Array<Texture>();
+        backgrounds = new HashMap<BackgroundType, Array<Texture>>();
         scrollingPositions = new Array<Float>();
         scrollingSpeeds = new Array<Float>();
 
-        backgrounds.add(AssetsManager.loadTexture("background"));
-        backgrounds.add(AssetsManager.loadTexture("background2"));
-        backgrounds.add(AssetsManager.loadTexture("background3"));
+        Array<Texture> campaignTextures = new Array<Texture>();
+        Array<Texture> arcadeTextures = new Array<Texture>();
+        Array<Texture> multiplayerTextures = new Array<Texture>();
+
+        campaignTextures.add(AssetsManager.loadTexture("background1_1"));
+        campaignTextures.add(AssetsManager.loadTexture("background1_2"));
+        campaignTextures.add(AssetsManager.loadTexture("background1_3"));
+        arcadeTextures.add(AssetsManager.loadTexture("background2_1"));
+        arcadeTextures.add(AssetsManager.loadTexture("background2_2"));
+        arcadeTextures.add(AssetsManager.loadTexture("background2_3"));
+        multiplayerTextures.add(AssetsManager.loadTexture("background3_1"));
+        multiplayerTextures.add(AssetsManager.loadTexture("background3_2"));
+        multiplayerTextures.add(AssetsManager.loadTexture("background3_3"));
+
+        backgrounds.put(BackgroundType.CAMPAIGN, campaignTextures);
+        backgrounds.put(BackgroundType.ARCADE, arcadeTextures);
+        backgrounds.put(BackgroundType.MULTIPLAYER, multiplayerTextures);
 
         scrollingPositions.add(0f);
         scrollingPositions.add(0f);
@@ -36,6 +63,8 @@ public class BackgroundManager {
         scrollingSpeeds.add(100f);
         scrollingSpeeds.add(150f);
         scrollingSpeeds.add(250f);
+
+        changeCurrentBackgrounds(null);
 
         isLoaded = true;
     }
@@ -48,11 +77,13 @@ public class BackgroundManager {
         //El fondo tendrá un decremento de velocidad si el estado del juego no es START
         int decrease = (!ScreenManager.isCurrentStateEqualsTo(GameState.START)) ? 3 : 1;
 
-        //Recalculamos las posiciones de los fondos
-        for (int i=0; i<backgrounds.size; i++) {
-            scrollingPositions.set(i, scrollingPositions.get(i) - (delta * (scrollingSpeeds.get(i) / decrease)));
-            if (scrollingPositions.get(i) <= -backgrounds.get(i).getWidth())
-                scrollingPositions.set(i, 0f);
+        //Recalculamos las posiciones de los fondos siempre y cuando deba tener movimiento
+        if (hasMovement) {
+            for (int i = 0; i < currentBackground.size; i++) {
+                scrollingPositions.set(i, scrollingPositions.get(i) - (delta * (scrollingSpeeds.get(i) / decrease)));
+                if (scrollingPositions.get(i) <= -currentBackground.get(i).getWidth())
+                    scrollingPositions.set(i, 0f);
+            }
         }
     }
 
@@ -65,14 +96,14 @@ public class BackgroundManager {
         if (!(ScreenManager.isCurrentScreenEqualsTo(ArcadeScreen.class) &&
                 ScreenManager.isCurrentStateEqualsTo(GameState.START))) {
             //Pintamos los fondos
-            for (int i = 0; i < backgrounds.size; i++)
+            for (int i = 0; i < currentBackground.size; i++)
                 render(i);
         }
     }
 
     //Pinta el fondo concreto que le indiquemos según su posición en el Array
     public static void render(int pos) {
-        Texture b = backgrounds.get(pos);
+        Texture b = currentBackground.get(pos);
 
         //Pintamos el fondo, que necesitará pintarse dos veces para el scrolling
         //Según si es landscape o portrait, se pintará de una forma u otra
@@ -90,9 +121,31 @@ public class BackgroundManager {
 
     }
 
+    //Cambia el fondo que se mostrará según el tipo dado
+    public static void changeCurrentBackgrounds(BackgroundType newType) {
+        if (newType == null)
+            newType = BackgroundType.CAMPAIGN;
+        currentBackground = backgrounds.get(newType);
+
+        if (newType.equals(BackgroundType.MULTIPLAYER)) {
+            hasMovement = false;
+        } else {
+            hasMovement = true;
+        }
+    }
+
     public static void dispose() {
-        for (int i=0; i<backgrounds.size; i++)
-            backgrounds.get(i).dispose();
+        currentBackground = backgrounds.get(BackgroundType.CAMPAIGN);
+        for (int i=0; i<currentBackground.size; i++)
+            currentBackground.get(i).dispose();
+
+        currentBackground = backgrounds.get(BackgroundType.ARCADE);
+        for (int i=0; i<currentBackground.size; i++)
+            currentBackground.get(i).dispose();
+
+        currentBackground = backgrounds.get(BackgroundType.MULTIPLAYER);
+        for (int i=0; i<currentBackground.size; i++)
+            currentBackground.get(i).dispose();
     }
 
 }

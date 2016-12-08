@@ -64,9 +64,15 @@ public class AssetsManager {
         assetsReferences.put("small_obstacle", OBSTACLES_FOLDER +"asteroid1.png");
 
         //Texturas referentes a backgrounds
-        assetsReferences.put("background", BACKGROUNDS_FOLDER +"fondo.jpg");
-        assetsReferences.put("background2", BACKGROUNDS_FOLDER +"fondo2.png");
-        assetsReferences.put("background3", BACKGROUNDS_FOLDER +"fondo3.png");
+        assetsReferences.put("background1_1", BACKGROUNDS_FOLDER +"fondo1_1.jpg");
+        assetsReferences.put("background1_2", BACKGROUNDS_FOLDER +"fondo1_2.png");
+        assetsReferences.put("background1_3", BACKGROUNDS_FOLDER +"fondo1_3.png");
+        assetsReferences.put("background2_1", BACKGROUNDS_FOLDER +"fondo2_1.jpg");
+        assetsReferences.put("background2_2", BACKGROUNDS_FOLDER +"fondo2_2.png");
+        assetsReferences.put("background2_3", BACKGROUNDS_FOLDER +"fondo2_3.png");
+        assetsReferences.put("background3_1", BACKGROUNDS_FOLDER +"fondo3_1.jpg");
+        assetsReferences.put("background3_2", BACKGROUNDS_FOLDER +"fondo3_2.png");
+        assetsReferences.put("background3_3", BACKGROUNDS_FOLDER +"fondo3_3.png");
 
         //Texturas referentes a others
         assetsReferences.put("inventary", OTHERS_FOLDER +"inventario.png");

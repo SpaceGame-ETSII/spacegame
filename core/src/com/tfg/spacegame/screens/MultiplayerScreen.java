@@ -70,6 +70,9 @@ public class MultiplayerScreen extends GameScreen{
     public MultiplayerScreen(final SpaceGame game, String option){
         this.game = game;
 
+        //Avisamos al background manager de qué fondo queremos
+        BackgroundManager.changeCurrentBackgrounds(BackgroundManager.BackgroundType.MULTIPLAYER);
+
         outcomeMessage  = new MultiplayerMessage();
         incomeMessage = new MultiplayerMessage();
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.tfg.spacegame.BasicScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
+import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.FontManager;
 import com.tfg.spacegame.utils.ScreenManager;
 
@@ -25,6 +26,9 @@ public class MainMenuScreen extends BasicScreen {
         this.game = game;
 
         SpaceGame.changeToLandscape();
+
+        //Avisamos al background manager de qué fondo queremos
+        BackgroundManager.changeCurrentBackgrounds(BackgroundManager.BackgroundType.CAMPAIGN);
 
         //Creamos los botones para el menú principal
         campaign = new Button("button", 260, 300, "campaignTitle", true);

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.tfg.spacegame.BasicScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
+import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.FontManager;
 import com.tfg.spacegame.utils.ScreenManager;
 import com.tfg.spacegame.utils.TextInput;
@@ -21,6 +22,9 @@ public class MultiplayerMenuScreen extends BasicScreen {
 
     public MultiplayerMenuScreen(final SpaceGame gam) {
         game = gam;
+
+		//Avisamos al background manager de qué fondo queremos
+		BackgroundManager.changeCurrentBackgrounds(BackgroundManager.BackgroundType.MULTIPLAYER);
 
 		quickGame = new Button("button", 260, 315, "quickGame", true);
 		invitePlayer = new Button("button", 260, 255, "invitePlayer", true);

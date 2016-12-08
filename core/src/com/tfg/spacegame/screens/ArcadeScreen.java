@@ -62,6 +62,9 @@ public class ArcadeScreen extends GameScreen {
 		//Convertimos la pantalla en modo portrait
 		SpaceGame.changeToPortrait();
 
+		//Avisamos al background manager de qué fondo queremos
+		BackgroundManager.changeCurrentBackgrounds(BackgroundManager.BackgroundType.ARCADE);
+
 		CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 		exit = new Button("buttonExit", SpaceGame.width - 50, SpaceGame.height - 50, null, true);
 		menuExitDialog = new DialogBox("exitModeQuestion");

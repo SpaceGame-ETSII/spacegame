@@ -40,6 +40,9 @@ public class CampaignScreen extends GameScreen {
         DamageManager.load();
         CameraManager.loadShakeEffect(1f,CameraManager.NORMAL_SHAKE);
 
+        //Avisamos al background manager de qué fondo queremos
+        BackgroundManager.changeCurrentBackgrounds(BackgroundManager.BackgroundType.CAMPAIGN);
+
         state = GameState.READY;
 
         //Creamos los objetos de juego

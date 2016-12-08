@@ -5,6 +5,7 @@ import com.tfg.spacegame.BasicScreen;
 import com.tfg.spacegame.SpaceGame;
 import com.tfg.spacegame.gameObjects.Button;
 import com.tfg.spacegame.utils.AudioManager;
+import com.tfg.spacegame.utils.BackgroundManager;
 import com.tfg.spacegame.utils.FontManager;
 import com.tfg.spacegame.utils.ScreenManager;
 
@@ -25,6 +26,9 @@ public class DemoMenuScreen extends BasicScreen {
 
     public DemoMenuScreen(final SpaceGame game) {
         this.game = game;
+
+        //Avisamos al background manager de qué fondo queremos
+        BackgroundManager.changeCurrentBackgrounds(BackgroundManager.BackgroundType.CAMPAIGN);
 
         //Creamos los botones para el menú principal
         allEnemies = new Button("button", 260, 315, "allEnemies", true);
