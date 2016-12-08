@@ -1,23 +1,18 @@
 package com.tfg.spacegame.gameObjects.arcadeMode;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
-import com.tfg.spacegame.gameObjects.Button;
-import com.tfg.spacegame.screens.ArcadeScreen;
 import com.tfg.spacegame.utils.AssetsManager;
-import com.tfg.spacegame.utils.FontManager;
-import com.tfg.spacegame.utils.ShapeRendererManager;
 
 public class ArcadeShip extends GameObject {
 
     private final static float SPEED = 200;
 
     //Efecto de particulas del fuego de propulsión
-    private ParticleEffect fireEffect;
+    private ParticleEffect fireEffectLeft;
+    private ParticleEffect fireEffectRight;
     private float fireEffectScale;
     private float fireEffectLife;
 
@@ -39,9 +34,11 @@ public class ArcadeShip extends GameObject {
         this.setX((SpaceGame.width / 2) - this.getWidth());
 
         //Preparamos los efectos de partículas con sus respectivos reescalados
-        fireEffect = AssetsManager.loadParticleEffect("propulsion_ship_effect");
-        fireEffectScale = fireEffect.getEmitters().first().getScale().getHighMax();
-        fireEffectLife = fireEffect.getEmitters().first().getLife().getHighMax();
+        fireEffectLeft = AssetsManager.loadParticleEffect("propulsion_ship_effect");
+        fireEffectRight = AssetsManager.loadParticleEffect("propulsion_ship_effect");
+        fireEffectScale = fireEffectLeft.getEmitters().first().getScale().getHighMax();
+        fireEffectLife = fireEffectLeft.getEmitters().first().getLife().getHighMax();
+
         destroyEffect = AssetsManager.loadParticleEffect("ship_shock_effect");
         destroyEffectScale = destroyEffect.getEmitters().first().getScale().getHighMax();
         destroyEffectLife = destroyEffect.getEmitters().first().getLife().getHighMax();
@@ -50,7 +47,8 @@ public class ArcadeShip extends GameObject {
         defeated = false;
 
         this.updateParticleEffect();
-        fireEffect.start();
+        fireEffectLeft.start();
+        fireEffectRight.start();
         destroyEffect.start();
     }
 
@@ -58,7 +56,8 @@ public class ArcadeShip extends GameObject {
     public void render(){
         if (!defeated) {
             super.render();
-            fireEffect.draw(SpaceGame.batch);
+            fireEffectLeft.draw(SpaceGame.batch);
+            fireEffectRight.draw(SpaceGame.batch);
         } else {
             destroyEffect.draw(SpaceGame.batch);
         }
@@ -78,7 +77,8 @@ public class ArcadeShip extends GameObject {
 
             //Actualizamos los efectos de partículas
             this.updateParticleEffect();
-            fireEffect.update(delta);
+            fireEffectLeft.update(delta);
+            fireEffectRight.update(delta);
         } else {
             this.updateParticleEffect();
             destroyEffect.update(delta);
@@ -103,9 +103,16 @@ public class ArcadeShip extends GameObject {
     public void updateParticleEffect() {
         if (!defeated) {
             //Colocamos el efecto según la posición de la nave, y ajustamos el ángulo, ya que originalmente es horizontal
-            fireEffect.getEmitters().first().setPosition(this.getX() + (this.getWidth() / 2),
+            fireEffectLeft.getEmitters().first().setPosition(
+                    this.getX() + this.getWidth()/2 - (this.getWidth()/3 * this.getLogicShape().getScaleX()),
                     this.getY() + (this.getHeight() * ((1 - this.getLogicShape().getScaleY()) / 2)));
-            fireEffect.getEmitters().first().getAngle().setHigh(270);
+
+            fireEffectRight.getEmitters().first().setPosition(
+                    this.getX() + this.getWidth()/2 + (this.getWidth()/3 * this.getLogicShape().getScaleX()),
+                    this.getY() + (this.getHeight() * ((1 - this.getLogicShape().getScaleY()) / 2)));
+
+            fireEffectLeft.getEmitters().first().getAngle().setHigh(270);
+            fireEffectRight.getEmitters().first().getAngle().setHigh(270);
         } else {
             destroyEffect.getEmitters().first().setPosition(this.getCenter().x, this.getCenter().y);
         }
@@ -120,8 +127,11 @@ public class ArcadeShip extends GameObject {
     public void setScale(float x, float y) {
         super.setScale(x, y);
 
-        fireEffect.getEmitters().first().getScale().setHigh(fireEffectScale * y);
-        fireEffect.getEmitters().first().getLife().setHigh(fireEffectLife * y);
+        fireEffectLeft.getEmitters().first().getScale().setHigh(fireEffectScale * y);
+        fireEffectLeft.getEmitters().first().getLife().setHigh(fireEffectLife * y);
+
+        fireEffectRight.getEmitters().first().getScale().setHigh(fireEffectScale * y);
+        fireEffectRight.getEmitters().first().getLife().setHigh(fireEffectLife * y);
 
         destroyEffect.getEmitters().first().getScale().setHigh(destroyEffectScale * y);
         destroyEffect.getEmitters().first().getVelocity().setHigh(destroyEffectScale * y);
@@ -131,7 +141,8 @@ public class ArcadeShip extends GameObject {
     @Override
     public void dispose() {
         super.dispose();
-        fireEffect.dispose();
+        fireEffectLeft.dispose();
+        fireEffectRight.dispose();
         destroyEffect.dispose();
     }
 
