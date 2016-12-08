@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.tfg.spacegame.GameObject;
 import com.tfg.spacegame.SpaceGame;
+import com.tfg.spacegame.gameObjects.multiplayerMode.MultiplayerShip;
 import com.tfg.spacegame.screens.CampaignScreen;
 import com.tfg.spacegame.utils.AssetsManager;
 import com.tfg.spacegame.utils.CameraManager;
@@ -106,7 +107,8 @@ public class LandscapeShip extends GameObject {
                 super.render();
                 SpaceGame.batch.draw(cockpit, this.getX() + cockpitOffsetX, this.getY() + cockpitOffsetY, 40,10);
             }
-            fireEffect.draw(SpaceGame.batch);
+            if( !(this instanceof MultiplayerShip))
+                fireEffect.draw(SpaceGame.batch);
         }
     }
 
