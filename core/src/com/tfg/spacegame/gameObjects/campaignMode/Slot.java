@@ -32,7 +32,6 @@ public class Slot extends GameObject {
     }
 
     public void render() {
-        //super.render();
         if (this.hasElementEquipped()) {
             this.particleEffect.draw(SpaceGame.batch);
         }

@@ -1,8 +1,15 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+import static org.apache.tools.ant.taskdefs.condition.Os.isFamily
+
 android {
-    def keyFile = file('/home/gaems-dev/Escritorio/finalKey.jks')
-    if(!keyFile.exists()) {
+    def keyFile = ""
+    if(isFamily(Os.FAMILY_WINDOWS)) {
+        keyFile = file('C:/Users/Portotol/Google Drive/TFG-Gaems/finalKey.jks')
+    }else{
         keyFile = file('/home/gaems-dev/Escritorio/finalKey.jks')
     }
+
     signingConfigs {
         release {
             keyAlias 'spacegame'

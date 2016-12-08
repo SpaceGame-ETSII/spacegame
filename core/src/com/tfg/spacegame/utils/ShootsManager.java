@@ -307,8 +307,10 @@ public class ShootsManager {
                 bursts.add(new Burst(shooter,12,0,TypeShoot.ORANGE, enemy, 1.0));
                 enemy.setTargettedByShip(true);
             }
-        }else if(enemy == null){
+        }else if(enemy == null && isCampaignShipReadyToShoot(TypeShoot.ORANGE)){
             // Posiblemente para que dispare aun si no ha tocado a un enemigo y dispare a la posición seleccionada
+            GameObject target = new GameObject(null,(int)x,(int)y);
+            bursts.add(new Burst(shooter,12,0,TypeShoot.ORANGE, target, 1.0));
         }
     }
 

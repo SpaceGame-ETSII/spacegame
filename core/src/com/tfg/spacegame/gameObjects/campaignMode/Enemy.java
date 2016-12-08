@@ -47,8 +47,10 @@ public class Enemy extends GameObject {
 
         targettedByShip = false;
 
-        this.destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
-        this.destroyEffect.start();
+        if(this.destroyEffect != null){
+            this.destroyEffect.getEmitters().first().setPosition(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
+            this.destroyEffect.start();
+        }
     }
 
     public void update(float delta) {
@@ -110,7 +112,7 @@ public class Enemy extends GameObject {
                     if(getHeight() > radius)
                         radius = getHeight();
 
-                    ShapeRendererManager.renderCircle(getX()+getWidth()/2, getY()+getHeight()/2,radius, Color.RED);
+                    ShapeRendererManager.renderCircle(getCenter().x, getCenter().y,radius, Color.RED);
                 }
             }
         } else {

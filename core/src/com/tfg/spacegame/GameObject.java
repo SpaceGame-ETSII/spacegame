@@ -44,7 +44,9 @@ public class GameObject {
 
         float[] vertices = SpaceGame.loadShape(textureName);
 
-        if(vertices == null){
+        if(vertices == null && texture != null){
+
+
             vertices = new float[8];
 
             vertices[0] = 0;
@@ -58,6 +60,17 @@ public class GameObject {
 
             vertices[6] = texture.getWidth();
             vertices[7] = 0;
+        }else if(texture == null){
+            vertices = new float[6];
+
+            vertices[0] = 0;
+            vertices[1] = 0;
+
+            vertices[2] = 0;
+            vertices[3] = 0;
+
+            vertices[4] = 0;
+            vertices[5] = 0;
         }
 
         this.loadWidthAndHeight(vertices);
@@ -204,7 +217,8 @@ public class GameObject {
     }
 
     public void render(){
-        SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getLogicShape().getOriginX(), getLogicShape().getOriginY(), getWidth(), getHeight(), scaleX, scaleY, getLogicShape().getRotation());
+        if(texture!=null)
+            SpaceGame.batch.draw(new TextureRegion(texture), getX(), getY(), getLogicShape().getOriginX(), getLogicShape().getOriginY(), getWidth(), getHeight(), scaleX, scaleY, getLogicShape().getRotation());
         //ShapeRendererManager.renderPolygon(this.getLogicShape().getTransformedVertices(), Color.WHITE);
     }
 

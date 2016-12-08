@@ -113,7 +113,7 @@ public class AssetsManager {
         assetsReferences.put("burstPlayer", POWER_UPS_FOLDER +"blue_power.png");
 
         // Texturas referentes a shoots
-        assetsReferences.put("basic_shoot", SHOOTS_FOLDER +"disparo.png");
+        assetsReferences.put("basic_shoot", SHOOTS_FOLDER +"basic_shoot.png");
         assetsReferences.put("bigshoot_shoot", SHOOTS_FOLDER +"disparo_enemigo_basico_tipo5.png");
         assetsReferences.put("red_shoot", SHOOTS_FOLDER +"disparo_rojo.png");
         assetsReferences.put("blue_shoot", SHOOTS_FOLDER +"blue_missile.png");
@@ -136,7 +136,6 @@ public class AssetsManager {
         assetsReferences.put("warning_shoot_type5_effect", PARTICLES_FOLDER + "aviso_disparo_tipo5");
         assetsReferences.put("basic_effect_shoot", PARTICLES_FOLDER + "basico_efecto_disparo");
         assetsReferences.put("basic_effect_shock", PARTICLES_FOLDER + "basico_efecto_choque");
-        assetsReferences.put("basic_shoot_effect", PARTICLES_FOLDER + "basico_efecto");
         assetsReferences.put("propulsion_ship_effect", PARTICLES_FOLDER + "propulsion_nave");
         assetsReferences.put("basic_destroyed", PARTICLES_FOLDER + "basico_derrotado");
         assetsReferences.put("basic_type5_destroyed", PARTICLES_FOLDER + "basico_tipo5_derrotado");
@@ -205,7 +204,10 @@ public class AssetsManager {
 
     //Se llamará a este método cada vez que se pretenda cargar una textura
     public static Texture loadTexture(String textureName) {
-        return new Texture(Gdx.files.internal(assetsReferences.get(textureName)));
+        if(textureName == null)
+            return null;
+        else
+            return new Texture(Gdx.files.internal(assetsReferences.get(textureName)));
     }
 
     //Se llamará a este método cada vez que se pretenda cargar un efecto de partículas

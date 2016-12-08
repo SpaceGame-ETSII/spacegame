@@ -28,10 +28,9 @@ public class ShapeRendererManager {
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
 
+        Gdx.gl.glLineWidth(10);
         renderer.setColor(color);
-
         renderer.circle(valuesToProjectFromCamera.x,valuesToProjectFromCamera.y,radius);
-
         renderer.end();
 
         SpaceGame.batch.begin();

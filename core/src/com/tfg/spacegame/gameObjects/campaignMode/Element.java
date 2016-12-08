@@ -31,7 +31,6 @@ public class Element extends GameObject {
     }
 
     public void render() {
-        //super.render();
         this.particleEffect.draw(SpaceGame.batch);
         if (isActivate) {
             this.activatedParticleEffect.draw(SpaceGame.batch);

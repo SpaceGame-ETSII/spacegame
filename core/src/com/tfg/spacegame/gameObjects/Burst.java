@@ -24,6 +24,7 @@ public class Burst {
 
     //Si hubiese un objetivo de la ráfaga, lo guardamos aqui
     private GameObject burstTarget;
+    //
 
     private GameObject burstShooter;
 
@@ -75,7 +76,7 @@ public class Burst {
                 if (numberOfShoots == 0){
                     lastShootOfBurst = null;
                     // Si el burst era de un tipo naranja, desactivamos el efecto de localización.
-                    if(typeToBurst.equals(TypeShoot.ORANGE)){
+                    if(typeToBurst.equals(TypeShoot.ORANGE) && burstTarget instanceof Enemy){
                         Enemy enemy = (Enemy) burstTarget;
                         enemy.setTargettedByShip(false);
                     }
