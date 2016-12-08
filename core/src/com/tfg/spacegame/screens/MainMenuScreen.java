@@ -28,7 +28,7 @@ public class MainMenuScreen extends BasicScreen {
         SpaceGame.changeToLandscape();
 
         //Avisamos al background manager de qué fondo queremos
-        BackgroundManager.changeCurrentBackgrounds(BackgroundManager.BackgroundType.CAMPAIGN);
+        BackgroundManager.changeCurrentBackgrounds(BackgroundManager.BackgroundType.MENU);
 
         //Creamos los botones para el menú principal
         campaign = new Button("button", 260, 300, "campaignTitle", true);

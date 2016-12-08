@@ -73,6 +73,8 @@ public class AssetsManager {
         assetsReferences.put("background3_1", BACKGROUNDS_FOLDER +"fondo3_1.jpg");
         assetsReferences.put("background3_2", BACKGROUNDS_FOLDER +"fondo3_2.png");
         assetsReferences.put("background3_3", BACKGROUNDS_FOLDER +"fondo3_3.png");
+        assetsReferences.put("planets", BACKGROUNDS_FOLDER +"planets.png");
+        assetsReferences.put("planets2", BACKGROUNDS_FOLDER +"planets2.png");
 
         //Texturas referentes a others
         assetsReferences.put("inventary", OTHERS_FOLDER +"inventario.png");

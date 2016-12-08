@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class BackgroundManager {
 
     public enum BackgroundType {
-        CAMPAIGN, ARCADE, MULTIPLAYER
+        MENU, CAMPAIGN, ARCADE, MULTIPLAYER
     }
 
     //Almacena los fondos que se mostrarán
@@ -38,10 +38,15 @@ public class BackgroundManager {
         scrollingPositions = new Array<Float>();
         scrollingSpeeds = new Array<Float>();
 
+        Array<Texture> menuTextures = new Array<Texture>();
         Array<Texture> campaignTextures = new Array<Texture>();
         Array<Texture> arcadeTextures = new Array<Texture>();
         Array<Texture> multiplayerTextures = new Array<Texture>();
 
+        menuTextures.add(AssetsManager.loadTexture("background1_1"));
+        menuTextures.add(AssetsManager.loadTexture("planets2"));
+        menuTextures.add(AssetsManager.loadTexture("background1_2"));
+        menuTextures.add(AssetsManager.loadTexture("background1_3"));
         campaignTextures.add(AssetsManager.loadTexture("background1_1"));
         campaignTextures.add(AssetsManager.loadTexture("background1_2"));
         campaignTextures.add(AssetsManager.loadTexture("background1_3"));
@@ -49,9 +54,11 @@ public class BackgroundManager {
         arcadeTextures.add(AssetsManager.loadTexture("background2_2"));
         arcadeTextures.add(AssetsManager.loadTexture("background2_3"));
         multiplayerTextures.add(AssetsManager.loadTexture("background3_1"));
+        multiplayerTextures.add(AssetsManager.loadTexture("planets"));
         multiplayerTextures.add(AssetsManager.loadTexture("background3_2"));
         multiplayerTextures.add(AssetsManager.loadTexture("background3_3"));
 
+        backgrounds.put(BackgroundType.MENU, menuTextures);
         backgrounds.put(BackgroundType.CAMPAIGN, campaignTextures);
         backgrounds.put(BackgroundType.ARCADE, arcadeTextures);
         backgrounds.put(BackgroundType.MULTIPLAYER, multiplayerTextures);
@@ -59,10 +66,12 @@ public class BackgroundManager {
         scrollingPositions.add(0f);
         scrollingPositions.add(0f);
         scrollingPositions.add(0f);
+        scrollingPositions.add(0f);
 
         scrollingSpeeds.add(100f);
         scrollingSpeeds.add(150f);
         scrollingSpeeds.add(250f);
+        scrollingSpeeds.add(300f);
 
         changeCurrentBackgrounds(null);
 
@@ -81,6 +90,13 @@ public class BackgroundManager {
         if (hasMovement) {
             for (int i = 0; i < currentBackground.size; i++) {
                 scrollingPositions.set(i, scrollingPositions.get(i) - (delta * (scrollingSpeeds.get(i) / decrease)));
+                if (scrollingPositions.get(i) <= -currentBackground.get(i).getWidth())
+                    scrollingPositions.set(i, 0f);
+            }
+        } else {
+            scrollingPositions.set(1, 0f);
+            for (int i = 2; i < currentBackground.size; i++) {
+                scrollingPositions.set(i, scrollingPositions.get(i) - (delta * (scrollingSpeeds.get(i) / (decrease*2))));
                 if (scrollingPositions.get(i) <= -currentBackground.get(i).getWidth())
                     scrollingPositions.set(i, 0f);
             }
@@ -124,10 +140,11 @@ public class BackgroundManager {
     //Cambia el fondo que se mostrará según el tipo dado
     public static void changeCurrentBackgrounds(BackgroundType newType) {
         if (newType == null)
-            newType = BackgroundType.CAMPAIGN;
+            newType = BackgroundType.MENU;
         currentBackground = backgrounds.get(newType);
 
-        if (newType.equals(BackgroundType.MULTIPLAYER)) {
+        //Indicamos si el fondo debe moverse en base al tipo que se vaya a ejecutar
+        if (newType.equals(BackgroundType.MULTIPLAYER) || newType.equals(BackgroundType.MENU)) {
             hasMovement = false;
         } else {
             hasMovement = true;
@@ -135,6 +152,10 @@ public class BackgroundManager {
     }
 
     public static void dispose() {
+        currentBackground = backgrounds.get(BackgroundType.MENU);
+        for (int i=0; i<currentBackground.size; i++)
+            currentBackground.get(i).dispose();
+
         currentBackground = backgrounds.get(BackgroundType.CAMPAIGN);
         for (int i=0; i<currentBackground.size; i++)
             currentBackground.get(i).dispose();

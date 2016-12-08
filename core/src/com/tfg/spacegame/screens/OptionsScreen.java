@@ -37,6 +37,9 @@ public class OptionsScreen extends BasicScreen {
     public OptionsScreen(final SpaceGame game) {
         this.game = game;
 
+        //Avisamos al background manager de qué fondo queremos
+        BackgroundManager.changeCurrentBackgrounds(BackgroundManager.BackgroundType.MENU);
+
         //Guardamos el record del usuario en la variable
         record = "record:    " + ArcadeScreen.obtainRecord() + " - ";
 
