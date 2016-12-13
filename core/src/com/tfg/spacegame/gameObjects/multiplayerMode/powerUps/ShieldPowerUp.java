@@ -10,7 +10,7 @@ public class ShieldPowerUp extends PowerUp {
 
     public ShieldPowerUp(String textureName, int x, int y) {
         super(textureName, x, y);
-        timeProtecting = 13f;
+        timeProtecting = 4f;
     }
 
     @Override

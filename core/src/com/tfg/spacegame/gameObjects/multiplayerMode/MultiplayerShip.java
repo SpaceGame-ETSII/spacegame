@@ -14,7 +14,7 @@ public class MultiplayerShip extends LandscapeShip {
 
     public MultiplayerShip(String textureName, int x, int y) {
         super(textureName,x,y,5);
-        shield = new GameObject("shieldProtection",x-20,y);
+        shield = new GameObject("shieldProtection",x-5,y);
         protectedShip = false;
     }
 
